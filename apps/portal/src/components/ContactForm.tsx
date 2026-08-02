@@ -51,7 +51,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
   });
 
   return (
-    <section id="contacto" className="py-24 relative overflow-hidden bg-[#08090a]">
+    <section id="contact" className="py-24 relative overflow-hidden bg-[#08090a]">
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">

@@ -3,23 +3,42 @@
 import Link from "next/link";
 import { Terminal } from "lucide-react";
 
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { translateClient } from "@/utils/translate";
+
 export default function Navbar() {
+  const params = useParams();
+  const lang = params?.lang as string || 'es';
+
+  const [tProyectos, setTProyectos] = useState("Proyectos");
+  const [tSobreMi, setTSobreMi] = useState("Sobre Mí");
+  const [tContacto, setTContacto] = useState("Contacto");
+
+  useEffect(() => {
+    if (lang !== 'es') {
+      translateClient("Proyectos", lang).then(setTProyectos);
+      translateClient("Sobre Mí", lang).then(setTSobreMi);
+      translateClient("Contacto", lang).then(setTContacto);
+    }
+  }, [lang]);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
-      <Link href="/" className="flex items-center gap-2 text-white font-bold text-xl hover:opacity-80 transition-opacity">
+      <Link href={`/${lang}`} className="flex items-center gap-2 text-white font-bold text-xl hover:opacity-80 transition-opacity">
         <Terminal className="text-blue-500" size={24} />
         <span>ATP DEV</span>
       </Link>
 
       <div className="hidden md:flex items-center gap-8">
-        <Link href="/#portfolio" className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
-          Proyectos
+        <Link href={`/${lang}/#portfolio`} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
+          {tProyectos}
         </Link>
-        <Link href="/#sobre-mi" className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
-          Sobre Mí
+        <Link href={`/${lang}/#about`} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
+          {tSobreMi}
         </Link>
-        <Link href="/#contacto" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
-          Contacto
+        <Link href={`/${lang}/#contact`} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
+          {tContacto}
         </Link>
       </div>
 

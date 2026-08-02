@@ -355,3 +355,53 @@ export async function deleteSkill(id: number): Promise<boolean> {
   if (error) { console.error('Error deleting skill:', error); return false; }
   return true;
 }
+
+// ==========================================
+// INFINITE I18N: TRANSLATION CACHE ENGINE
+// ==========================================
+
+import { translate as googleTranslate } from '@vitalets/google-translate-api';
+
+/**
+ * Traduce un texto dinámicamente y lo cachea en Supabase.
+ * Si el idioma destino es "es" (español), devuelve el original sin traducir.
+ * @param sourceText El texto original en español
+ * @param targetLang Código del idioma (ej: "en", "ru", "hi")
+ */
+export async function translateText(sourceText: string, targetLang: string): Promise<string> {
+  if (!sourceText) return sourceText;
+  if (targetLang === 'es') return sourceText;
+
+  // 1. Buscar en la base de datos de caché
+  const { data: cached } = await supabase
+    .from('translation_cache')
+    .select('translated_text')
+    .eq('source_text', sourceText)
+    .eq('target_lang', targetLang)
+    .single();
+
+  if (cached && cached.translated_text) {
+    return cached.translated_text; // Caché hit (0ms extra)
+  }
+
+  // 2. Si no está en caché, usamos la API gratuita de Google Translate
+  try {
+    const { text } = await googleTranslate(sourceText, { to: targetLang });
+    
+    // 3. Guardar asíncronamente en Supabase (fire and forget)
+    // Se usa el service_role internamente (idealmente) o el token anon (que habilitamos con RLS)
+    supabase.from('translation_cache').insert([
+      { source_text: sourceText, target_lang: targetLang, translated_text: text }
+    ]).then(({ error }) => {
+      if (error && error.code !== '23505') { // Ignorar error de unique constraint (race condition)
+        console.error('Error caching translation:', error);
+      }
+    });
+
+    return text;
+  } catch (error) {
+    console.error('Translation API error:', error);
+    // Fallback: devolver el texto original si falla la traducción
+    return sourceText;
+  }
+}

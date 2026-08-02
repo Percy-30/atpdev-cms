@@ -37,7 +37,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section id="sobre-mi" className="py-24 relative overflow-hidden">
+    <section id="about" className="py-24 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-[1000px] pointer-events-none opacity-20">
         <div className="absolute top-[20%] left-[-10%] w-[300px] h-[300px] bg-blue-600 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-[10%] right-[-10%] w-[300px] h-[300px] bg-purple-600 rounded-full blur-[120px]"></div>
