@@ -140,13 +140,7 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start"
           >
-            {loading ? (
-              <div className="sm:col-span-2 flex items-center justify-center h-40 gap-2 text-gray-500">
-                <Loader2 size={20} className="animate-spin" />
-                <span className="text-sm">Cargando habilidades...</span>
-              </div>
-            ) : (
-              skills.map((skill) => {
+            {skills.map((skill) => {
                 const colors = COLOR_MAP[skill.color_key] || COLOR_MAP.blue;
                 const icon   = ICON_MAP[skill.icon_key]  || <Code2 size={16} />;
                 return (
@@ -173,7 +167,7 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
                   </div>
                 );
               })
-            )}
+            }
           </motion.div>
         </div>
       </div>
