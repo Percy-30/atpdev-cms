@@ -67,7 +67,7 @@ export default function ExperienceTimeline() {
   }, [lang]);
 
   return (
-    <section id="experiencia" className="py-24 relative">
+    <section id="experience" className="py-24 relative">
       <div className="max-w-4xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

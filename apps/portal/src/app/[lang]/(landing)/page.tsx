@@ -347,7 +347,7 @@ export default function Home() {
             <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">{ui.footerLinks}</h4>
             <ul className="space-y-3">
               <li><a href="#about" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkAbout}</a></li>
-              <li><a href="#experiencia" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkExperience}</a></li>
+              <li><a href="#experience" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkExperience}</a></li>
               <li><a href="#portfolio" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkProjects}</a></li>
             </ul>
           </div>

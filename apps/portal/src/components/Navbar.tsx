@@ -31,7 +31,7 @@ export default function Navbar() {
   const links = [
     { href: `${linkPrefix}/#portfolio`, label: tProyectos },
     { href: `${linkPrefix}/#about`,     label: tSobreMi },
-    { href: `${linkPrefix}/#experiencia`, label: tExperiencia },
+    { href: `${linkPrefix}/#experience`, label: tExperiencia },
     { href: `${linkPrefix}/#contact`,   label: tContacto },
   ];
 
