@@ -9,22 +9,84 @@ import AboutSection from "@/components/AboutSection";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
 import ContactForm from "@/components/ContactForm";
 
+import { useParams } from "next/navigation";
+import { translateClient } from "@/utils/translate";
+
 const categories = ["Todos", "Android", "Web", "IA"];
 
 export default function Home() {
+  const params = useParams();
+  const lang = params?.lang as string || 'es';
+
   const [filter, setFilter] = useState("Todos");
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [config, setConfig] = useState<SiteConfig | null>(null);
 
+  // UI Strings
+  const [ui, setUi] = useState({
+    heroDesc: "Construyendo experiencias de software escalables y de alto rendimiento. Especializado en arquitecturas limpias, interfaces modernas y soluciones integradas con Inteligencia Artificial.",
+    btnProjects: "Ver Proyectos →",
+    btnAbout: "Sobre Mí (Detalles)",
+    btnPdf: "Descargar PDF",
+    techStack: "TECH STACK",
+    featuredProjects: "Proyectos Destacados",
+    featuredDesc: "Explora algunas de las aplicaciones y sistemas que he diseñado desde cero, enfocados en monetización y utilidad real.",
+    techStackTitle: "Stack Tecnológico",
+    btnDemo: "Ver Demo",
+    btnPlayStore: "Ver en Play Store",
+    footerBio: "Ingeniero de Sistemas y desarrollador Fullstack. Transformando ideas en productos digitales de alto rendimiento.",
+    footerLinks: "Enlaces Rápidos",
+    footerLegal: "Legal",
+    allRights: "Todos los derechos reservados."
+  });
+
   useEffect(() => {
-    getProjects().then(data => {
-      // Filtrar los que están en privado para no mostrarlos al público
-      const publicProjects = data.filter(p => p.status !== 'Privado');
-      setProjects(publicProjects);
-    });
-    getSiteConfig().then(data => setConfig(data));
-  }, []);
+    const loadData = async () => {
+      // 1. Fetch & Translate Projects
+      let projData = await getProjects();
+      projData = projData.filter(p => p.status !== 'Privado');
+      
+      if (lang !== 'es') {
+        projData = await Promise.all(projData.map(async p => ({
+          ...p,
+          title: await translateClient(p.title, lang),
+          description: await translateClient(p.description, lang),
+          category: await translateClient(p.category, lang),
+          metrics: await translateClient(p.metrics, lang),
+          status: await translateClient(p.status, lang),
+        })));
+      }
+      setProjects(projData);
+
+      // 2. Fetch & Translate Config
+      let confData = await getSiteConfig();
+      if (lang !== 'es' && confData) {
+        const tw = confData.hero_typewriter || [];
+        confData = {
+          ...confData,
+          hero_title: await translateClient(confData.hero_title, lang),
+          hero_subtitle: await translateClient(confData.hero_subtitle, lang),
+          bio_short: await translateClient(confData.bio_short, lang),
+          hero_typewriter: await Promise.all(tw.map(w => translateClient(w, lang)))
+        };
+      }
+      setConfig(confData);
+
+      // 3. Translate Static UI Strings
+      if (lang !== 'es') {
+        setUi(prev => ({ ...prev, heroDesc: "Translating..." })); // Optimistic loading
+        const keys = Object.keys(ui) as (keyof typeof ui)[];
+        const newUi = { ...ui };
+        await Promise.all(keys.map(async (k) => {
+          newUi[k] = await translateClient(ui[k], lang);
+        }));
+        setUi(newUi);
+      }
+    };
+    
+    loadData();
+  }, [lang]);
 
   // Extraer categorías únicas de los proyectos activos
   const dynamicCategories = ["Todos", ...Array.from(new Set(projects.map(p => p.category)))];
@@ -66,25 +128,24 @@ export default function Home() {
           </h3>
           
           <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light leading-relaxed mt-4">
-            Construyendo experiencias de software escalables y de alto rendimiento.
-            Especializado en arquitecturas limpias, interfaces modernas y soluciones integradas con Inteligencia Artificial.
+            {ui.heroDesc}
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
             <a href="#portfolio" className="w-full sm:w-auto text-white px-8 py-3.5 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: config?.primary_color || '#2563eb' }}>
-              Ver Proyectos →
+              {ui.btnProjects}
             </a>
-            <a href="#sobre-mi" className="w-full sm:w-auto bg-[#1a1c23] hover:bg-[#252833] border border-gray-700 text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
-              Sobre Mí (Detalles)
+            <a href="#about" className="w-full sm:w-auto bg-[#1a1c23] hover:bg-[#252833] border border-gray-700 text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
+              {ui.btnAbout}
             </a>
             <a href="/cv.html" target="_blank" className="text-gray-400 hover:text-white underline text-sm ml-0 sm:ml-4 flex items-center gap-1 transition-colors">
-              <Download size={14} /> Descargar PDF
+              <Download size={14} /> {ui.btnPdf}
             </a>
           </div>
           
           {/* Tech Stack Chips Centrados */}
           <div className="text-center">
-            <p className="text-xs uppercase tracking-[0.2em] text-gray-500 font-bold mb-4">TECH STACK</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-gray-500 font-bold mb-4">{ui.techStack}</p>
             <div className="flex flex-wrap justify-center gap-3">
               {["KOTLIN", "NEXT.JS", "TAILWIND", "SUPABASE", "PYTHON", "AI / LLMS"].map(tech => (
                 <span key={tech} className="px-4 py-2 border border-gray-800 bg-[#12141a] rounded-full text-xs font-semibold text-gray-300">
@@ -108,10 +169,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-              Proyectos Destacados
+              {ui.featuredProjects}
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Explora algunas de las aplicaciones y sistemas que he diseñado desde cero, enfocados en monetización y utilidad real.
+              {ui.featuredDesc}
             </p>
           </div>
 
@@ -227,7 +288,7 @@ export default function Home() {
                       </p>
 
                       <div className="mb-10">
-                        <h4 className="text-sm text-gray-500 uppercase tracking-widest font-bold mb-4">Stack Tecnológico</h4>
+                        <h4 className="text-sm text-gray-500 uppercase tracking-widest font-bold mb-4">{ui.techStackTitle}</h4>
                         <div className="flex flex-wrap gap-3">
                           {p.stack.map(tech => (
                             <span key={tech} className="bg-gray-800 border border-gray-700 text-gray-200 px-4 py-2 rounded-lg text-sm font-medium">
@@ -240,13 +301,13 @@ export default function Home() {
                       <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-800">
                         {p.demolink !== "#" && (
                         <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all font-medium">
-                          <PlayCircle size={20} /> Ver Demo
+                          <PlayCircle size={20} /> {ui.btnDemo}
                         </a>
                       )}
                       
                       {p.playstore && (
                         <a href={p.playstore} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#212431] border border-gray-700 text-white px-8 py-3.5 rounded-xl hover:bg-[#2a2d3d] transition-colors font-medium">
-                            <PlayCircle size={18} /> Ver en Play Store
+                            <PlayCircle size={18} /> {ui.btnPlayStore}
                           </a>
                         )}
                       </div>
@@ -268,19 +329,19 @@ export default function Home() {
           <div>
             <h3 className="text-2xl font-black text-white mb-4">ATP DEV</h3>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Ingeniero de Sistemas y desarrollador Fullstack. Transformando ideas en productos digitales de alto rendimiento.
+              {ui.footerBio}
             </p>
           </div>
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">Enlaces Rápidos</h4>
+            <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">{ui.footerLinks}</h4>
             <ul className="space-y-3">
-              <li><a href="#sobre-mi" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Sobre Mí</a></li>
+              <li><a href="#about" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Sobre Mí</a></li>
               <li><a href="#experiencia" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Experiencia</a></li>
               <li><a href="#portfolio" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Proyectos</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">Legal</h4>
+            <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">{ui.footerLegal}</h4>
             <ul className="space-y-3">
               <li><a href="/privacy" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Política de Privacidad</a></li>
               <li><a href="/terms" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Términos de Servicio</a></li>
@@ -289,7 +350,7 @@ export default function Home() {
         </div>
         <div className="max-w-6xl mx-auto px-6 border-t border-gray-900 pt-8 flex flex-col md:flex-row items-center justify-between">
           <p className="text-gray-600 text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} {config?.full_name || "Percy Acha Taipe"} (ATP Dev). Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} {config?.full_name || "Percy Acha Taipe"} (ATP Dev). {ui.allRights}
           </p>
           <div className="flex flex-wrap gap-4 text-sm font-semibold">
             {[
