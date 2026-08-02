@@ -1,0 +1,261 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { PlayCircle, ExternalLink, Code2, Server, Smartphone, Cpu, Download, X } from "lucide-react";
+import { getProjects, getSiteConfig, Project, SiteConfig } from "@atpdev/database";
+import Typewriter from "@/components/Typewriter";
+
+const categories = ["Todos", "Android", "Web", "IA"];
+
+export default function Home() {
+  const [filter, setFilter] = useState("Todos");
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [config, setConfig] = useState<SiteConfig | null>(null);
+
+  useEffect(() => {
+    getProjects().then(data => {
+      // Filtrar los que están en privado para no mostrarlos al público
+      const publicProjects = data.filter(p => p.status !== 'Privado');
+      setProjects(publicProjects);
+    });
+    getSiteConfig().then(data => setConfig(data));
+  }, []);
+
+  // Extraer categorías únicas de los proyectos activos
+  const dynamicCategories = ["Todos", ...Array.from(new Set(projects.map(p => p.category)))];
+
+  const filteredProjects = projects.filter(
+    (p) => filter === "Todos" || p.category === filter
+  );
+
+  return (
+    <div className="w-full bg-[#0b0c10] text-gray-200">
+      
+      {/* HERO SECTION (CENTRALIZADO) */}
+      <section id="hero" className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 md:px-16 text-center overflow-hidden">
+        {/* Glow de fondo */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] rounded-full z-0"></div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+          
+          <div className="mb-6 px-4 py-1.5 border border-blue-500/30 bg-blue-500/10 rounded-full text-xs font-semibold text-blue-400 tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+            AVAILABLE FOR HIRE
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-2 tracking-tight">
+            {config?.hero_title || "Percy Acha"}
+          </h1>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 tracking-widest uppercase" style={{ color: config?.primary_color || '#3b82f6' }}>
+            {config?.hero_subtitle || "@ATPDEV"}
+          </h2>
+          <h3 className="text-2xl md:text-4xl font-extrabold mb-4 tracking-tight leading-tight">
+            <span className="text-gray-500 font-light">—</span> <br className="hidden md:block"/>
+            <span className="inline-block w-full text-center">
+              {config?.hero_typewriter && config.hero_typewriter.length > 0 ? (
+                <Typewriter words={config.hero_typewriter} />
+              ) : (
+                <Typewriter words={["Android Developer", "Web Engineer", "AI Integrator", "Freelancer"]} />
+              )}
+            </span>
+          </h3>
+          
+          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light leading-relaxed mt-4">
+            Construyendo experiencias de software escalables y de alto rendimiento.
+            Especializado en arquitecturas limpias, interfaces modernas y soluciones integradas con Inteligencia Artificial.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
+            <a href="#portfolio" className="w-full sm:w-auto text-white px-8 py-3.5 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: config?.primary_color || '#2563eb' }}>
+              Ver Proyectos →
+            </a>
+            <a href="/sobre-mi" className="w-full sm:w-auto bg-[#1a1c23] hover:bg-[#252833] border border-gray-700 text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
+              Sobre Mí (Detalles)
+            </a>
+            <a href="/cv.pdf" download className="text-gray-400 hover:text-white underline text-sm ml-0 sm:ml-4 flex items-center gap-1 transition-colors">
+              <Download size={14} /> Descargar PDF
+            </a>
+          </div>
+          
+          {/* Tech Stack Chips Centrados */}
+          <div className="text-center">
+            <p className="text-xs uppercase tracking-[0.2em] text-gray-500 font-bold mb-4">TECH STACK</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {["KOTLIN", "NEXT.JS", "TAILWIND", "SUPABASE", "PYTHON", "AI / LLMS"].map(tech => (
+                <span key={tech} className="px-4 py-2 border border-gray-800 bg-[#12141a] rounded-full text-xs font-semibold text-gray-300">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+
+      {/* PORTAFOLIO SECTION */}
+      <section id="portfolio" className="py-24 px-4 md:px-16 bg-[#08090a]">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-16 text-center">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+              Proyectos Destacados
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Explora algunas de las aplicaciones y sistemas que he diseñado desde cero, enfocados en monetización y utilidad real.
+            </p>
+          </div>
+
+          {/* Filtros Dinámicos */}
+          <div className="flex flex-wrap gap-3 mb-12 justify-center">
+            {dynamicCategories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all
+                  ${filter === cat 
+                    ? "bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.5)] border-transparent" 
+                    : "bg-[#12141a] text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600"
+                  }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid de Proyectos */}
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            <AnimatePresence>
+              {filteredProjects.map((project) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  key={project.id}
+                  className="bg-[#12141a] rounded-2xl overflow-hidden border border-gray-800 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.1)] transition-all group cursor-pointer flex flex-col"
+                  onClick={() => setSelectedProject(project.id)}
+                >
+                  <div className="relative h-64 overflow-hidden bg-black/50 flex items-center justify-center">
+                    {project.image ? (
+                      <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                    ) : (
+                      <div className="text-4xl font-black text-gray-700 uppercase tracking-widest">{project.title.substring(0,2)}</div>
+                    )}
+                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-blue-400 border border-blue-500/30">
+                      {project.status}
+                    </div>
+                  </div>
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="text-xs font-bold text-blue-500 mb-2 uppercase tracking-widest">{project.category}</div>
+                    <h3 className="text-2xl font-bold text-white mb-3">{project.title}</h3>
+                    <p className="text-gray-400 text-sm mb-6 line-clamp-2 flex-1">{project.description}</p>
+                    
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {project.stack.map(tech => (
+                        <span key={tech} className="bg-gray-800 text-gray-300 text-xs px-2.5 py-1 rounded-md border border-gray-700">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MODAL DE PROYECTO */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div 
+              initial={{ y: 50, opacity: 0, scale: 0.95 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 50, opacity: 0, scale: 0.95 }}
+              className="bg-[#12141a] border border-gray-800 w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {(() => {
+                const p = projects.find(x => x.id === selectedProject);
+                if (!p) return null;
+                return (
+                  <div>
+                    <div className="relative h-72 bg-black flex items-center justify-center">
+                      {p.image ? (
+                        <img src={p.image} alt={p.title} className="w-full h-full object-cover opacity-70" />
+                      ) : (
+                        <div className="text-6xl font-black text-gray-800 uppercase tracking-widest">{p.title.substring(0,2)}</div>
+                      )}
+                      <button 
+                        onClick={() => setSelectedProject(null)}
+                        className="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full transition-colors border border-gray-600"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="p-8 md:p-10">
+                      <div className="mb-6">
+                        <div className="flex items-center gap-3 text-sm mb-4">
+                          <span className="bg-blue-900/50 text-blue-400 border border-blue-800 px-3 py-1 rounded-full font-medium">{p.category}</span>
+                          <span className="bg-green-900/50 text-green-400 border border-green-800 px-3 py-1 rounded-full font-medium">
+                            {p.metrics}
+                          </span>
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{p.title}</h2>
+                      </div>
+                      
+                      <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+                        {p.description}
+                      </p>
+
+                      <div className="mb-10">
+                        <h4 className="text-sm text-gray-500 uppercase tracking-widest font-bold mb-4">Stack Tecnológico</h4>
+                        <div className="flex flex-wrap gap-3">
+                          {p.stack.map(tech => (
+                            <span key={tech} className="bg-gray-800 border border-gray-700 text-gray-200 px-4 py-2 rounded-lg text-sm font-medium">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-800">
+                        {p.demolink !== "#" && (
+                        <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all font-medium">
+                          <PlayCircle size={20} /> Ver Demo
+                        </a>
+                      )}
+                      
+                      {p.playstore && (
+                        <a href={p.playstore} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#212431] border border-gray-700 text-white px-8 py-3.5 rounded-xl hover:bg-[#2a2d3d] transition-colors font-medium">
+                            <PlayCircle size={18} /> Ver en Play Store
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FOOTER */}
+      <footer className="py-8 text-center text-gray-500 text-sm border-t border-gray-800 bg-[#0b0c10]">
+        &copy; {new Date().getFullYear()} ATP DEV. Todos los derechos reservados.
+      </footer>
+    </div>
+  );
+}
