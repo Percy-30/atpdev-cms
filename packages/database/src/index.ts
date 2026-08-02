@@ -1,10 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// Usamos el JWT payload decoding para recuperar el Project ID y las llaves correctas.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yeeupdgjfrkkaurytyrs.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_XtR6TNbQPLwkwCeUOYWKEQ_g-8IStIc';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Singleton pattern – prevents "Multiple GoTrueClient instances" warning
+const globalForSupabase = globalThis as unknown as { _supabase?: SupabaseClient };
+export const supabase = globalForSupabase._supabase ?? createClient(supabaseUrl, supabaseKey);
+if (process.env.NODE_ENV !== 'production') globalForSupabase._supabase = supabase;
 
 // Definición de Tipos
 export type Project = {
