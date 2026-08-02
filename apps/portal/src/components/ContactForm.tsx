@@ -112,8 +112,8 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm font-semibold uppercase tracking-wider">{ui.emailLabel}</p>
-                  <a href={`mailto:${config?.contact_email || 'achataipepercy@gmail.com'}`} className="text-white text-lg font-medium hover:text-blue-400 transition-colors">
-                    {config?.contact_email || 'achataipepercy@gmail.com'}
+                  <a href={`mailto:${config?.email || 'achataipepercy@gmail.com'}`} className="text-white text-lg font-medium hover:text-blue-400 transition-colors">
+                    {config?.email || 'achataipepercy@gmail.com'}
                   </a>
                 </div>
               </div>
@@ -124,8 +124,8 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm font-semibold uppercase tracking-wider">{ui.phoneLabel}</p>
-                  <a href={`https://wa.me/${(config?.contact_phone || '+51987006572').replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="text-white text-lg font-medium hover:text-emerald-400 transition-colors">
-                    {config?.contact_phone || '+51 987 006 572'}
+                  <a href={`https://wa.me/${(config?.phone || '+51987006572').replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="text-white text-lg font-medium hover:text-emerald-400 transition-colors">
+                    {config?.phone || '+51 987 006 572'}
                   </a>
                 </div>
               </div>
