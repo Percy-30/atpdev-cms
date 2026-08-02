@@ -48,6 +48,4 @@ export async function saveSettings(formData: FormData) {
     revalidatePath("/dashboard");
     revalidatePath("/", "layout");
   }
-
-  return success;
 }

@@ -9,5 +9,4 @@ export async function updateLeadStatus(id: number, status: string) {
     revalidatePath("/dashboard/leads");
     revalidatePath("/dashboard");
   }
-  return success;
 }
