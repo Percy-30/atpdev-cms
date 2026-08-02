@@ -82,6 +82,35 @@ export default function RootLayout({
       <body className={`${outfit.className} bg-[#0b0c10] text-gray-200 antialiased min-h-screen`}>
         {children}
         <CookieBanner />
+        
+        {/* JSON-LD Schema (Pro SEO) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Percy Acha Taipe",
+                "alternateName": "ATP Dev",
+                "url": BASE_URL,
+                "image": OG_IMAGE,
+                "jobTitle": "Fullstack & Android Developer",
+                "sameAs": [
+                  "https://github.com/Percy-30",
+                  "https://www.linkedin.com/in/percy-acha-taipe"
+                ]
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "ATP Dev",
+                "url": BASE_URL,
+                "description": "Portafolio Profesional de Percy Acha Taipe, Ingeniero de Sistemas y Desarrollador."
+              }
+            ])
+          }}
+        />
       </body>
     </html>
   );
