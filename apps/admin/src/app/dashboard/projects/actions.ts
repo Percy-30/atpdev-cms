@@ -31,7 +31,6 @@ export async function createProject(formData: FormData) {
     revalidatePath("/dashboard");
     revalidatePath("/", "layout"); // Revalidate main portal too!
   }
-  return success;
 }
 
 export async function updateStatus(id: number, status: string) {
