@@ -33,6 +33,32 @@ export async function createProject(formData: FormData) {
   }
 }
 
+export async function updateProjectAction(id: number, formData: FormData) {
+  const title = formData.get("title") as string;
+  const category = formData.get("category") as string;
+  const description = formData.get("description") as string;
+  const demolink = formData.get("demolink") as string;
+  const stack = (formData.get("stack") as string).split(',').map(s => s.trim());
+  const status = formData.get("status") as string;
+
+  const { updateProject: dbUpdateProject } = await import("@atpdev/database");
+  
+  const success = await dbUpdateProject(id, {
+    title,
+    category,
+    description,
+    demolink,
+    stack,
+    status
+  });
+
+  if (success) {
+    revalidatePath("/dashboard/projects");
+    revalidatePath("/dashboard");
+    revalidatePath("/", "layout"); 
+  }
+}
+
 export async function updateStatus(id: number, status: string) {
   const success = await dbUpdateProjectStatus(id, status);
   if (success) {
