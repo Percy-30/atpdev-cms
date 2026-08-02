@@ -23,21 +23,23 @@ export default function Navbar() {
     }
   }, [lang]);
 
+  const linkPrefix = lang === 'es' ? '' : `/${lang}`;
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
-      <Link href={`/${lang}`} className="flex items-center gap-2 text-white font-bold text-xl hover:opacity-80 transition-opacity">
+      <Link href={`${linkPrefix}/`} className="flex items-center gap-2 text-white font-bold text-xl hover:opacity-80 transition-opacity">
         <Terminal className="text-blue-500" size={24} />
         <span>ATP DEV</span>
       </Link>
 
       <div className="hidden md:flex items-center gap-8">
-        <Link href={`/${lang}/#portfolio`} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
+        <Link href={`${linkPrefix}/#portfolio`} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
           {tProyectos}
         </Link>
-        <Link href={`/${lang}/#about`} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
+        <Link href={`${linkPrefix}/#about`} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
           {tSobreMi}
         </Link>
-        <Link href={`/${lang}/#contact`} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
+        <Link href={`${linkPrefix}/#contact`} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
           {tContacto}
         </Link>
       </div>

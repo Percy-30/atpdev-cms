@@ -43,12 +43,16 @@ export function middleware(request: NextRequest) {
 
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request);
+    const targetUrl = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, request.url);
     
-    // e.g. incoming request is /about
-    // The new URL is now /en/about
-    return NextResponse.redirect(
-      new URL(`/${locale}${pathname === '/' ? '' : pathname}`, request.url)
-    );
+    // Si es el idioma principal (español), ocultamos el prefijo /es en la URL
+    // usando "rewrite" (el servidor carga /es internamente pero el usuario no lo ve).
+    if (locale === defaultLocale) {
+      return NextResponse.rewrite(targetUrl);
+    }
+    
+    // Para otros idiomas (inglés, ruso), sí mostramos el prefijo /en o /ru en la URL
+    return NextResponse.redirect(targetUrl);
   }
 
   return NextResponse.next();
