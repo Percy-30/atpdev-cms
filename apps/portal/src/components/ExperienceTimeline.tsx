@@ -49,7 +49,7 @@ export default function ExperienceTimeline() {
           ...e,
           role: await translateClient(e.role, lang),
           company: await translateClient(e.company, lang),
-          period: await translateClient(e.period, lang),
+          date_range: await translateClient(e.date_range, lang),
           description: await translateClient(e.description, lang)
         })));
 
