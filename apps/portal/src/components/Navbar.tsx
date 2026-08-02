@@ -15,10 +15,10 @@ export default function Navbar() {
         <Link href="/#portfolio" className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
           Proyectos
         </Link>
-        <Link href="/sobre-mi" className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
+        <Link href="/#sobre-mi" className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
           Sobre Mí
         </Link>
-        <Link href="/#contact" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
+        <Link href="/#contacto" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
           Contacto
         </Link>
       </div>
