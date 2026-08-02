@@ -12,6 +12,7 @@
     "@atpdev/database": "*",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.111.0",
+    "lightningcss": "^1.33.0",
     "lucide-react": "^0.474.0",
     "next": "15.1.7",
     "react": "^19.0.0",
