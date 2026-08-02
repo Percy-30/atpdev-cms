@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Code2, Smartphone, Database, BrainCircuit, GraduationCap, Award, Server, ExternalLink, Loader2 } from "lucide-react";
-import { getSkills, getSiteConfig, Skill } from "@atpdev/database";
+import { Code2, Smartphone, Database, BrainCircuit, GraduationCap, Award, Server, ExternalLink } from "lucide-react";
+import { Skill } from "@atpdev/database";
 
 // Mapeo de icon_key → componente Lucide
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -23,16 +23,18 @@ const COLOR_MAP: Record<string, { text: string; bg: string; border: string }> = 
   amber:  { text: "text-amber-400",  bg: "bg-amber-400/10",  border: "border-amber-500/20"  },
 };
 
-import { useParams } from "next/navigation";
 import { translateClient } from "@/utils/translate";
 
-export default function AboutSection() {
-  const params = useParams();
-  const lang = params?.lang as string || 'es';
+interface AboutSectionProps {
+  initialSkills?: Skill[];
+  initialCredlyUrl?: string;
+  lang?: string;
+}
 
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [credlyUrl, setCredlyUrl] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+export default function AboutSection({ initialSkills = [], initialCredlyUrl = "", lang = 'es' }: AboutSectionProps) {
+
+  const [skills, setSkills] = useState<Skill[]>(initialSkills);
+  const [credlyUrl, setCredlyUrl] = useState<string>(initialCredlyUrl);
 
   const [ui, setUi] = useState({
     title1: "Sobre ",
@@ -47,30 +49,21 @@ export default function AboutSection() {
   });
 
   useEffect(() => {
-    const loadData = async () => {
-      let [skillsData, configData] = await Promise.all([getSkills(), getSiteConfig()]);
-      
-      if (lang !== 'es') {
-        skillsData = await Promise.all(skillsData.map(async s => ({
-          ...s,
-          category: await translateClient(s.category, lang),
-          items: await Promise.all(s.items.map(i => translateClient(i, lang)))
-        })));
-      }
-      setSkills(skillsData);
-      setCredlyUrl(configData?.credly_url || "https://www.credly.com/badges/8172ffd1-f729-41da-8221-60d98e4fe488");
-      
-      if (lang !== 'es') {
-        const keys = Object.keys(ui) as (keyof typeof ui)[];
-        const newUi = { ...ui };
-        await Promise.all(keys.map(async k => {
-          newUi[k] = await translateClient(ui[k], lang);
-        }));
-        setUi(newUi);
-      }
-      setLoading(false);
+    if (lang === 'es') return;
+    const translateData = async () => {
+      const translatedSkills = await Promise.all(initialSkills.map(async s => ({
+        ...s,
+        category: await translateClient(s.category, lang),
+        items: await Promise.all(s.items.map(i => translateClient(i, lang)))
+      })));
+      setSkills(translatedSkills);
+
+      const keys = Object.keys(ui) as (keyof typeof ui)[];
+      const newUi = { ...ui };
+      await Promise.all(keys.map(async k => { newUi[k] = await translateClient(ui[k], lang); }));
+      setUi(newUi);
     };
-    loadData();
+    translateData();
   }, [lang]);
 
   return (

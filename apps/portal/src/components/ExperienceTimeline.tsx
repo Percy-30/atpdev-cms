@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, BookOpen, Laptop, Activity, Star, Loader2 } from "lucide-react";
-import { getExperiences, Experience } from "@atpdev/database";
+import { Briefcase, BookOpen, Laptop, Activity, Star } from "lucide-react";
+import { Experience } from "@atpdev/database";
 
 // Mapeo de icon_key → icono Lucide
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -23,15 +23,16 @@ const COLOR_MAP: Record<string, { text: string; border: string; bg: string; dot:
   rose:   { text: "text-rose-400",   border: "border-rose-500",   bg: "bg-rose-500/20",   dot: "border-rose-500"   },
 };
 
-import { useParams } from "next/navigation";
 import { translateClient } from "@/utils/translate";
 
-export default function ExperienceTimeline() {
-  const params = useParams();
-  const lang = params?.lang as string || 'es';
+interface ExperienceTimelineProps {
+  initialExperiences?: Experience[];
+  lang?: string;
+}
 
-  const [experiences, setExperiences] = useState<Experience[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function ExperienceTimeline({ initialExperiences = [], lang = 'es' }: ExperienceTimelineProps) {
+
+  const [experiences, setExperiences] = useState<Experience[]>(initialExperiences);
 
   const [ui, setUi] = useState({
     title1: "Trayectoria",
@@ -41,29 +42,23 @@ export default function ExperienceTimeline() {
   });
 
   useEffect(() => {
-    const loadData = async () => {
-      let data = await getExperiences();
-      
-      if (lang !== 'es') {
-        data = await Promise.all(data.map(async e => ({
-          ...e,
-          role: await translateClient(e.role, lang),
-          company: await translateClient(e.company, lang),
-          date_range: await translateClient(e.date_range, lang),
-          description: await translateClient(e.description, lang)
-        })));
+    if (lang === 'es') return;
+    const translateData = async () => {
+      const translated = await Promise.all(initialExperiences.map(async e => ({
+        ...e,
+        role: await translateClient(e.role, lang),
+        company: await translateClient(e.company, lang),
+        date_range: await translateClient(e.date_range, lang),
+        description: await translateClient(e.description, lang)
+      })));
+      setExperiences(translated);
 
-        const keys = Object.keys(ui) as (keyof typeof ui)[];
-        const newUi = { ...ui };
-        await Promise.all(keys.map(async k => {
-          newUi[k] = await translateClient(ui[k], lang);
-        }));
-        setUi(newUi);
-      }
-      setExperiences(data);
-      setLoading(false);
+      const keys = Object.keys(ui) as (keyof typeof ui)[];
+      const newUi = { ...ui };
+      await Promise.all(keys.map(async k => { newUi[k] = await translateClient(ui[k], lang); }));
+      setUi(newUi);
     };
-    loadData();
+    translateData();
   }, [lang]);
 
   return (
@@ -84,13 +79,7 @@ export default function ExperienceTimeline() {
           </p>
         </motion.div>
 
-        {loading ? (
-          <div className="flex items-center justify-center h-40 gap-2 text-gray-500">
-            <Loader2 size={20} className="animate-spin" />
-            <span className="text-sm">{ui.loadingText}</span>
-          </div>
-        ) : (
-          <div className="relative">
+        <div className="relative">
             {/* Línea central */}
             <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-px bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-transparent"></div>
 
@@ -114,7 +103,6 @@ export default function ExperienceTimeline() {
                     {/* Content */}
                     <div className={`ml-8 md:ml-0 md:w-1/2 ${index % 2 === 0 ? "md:pl-12" : "md:pr-12 text-left md:text-right"}`}>
                       <div className="bg-[#12141a] p-6 rounded-2xl border border-gray-800 hover:border-gray-600 transition-colors group relative overflow-hidden">
-                        {/* Sutil gradiente en hover */}
                         <div className={`absolute top-0 ${index % 2 === 0 ? 'left-0' : 'right-0'} w-32 h-32 ${colors.bg} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
 
                         <div className={`flex items-center gap-3 mb-2 ${index % 2 !== 0 && "md:justify-end"}`}>
@@ -136,7 +124,6 @@ export default function ExperienceTimeline() {
               })}
             </div>
           </div>
-        )}
       </div>
     </section>
   );
