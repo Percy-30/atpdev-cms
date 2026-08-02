@@ -11,6 +11,7 @@ export type Project = {
   id: number;
   title: string;
   category: string;
+  originalCategory?: string; // preserved before translation for filtering
   metrics: string;
   description: string;
   stack: string[];

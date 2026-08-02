@@ -18,7 +18,7 @@ export default function Home() {
   const params = useParams();
   const lang = params?.lang as string || 'es';
 
-  const [filter, setFilter] = useState("Todos");
+  const [filter, setFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [config, setConfig] = useState<SiteConfig | null>(null);
@@ -32,6 +32,7 @@ export default function Home() {
     techStack: "TECH STACK",
     featuredProjects: "Proyectos Destacados",
     featuredDesc: "Explora algunas de las aplicaciones y sistemas que he diseñado desde cero, enfocados en monetización y utilidad real.",
+    filterAll: "Todos",
     techStackTitle: "Stack Tecnológico",
     btnDemo: "Ver Demo",
     btnPlayStore: "Ver en Play Store",
@@ -55,6 +56,7 @@ export default function Home() {
       if (lang !== 'es') {
         projData = await Promise.all(projData.map(async p => ({
           ...p,
+          originalCategory: p.category, // keep original for filtering
           title: await translateClient(p.title, lang),
           description: await translateClient(p.description, lang),
           category: await translateClient(p.category, lang),
@@ -93,11 +95,15 @@ export default function Home() {
     loadData();
   }, [lang]);
 
-  // Extraer categorías únicas de los proyectos activos
-  const dynamicCategories = ["Todos", ...Array.from(new Set(projects.map(p => p.category)))];
+  // Build filter categories: [{value, label}], where 'all' is the stable internal key
+  const uniqueCats = Array.from(new Set(projects.map(p => p.originalCategory || p.category)));
+  const dynamicCategories = [
+    { value: 'all', label: ui.filterAll },
+    ...uniqueCats.map(cat => ({ value: cat, label: projects.find(p => (p.originalCategory || p.category) === cat)?.category || cat }))
+  ];
 
   const filteredProjects = projects.filter(
-    (p) => filter === "Todos" || p.category === filter
+    (p) => filter === "all" || (p.originalCategory || p.category) === filter
   );
 
   return (
@@ -185,15 +191,15 @@ export default function Home() {
           <div className="flex flex-wrap gap-3 mb-12 justify-center">
             {dynamicCategories.map((cat) => (
               <button
-                key={cat}
-                onClick={() => setFilter(cat)}
+                key={cat.value}
+                onClick={() => setFilter(cat.value)}
                 className={`px-6 py-2 rounded-full text-sm font-semibold transition-all
-                  ${filter === cat 
+                  ${filter === cat.value 
                     ? "bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.5)] border-transparent" 
                     : "bg-[#12141a] text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600"
                   }`}
               >
-                {cat}
+                {cat.label}
               </button>
             ))}
           </div>
