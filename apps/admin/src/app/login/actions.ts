@@ -1,28 +1,25 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/utils/supabase/server'
 
-export async function loginAction(formData: FormData) {
-  const username = formData.get("username") as string;
-  const password = formData.get("password") as string;
-  
-  const masterUser = process.env.ADMIN_USER || "admin";
-  const masterPassword = process.env.ADMIN_PASSWORD || "atpdev2026";
-  
-  if (username === masterUser && password === masterPassword) {
-    cookies().set("admin_session", "authenticated", { 
-      httpOnly: true, 
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7 // 1 semana
-    });
-    redirect("/");
-  } else {
-    return { error: "Credenciales incorrectas" };
+export async function login(formData: FormData) {
+  const supabase = await createClient()
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
   }
-}
 
-export async function logoutAction() {
-  cookies().delete("admin_session");
-  redirect("/login");
+  const { error } = await supabase.auth.signInWithPassword(data)
+
+  if (error) {
+    redirect('/login?error=true')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/dashboard')
 }

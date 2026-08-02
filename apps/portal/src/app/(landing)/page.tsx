@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PlayCircle, ExternalLink, Code2, Server, Smartphone, Cpu, Download, X } from "lucide-react";
 import { getProjects, getSiteConfig, Project, SiteConfig } from "@atpdev/database";
 import Typewriter from "@/components/Typewriter";
+import AboutSection from "@/components/AboutSection";
+import ExperienceTimeline from "@/components/ExperienceTimeline";
+import ContactForm from "@/components/ContactForm";
 
 const categories = ["Todos", "Android", "Web", "IA"];
 
@@ -71,10 +74,10 @@ export default function Home() {
             <a href="#portfolio" className="w-full sm:w-auto text-white px-8 py-3.5 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: config?.primary_color || '#2563eb' }}>
               Ver Proyectos →
             </a>
-            <a href="/sobre-mi" className="w-full sm:w-auto bg-[#1a1c23] hover:bg-[#252833] border border-gray-700 text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
+            <a href="#sobre-mi" className="w-full sm:w-auto bg-[#1a1c23] hover:bg-[#252833] border border-gray-700 text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
               Sobre Mí (Detalles)
             </a>
-            <a href="/cv.pdf" download className="text-gray-400 hover:text-white underline text-sm ml-0 sm:ml-4 flex items-center gap-1 transition-colors">
+            <a href="/cv.html" target="_blank" className="text-gray-400 hover:text-white underline text-sm ml-0 sm:ml-4 flex items-center gap-1 transition-colors">
               <Download size={14} /> Descargar PDF
             </a>
           </div>
@@ -94,10 +97,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SECCIÓN SOBRE MÍ */}
+      <AboutSection />
 
+      {/* SECCIÓN EXPERIENCIA */}
+      <ExperienceTimeline />
 
-      {/* PORTAFOLIO SECTION */}
-      <section id="portfolio" className="py-24 px-4 md:px-16 bg-[#08090a]">
+      {/* PROYECTOS DESTACADOS */}
+      <section id="portfolio" className="py-20 relative bg-[#0b0c10] border-t border-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
@@ -252,9 +259,69 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* FOOTER */}
-      <footer className="py-8 text-center text-gray-500 text-sm border-t border-gray-800 bg-[#0b0c10]">
-        &copy; {new Date().getFullYear()} ATP DEV. Todos los derechos reservados.
+      {/* FORMULARIO DE CONTACTO */}
+      <ContactForm config={config} />
+
+      {/* FOOTER EXTENDIDO */}
+      <footer className="bg-[#050608] border-t border-gray-900 pt-16 pb-8">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+          <div>
+            <h3 className="text-2xl font-black text-white mb-4">ATP DEV</h3>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+              Ingeniero de Sistemas y desarrollador Fullstack. Transformando ideas en productos digitales de alto rendimiento.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">Enlaces Rápidos</h4>
+            <ul className="space-y-3">
+              <li><a href="#sobre-mi" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Sobre Mí</a></li>
+              <li><a href="#experiencia" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Experiencia</a></li>
+              <li><a href="#portfolio" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Proyectos</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">Legal</h4>
+            <ul className="space-y-3">
+              <li><a href="/privacy" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Política de Privacidad</a></li>
+              <li><a href="/terms" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Términos de Servicio</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto px-6 border-t border-gray-900 pt-8 flex flex-col md:flex-row items-center justify-between">
+          <p className="text-gray-600 text-sm mb-4 md:mb-0">
+            &copy; {new Date().getFullYear()} {config?.full_name || "Percy Acha Taipe"} (ATP Dev). Todos los derechos reservados.
+          </p>
+          <div className="flex flex-wrap gap-4 text-sm font-semibold">
+            {[
+              { key: 'whatsapp', name: 'WhatsApp' },
+              { key: 'telegram', name: 'Telegram' },
+              { key: 'github', name: 'GitHub' },
+              { key: 'linkedin', name: 'LinkedIn' },
+              { key: 'twitter', name: 'Twitter' },
+              { key: 'facebook', name: 'Facebook' },
+              { key: 'instagram', name: 'Instagram' },
+              { key: 'youtube', name: 'YouTube' },
+              { key: 'tiktok', name: 'TikTok' },
+              { key: 'discord', name: 'Discord' },
+            ].map(social => {
+              if (!config) return null;
+              const enabledKey = `${social.key}_enabled` as keyof typeof config;
+              const urlKey = `${social.key}_url` as keyof typeof config;
+              if (!config[enabledKey] || !config[urlKey]) return null;
+              return (
+                <a
+                  key={social.key}
+                  href={config[urlKey] as string}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-gray-500 hover:text-blue-400 transition-colors"
+                >
+                  {social.name}
+                </a>
+              );
+            })}
+          </div>
+        </div>
       </footer>
     </div>
   );

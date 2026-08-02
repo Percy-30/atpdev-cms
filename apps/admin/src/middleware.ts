@@ -1,34 +1,23 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server'
+import { updateSession } from '@/utils/supabase/middleware'
 
-export function middleware(request: NextRequest) {
-  const adminCookie = request.cookies.get('admin_session');
-  
-  // Si intenta acceder al login, y ya está autenticado, redirigir al home
-  if (request.nextUrl.pathname.startsWith('/login')) {
-    if (adminCookie?.value === 'authenticated') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-    return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  // Proteger dashboard y raíz del admin
+  const path = request.nextUrl.pathname;
+  if (path === '/' || path.startsWith('/dashboard')) {
+    return await updateSession(request)
   }
-
-  // Si no está autenticado y trata de acceder a otra ruta, enviar al login
-  if (adminCookie?.value !== 'authenticated') {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
-};
+}

@@ -23,12 +23,51 @@ export type Project = {
 
 export type SiteConfig = {
   id: number;
-  primary_color: string;
-  secondary_color: string;
+  // Hero
   hero_title: string;
   hero_subtitle: string;
   hero_typewriter: string[];
-  created_at?: string;
+  // Colores
+  primary_color: string;
+  secondary_color: string;
+  // Perfil
+  full_name: string;
+  bio_short: string;
+  bio_long: string;
+  avatar_url: string;
+  // Contacto
+  email: string;
+  phone: string;
+  location: string;
+  // Redes Sociales
+  github_url: string;
+  github_enabled: boolean;
+  linkedin_url: string;
+  linkedin_enabled: boolean;
+  twitter_url: string;
+  twitter_enabled: boolean;
+  facebook_url: string;
+  facebook_enabled: boolean;
+  instagram_url: string;
+  instagram_enabled: boolean;
+  youtube_url: string;
+  youtube_enabled: boolean;
+  tiktok_url: string;
+  tiktok_enabled: boolean;
+  whatsapp_url: string;
+  whatsapp_enabled: boolean;
+  telegram_url: string;
+  telegram_enabled: boolean;
+  discord_url: string;
+  discord_enabled: boolean;
+  // Links especiales
+  cv_url: string;
+  credly_url: string;
+  // Integraciones
+  ga4_id: string;
+  adsense_id: string;
+  // Timestamp
+  updated_at?: string;
 };
 
 export type ProfileData = {
@@ -60,7 +99,33 @@ export type Lead = {
   created_at?: string;
 };
 
+export type Experience = {
+  id: number;
+  role: string;
+  company: string;
+  date_range: string;
+  description: string;
+  icon_key: string; // 'briefcase' | 'book' | 'laptop' | 'activity' | 'star'
+  color_key: string; // 'blue' | 'purple' | 'emerald' | 'amber' | 'rose'
+  sort_order: number;
+  is_active: boolean;
+  created_at?: string;
+};
+
+export type Skill = {
+  id: number;
+  category: string;
+  icon_key: string;
+  color_key: string;
+  items: string[];
+  sort_order: number;
+  is_active: boolean;
+  created_at?: string;
+};
+
+// =====================================================
 // Funciones de Lectura (Para el Frontend)
+// =====================================================
 export async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
   if (error) {
@@ -86,6 +151,32 @@ export async function getProfileData(): Promise<ProfileData | null> {
     return null;
   }
   return data as ProfileData;
+}
+
+export async function getExperiences(): Promise<Experience[]> {
+  const { data, error } = await supabase
+    .from('experiences')
+    .select('*')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+  if (error) {
+    console.error('Error fetching experiences:', error);
+    return [];
+  }
+  return data as Experience[];
+}
+
+export async function getSkills(): Promise<Skill[]> {
+  const { data, error } = await supabase
+    .from('skills')
+    .select('*')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+  if (error) {
+    console.error('Error fetching skills:', error);
+    return [];
+  }
+  return data as Skill[];
 }
 
 export async function getLeads(): Promise<Lead[]> {
@@ -187,5 +278,80 @@ export async function createLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'
     console.error('Error creating lead:', error);
     return false;
   }
+  return true;
+}
+
+export async function updateLeadStatus(id: number, status: string): Promise<boolean> {
+  const { error } = await adminSupabase.from('leads').update({ status }).eq('id', id);
+  if (error) {
+    console.error('Error updating lead status:', error);
+    return false;
+  }
+  return true;
+}
+
+// =====================================================
+// Funciones Admin: Experiencias
+// =====================================================
+export async function getAllExperiences(): Promise<Experience[]> {
+  const { data, error } = await adminSupabase
+    .from('experiences')
+    .select('*')
+    .order('sort_order', { ascending: true });
+  if (error) {
+    console.error('Error fetching all experiences:', error);
+    return [];
+  }
+  return data as Experience[];
+}
+
+export async function createExperience(exp: Omit<Experience, 'id' | 'created_at'>): Promise<boolean> {
+  const { error } = await adminSupabase.from('experiences').insert([exp]);
+  if (error) { console.error('Error creating experience:', error); return false; }
+  return true;
+}
+
+export async function updateExperience(id: number, exp: Partial<Omit<Experience, 'id' | 'created_at'>>): Promise<boolean> {
+  const { error } = await adminSupabase.from('experiences').update(exp).eq('id', id);
+  if (error) { console.error('Error updating experience:', error); return false; }
+  return true;
+}
+
+export async function deleteExperience(id: number): Promise<boolean> {
+  const { error } = await adminSupabase.from('experiences').delete().eq('id', id);
+  if (error) { console.error('Error deleting experience:', error); return false; }
+  return true;
+}
+
+// =====================================================
+// Funciones Admin: Skills
+// =====================================================
+export async function getAllSkills(): Promise<Skill[]> {
+  const { data, error } = await adminSupabase
+    .from('skills')
+    .select('*')
+    .order('sort_order', { ascending: true });
+  if (error) {
+    console.error('Error fetching all skills:', error);
+    return [];
+  }
+  return data as Skill[];
+}
+
+export async function createSkill(skill: Omit<Skill, 'id' | 'created_at'>): Promise<boolean> {
+  const { error } = await adminSupabase.from('skills').insert([skill]);
+  if (error) { console.error('Error creating skill:', error); return false; }
+  return true;
+}
+
+export async function updateSkill(id: number, skill: Partial<Omit<Skill, 'id' | 'created_at'>>): Promise<boolean> {
+  const { error } = await adminSupabase.from('skills').update(skill).eq('id', id);
+  if (error) { console.error('Error updating skill:', error); return false; }
+  return true;
+}
+
+export async function deleteSkill(id: number): Promise<boolean> {
+  const { error } = await adminSupabase.from('skills').delete().eq('id', id);
+  if (error) { console.error('Error deleting skill:', error); return false; }
   return true;
 }
