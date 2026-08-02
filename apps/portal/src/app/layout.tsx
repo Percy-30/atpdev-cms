@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import CookieBanner from "@/components/CookieBanner";
+import "./globals.css";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
