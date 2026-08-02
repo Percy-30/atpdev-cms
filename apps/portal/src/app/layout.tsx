@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s | ATP Dev",
   },
   description:
-    "Portafolio de Percy Acha Taipe (ATP Dev). Ingeniero de Sistemas especializado en Android (Kotlin), Next.js, Supabase e Inteligencia Artificial. Disponible para proyectos freelance.",
+    "Percy Acha Taipe (ATP Dev) – Ingeniero de Sistemas. Android, Next.js, Supabase e IA. Apps en Google Play. Disponible para proyectos freelance.",
   keywords: [
     "Percy Acha Taipe",
     "ATP Dev",
