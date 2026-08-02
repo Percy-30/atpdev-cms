@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { translateServer } from "@/utils/translate";
+import { translateText } from "@atpdev/database";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 
 export default async function PrivacyPolicy() {
@@ -9,7 +9,7 @@ export default async function PrivacyPolicy() {
 
   const t = async (text: string) => {
     if (lang === "es") return text;
-    return await translateServer(text, lang);
+    return await translateText(text, lang);
   };
 
   const texts = {
