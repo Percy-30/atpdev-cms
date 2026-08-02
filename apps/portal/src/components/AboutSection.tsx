@@ -43,7 +43,7 @@ export default function AboutSection() {
     card2Title: "Formación Académica",
     card2Desc: "Ingeniería de Sistemas (UNAJMA)\nPosgrado en progreso (Maestría en IA, UNIR)",
     card3Title: "Especialización Continua",
-    card3Desc: "CCNAv7, Oracle SQL, Power BI, IA, Desarrollo del Kernel Linux (LFD103)."
+    card3DescSuffix: ", Oracle SQL, Power BI, IA, Desarrollo del Kernel Linux (LFD103)."
   });
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function AboutSection() {
                         CCNAv7 <ExternalLink size={12} />
                       </a>
                     ) : "CCNAv7"}
-                    {", "}Oracle SQL, Power BI, IA, Desarrollo del Kernel Linux (LFD103).
+                    {ui.card3DescSuffix}
                   </p>
                 </div>
               </div>

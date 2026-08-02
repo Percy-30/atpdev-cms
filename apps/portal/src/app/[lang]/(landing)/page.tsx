@@ -38,7 +38,12 @@ export default function Home() {
     footerBio: "Ingeniero de Sistemas y desarrollador Fullstack. Transformando ideas en productos digitales de alto rendimiento.",
     footerLinks: "Enlaces Rápidos",
     footerLegal: "Legal",
-    allRights: "Todos los derechos reservados."
+    allRights: "Todos los derechos reservados.",
+    linkAbout: "Sobre Mí",
+    linkExperience: "Experiencia",
+    linkProjects: "Proyectos",
+    linkPrivacy: "Política de Privacidad",
+    linkTerms: "Términos de Servicio"
   });
 
   useEffect(() => {
@@ -335,16 +340,16 @@ export default function Home() {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">{ui.footerLinks}</h4>
             <ul className="space-y-3">
-              <li><a href="#about" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Sobre Mí</a></li>
-              <li><a href="#experiencia" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Experiencia</a></li>
-              <li><a href="#portfolio" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Proyectos</a></li>
+              <li><a href="#about" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkAbout}</a></li>
+              <li><a href="#experiencia" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkExperience}</a></li>
+              <li><a href="#portfolio" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkProjects}</a></li>
             </ul>
           </div>
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs">{ui.footerLegal}</h4>
             <ul className="space-y-3">
-              <li><a href="/privacy" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Política de Privacidad</a></li>
-              <li><a href="/terms" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">Términos de Servicio</a></li>
+              <li><a href="/privacy" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkPrivacy}</a></li>
+              <li><a href="/terms" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">{ui.linkTerms}</a></li>
             </ul>
           </div>
         </div>
