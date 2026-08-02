@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Send, CheckCircle2, AlertCircle, Mail, Phone } from "lucide-react";
 import { createLead } from "@/app/actions/contact";
 import { SiteConfig } from "@atpdev/database";
