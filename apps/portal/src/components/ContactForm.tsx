@@ -209,19 +209,15 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
               </div>
               <button 
                 type="submit" 
-                disabled={status === "submitting" || status === "success"}
+                disabled={status === "submitting"}
                 className={`w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold transition-all shadow-lg ${
-                  status === "success" 
-                    ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                    : status === "error"
+                  status === "error"
                     ? "bg-red-600 text-white hover:bg-red-700"
                     : "bg-blue-600 hover:bg-blue-500 text-white shadow-blue-900/50 hover:shadow-blue-900/80"
                 }`}
               >
                 {status === "submitting" ? (
                   <>{ui.btnSending}</>
-                ) : status === "success" ? (
-                  <><CheckCircle2 size={20} /> {ui.btnSent}</>
                 ) : status === "error" ? (
                   <><AlertCircle size={20} /> {ui.btnError}</>
                 ) : (
