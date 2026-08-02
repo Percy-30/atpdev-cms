@@ -23,16 +23,48 @@ const COLOR_MAP: Record<string, { text: string; border: string; bg: string; dot:
   rose:   { text: "text-rose-400",   border: "border-rose-500",   bg: "bg-rose-500/20",   dot: "border-rose-500"   },
 };
 
+import { useParams } from "next/navigation";
+import { translateClient } from "@/utils/translate";
+
 export default function ExperienceTimeline() {
+  const params = useParams();
+  const lang = params?.lang as string || 'es';
+
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [ui, setUi] = useState({
+    title1: "Trayectoria",
+    title2: " Profesional",
+    subtitle: "Mi camino combinando el desarrollo de software y la docencia.",
+    loadingText: "Cargando experiencia..."
+  });
+
   useEffect(() => {
-    getExperiences().then((data) => {
+    const loadData = async () => {
+      let data = await getExperiences();
+      
+      if (lang !== 'es') {
+        data = await Promise.all(data.map(async e => ({
+          ...e,
+          role: await translateClient(e.role, lang),
+          company: await translateClient(e.company, lang),
+          period: await translateClient(e.period, lang),
+          description: await translateClient(e.description, lang)
+        })));
+
+        const keys = Object.keys(ui) as (keyof typeof ui)[];
+        const newUi = { ...ui };
+        await Promise.all(keys.map(async k => {
+          newUi[k] = await translateClient(ui[k], lang);
+        }));
+        setUi(newUi);
+      }
       setExperiences(data);
       setLoading(false);
-    });
-  }, []);
+    };
+    loadData();
+  }, [lang]);
 
   return (
     <section id="experiencia" className="py-24 relative">
@@ -45,15 +77,17 @@ export default function ExperienceTimeline() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-            Trayectoria <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">Profesional</span>
+            {ui.title1} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{ui.title2}</span>
           </h2>
-          <p className="text-gray-400 text-lg">Mi camino combinando el desarrollo de software y la docencia.</p>
+          <p className="text-gray-400 text-lg">
+            {ui.subtitle}
+          </p>
         </motion.div>
 
         {loading ? (
           <div className="flex items-center justify-center h-40 gap-2 text-gray-500">
             <Loader2 size={20} className="animate-spin" />
-            <span className="text-sm">Cargando experiencia...</span>
+            <span className="text-sm">{ui.loadingText}</span>
           </div>
         ) : (
           <div className="relative">

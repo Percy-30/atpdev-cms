@@ -23,18 +23,55 @@ const COLOR_MAP: Record<string, { text: string; bg: string; border: string }> = 
   amber:  { text: "text-amber-400",  bg: "bg-amber-400/10",  border: "border-amber-500/20"  },
 };
 
+import { useParams } from "next/navigation";
+import { translateClient } from "@/utils/translate";
+
 export default function AboutSection() {
+  const params = useParams();
+  const lang = params?.lang as string || 'es';
+
   const [skills, setSkills] = useState<Skill[]>([]);
   const [credlyUrl, setCredlyUrl] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
+  const [ui, setUi] = useState({
+    title1: "Sobre ",
+    title2: "Mí",
+    subtitle: "Ingeniero de Sistemas apasionado por la docencia y el desarrollo de software de alto impacto.",
+    card1Title: "Percy Acha Taipe",
+    card1Desc: "Bachiller en Ingeniería de Sistemas por la Universidad Nacional José María Arguedas (UNAJMA). Combino mi experiencia técnica en desarrollo Fullstack y Mobile con mi vocación por la enseñanza.",
+    card2Title: "Formación Académica",
+    card2Desc: "Ingeniería de Sistemas (UNAJMA)\nPosgrado en progreso (Maestría en IA, UNIR)",
+    card3Title: "Especialización Continua",
+    card3Desc: "CCNAv7, Oracle SQL, Power BI, IA, Desarrollo del Kernel Linux (LFD103)."
+  });
+
   useEffect(() => {
-    Promise.all([getSkills(), getSiteConfig()]).then(([skillsData, configData]) => {
+    const loadData = async () => {
+      let [skillsData, configData] = await Promise.all([getSkills(), getSiteConfig()]);
+      
+      if (lang !== 'es') {
+        skillsData = await Promise.all(skillsData.map(async s => ({
+          ...s,
+          category: await translateClient(s.category, lang),
+          items: await Promise.all(s.items.map(i => translateClient(i, lang)))
+        })));
+      }
       setSkills(skillsData);
       setCredlyUrl(configData?.credly_url || "https://www.credly.com/badges/8172ffd1-f729-41da-8221-60d98e4fe488");
+      
+      if (lang !== 'es') {
+        const keys = Object.keys(ui) as (keyof typeof ui)[];
+        const newUi = { ...ui };
+        await Promise.all(keys.map(async k => {
+          newUi[k] = await translateClient(ui[k], lang);
+        }));
+        setUi(newUi);
+      }
       setLoading(false);
-    });
-  }, []);
+    };
+    loadData();
+  }, [lang]);
 
   return (
     <section id="about" className="py-24 relative overflow-hidden">
@@ -52,10 +89,10 @@ export default function AboutSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-            Sobre <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Mí</span>
+            {ui.title1} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{ui.title2}</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Ingeniero de Sistemas apasionado por la docencia y el desarrollo de software de alto impacto.
+            {ui.subtitle}
           </p>
         </motion.div>
 
@@ -68,10 +105,9 @@ export default function AboutSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="lg:col-span-5 bg-[#12141a]/80 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 flex flex-col justify-center"
           >
-            <h3 className="text-2xl font-bold text-white mb-6">Percy Acha Taipe</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">{ui.card1Title}</h3>
             <p className="text-gray-300 leading-relaxed mb-6">
-              Bachiller en Ingeniería de Sistemas por la Universidad Nacional José María Arguedas (UNAJMA).
-              Combino mi experiencia técnica en desarrollo Fullstack y Mobile con mi vocación por la enseñanza.
+              {ui.card1Desc}
             </p>
 
             <div className="space-y-4">
@@ -80,8 +116,8 @@ export default function AboutSection() {
                   <GraduationCap className="text-blue-400" size={20} />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold">Formación Académica</h4>
-                  <p className="text-sm text-gray-400">Ingeniería de Sistemas (UNAJMA) <br/> Posgrado en progreso (Maestría en IA, UNIR)</p>
+                  <h4 className="text-white font-semibold">{ui.card2Title}</h4>
+                  <p className="text-sm text-gray-400 whitespace-pre-line">{ui.card2Desc}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -89,7 +125,7 @@ export default function AboutSection() {
                   <Award className="text-purple-400" size={20} />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold">Especialización Continua</h4>
+                  <h4 className="text-white font-semibold">{ui.card3Title}</h4>
                   <p className="text-sm text-gray-400 mt-1">
                     {credlyUrl ? (
                       <a href={credlyUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 underline underline-offset-2">
