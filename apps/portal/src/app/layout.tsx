@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import CookieBanner from "@/components/CookieBanner";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -79,6 +80,7 @@ export default function RootLayout({
     <html lang="es" className="scroll-smooth">
       <body className={`${outfit.className} bg-[#0b0c10] text-gray-200 antialiased min-h-screen`}>
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

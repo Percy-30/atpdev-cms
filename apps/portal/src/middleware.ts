@@ -28,10 +28,15 @@ function getLocale(request: NextRequest): string {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static assets and API routes
+  // Skip static assets, API routes, and standalone pages
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
+    pathname.startsWith('/privacy') ||
+    pathname.startsWith('/terms') ||
+    pathname.startsWith('/sitemap') ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
     pathname.includes('.') // like favicon.ico, images, pdfs
   ) {
     return NextResponse.next();
