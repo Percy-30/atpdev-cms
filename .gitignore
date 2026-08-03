@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+# scripts locales con credenciales
+/create_admin.js
+/fix_rls.js
+/run_migration.js
+/test_login.js
