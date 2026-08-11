@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/'],
+        disallow: ['/api/'],  // quitamos '/_next/' de aquí
       },
     ],
     sitemap: 'https://www.atpdev.dev/sitemap.xml',

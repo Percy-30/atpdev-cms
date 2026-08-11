@@ -46,3 +46,8 @@ next-env.d.ts
 /fix_rls.js
 /run_migration.js
 /test_login.js
+# Scratch and test files
+scratch-*.ts
+fix-bucket*.js
+list-files.js
+packages/database/test-buckets.ts

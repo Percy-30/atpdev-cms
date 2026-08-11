@@ -12,16 +12,34 @@ if (process.env.NODE_ENV !== 'production') globalForSupabase._supabase = supabas
 export type Project = {
   id: number;
   title: string;
+  slug: string;
   category: string;
   originalCategory?: string; // preserved before translation for filtering
   metrics: string;
   description: string;
+  long_description?: string;
+  screenshots?: string[];
   stack: string[];
   image: string;
   demolink: string;
   playstore?: string;
   status: string;
+  github_repo?: string;
+  github_stars?: number;
+  github_language?: string;
+  github_description?: string;
+  github_is_private?: boolean;
+  github_synced_at?: string;
   created_at?: string;
+};
+
+// Datos que devuelve la API pública de GitHub para un repo
+export type GithubRepoData = {
+  stars: number;
+  language: string | null;
+  description: string | null;
+  isPrivate: boolean;
+  ogImage: string | null; // null si el repo es privado (no se puede generar la preview)
 };
 
 export type SiteConfig = {
@@ -138,6 +156,15 @@ export async function getProjects(): Promise<Project[]> {
   return data as Project[];
 }
 
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
+  if (error) {
+    console.error('Error fetching project by slug:', error);
+    return null;
+  }
+  return data as Project;
+}
+
 export async function getSiteConfig(): Promise<SiteConfig | null> {
   const { data, error } = await supabase.from('site_config').select('*').limit(1).single();
   if (error) {
@@ -200,7 +227,7 @@ export async function updateSiteConfig(newConfig: Partial<SiteConfig>): Promise<
     .from('site_config')
     .update(newConfig)
     .eq('id', 1);
-  
+
   if (error) {
     console.error('Error updating site_config:', error);
     return false;
@@ -208,10 +235,350 @@ export async function updateSiteConfig(newConfig: Partial<SiteConfig>): Promise<
   return true;
 }
 
+// Convierte un título en un slug URL-safe: "Lector QR Pro" -> "lector-qr-pro"
+export function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita tildes
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
 export async function createProject(project: Omit<Project, 'id' | 'created_at'>): Promise<boolean> {
   const { error } = await adminSupabase.from('projects').insert([project]);
   if (error) {
     console.error('Error creating project:', error);
+    return false;
+  }
+  return true;
+}
+
+// =====================================================
+// Autocompletado de proyectos desde GitHub
+// =====================================================
+
+export type GithubAutofillData = {
+  title: string;
+  description: string;
+  stack: string[];
+  category: string;
+  isPrivate: boolean;
+  ogImage: string | null;
+};
+
+const CATEGORY_KEYWORDS: { keywords: string[]; category: string }[] = [
+  { keywords: ['kotlin', 'java', 'android'], category: 'Android' },
+  { keywords: ['swift', 'ios'], category: 'iOS' },
+  { keywords: ['next.js', 'nextjs', 'react', 'vue', 'typescript', 'javascript', 'html', 'css'], category: 'Web' },
+  { keywords: ['python', 'jupyter notebook', 'ai', 'ml', 'machine-learning', 'tensorflow', 'pytorch'], category: 'IA' },
+];
+
+function guessCategory(languages: string[], topics: string[]): string {
+  const haystack = [...languages, ...topics].map(s => s.toLowerCase());
+  for (const rule of CATEGORY_KEYWORDS) {
+    if (rule.keywords.some(kw => haystack.includes(kw))) return rule.category;
+  }
+  return 'Otro';
+}
+
+// "lector-qr-pro" -> "Lector Qr Pro"
+function repoNameToTitle(repoName: string): string {
+  return repoName
+    .replace(/[-_]+/g, ' ')
+    .trim()
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+// Repo resumido, para el selector tipo "Import Project" de Vercel
+export type GithubRepoSummary = {
+  full_name: string;
+  private: boolean;
+  description: string | null;
+  language: string | null;
+  updated_at: string;
+};
+
+// =====================================================
+// Subida manual de imagen (respaldo cuando no hay screenshot/GitHub disponible)
+// =====================================================
+
+const PROJECT_IMAGES_BUCKET = 'project-images';
+
+// Sube un archivo de imagen al bucket público "project-images" de Supabase Storage
+// y devuelve la URL pública para guardarla en el campo `image` del proyecto.
+// El bucket debe existir y ser público (ver instrucciones en el mensaje que acompaña esto).
+export async function uploadProjectImage(
+  fileBuffer: Buffer,
+  fileName: string,
+  contentType: string
+): Promise<string | null> {
+  try {
+    const ext = fileName.split('.').pop() || 'jpg';
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+    const { error: uploadError } = await adminSupabase.storage
+      .from(PROJECT_IMAGES_BUCKET)
+      .upload(path, fileBuffer, { contentType, upsert: false });
+
+    if (uploadError) {
+      console.error('Error subiendo imagen a Storage:', uploadError);
+      return null;
+    }
+
+    const { data } = adminSupabase.storage.from(PROJECT_IMAGES_BUCKET).getPublicUrl(path);
+    const publicUrl = data.publicUrl;
+
+    // Verificar si la URL pública realmente es accesible de forma pública
+    try {
+      const checkRes = await fetch(publicUrl, { method: 'HEAD' });
+      if (!checkRes.ok) {
+        console.warn(`Storage: La imagen se subió pero '${publicUrl}' devolvió ${checkRes.status}. El bucket '${PROJECT_IMAGES_BUCKET}' no es público. Usando respaldo base64.`);
+        return null; // Retorna null para activar el fallback a base64 Data URL en actions.ts
+      }
+    } catch (e) {
+      console.warn("Storage: No se pudo verificar la URL pública:", e);
+    }
+
+    return publicUrl;
+  } catch (err) {
+    console.error('Error uploading project image:', err);
+    return null;
+  }
+}
+
+// =====================================================
+// Screenshot real del sitio en vivo (tipo Vercel), NO del repo de GitHub
+// =====================================================
+
+// Usa Microlink (gratis, sin API key para uso básico) para tomar una captura
+// real de la URL desplegada. A diferencia de la preview de GitHub, esto funciona
+// para CUALQUIER proyecto (público o privado) porque no depende del repo,
+// solo de que la URL esté accesible públicamente en internet.
+// Devuelve { url } si funcionó, o { error } con el motivo real (no un mensaje genérico),
+// para poder diagnosticar sin adivinar (rate limit, sitio caído, timeout, bloqueado, etc.)
+export type ScreenshotOutcome = { url: string } | { error: string };
+
+export async function fetchScreenshotFromUrl(siteUrl: string): Promise<ScreenshotOutcome> {
+  const trimmed = siteUrl.trim();
+  if (!trimmed || trimmed === '#') return { error: 'URL vacía.' };
+
+  // Primer intento: domcontentloaded (rápido, no espera a que la red quede inactiva).
+  // Si falla por timeout, reintentamos una vez con "load" antes de rendirnos.
+  const strategies = ['domcontentloaded', 'load'] as const;
+
+  let lastError = 'Error desconocido.';
+  for (const waitUntil of strategies) {
+    try {
+      const endpoint = `https://api.microlink.io/?url=${encodeURIComponent(trimmed)}&screenshot=true&meta=false&viewport.width=1280&viewport.height=800&waitUntil=${waitUntil}`;
+      const res = await fetch(endpoint);
+      const json = await res.json().catch(() => null);
+
+      if (res.status === 429) {
+        console.error('Microlink: límite de 50 capturas/día alcanzado.', json);
+        return { error: 'Se alcanzó el límite gratuito de Microlink (50 capturas/día). Intenta más tarde o sube la imagen manual.' };
+      }
+      if (!res.ok) {
+        const reason = json?.message || json?.error || res.statusText;
+        console.error(`Microlink error (waitUntil=${waitUntil}):`, res.status, reason, json);
+        lastError = `Microlink respondió ${res.status}: ${reason}`;
+        continue; // probar la siguiente estrategia
+      }
+      if (json?.status !== 'success' || !json.data?.screenshot?.url) {
+        const reason = json?.message || 'respuesta inesperada de Microlink';
+        console.error(`Microlink: no se pudo generar el screenshot (waitUntil=${waitUntil})`, json);
+        lastError = `No se pudo generar la captura: ${reason}`;
+        continue;
+      }
+      return { url: json.data.screenshot.url as string };
+    } catch (err) {
+      console.error(`Error fetching screenshot (waitUntil=${waitUntil}):`, err);
+      lastError = `Error de red al contactar Microlink: ${err instanceof Error ? err.message : String(err)}`;
+    }
+  }
+  return { error: lastError };
+}
+
+// Toma el screenshot y lo guarda directo en el campo `image` del proyecto.
+export async function updateProjectImageFromUrl(id: number, siteUrl: string): Promise<string | null> {
+  const outcome = await fetchScreenshotFromUrl(siteUrl);
+  if ('error' in outcome) return null;
+
+  const { error } = await adminSupabase.from('projects').update({ image: outcome.url }).eq('id', id);
+  if (error) {
+    console.error('Error guardando screenshot:', error);
+    return null;
+  }
+  return outcome.url;
+}
+
+// Lista los repos del dueño del GITHUB_TOKEN (públicos + privados), ordenados por
+// actualización más reciente primero. Requiere GITHUB_TOKEN con scope "repo".
+// A diferencia de fetchGithubAutofillData (que pide UN repo puntual), este endpoint
+// (/user/repos) SIEMPRE necesita autenticación, incluso para listar tus repos públicos.
+export async function listGithubRepos(): Promise<GithubRepoSummary[] | null> {
+  if (!process.env.GITHUB_TOKEN) {
+    console.error('GITHUB_TOKEN no configurado: no se puede listar repos de GitHub.');
+    return null;
+  }
+  try {
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    };
+    const res = await fetch(
+      'https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner',
+      { headers }
+    );
+    if (!res.ok) {
+      console.error('Error listando repos de GitHub:', res.status, res.statusText);
+      return null;
+    }
+    const data = await res.json();
+    return (data as any[]).map(r => ({
+      full_name: r.full_name,
+      private: !!r.private,
+      description: r.description ?? null,
+      language: r.language ?? null,
+      updated_at: r.updated_at,
+    }));
+  } catch (err) {
+    console.error('Error listing GitHub repos:', err);
+    return null;
+  }
+}
+
+// Trae toda la data necesaria para autocompletar el formulario del CMS:
+// título sugerido, descripción, stack (por % de código), categoría sugerida.
+// Funciona igual para repos públicos y privados, siempre que GITHUB_TOKEN tenga scope "repo".
+export async function fetchGithubAutofillData(repoFullName: string): Promise<GithubAutofillData | null> {
+  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+  if (process.env.GITHUB_TOKEN) {
+    headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
+
+  try {
+    const [repoRes, langRes, topicsRes] = await Promise.all([
+      fetch(`https://api.github.com/repos/${repoFullName}`, { headers }),
+      fetch(`https://api.github.com/repos/${repoFullName}/languages`, { headers }),
+      fetch(`https://api.github.com/repos/${repoFullName}/topics`, {
+        headers: { ...headers, Accept: 'application/vnd.github+json' },
+      }),
+    ]);
+
+    if (!repoRes.ok) {
+      if (repoRes.status === 404) {
+        console.error(
+          `GitHub: repo "${repoFullName}" no encontrado o privado sin GITHUB_TOKEN con permiso "repo".`
+        );
+      }
+      return null;
+    }
+
+    const repoData = await repoRes.json();
+    const isPrivate = !!repoData.private;
+
+    // Lenguajes ordenados de mayor a menor % de código (top 4 como stack sugerido)
+    let stack: string[] = [];
+    if (langRes.ok) {
+      const langBytes: Record<string, number> = await langRes.json();
+      stack = Object.entries(langBytes)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(([lang]) => lang);
+    } else if (repoData.language) {
+      stack = [repoData.language];
+    }
+
+    const topics: string[] = topicsRes.ok ? (await topicsRes.json()).names ?? [] : [];
+
+    return {
+      title: repoNameToTitle(repoData.name),
+      description: repoData.description ?? '',
+      stack,
+      category: guessCategory(stack, topics),
+      isPrivate,
+      ogImage: isPrivate ? null : `https://opengraph.githubassets.com/1/${repoFullName}`,
+    };
+  } catch (err) {
+    console.error('Error fetching GitHub autofill data:', err);
+    return null;
+  }
+}
+
+// Consulta la API de GitHub.
+// - Repos públicos: funciona sin token (60 req/hora por IP) o con GITHUB_TOKEN (5000 req/hora).
+// - Repos privados: REQUIERE GITHUB_TOKEN con permiso "repo" (no solo "public_repo"),
+//   generado en https://github.com/settings/tokens. Sin eso, GitHub devuelve 404 igual
+//   que si el repo no existiera (así protege la privacidad).
+export async function fetchGithubRepoData(repoFullName: string): Promise<GithubRepoData | null> {
+  try {
+    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+    if (process.env.GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+    const res = await fetch(`https://api.github.com/repos/${repoFullName}`, { headers });
+    if (!res.ok) {
+      if (res.status === 404) {
+        console.error(
+          `GitHub: repo "${repoFullName}" no encontrado o es privado sin GITHUB_TOKEN con permiso "repo".`
+        );
+      } else {
+        console.error(`GitHub API error for ${repoFullName}:`, res.status, res.statusText);
+      }
+      return null;
+    }
+    const data = await res.json();
+    const isPrivate = !!data.private;
+    return {
+      stars: data.stargazers_count ?? 0,
+      language: data.language ?? null,
+      description: data.description ?? null,
+      isPrivate,
+      // Imagen de "social preview" que GitHub genera automáticamente para cada repo público,
+      // tipo la que Vercel usa como card. Para repos privados este servicio no puede
+      // generarla sin sesión de navegador, así que devolvemos null y se sube manual.
+      ogImage: isPrivate ? null : `https://opengraph.githubassets.com/1/${repoFullName}`,
+    };
+  } catch (err) {
+    console.error('Error fetching GitHub repo data:', err);
+    return null;
+  }
+}
+
+// Trae los datos frescos de GitHub para un proyecto y los guarda cacheados en la fila.
+// Se llama desde el CMS (botón "Sincronizar GitHub") o desde un cron/revalidate periódico.
+export async function syncProjectGithubData(
+  id: number,
+  repoFullName: string,
+  options: { overwriteImage?: boolean } = {}
+): Promise<boolean> {
+  const { overwriteImage = true } = options;
+  const repoData = await fetchGithubRepoData(repoFullName);
+  if (!repoData) return false;
+
+  const updatePayload: Record<string, unknown> = {
+    github_repo: repoFullName,
+    github_stars: repoData.stars,
+    github_language: repoData.language,
+    github_description: repoData.description,
+    github_is_private: repoData.isPrivate,
+    github_synced_at: new Date().toISOString(),
+  };
+
+  // Solo pisamos la imagen si: GitHub pudo generar la preview (repo público) Y
+  // no se pidió respetar una imagen ya capturada manualmente (screenshot real del sitio).
+  if (repoData.ogImage && overwriteImage) {
+    updatePayload.image = repoData.ogImage;
+  }
+
+  const { error } = await adminSupabase.from('projects').update(updatePayload).eq('id', id);
+
+  if (error) {
+    console.error('Error syncing GitHub data:', error);
     return false;
   }
   return true;
@@ -246,10 +613,10 @@ export async function updateProject(id: number, project: Partial<Omit<Project, '
 
 export async function uploadImage(file: File): Promise<string | null> {
   if (!file || file.size === 0) return null;
-  
+
   const fileExt = file.name.split('.').pop();
   const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-  
+
   const { data, error } = await adminSupabase.storage
     .from('portfolio-images')
     .upload(fileName, file, {
@@ -276,7 +643,7 @@ export async function createLead(lead: Omit<Lead, 'id' | 'created_at' | 'status'
     ...lead,
     status: 'NUEVO'
   }]);
-  
+
   if (error) {
     console.error('Error creating lead:', error);
     return false;
@@ -390,7 +757,7 @@ export async function translateText(sourceText: string, targetLang: string): Pro
   // 2. Si no está en caché, usamos la API gratuita de Google Translate
   try {
     const { text } = await googleTranslate(sourceText, { to: targetLang });
-    
+
     // 3. Guardar asíncronamente en Supabase (fire and forget)
     // Se usa el service_role internamente (idealmente) o el token anon (que habilitamos con RLS)
     supabase.from('translation_cache').insert([
