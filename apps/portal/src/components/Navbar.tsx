@@ -39,18 +39,18 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
         <Link href={`${linkPrefix}/`} className="flex items-center gap-2 text-white font-bold text-xl hover:opacity-80 transition-opacity">
-          <Terminal className="text-blue-500" size={24} />
+          <Terminal size={24} style={{ color: 'var(--primary)' }} />
           <span>ATP DEV</span>
         </Link>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
           {links.slice(0, 3).map(l => (
-            <Link key={l.href} href={l.href} className="text-gray-300 hover:text-white text-sm font-medium transition-colors hover:border-b-2 border-blue-500 pb-1">
+            <Link key={l.href} href={l.href} className="text-gray-300 hover:text-white text-sm font-medium transition-colors border-b-2 border-transparent hover:border-[var(--primary)] pb-1">
               {l.label}
             </Link>
           ))}
-          <Link href={`${linkPrefix}/#contact`} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-md shadow-blue-900/50">
+          <Link href={`${linkPrefix}/#contact`} className="text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg hover:brightness-110" style={{ backgroundColor: 'var(--primary)', boxShadow: '0 4px 14px rgba(0,0,0,0.4)' }}>
             {tContacto}
           </Link>
         </div>
@@ -86,7 +86,8 @@ export default function Navbar() {
               <Link
                 href={`${linkPrefix}/#contact`}
                 onClick={() => setIsOpen(false)}
-                className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-base font-bold transition-all shadow-lg shadow-blue-900/40"
+                className="w-full flex items-center justify-center text-white px-6 py-3 rounded-xl text-base font-bold transition-all shadow-lg hover:brightness-110"
+                style={{ backgroundColor: 'var(--primary)' }}
               >
                 {tContacto}
               </Link>

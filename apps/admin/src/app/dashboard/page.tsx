@@ -1,5 +1,5 @@
 import { Users, FolderKanban, Eye, Wallet } from "lucide-react";
-import { getProjects, getLeads } from "@atpdev/database";
+import { getProjects, getLeads, getAnalyticsSummary, getTrafficChartData } from "@atpdev/database";
 import { TrafficChart } from "@/components/TrafficChart";
 import { DashboardActions } from "@/components/DashboardActions";
 import Link from "next/link";
@@ -14,10 +14,14 @@ export default async function DashboardPage() {
   const activeProjects = projects.filter(p => p.status === 'Activo').length;
   const totalProjects = projects.length;
 
+  const analytics = await getAnalyticsSummary();
+  const chartData = await getTrafficChartData();
+  const totalVisits = analytics?.totalVisits || 0;
+
   const metrics = [
     { label: "Total Leads", value: totalLeads.toString(), increase: leadsNuevos > 0 ? `${leadsNuevos} nuevos` : "—", icon: <Users size={18} /> },
     { label: "Proyectos activos", value: activeProjects.toString(), increase: `${totalProjects} total`, icon: <FolderKanban size={18} /> },
-    { label: "Visitas totales", value: "Pendiente", increase: "Sin GA4", icon: <Eye size={18} /> },
+    { label: "Visitas totales (30d)", value: totalVisits.toString(), increase: "Datos reales", icon: <Eye size={18} /> },
     { label: "Ingresos AdSense", value: "$0.00", increase: "Sin AdSense", icon: <Wallet size={18} /> },
   ];
 
@@ -77,10 +81,10 @@ export default async function DashboardPage() {
             </div>
           </div>
           
-          <TrafficChart />
+          <TrafficChart data={chartData} />
           
           <p className="text-[10px] text-gray-600 text-center mt-4">
-            * Datos simulados. Se actualizarán automáticamente al conectar Google Analytics 4.
+            * Datos generados por ATP Analytics Engine.
           </p>
         </div>
 
@@ -131,6 +135,59 @@ export default async function DashboardPage() {
           </div>
         </div>
 
+      </div>
+
+      {/* Breakdown de Analíticas (Subdominios y Rutas) */}
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        
+        {/* Visitas por Dominio */}
+        <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+          <h2 className="text-lg font-bold text-white mb-6">Visitas por Origen (Dominio)</h2>
+          <div className="grid grid-cols-2 mb-4 pb-2 border-b border-gray-800/50">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Dominio</span>
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest text-right">Vistas</span>
+          </div>
+          <div className="space-y-4">
+            {analytics?.visitsByDomain.length === 0 ? (
+              <p className="text-sm text-gray-500 py-4 text-center">Sin datos aún.</p>
+            ) : (
+              analytics?.visitsByDomain.map((item, idx) => (
+                <div key={idx} className="flex justify-between items-center group">
+                  <span className="font-semibold text-white text-sm">{item.domain}</span>
+                  <span className="text-sm font-bold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">
+                    {item.count}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Visitas por Ruta */}
+        <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+          <h2 className="text-lg font-bold text-white mb-6">Top Páginas más visitadas</h2>
+          <div className="grid grid-cols-2 mb-4 pb-2 border-b border-gray-800/50">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Ruta</span>
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest text-right">Vistas</span>
+          </div>
+          <div className="space-y-4">
+            {analytics?.visitsByPath.length === 0 ? (
+              <p className="text-sm text-gray-500 py-4 text-center">Sin datos aún.</p>
+            ) : (
+              analytics?.visitsByPath.slice(0, 7).map((item, idx) => (
+                <div key={idx} className="flex justify-between items-center group">
+                  <span className="font-semibold text-gray-300 text-sm truncate max-w-[200px]" title={item.path}>
+                    <span className="text-gray-500 text-xs mr-1">{item.domain}</span>
+                    {item.path}
+                  </span>
+                  <span className="text-sm font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full">
+                    {item.count}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

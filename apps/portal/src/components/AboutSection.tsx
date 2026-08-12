@@ -69,8 +69,8 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
   return (
     <section id="about" className="py-24 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-[1000px] pointer-events-none opacity-20">
-        <div className="absolute top-[20%] left-[-10%] w-[300px] h-[300px] bg-blue-600 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[10%] right-[-10%] w-[300px] h-[300px] bg-purple-600 rounded-full blur-[120px]"></div>
+        <div className="absolute top-[20%] left-[-10%] w-[300px] h-[300px] rounded-full blur-[120px]" style={{ backgroundColor: 'var(--primary)' }}></div>
+        <div className="absolute bottom-[10%] right-[-10%] w-[300px] h-[300px] rounded-full blur-[120px]" style={{ backgroundColor: 'var(--tertiary)' }}></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -82,7 +82,7 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-            {ui.title1} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{ui.title2}</span>
+            {ui.title1} <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--primary), var(--tertiary))' }}>{ui.title2}</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
             {ui.subtitle}
@@ -105,8 +105,8 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
 
             <div className="space-y-4">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20">
-                  <GraduationCap className="text-blue-400" size={20} />
+                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border" style={{ backgroundColor: 'rgba(0,82,255,0.1)', borderColor: 'var(--primary)' }}>
+                  <GraduationCap style={{ color: 'var(--primary)' }} size={20} />
                 </div>
                 <div>
                   <h4 className="text-white font-semibold">{ui.card2Title}</h4>
@@ -114,14 +114,14 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0 border border-purple-500/20">
-                  <Award className="text-purple-400" size={20} />
+                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border" style={{ backgroundColor: 'rgba(156,39,176,0.1)', borderColor: 'var(--tertiary)' }}>
+                  <Award style={{ color: 'var(--tertiary)' }} size={20} />
                 </div>
                 <div>
                   <h4 className="text-white font-semibold">{ui.card3Title}</h4>
                   <p className="text-sm text-gray-400 mt-1">
                     {credlyUrl ? (
-                      <a href={credlyUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 underline underline-offset-2">
+                      <a href={credlyUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline underline-offset-2" style={{ color: 'var(--primary)' }}>
                         CCNAv7 <ExternalLink size={12} />
                       </a>
                     ) : "CCNAv7"}

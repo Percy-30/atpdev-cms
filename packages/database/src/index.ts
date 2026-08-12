@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { AIModelData } from './aiModels';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yeeupdgjfrkkaurytyrs.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_XtR6TNbQPLwkwCeUOYWKEQ_g-8IStIc';
@@ -42,15 +43,27 @@ export type GithubRepoData = {
   ogImage: string | null; // null si el repo es privado (no se puede generar la preview)
 };
 
+export * from './aiModels';
+export * from './analytics';
 export type SiteConfig = {
   id: number;
   // Hero
   hero_title: string;
   hero_subtitle: string;
   hero_typewriter: string[];
-  // Colores
+  // Tema y Colores
+  theme_mode: string;
+  seed_color: string;
+  color_theme: string;
   primary_color: string;
   secondary_color: string;
+  tertiary_color: string;
+  neutral_color: string;
+  // Tipografía y Formas
+  font_headline: string;
+  font_body: string;
+  font_label: string;
+  radius_scale: string;
   // Perfil
   full_name: string;
   bio_short: string;
@@ -181,6 +194,78 @@ export async function getProfileData(): Promise<ProfileData | null> {
     return null;
   }
   return data as ProfileData;
+}
+
+export async function getAIModels(): Promise<AIModelData[]> {
+  const { data, error } = await supabase
+    .from('ai_models')
+    .select('*')
+    .order('order_index', { ascending: true })
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching ai models:', error);
+    return [];
+  }
+  return data as AIModelData[];
+}
+
+export async function createAIModel(model: Partial<AIModelData>): Promise<AIModelData | null> {
+  const { data, error } = await adminSupabase
+    .from('ai_models')
+    .insert([model])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error creating ai model:', error);
+    return null;
+  }
+  return data;
+}
+
+export async function updateAIModel(id: string, updates: Partial<AIModelData>): Promise<AIModelData | null> {
+  const { data, error } = await adminSupabase
+    .from('ai_models')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating ai model:', error);
+    return null;
+  }
+  return data;
+}
+
+export async function deleteAIModel(id: string): Promise<boolean> {
+  const { error } = await adminSupabase
+    .from('ai_models')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting ai model:', error);
+    return false;
+  }
+  return true;
+}
+
+export async function reorderAIModels(modelIds: string[]): Promise<boolean> {
+  let success = true;
+  for (let i = 0; i < modelIds.length; i++) {
+    const id = modelIds[i];
+    const { error } = await adminSupabase
+      .from('ai_models')
+      .update({ order_index: i })
+      .eq('id', id);
+    if (error) {
+      console.error(`Error reordering model ${id}:`, error);
+      success = false;
+    }
+  }
+  return success;
 }
 
 export async function getExperiences(): Promise<Experience[]> {

@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import CookieBanner from "@/components/CookieBanner";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
+import { getSiteConfig } from "@atpdev/database";
 import "./globals.css";
-
-const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: '--font-hanken' });
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: '--font-jetbrains' });
 
 const BASE_URL = "https://www.atpdev.dev";
 const OG_IMAGE = `${BASE_URL}/og-image.png`;
@@ -77,17 +74,71 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+// Map radius string to CSS scale value
+function getRadiusValue(scale: string) {
+  switch (scale) {
+    case "none": return "0rem";
+    case "small": return "0.25rem";
+    case "medium": return "0.75rem";
+    case "full": return "9999px";
+    default: return "0.75rem";
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const config = await getSiteConfig();
+
+  // Valores por defecto
+  const fontHeadline = config?.font_headline || "Hanken Grotesk";
+  const fontBody = config?.font_body || "Inter";
+  const fontLabel = config?.font_label || "JetBrains Mono";
+  
+  const primary = config?.primary_color || "#0052FF";
+  const secondary = config?.secondary_color || "#1A1A1A";
+  const tertiary = config?.tertiary_color || "#262626";
+  const neutral = config?.neutral_color || "#8A8A8A";
+  
+  const isDark = (config?.theme_mode || "dark") === "dark";
+  const background = isDark ? "#0A0A0A" : "#F9FAFB";
+  const foreground = isDark ? "#EDEDED" : "#111827";
+
+  const radiusValue = getRadiusValue(config?.radius_scale || "medium");
+
+  // Crear URL de Google Fonts dinámicamente
+  const fonts = Array.from(new Set([fontHeadline, fontBody, fontLabel]));
+  const googleFontsUrl = `https://fonts.googleapis.com/css2?${fonts.map(f => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700;800`).join('&')}&display=swap`;
+
   return (
     <html lang="es" className="scroll-smooth">
-      <body className={`${hanken.variable} ${inter.variable} ${jetbrains.variable} font-sans bg-[#1A1A1A] text-gray-200 antialiased min-h-screen`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href={googleFontsUrl} rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root {
+              --background: ${background};
+              --foreground: ${foreground};
+              --primary: ${primary};
+              --secondary: ${secondary};
+              --tertiary: ${tertiary};
+              --neutral: ${neutral};
+              --radius-scale: ${radiusValue};
+              --font-heading: '${fontHeadline}', sans-serif;
+              --font-body: '${fontBody}', sans-serif;
+              --font-label: '${fontLabel}', monospace;
+            }
+          `
+        }} />
+      </head>
+      <body className={`font-sans antialiased min-h-screen`}>
+        <AnalyticsTracker />
         {children}
         <CookieBanner />
-        
         {/* JSON-LD Schema (Pro SEO) */}
         <script
           type="application/ld+json"
@@ -96,15 +147,15 @@ export default function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "Person",
-                "name": "Percy Acha Taipe",
+                "name": config?.full_name || "Percy Acha Taipe",
                 "alternateName": "ATP Dev",
                 "url": BASE_URL,
-                "image": OG_IMAGE,
+                "image": config?.avatar_url || OG_IMAGE,
                 "jobTitle": "Fullstack & Android Developer",
                 "sameAs": [
-                  "https://github.com/Percy-30",
-                  "https://www.linkedin.com/in/percy-acha-taipe"
-                ]
+                  config?.github_url,
+                  config?.linkedin_url
+                ].filter(Boolean)
               },
               {
                 "@context": "https://schema.org",

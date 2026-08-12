@@ -8,7 +8,7 @@ export async function saveSettings(formData: FormData) {
 
   // Text fields
   const textFields = [
-    'hero_title', 'hero_subtitle', 'primary_color', 'secondary_color',
+    'hero_title', 'hero_subtitle', 'theme_mode', 'seed_color', 'color_theme', 'primary_color', 'secondary_color', 'tertiary_color', 'neutral_color', 'font_headline', 'font_body', 'font_label', 'radius_scale',
     'full_name', 'bio_short', 'bio_long', 'avatar_url',
     'email', 'phone', 'location',
     'github_url', 'linkedin_url', 'twitter_url', 'facebook_url',

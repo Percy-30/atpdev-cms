@@ -72,7 +72,7 @@ export default function ExperienceTimeline({ initialExperiences = [], lang = 'es
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-            {ui.title1} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{ui.title2}</span>
+            {ui.title1} <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--primary), var(--tertiary))' }}>{ui.title2}</span>
           </h2>
           <p className="text-gray-400 text-lg">
             {ui.subtitle}
@@ -81,7 +81,7 @@ export default function ExperienceTimeline({ initialExperiences = [], lang = 'es
 
         <div className="relative">
             {/* Línea central */}
-            <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-px bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-transparent"></div>
+            <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-px" style={{ backgroundImage: 'linear-gradient(to bottom, var(--primary), var(--tertiary), transparent)' }}></div>
 
             <div className="space-y-12">
               {experiences.map((exp, index) => {

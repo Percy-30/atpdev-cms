@@ -2,15 +2,13 @@
 
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "DAY 01", value: 1200 },
-  { name: "DAY 07", value: 2100 },
-  { name: "DAY 14", value: 1800 },
-  { name: "DAY 21", value: 3200 },
-  { name: "DAY 30", value: 2400 },
-];
+type TrafficData = {
+  date: string;
+  directo: number;
+  organico: number;
+};
 
-export function TrafficChart() {
+export function TrafficChart({ data }: { data: TrafficData[] }) {
   return (
     <div className="w-full h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
@@ -22,11 +20,16 @@ export function TrafficChart() {
             </linearGradient>
           </defs>
           <XAxis 
-            dataKey="name" 
+            dataKey="date" 
             axisLine={false} 
             tickLine={false} 
             tick={{ fill: "#6b7280", fontSize: 10, fontWeight: "bold" }}
             dy={10}
+            tickFormatter={(val) => {
+              // Convert "YYYY-MM-DD" to "DD MMM"
+              const d = new Date(val);
+              return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+            }}
           />
           <YAxis hide />
           <Tooltip 
@@ -35,7 +38,7 @@ export function TrafficChart() {
           />
           <Area 
             type="monotone" 
-            dataKey="value" 
+            dataKey="directo" 
             stroke="#3b82f6" 
             strokeWidth={3}
             fillOpacity={1} 

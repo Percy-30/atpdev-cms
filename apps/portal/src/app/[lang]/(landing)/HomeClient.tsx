@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, cloneElement } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlayCircle, Download, X } from "lucide-react";
-import { Project, SiteConfig, Skill, Experience } from "@atpdev/database";
+import { Project, SiteConfig, Skill, Experience, AIModelData } from "@atpdev/database";
 import Typewriter from "@/components/Typewriter";
 import AboutSection from "@/components/AboutSection";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
+import AIModelsSection, { ICONS_MAP } from "@/components/AIModelsSection";
 import ContactForm from "@/components/ContactForm";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { translateClient } from "@/utils/translate";
 
 interface HomeClientProps {
@@ -16,6 +19,7 @@ interface HomeClientProps {
   initialConfig: SiteConfig | null;
   initialSkills: Skill[];
   initialExperiences: Experience[];
+  initialAiModels: AIModelData[];
 }
 
 export default function HomeClient({
@@ -24,11 +28,13 @@ export default function HomeClient({
   initialConfig,
   initialSkills,
   initialExperiences,
+  initialAiModels,
 }: HomeClientProps) {
   const [filter, setFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [config, setConfig] = useState<SiteConfig | null>(initialConfig);
+  const [aiModels, setAiModels] = useState<AIModelData[]>(initialAiModels || []);
 
   const [ui, setUi] = useState({
     heroDesc: "Construyendo experiencias de software escalables y de alto rendimiento. Especializado en arquitecturas limpias, interfaces modernas y soluciones integradas con Inteligencia Artificial.",
@@ -50,7 +56,12 @@ export default function HomeClient({
     linkExperience: "Experiencia",
     linkProjects: "Proyectos",
     linkPrivacy: "Política de Privacidad",
-    linkTerms: "Términos de Servicio"
+    linkTerms: "Términos de Servicio",
+    aiTitle1: "Potenciado por",
+    aiTitle2: "Inteligencia Artificial",
+    aiDesc: "Integración de modelos fundacionales y aprendizaje automático para crear experiencias escalables y de próxima generación.",
+    aiCaps: "Capacidades",
+    aiActive: "Activo"
   });
 
   useEffect(() => {
@@ -88,6 +99,13 @@ export default function HomeClient({
         newUi[k] = await translateClient(ui[k], lang);
       }));
       setUi(newUi);
+      // Translate AI Models
+      const translatedAi = await Promise.all((initialAiModels || []).map(async (m: AIModelData) => ({
+        ...m,
+        description: await translateClient(m.description, lang),
+        capabilities: await Promise.all(m.capabilities.map((c: string) => translateClient(c, lang)))
+      })));
+      setAiModels(translatedAi);
     };
 
     translateAll();
@@ -107,23 +125,71 @@ export default function HomeClient({
     (p) => filter === "all" || (p.originalCategory || p.category) === filter
   );
 
+  // --- TECH STACK AUTOCLASSIFICATION LOGIC ---
+  const TECH_DICTIONARY: Record<string, string> = {
+    // Frontend
+    "react": "Frontend & Web", "next.js": "Frontend & Web", "tailwind css": "Frontend & Web", "tailwind": "Frontend & Web", "css": "Frontend & Web", "html": "Frontend & Web", "javascript": "Frontend & Web", "typescript": "Frontend & Web", "vue": "Frontend & Web", "angular": "Frontend & Web",
+    // Backend
+    "node.js": "Backend & DB", "supabase": "Backend & DB", "sql": "Backend & DB", "oracle": "Backend & DB", "postgres": "Backend & DB", "plpgsql": "Backend & DB", "express": "Backend & DB", "mongodb": "Backend & DB",
+    // Mobile
+    "android": "Mobile", "kotlin": "Mobile", "java": "Mobile", "flutter": "Mobile", "ios": "Mobile", "swift": "Mobile", "react native": "Mobile",
+    // IA
+    "python": "IA & Core", "tensorflow": "IA & Core", "tensorflow lite": "IA & Core", "mediapipe": "IA & Core", "llm": "IA & Core", "ai": "IA & Core", "machine learning": "IA & Core", "openai": "IA & Core",
+    // Infra
+    "linux": "Infra & Redes", "linux kernel": "Infra & Redes", "git": "Infra & Redes", "vercel": "Infra & Redes", "ccnav7": "Infra & Redes", "docker": "Infra & Redes", "aws": "Infra & Redes"
+  };
+
+  const projectTags = projects.flatMap(p => p.stack);
+
+  // Top 6 tags for Hero
+  const topTechStack = Array.from(
+    projectTags.reduce((acc, curr) => {
+      const key = curr.toUpperCase();
+      acc.set(key, (acc.get(key) || 0) + 1);
+      return acc;
+    }, new Map<string, number>()).entries()
+  )
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 6)
+  .map(entry => entry[0]);
+
+  const displayTechStack = topTechStack.length > 0 ? topTechStack : ["KOTLIN", "NEXT.JS", "TAILWIND", "SUPABASE", "PYTHON", "AI / LLMS"];
+
+  // Augment initialSkills with projects stack
+  const augmentedSkills = initialSkills.map(skill => {
+    let newItems = new Set(skill.items);
+
+    projectTags.forEach(tag => {
+      const normalizedTag = tag.trim().toLowerCase();
+      const mappedCategory = TECH_DICTIONARY[normalizedTag];
+      
+      // If the dictionary maps this tech to this skill category
+      if (mappedCategory && skill.category.includes(mappedCategory)) {
+        newItems.add(tag);
+      }
+    });
+
+    return { ...skill, items: Array.from(newItems) };
+  });
+  // ----------------------------------------
+
   return (
     <div className="w-full bg-[#0b0c10] text-gray-200">
 
       {/* HERO SECTION */}
       <section id="hero" className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 md:px-16 text-center overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] rounded-full z-0"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] z-0 opacity-20" style={{ backgroundColor: 'var(--primary)' }}></div>
 
         <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-          <div className="mb-6 px-4 py-1.5 border border-blue-500/30 bg-blue-500/10 rounded-full text-xs font-semibold text-blue-400 tracking-widest flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+          <div className="mb-6 px-4 py-1.5 border rounded-full text-xs font-semibold tracking-widest flex items-center gap-2" style={{ borderColor: 'var(--primary)', backgroundColor: 'rgba(0,82,255,0.1)', color: 'var(--primary)' }}>
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--primary)' }}></span>
             AVAILABLE FOR HIRE
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-2 tracking-tight">
             {config?.hero_title || "Percy Acha"}
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6 tracking-widest uppercase" style={{ color: config?.primary_color || '#3b82f6' }}>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 tracking-widest uppercase" style={{ color: 'var(--primary)' }}>
             {config?.hero_subtitle || "@ATPDEV"}
           </h2>
           <h3 className="text-2xl md:text-4xl font-extrabold mb-4 tracking-tight leading-tight">
@@ -142,7 +208,7 @@ export default function HomeClient({
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
-            <a href="#portfolio" className="w-full sm:w-auto text-white px-8 py-3.5 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: config?.primary_color || '#2563eb' }}>
+            <a href="#portfolio" className="w-full sm:w-auto text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2 hover:opacity-90 shadow-lg" style={{ backgroundColor: 'var(--primary)' }}>
               {ui.btnProjects}
             </a>
             <a href="#about" className="w-full sm:w-auto bg-[#1a1c23] hover:bg-[#252833] border border-gray-700 text-white px-8 py-3.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
@@ -156,7 +222,7 @@ export default function HomeClient({
           <div className="text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-gray-500 font-bold mb-4">{ui.techStack}</p>
             <div className="flex flex-wrap justify-center gap-3">
-              {["KOTLIN", "NEXT.JS", "TAILWIND", "SUPABASE", "PYTHON", "AI / LLMS"].map(tech => (
+              {displayTechStack.map(tech => (
                 <span key={tech} className="px-4 py-2 border border-gray-800 bg-[#12141a] rounded-full text-xs font-semibold text-gray-300">
                   {tech}
                 </span>
@@ -167,10 +233,13 @@ export default function HomeClient({
       </section>
 
       {/* SOBRE MÍ */}
-      <AboutSection initialSkills={initialSkills} initialCredlyUrl={initialConfig?.credly_url || ""} lang={lang} />
+      <AboutSection initialSkills={augmentedSkills} initialCredlyUrl={initialConfig?.credly_url || ""} lang={lang} />
 
       {/* EXPERIENCIA */}
       <ExperienceTimeline initialExperiences={initialExperiences} lang={lang} />
+
+      {/* AI MODELS & INTEGRATIONS */}
+      <AIModelsSection projects={projects} ui={ui} aiModels={aiModels} />
 
       {/* PROYECTOS DESTACADOS */}
       <section id="portfolio" className="py-20 relative bg-[#0b0c10] border-t border-gray-900">
@@ -185,11 +254,12 @@ export default function HomeClient({
               <button
                 key={cat.value}
                 onClick={() => setFilter(cat.value)}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all
-                  ${filter === cat.value
-                    ? "bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.5)] border-transparent"
+                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${
+                  filter === cat.value
+                    ? "text-white border-transparent shadow-lg"
                     : "bg-[#12141a] text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600"
-                  }`}
+                }`}
+                style={filter === cat.value ? { backgroundColor: 'var(--primary)' } : {}}
               >
                 {cat.label}
               </button>
@@ -206,7 +276,7 @@ export default function HomeClient({
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
                   key={project.id}
-                  className="bg-[#12141a] rounded-2xl overflow-hidden border border-gray-800 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.1)] transition-all group cursor-pointer flex flex-col"
+                  className="bg-[#12141a] rounded-2xl overflow-hidden border border-gray-800 hover:border-[var(--primary)] transition-all group cursor-pointer flex flex-col"
                   onClick={() => setSelectedProject(project.id)}
                 >
                   <div className="relative h-64 overflow-hidden bg-black/50 flex items-center justify-center">
@@ -215,16 +285,25 @@ export default function HomeClient({
                     ) : (
                       <div className="text-4xl font-black text-gray-700 uppercase tracking-widest">{project.title.substring(0,2)}</div>
                     )}
-                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-blue-400 border border-blue-500/30">
+                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border" style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}>
                       {project.status}
                     </div>
                   </div>
                   <div className="p-8 flex-1 flex flex-col">
-                    <div className="text-xs font-bold text-blue-500 mb-2 uppercase tracking-widest">{project.category}</div>
-                    <h3 className="text-2xl font-bold text-white mb-3">{project.title}</h3>
+                    <div className="text-xs font-bold mb-2 uppercase tracking-widest" style={{ color: 'var(--primary)' }}>{project.category}</div>
+                    <h3 className="text-2xl font-bold text-white mb-3 flex items-center justify-between">
+                      {project.title}
+                      <div className="flex gap-1">
+                        {aiModels.filter(model => model.is_visible && project.stack.some((t: string) => model.tags.includes(t.toLowerCase()))).slice(0, 3).map(model => (
+                          <div key={model.id} className="w-6 h-6 rounded bg-[#262626] border border-gray-700 flex items-center justify-center" title={`Powered by ${model.name}`}>
+                            {cloneElement(ICONS_MAP[model.icon_name] as React.ReactElement<any>, { size: 12, color: 'var(--primary)' })}
+                          </div>
+                        ))}
+                      </div>
+                    </h3>
                     <p className="text-gray-400 text-sm mb-6 line-clamp-2 flex-1">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mt-auto">
-                      {project.stack.map(tech => (
+                      {project.stack.map((tech: string) => (
                         <span key={tech} className="bg-gray-800 text-gray-300 text-xs px-2.5 py-1 rounded-md border border-gray-700">{tech}</span>
                       ))}
                     </div>
@@ -269,7 +348,7 @@ export default function HomeClient({
                     <div className="p-8 md:p-10">
                       <div className="mb-6">
                         <div className="flex items-center gap-3 text-sm mb-4">
-                          <span className="bg-blue-900/50 text-blue-400 border border-blue-800 px-3 py-1 rounded-full font-medium">{p.category}</span>
+                          <span className="border px-3 py-1 rounded-full font-medium" style={{ color: 'var(--primary)', borderColor: 'var(--primary)', backgroundColor: 'rgba(0,82,255,0.1)' }}>{p.category}</span>
                           <span className="bg-green-900/50 text-green-400 border border-green-800 px-3 py-1 rounded-full font-medium">{p.metrics}</span>
                         </div>
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{p.title}</h2>
@@ -285,7 +364,7 @@ export default function HomeClient({
                       </div>
                       <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-800">
                         {p.demolink !== "#" && (
-                          <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all font-medium">
+                          <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-white px-8 py-3.5 rounded-xl shadow-lg transition-all font-medium hover:brightness-110" style={{ backgroundColor: 'var(--primary)' }}>
                             <PlayCircle size={20} /> {ui.btnDemo}
                           </a>
                         )}

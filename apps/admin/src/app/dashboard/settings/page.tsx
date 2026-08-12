@@ -2,6 +2,9 @@ import { getSiteConfig } from "@atpdev/database";
 import { User, Type, Palette, Globe, Link2, Shield, Database, Save, ExternalLink, MessageCircle } from "lucide-react";
 import { saveSettings } from "./actions";
 import { SOCIAL_ICON_MAP } from "@/components/SocialIcons";
+import { ThemeBuilder } from "./ThemeBuilder";
+import { SubmitButton } from "./SubmitButton";
+import { AvatarPicker } from "./AvatarPicker";
 
 export default async function SettingsPage() {
   const config = await getSiteConfig();
@@ -36,6 +39,9 @@ export default async function SettingsPage() {
           {/* === COLUMNA PRINCIPAL (2/3) === */}
           <div className="lg:col-span-2 space-y-6">
 
+            {/* AVATAR PICKER */}
+            <AvatarPicker initialAvatarUrl={config?.avatar_url || "/avatar.png"} />
+
             {/* PERFIL */}
             <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-6">
@@ -43,8 +49,7 @@ export default async function SettingsPage() {
                 <div><h2 className="text-lg font-bold text-white">Perfil Personal</h2><p className="text-xs text-gray-500">Tu identidad en el portal público.</p></div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><label className={labelClass}>Nombre Completo</label><input type="text" name="full_name" defaultValue={config?.full_name || "Percy Acha Taipe"} className={inputClass} /></div>
-                <div><label className={labelClass}>Avatar URL</label><input type="text" name="avatar_url" defaultValue={config?.avatar_url || "/avatar.png"} className={inputClass} /></div>
+                <div className="md:col-span-2"><label className={labelClass}>Nombre Completo</label><input type="text" name="full_name" defaultValue={config?.full_name || "Percy Acha Taipe"} className={inputClass} /></div>
                 <div className="md:col-span-2"><label className={labelClass}>Bio Corta</label><input type="text" name="bio_short" defaultValue={config?.bio_short || ""} className={inputClass} /></div>
                 <div className="md:col-span-2"><label className={labelClass}>Bio Larga</label><textarea name="bio_long" rows={3} defaultValue={config?.bio_long || ""} className={inputClass + " resize-none"} /></div>
               </div>
@@ -152,16 +157,7 @@ export default async function SettingsPage() {
 
             {/* COLORES + INTEGRACIONES */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400"><Palette size={18} /></div>
-                  <h3 className="text-sm font-bold text-white">Colores</h3>
-                </div>
-                <div className="space-y-4">
-                  <div><label className={labelClass}>Primario</label><div className="flex gap-3 items-center"><input type="color" name="primary_color" defaultValue={config?.primary_color || "#0052FF"} className="w-12 h-10 rounded-lg border border-gray-800 bg-transparent cursor-pointer" /><span className="text-xs text-gray-500 font-mono">{config?.primary_color || "#0052FF"}</span></div></div>
-                  <div><label className={labelClass}>Secundario</label><div className="flex gap-3 items-center"><input type="color" name="secondary_color" defaultValue={config?.secondary_color || "#1A1A1A"} className="w-12 h-10 rounded-lg border border-gray-800 bg-transparent cursor-pointer" /><span className="text-xs text-gray-500 font-mono">{config?.secondary_color || "#1A1A1A"}</span></div></div>
-                </div>
-              </div>
+              <ThemeBuilder initialConfig={config} />
               <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"><Globe size={18} /></div>
@@ -176,9 +172,7 @@ export default async function SettingsPage() {
 
             {/* BOTÓN GUARDAR */}
             <div className="flex justify-end">
-              <button type="submit" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] text-sm">
-                <Save size={18} /> Guardar Todos los Cambios
-              </button>
+              <SubmitButton />
             </div>
           </div>
 

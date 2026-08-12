@@ -87,12 +87,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setSearchQuery("");
   };
 
-  const notifications = [
-    { id: 1, text: "Nuevo lead recibido desde el portal", time: "Hace 2 min", read: false },
-    { id: 2, text: "Proyecto 'Lector QR' actualizado", time: "Hace 1 hora", read: false },
-    { id: 3, text: "Build exitoso en Vercel", time: "Hace 3 horas", read: true },
-    { id: 4, text: "Backup de base de datos completado", time: "Ayer", read: true },
-  ];
+  const [avatarUrl, setAvatarUrl] = useState("/avatar.png");
+  const [notifications, setNotifications] = useState<any[]>([
+    { id: 1, text: "Sistema de Notificaciones activo", time: "Hace 1 min", read: false },
+    { id: 2, text: "Build exitoso en Vercel", time: "Hace 1 hora", read: true }
+  ]);
+
+  // Load avatar and notifications from Supabase
+  useEffect(() => {
+    // 1. Avatar
+    supabase.from("site_config").select("avatar_url").single().then(({ data }) => {
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+    });
+
+    // 2. Leads as Notifications
+    supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(4).then(({ data }) => {
+      if (data && data.length > 0) {
+        const leadNotifs = data.map((lead: any) => ({
+          id: lead.id,
+          text: `Nuevo contacto: ${lead.name || lead.email}`,
+          time: new Date(lead.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          read: lead.status === "contacted" || lead.status === "closed"
+        }));
+        setNotifications(leadNotifs);
+      }
+    });
+  }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -173,7 +193,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="p-6 pb-2">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-blue-600 border border-gray-700 overflow-hidden shrink-0">
-              <img src="/avatar.png" alt="Avatar" className="w-full h-full object-cover" />
+              <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="font-bold text-white text-sm">Percy (ATP DEV)</p>
@@ -311,7 +331,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Avatar */}
             <Link href="/dashboard/settings">
               <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-blue-600 overflow-hidden cursor-pointer shadow-[0_0_10px_rgba(37,99,235,0.4)] hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] transition-shadow">
-                <img src="/avatar.png" alt="Avatar" className="w-full h-full object-cover" />
+                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               </div>
             </Link>
           </div>

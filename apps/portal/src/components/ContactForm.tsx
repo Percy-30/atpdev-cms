@@ -99,7 +99,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
           {/* Left Text */}
           <div>
             <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-              {ui.title1} <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{ui.title2}</span>
+              {ui.title1} <br/> <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--primary), var(--tertiary))' }}>{ui.title2}</span>
             </h2>
             <p className="text-gray-400 text-lg mb-10 max-w-md leading-relaxed">
               {ui.subtitle}
@@ -107,12 +107,12 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
             
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20 shrink-0">
-                  <Mail className="text-blue-400" size={24} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center border shrink-0" style={{ backgroundColor: 'rgba(0,82,255,0.1)', borderColor: 'var(--primary)' }}>
+                  <Mail style={{ color: 'var(--primary)' }} size={24} />
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm font-semibold uppercase tracking-wider">{ui.emailLabel}</p>
-                  <a href={`mailto:${config?.email || 'achataipepercy@gmail.com'}`} className="text-white text-lg font-medium hover:text-blue-400 transition-colors">
+                  <a href={`mailto:${config?.email || 'achataipepercy@gmail.com'}`} className="text-white text-lg font-medium transition-colors hover:opacity-80" style={{ color: 'var(--primary)' }}>
                     {config?.email || 'achataipepercy@gmail.com'}
                   </a>
                 </div>
@@ -210,11 +210,12 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
               <button 
                 type="submit" 
                 disabled={status === "submitting"}
-                className={`w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold transition-all shadow-lg ${
+                className={`w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold transition-all shadow-lg text-white ${
                   status === "error"
-                    ? "bg-red-600 text-white hover:bg-red-700"
-                    : "bg-blue-600 hover:bg-blue-500 text-white shadow-blue-900/50 hover:shadow-blue-900/80"
+                    ? "bg-red-600 hover:bg-red-700"
+                    : "hover:brightness-110"
                 }`}
+                style={status !== "error" ? { backgroundColor: 'var(--primary)' } : {}}
               >
                 {status === "submitting" ? (
                   <>{ui.btnSending}</>
