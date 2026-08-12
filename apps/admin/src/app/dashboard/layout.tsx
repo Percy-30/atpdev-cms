@@ -97,12 +97,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className="h-screen bg-[#0b0c10] text-gray-200 flex font-sans overflow-hidden">
+    <div className="h-screen bg-\[\#1A1A1A\] text-gray-200 flex font-sans overflow-hidden">
       
       {/* SEARCH OVERLAY (Command Palette Style) */}
       {searchOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-[15vh]" onClick={() => setSearchOpen(false)}>
-          <div className="w-full max-w-lg bg-[#12141a] border border-gray-700 rounded-2xl shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-lg bg-\[\#262626\] border border-gray-700 rounded-2xl shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-800">
               <Search size={18} className="text-gray-400" />
               <input 
@@ -153,7 +153,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       )}
 
       {/* SIDEBAR */}
-      <aside className={`w-64 bg-[#12141a] border-r border-gray-800 flex-col h-full shrink-0 relative ${mobileMenuOpen ? 'flex fixed z-40 top-0 left-0' : 'hidden md:flex'}`}>
+      <aside className={`w-64 bg-\[\#262626\] border-r border-gray-800 flex-col h-full shrink-0 relative ${mobileMenuOpen ? 'flex fixed z-40 top-0 left-0' : 'hidden md:flex'}`}>
         
         {/* Top Header Logo */}
         <div className="h-16 px-6 border-b border-gray-800 flex items-center justify-between">
@@ -206,7 +206,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Bottom Widgets */}
         <div className="p-6">
-          <div className="bg-[#0b0c10] border border-gray-800 rounded-xl p-4 mb-4">
+          <div className="bg-\[\#1A1A1A\] border border-gray-800 rounded-xl p-4 mb-4">
             <p className="text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Quota Usage</p>
             <div className="w-full h-1.5 bg-gray-800 rounded-full mb-2 overflow-hidden">
               <div className="h-full bg-blue-500 rounded-full w-[65%]"></div>
@@ -241,7 +241,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         
         {/* TOP BAR */}
-        <header className="h-16 bg-[#0b0c10] border-b border-gray-800 flex items-center justify-between px-6 shrink-0 z-10">
+        <header className="h-16 bg-\[\#1A1A1A\] border-b border-gray-800 flex items-center justify-between px-6 shrink-0 z-10">
           <div className="flex items-center gap-4">
             {/* Mobile hamburger */}
             <button className="md:hidden text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(true)}>
@@ -250,7 +250,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Search trigger */}
             <button 
               onClick={() => setSearchOpen(true)}
-              className="hidden md:flex items-center gap-3 bg-[#12141a] border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-500 hover:border-gray-600 transition-colors w-64"
+              className="hidden md:flex items-center gap-3 bg-\[\#262626\] border border-gray-800 rounded-lg px-4 py-2 text-sm text-gray-500 hover:border-gray-600 transition-colors w-64"
             >
               <Search size={14} />
               <span>Buscar...</span>
@@ -280,7 +280,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
               {/* Notifications Dropdown */}
               {notifOpen && (
-                <div className="absolute right-0 top-12 w-80 bg-[#12141a] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden z-50">
+                <div className="absolute right-0 top-12 w-80 bg-\[\#262626\] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden z-50">
                   <div className="px-5 py-4 border-b border-gray-800 flex justify-between items-center">
                     <h3 className="text-sm font-bold text-white">Notificaciones</h3>
                     <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">{unreadCount} nuevas</span>
@@ -318,7 +318,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </header>
 
         {/* SCROLLABLE PAGE CONTENT */}
-        <main className="flex-1 overflow-y-auto bg-[#0b0c10] p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto bg-\[\#1A1A1A\] p-6 md:p-8">
           <div className="max-w-[1400px] mx-auto">
             {children}
           </div>

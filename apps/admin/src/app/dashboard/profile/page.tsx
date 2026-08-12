@@ -29,9 +29,9 @@ const COLOR_OPTIONS = [
   { key: "green",   label: "Verde claro"},
 ];
 
-const inputClass  = "bg-[#0b0c10] border border-gray-800 text-white px-3 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
+const inputClass  = "bg-\[\#1A1A1A\] border border-gray-800 text-white px-3 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
 const labelClass  = "text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1.5 block";
-const selectClass = "bg-[#0b0c10] border border-gray-800 text-white px-3 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
+const selectClass = "bg-\[\#1A1A1A\] border border-gray-800 text-white px-3 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
 
 export default async function ProfilePage() {
   const [experiences, skills] = await Promise.all([getAllExperiences(), getAllSkills()]);
@@ -60,7 +60,7 @@ export default async function ProfilePage() {
           </h2>
 
           {experiences.length === 0 ? (
-            <div className="bg-[#12141a] border border-dashed border-gray-700 rounded-2xl p-8 text-center text-gray-500 text-sm">
+            <div className="bg-\[\#262626\] border border-dashed border-gray-700 rounded-2xl p-8 text-center text-gray-500 text-sm">
               No hay experiencias. Añade una abajo.
             </div>
           ) : (
@@ -78,7 +78,7 @@ export default async function ProfilePage() {
           )}
 
           {/* ── Formulario Añadir ── */}
-          <div className="bg-[#12141a] border border-gray-800 rounded-2xl p-5 mt-2">
+          <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-5 mt-2">
             <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <Plus size={16} className="text-blue-500" /> Añadir Experiencia
             </h3>
@@ -115,7 +115,7 @@ export default async function ProfilePage() {
           </h2>
 
           {skills.length === 0 ? (
-            <div className="bg-[#12141a] border border-dashed border-gray-700 rounded-2xl p-8 text-center text-gray-500 text-sm">
+            <div className="bg-\[\#262626\] border border-dashed border-gray-700 rounded-2xl p-8 text-center text-gray-500 text-sm">
               No hay categorías. Añade una abajo.
             </div>
           ) : (
@@ -133,7 +133,7 @@ export default async function ProfilePage() {
           )}
 
           {/* ── Formulario Añadir ── */}
-          <div className="bg-[#12141a] border border-gray-800 rounded-2xl p-5 mt-2">
+          <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-5 mt-2">
             <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <Plus size={16} className="text-purple-500" /> Añadir Categoría de Skills
             </h3>

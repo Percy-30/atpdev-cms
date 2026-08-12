@@ -12,10 +12,10 @@ export default async function LeadsPage() {
         <p className="text-gray-400">Gestiona los mensajes recibidos a través del formulario público.</p>
       </div>
 
-      <div className="bg-[#12141a] border border-gray-800 rounded-2xl overflow-hidden">
+      <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-[#0b0c10] border-b border-gray-800">
+            <thead className="bg-\[\#1A1A1A\] border-b border-gray-800">
               <tr>
                 <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">Contacto</th>
                 <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">Mensaje</th>

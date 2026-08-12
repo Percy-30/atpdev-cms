@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Hanken_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: '--font-hanken' });
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: '--font-jetbrains' });
 
 export const metadata: Metadata = {
   title: "ATP DEV | Admin CMS",
@@ -16,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="dark">
-      <body className={`${inter.className} bg-[#0a0a0a] text-gray-200 antialiased h-screen overflow-hidden`}>
+      <body className={`${hanken.variable} ${inter.variable} ${jetbrains.variable} font-sans bg-[#1A1A1A] text-gray-200 antialiased h-screen overflow-hidden`}>
         {children}
       </body>
     </html>

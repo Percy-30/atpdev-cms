@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Hanken_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 
-const outfit = Outfit({ subsets: ["latin"] });
+const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: '--font-hanken' });
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: '--font-jetbrains' });
 
 const BASE_URL = "https://www.atpdev.dev";
 const OG_IMAGE = `${BASE_URL}/og-image.png`;
@@ -82,7 +84,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className={`${outfit.className} bg-[#0b0c10] text-gray-200 antialiased min-h-screen`}>
+      <body className={`${hanken.variable} ${inter.variable} ${jetbrains.variable} font-sans bg-[#1A1A1A] text-gray-200 antialiased min-h-screen`}>
         {children}
         <CookieBanner />
         

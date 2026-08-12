@@ -27,7 +27,7 @@ export default async function AnalyticsPage() {
           { label: "Tasa de Conversión", value: `${conversionRate}%`, icon: <BarChart3 size={18} />, change: "Leads → Cerrados" },
           { label: "Proyectos Activos", value: activeProjects.toString(), icon: <FolderKanban size={18} />, change: `${projects.length} total` },
         ].map((stat, i) => (
-          <div key={i} className="bg-[#12141a] border border-gray-800 rounded-2xl p-5">
+          <div key={i} className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-5">
             <div className="flex justify-between items-start mb-3">
               <div className="p-2 rounded-md bg-white/5 text-gray-400">{stat.icon}</div>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400">{stat.change}</span>
@@ -64,7 +64,7 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Embudo de Leads (REAL) */}
-        <div className="bg-[#12141a] border border-gray-800 rounded-2xl p-6">
+        <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
           <h2 className="text-lg font-bold text-white mb-6">Embudo de Leads (Datos Reales)</h2>
           <div className="space-y-5">
             {[
@@ -92,7 +92,7 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Proyectos por Categoría (REAL) */}
-        <div className="bg-[#12141a] border border-gray-800 rounded-2xl p-6">
+        <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
           <h2 className="text-lg font-bold text-white mb-6">Proyectos por Categoría</h2>
           {(() => {
             const categories: Record<string, number> = {};
@@ -129,7 +129,7 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Timeline de Leads (REAL) */}
-        <div className="lg:col-span-2 bg-[#12141a] border border-gray-800 rounded-2xl p-6">
+        <div className="lg:col-span-2 bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
           <h2 className="text-lg font-bold text-white mb-6">Últimos Leads Recibidos</h2>
           {leads.length === 0 ? (
             <p className="text-sm text-gray-500 py-4 text-center">No hay leads en la base de datos todavía.</p>

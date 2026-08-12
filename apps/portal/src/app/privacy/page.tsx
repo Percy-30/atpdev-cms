@@ -2,6 +2,12 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { translateText } from "@atpdev/database";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Política de Privacidad | ATP Dev",
+  description: "Política de privacidad y protección de datos de los servicios y aplicaciones de ATP Dev.",
+};
 
 export default async function PrivacyPolicy() {
   const cookieStore = await cookies();

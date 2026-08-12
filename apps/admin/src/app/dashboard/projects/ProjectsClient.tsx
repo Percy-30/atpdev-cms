@@ -165,10 +165,10 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
       {/* TABLA DE PROYECTOS */}
-      <div className="xl:col-span-2 bg-[#12141a] border border-gray-800 rounded-2xl overflow-hidden">
+      <div className="xl:col-span-2 bg-\[\#262626\] border border-gray-800 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-[#0b0c10] border-b border-gray-800">
+            <thead className="bg-\[\#1A1A1A\] border-b border-gray-800">
               <tr>
                 <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">Proyecto</th>
                 <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">Estado</th>
@@ -263,7 +263,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       </div>
 
       {/* FORMULARIO DE CREACIÓN/EDICIÓN */}
-      <div className="bg-[#12141a] border border-gray-800 rounded-2xl p-6 h-fit sticky top-24">
+      <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6 h-fit sticky top-24">
         <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
           {editingId ? (
             <><Pencil size={20} className="text-purple-500" /> Editar Proyecto</>
@@ -279,7 +279,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <button
               type="button"
               onClick={openPicker}
-              className="w-full flex items-center justify-between gap-2 bg-[#0b0c10] border border-gray-800 text-left px-4 py-2.5 rounded-xl hover:border-blue-500/50 transition-all text-sm"
+              className="w-full flex items-center justify-between gap-2 bg-\[\#1A1A1A\] border border-gray-800 text-left px-4 py-2.5 rounded-xl hover:border-blue-500/50 transition-all text-sm"
             >
               <span className={`flex items-center gap-2 truncate ${repoInput ? "text-white" : "text-gray-500"}`}>
                 <Github size={15} className="shrink-0 text-gray-400" />
@@ -291,7 +291,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <input type="hidden" name="github_repo" value={repoInput} />
 
             {pickerOpen && (
-              <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 bg-[#12141a] border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
+              <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 bg-\[\#262626\] border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
                 <div className="p-2 border-b border-gray-800 flex items-center gap-2">
                   <Search size={14} className="text-gray-500 shrink-0" />
                   <input
@@ -361,17 +361,17 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Título</label>
-            <input type="text" name="title" value={title} onChange={e => setTitle(e.target.value)} required className="bg-[#0b0c10] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="Ej. Lector QR Pro" />
+            <input type="text" name="title" value={title} onChange={e => setTitle(e.target.value)} required className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="Ej. Lector QR Pro" />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Slug (URL: atpdev.dev/app/...)</label>
-            <input type="text" name="slug" value={slug} onChange={e => setSlug(e.target.value)} className="bg-[#0b0c10] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="Se autogenera del título si lo dejas vacío" />
+            <input type="text" name="slug" value={slug} onChange={e => setSlug(e.target.value)} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="Se autogenera del título si lo dejas vacío" />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Categoría</label>
-            <select name="category" value={category} onChange={e => setCategory(e.target.value)} className="bg-[#0b0c10] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm">
+            <select name="category" value={category} onChange={e => setCategory(e.target.value)} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm">
               <option value="Android">Android Apps</option>
               <option value="iOS">iOS</option>
               <option value="Web">Web</option>
@@ -382,18 +382,18 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Stack (separado por comas)</label>
-            <input type="text" name="stack" value={stack} onChange={e => setStack(e.target.value)} required className="bg-[#0b0c10] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="Kotlin, Compose, Room" />
+            <input type="text" name="stack" value={stack} onChange={e => setStack(e.target.value)} required className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="Kotlin, Compose, Room" />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">URL (Demo/Play Store)</label>
-            <input type="text" name="demolink" value={demolink} onChange={e => setDemolink(e.target.value)} className="bg-[#0b0c10] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="https://... (opcional, déjalo vacío si aún no tienes link)" />
+            <input type="text" name="demolink" value={demolink} onChange={e => setDemolink(e.target.value)} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="https://... (opcional, déjalo vacío si aún no tienes link)" />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Imagen del proyecto</label>
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 shrink-0 rounded-lg bg-[#0b0c10] border border-gray-800 overflow-hidden flex items-center justify-center">
+              <div className="w-16 h-16 shrink-0 rounded-lg bg-\[\#1A1A1A\] border border-gray-800 overflow-hidden flex items-center justify-center">
                 {imagePreview ? (
                   <img
                     src={imagePreview}
@@ -450,7 +450,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Descripción</label>
-            <textarea name="description" value={description} onChange={e => setDescription(e.target.value)} required rows={3} className="bg-[#0b0c10] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm resize-none" placeholder="Breve descripción..."></textarea>
+            <textarea name="description" value={description} onChange={e => setDescription(e.target.value)} required rows={3} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm resize-none" placeholder="Breve descripción..."></textarea>
           </div>
 
           <input type="hidden" name="status" value={editingProject ? editingProject.status : "Activo"} />

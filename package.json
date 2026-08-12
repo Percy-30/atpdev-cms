@@ -10,9 +10,9 @@
     "build": "npm run build --workspace=apps/portal && npm run build --workspace=apps/admin",
     "build:portal": "npm run build --workspace=apps/portal",
     "build:admin": "npm run build --workspace=apps/admin",
-    "dev": "npm run dev --workspace=apps/portal & npm run dev --workspace=apps/admin",
-    "dev:portal": "npm run dev --workspace=apps/portal",
-    "dev:admin": "npm run dev --workspace=apps/admin",
+    "dev": "turbo run dev",
+    "dev:portal": "npm run dev --workspace=apps/portal -- -p 3000",
+    "dev:admin": "npm run dev --workspace=apps/admin -- -p 3001",
     "lint": "npm run lint --workspace=apps/portal && npm run lint --workspace=apps/admin",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

@@ -160,7 +160,7 @@ export default function AIModelsPage() {
               className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
                 filterStatus === f
                   ? "bg-blue-600 text-white"
-                  : "bg-[#12141a] border border-gray-800 text-gray-400 hover:text-white"
+                  : "bg-\[\#262626\] border border-gray-800 text-gray-400 hover:text-white"
               }`}
             >
               {f}
@@ -176,7 +176,7 @@ export default function AIModelsPage() {
           { label: "En Standby",       value: standbyCount,                          color: "text-amber-400",   bg: "bg-amber-500/10"   },
           { label: "Uso Promedio",     value: `${avgUsage}%`,                        color: "text-blue-400",    bg: "bg-blue-500/10"    },
         ].map((s, i) => (
-          <div key={i} className="bg-[#12141a] border border-gray-800 rounded-2xl p-4 text-center">
+          <div key={i} className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-4 text-center">
             <p className={`text-2xl font-black ${s.color}`}>{s.value}</p>
             <p className="text-xs text-gray-500 mt-1 font-medium">{s.label}</p>
           </div>
@@ -192,7 +192,7 @@ export default function AIModelsPage() {
           return (
             <div
               key={model.name}
-              className="bg-[#12141a] border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-600 transition-all group"
+              className="bg-\[\#262626\] border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-600 transition-all group"
             >
               {/* Main row */}
               <div
@@ -241,7 +241,7 @@ export default function AIModelsPage() {
 
               {/* Expanded detail */}
               {isOpen && (
-                <div className={`border-t border-gray-800 bg-[#0b0c10] p-5`}>
+                <div className={`border-t border-gray-800 bg-\[\#1A1A1A\] p-5`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Descripción</h4>

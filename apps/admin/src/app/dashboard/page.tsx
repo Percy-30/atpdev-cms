@@ -36,7 +36,7 @@ export default async function DashboardPage() {
       {/* Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {metrics.map((metric, i) => (
-          <div key={i} className="bg-[#12141a] border border-gray-800 rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between h-[140px]">
+          <div key={i} className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between h-[140px]">
             <div className="flex justify-between items-start">
               <div className="p-2 rounded-md bg-white/5 text-gray-400">
                 {metric.icon}
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Chart Area (2/3 width) */}
-        <div className="lg:col-span-2 bg-[#12141a] border border-gray-800 rounded-2xl p-6">
+        <div className="lg:col-span-2 bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-white">Tráfico de los últimos 30 días</h2>
             <div className="flex items-center gap-4 text-xs font-semibold text-gray-400">
@@ -85,7 +85,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Leads Sidebar (1/3 width) */}
-        <div className="bg-[#12141a] border border-gray-800 rounded-2xl p-6 flex flex-col h-full">
+        <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6 flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-white">Leads recientes</h2>
             <Link href="/dashboard/leads" className="text-xs font-bold text-gray-400 hover:text-white transition-colors">

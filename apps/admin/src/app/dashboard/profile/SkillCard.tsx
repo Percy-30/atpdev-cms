@@ -9,8 +9,8 @@ const COLOR_TEXT: Record<string, string> = {
   amber: "text-amber-400", rose: "text-rose-400", green: "text-green-400",
 };
 
-const inputClass  = "bg-[#0b0c10] border border-gray-800 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
-const selectClass = "bg-[#0b0c10] border border-gray-800 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
+const inputClass  = "bg-\[\#1A1A1A\] border border-gray-800 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
+const selectClass = "bg-\[\#1A1A1A\] border border-gray-800 text-white px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
 
 type Props = {
   skill: Skill;
@@ -43,7 +43,7 @@ export default function SkillCard({ skill, iconOptions, colorOptions, editAction
   };
 
   return (
-    <div className={`bg-[#12141a] border rounded-2xl overflow-hidden transition-all ${skill.is_active ? "border-gray-800" : "border-gray-800/30 opacity-50"}`}>
+    <div className={`bg-\[\#262626\] border rounded-2xl overflow-hidden transition-all ${skill.is_active ? "border-gray-800" : "border-gray-800/30 opacity-50"}`}>
 
       {/* ── Header siempre visible ── */}
       <div className="flex items-start gap-3 p-4">
@@ -99,7 +99,7 @@ export default function SkillCard({ skill, iconOptions, colorOptions, editAction
       {editing && (
         <form
           action={handleSave}
-          className="border-t border-gray-800 bg-[#0b0c10] p-4 space-y-3"
+          className="border-t border-gray-800 bg-\[\#1A1A1A\] p-4 space-y-3"
         >
           <input type="hidden" name="id" value={skill.id} />
 

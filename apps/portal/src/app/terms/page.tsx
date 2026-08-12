@@ -2,6 +2,12 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { translateText } from "@atpdev/database";
 import { Scale, ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Términos de Servicio | ATP Dev",
+  description: "Términos de servicio y condiciones de uso aplicables a todos los sitios web y subdominios de ATP Dev.",
+};
 
 export default async function TermsOfService() {
   const cookieStore = await cookies();
