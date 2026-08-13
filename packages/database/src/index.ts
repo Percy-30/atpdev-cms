@@ -19,6 +19,7 @@ export type Project = {
   metrics: string;
   description: string;
   long_description?: string;
+  is_featured?: boolean;
   screenshots?: string[];
   stack: string[];
   image: string;
@@ -100,6 +101,9 @@ export type SiteConfig = {
   // Integraciones
   ga4_id: string;
   adsense_id: string;
+  // Efectos visuales
+  enable_glow_effect?: boolean;
+  glow_style?: string;
   // Timestamp
   updated_at?: string;
 };
@@ -128,6 +132,7 @@ export type Lead = {
   name: string;
   company: string;
   email: string;
+  phone?: string | null;
   message: string;
   status: string; // 'NUEVO', 'CONTACTADO', 'PENDIENTE', 'PERDIDO'
   created_at?: string;
@@ -855,7 +860,7 @@ export async function translateText(sourceText: string, targetLang: string): Pro
 
     return text;
   } catch (error) {
-    console.error('Translation API error:', error);
+    console.warn('Translation API rate limit/error (showing original text):', (error as any).message || error);
     // Fallback: devolver el texto original si falla la traducción
     return sourceText;
   }

@@ -3,17 +3,18 @@
   "private": true,
   "packageManager": "npm@11.6.1",
   "workspaces": [
-    "apps/*",
+    "apps/core/*",
+    "apps/subdomains/*/*",
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=apps/portal && npm run build --workspace=apps/admin",
-    "build:portal": "npm run build --workspace=apps/portal",
-    "build:admin": "npm run build --workspace=apps/admin",
+    "build": "npm run build --workspace=apps/core/portal && npm run build --workspace=apps/core/admin",
+    "build:portal": "npm run build --workspace=apps/core/portal",
+    "build:admin": "npm run build --workspace=apps/core/admin",
     "dev": "turbo run dev",
-    "dev:portal": "npm run dev --workspace=apps/portal -- -p 3000",
-    "dev:admin": "npm run dev --workspace=apps/admin -- -p 3001",
-    "lint": "npm run lint --workspace=apps/portal && npm run lint --workspace=apps/admin",
+    "dev:portal": "npm run dev --workspace=apps/core/portal -- -p 3000",
+    "dev:admin": "npm run dev --workspace=apps/core/admin -- -p 3001",
+    "lint": "npm run lint --workspace=apps/core/portal && npm run lint --workspace=apps/core/admin",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
