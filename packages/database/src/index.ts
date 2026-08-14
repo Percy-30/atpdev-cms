@@ -25,6 +25,7 @@ export type Project = {
   image: string;
   demolink: string;
   playstore?: string;
+  appstore?: string;
   status: string;
   github_repo?: string;
   github_stars?: number;
@@ -336,13 +337,13 @@ export function slugify(title: string): string {
     .replace(/-+/g, '-');
 }
 
-export async function createProject(project: Omit<Project, 'id' | 'created_at'>): Promise<boolean> {
+export async function createProject(project: Omit<Project, 'id' | 'created_at'>): Promise<{ success: boolean, error?: string }> {
   const { error } = await adminSupabase.from('projects').insert([project]);
   if (error) {
     console.error('Error creating project:', error);
-    return false;
+    return { success: false, error: error.message || error.details || "Error desconocido en BD" };
   }
-  return true;
+  return { success: true };
 }
 
 // =====================================================
@@ -352,6 +353,7 @@ export async function createProject(project: Omit<Project, 'id' | 'created_at'>)
 export type GithubAutofillData = {
   title: string;
   description: string;
+  long_description?: string;
   stack: string[];
   category: string;
   isPrivate: boolean;
@@ -692,13 +694,13 @@ export async function updateProjectStatus(id: number, status: string): Promise<b
   return true;
 }
 
-export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at'>>): Promise<boolean> {
+export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at'>>): Promise<{ success: boolean, error?: string }> {
   const { error } = await adminSupabase.from('projects').update(project).eq('id', id);
   if (error) {
     console.error('Error updating project:', error);
-    return false;
+    return { success: false, error: error.message || error.details || "Error desconocido en BD" };
   }
-  return true;
+  return { success: true };
 }
 
 export async function uploadImage(file: File): Promise<string | null> {

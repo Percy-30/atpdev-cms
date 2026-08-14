@@ -3,7 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink } from "lucide-react";
 import { Project, GithubRepoSummary } from "@atpdev/database";
-import { createProject, updateStatus, deleteProject, updateProjectAction, autofillFromGithub, getGithubRepos, captureScreenshot, uploadImageFile } from "./actions";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile } from "./actions";
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -19,15 +21,32 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [stack, setStack] = useState("");
   const [category, setCategory] = useState("Android");
   const [slug, setSlug] = useState("");
+  const [domainType, setDomainType] = useState<"subruta" | "subdominio" | "externa">("subruta");
   const [demolink, setDemolink] = useState("");
+  const [playstore, setPlaystore] = useState("");
+  const [appstore, setAppstore] = useState("");
   const [imagePreview, setImagePreview] = useState(""); // screenshot capturado, viaja en input oculto "image"
+  
+  // Estado para el editor de bloques (Pseudo-Block Editor)
+  type UIBlock = { id: string; type: "h2" | "p" | "image"; content: string; alt?: string; url?: string; context?: string };
+  const [blocks, setBlocks] = useState<UIBlock[]>([]);
+  const [showPreview, setShowPreview] = useState(false);
+
   const [autofillState, setAutofillState] = useState<"idle" | "loading" | "error">("idle");
   const [autofillError, setAutofillError] = useState("");
   const [screenshotState, setScreenshotState] = useState<"idle" | "loading" | "error">("idle");
   const [screenshotError, setScreenshotError] = useState("");
   const [uploadState, setUploadState] = useState<"idle" | "loading" | "error">("idle");
   const [uploadError, setUploadError] = useState("");
+  const [submitState, setSubmitState] = useState<"idle" | "loading" | "error">("idle");
+  const [submitError, setSubmitError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Editor Markdown Enriquecido
+  const inlineFileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [inlineUploadState, setInlineUploadState] = useState<"idle" | "loading" | "error">("idle");
+  const [inlineUploadError, setInlineUploadError] = useState("");
 
   // Selector de repos tipo "Import Project" de Vercel
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -47,7 +66,27 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setStack(editingProject?.stack.join(", ") || "");
     setCategory(editingProject?.category || "Android");
     setSlug(editingProject?.slug || "");
-    setDemolink(editingProject?.demolink && editingProject.demolink !== "#" ? editingProject.demolink : "");
+    
+    const rawLongDesc = editingProject?.long_description || "";
+    try {
+      if (rawLongDesc.startsWith("[")) {
+        setBlocks(JSON.parse(rawLongDesc).map((b: any, i: number) => ({ ...b, id: b.id || String(i) })));
+      } else if (rawLongDesc) {
+        setBlocks([{ id: "0", type: "p", content: rawLongDesc }]);
+      } else {
+        setBlocks([]);
+      }
+    } catch {
+      setBlocks([{ id: "0", type: "p", content: rawLongDesc }]);
+    }
+    
+    const demo = editingProject?.demolink && editingProject.demolink !== "#" ? editingProject.demolink : "";
+    setDemolink(demo);
+    setPlaystore(editingProject?.playstore || "");
+    setAppstore((editingProject as any)?.appstore || "");
+    setDomainType(!demo ? "subruta" : demo.includes("play.google.com") ? "externa" : "subdominio");
+    
+    setUploadState("idle");
     setImagePreview(editingProject?.image || "");
     setAutofillState("idle");
     setAutofillError("");
@@ -55,6 +94,10 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setScreenshotError("");
     setUploadState("idle");
     setUploadError("");
+    setSubmitState("idle");
+    setSubmitError("");
+    setInlineUploadState("idle");
+    setInlineUploadError("");
   }, [editingId]);
 
   // Cierra el dropdown si haces clic afuera
@@ -86,7 +129,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const runAutofill = async (repoFullName: string) => {
     setAutofillState("loading");
     setAutofillError("");
-    const result = await autofillFromGithub(repoFullName);
+    const result = await autofillProjectWithAI(repoFullName, domainType);
     if ("error" in result) {
       setAutofillState("error");
       setAutofillError(result.error);
@@ -94,6 +137,19 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     }
     setTitle(result.data.title);
     setDescription(result.data.description);
+    
+    const rawDesc = result.data.long_description || "";
+    try {
+      if (rawDesc.startsWith("[")) {
+        setBlocks(JSON.parse(rawDesc).map((b: any, i: number) => ({ ...b, id: b.id || String(i) })));
+        setLongDescription(""); 
+      } else {
+        setBlocks([{ id: "0", type: "p", content: rawDesc }]);
+      }
+    } catch {
+      setBlocks([{ id: "0", type: "p", content: rawDesc }]);
+    }
+
     setStack(result.data.stack.join(", "));
     setCategory(result.data.category);
     setSlug(prev => prev || result.data.title.toLowerCase().replace(/\s+/g, "-"));
@@ -155,14 +211,87 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     e.target.value = "";
   };
 
+  const handleInlineImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setInlineUploadState("loading");
+    setInlineUploadError("");
+    
+    const fd = new FormData();
+    fd.set("file", file);
+    const result = await uploadImageFile(fd);
+    
+    if ("error" in result) {
+      setInlineUploadState("error");
+      setInlineUploadError(result.error);
+    } else if (result.imageUrl) {
+      // Inyectar en el textarea
+      const textarea = textareaRef.current;
+      const markdownImage = `\n![Imagen insertada](${result.imageUrl})\n`;
+      
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const currentText = long_description;
+        const newText = currentText.substring(0, start) + markdownImage + currentText.substring(end);
+        setLongDescription(newText);
+        
+        // Volver a poner el foco y el cursor
+        setTimeout(() => {
+          textarea.focus();
+          textarea.setSelectionRange(start + markdownImage.length, start + markdownImage.length);
+        }, 10);
+      } else {
+        setLongDescription(prev => prev + markdownImage);
+      }
+      setInlineUploadState("idle");
+    }
+    e.target.value = "";
+  };
+
+  const compileBlocksToMarkdown = () => {
+    return blocks.map(b => {
+      if (b.type === "h2") return `## ${b.content}`;
+      if (b.type === "p") return b.content;
+      if (b.type === "image") {
+        if (!b.url) return ""; // Avoid empty src attribute error in ReactMarkdown
+        return `![${b.alt || "Imagen insertada"}](${b.url})`;
+      }
+      return b.content;
+    }).filter(Boolean).join("\n\n");
+  };
+
   const handleSubmit = async (formData: FormData) => {
+    setSubmitState("loading");
+    setSubmitError("");
+    
+    // Si es subruta, forzamos que demolink sea "#" internamente
+    if (domainType === "subruta") {
+      formData.set("demolink", "#");
+    }
+    // Convertir los bloques visuales a un solo string Markdown antes de guardar
+    if (domainType !== "externa") {
+      formData.set("long_description", compileBlocksToMarkdown());
+    }
+
+    let result;
     if (editingId) {
-      await updateProjectAction(editingId, formData);
-      setEditingId(null);
+      result = await updateProjectAction(editingId, formData);
     } else {
-      await createProject(formData);
-      setTitle(""); setDescription(""); setStack(""); setSlug(""); setRepoInput("");
-      setCategory("Android"); setDemolink(""); setImagePreview("");
+      result = await createProject(formData);
+    }
+
+    if (result && "error" in result && result.error) {
+      setSubmitState("error");
+      setSubmitError(result.error);
+    } else {
+      setSubmitState("idle");
+      if (!editingId) {
+        setTitle(""); setDescription(""); setStack(""); setSlug(""); setRepoInput("");
+        setCategory("Android"); setDemolink(""); setImagePreview(""); setLongDescription("");
+      }
+      setEditingId(null);
     }
   };
 
@@ -292,17 +421,31 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           <div className="flex flex-col gap-1.5" ref={pickerRef} style={{ position: "relative" }}>
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Repo de GitHub</label>
 
-            <button
-              type="button"
-              onClick={openPicker}
-              className="w-full flex items-center justify-between gap-2 bg-\[\#1A1A1A\] border border-gray-800 text-left px-4 py-2.5 rounded-xl hover:border-blue-500/50 transition-all text-sm"
-            >
-              <span className={`flex items-center gap-2 truncate ${repoInput ? "text-white" : "text-gray-500"}`}>
-                <Github size={15} className="shrink-0 text-gray-400" />
-                {repoInput || "Seleccionar repositorio..."}
-              </span>
-              {autofillState === "loading" && <Loader2 size={14} className="animate-spin shrink-0 text-blue-400" />}
-            </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={openPicker}
+                className="flex-1 flex items-center justify-between gap-2 bg-\[\#1A1A1A\] border border-gray-800 text-left px-4 py-2.5 rounded-xl hover:border-blue-500/50 transition-all text-sm"
+              >
+                <span className={`flex items-center gap-2 truncate ${repoInput ? "text-white" : "text-gray-500"}`}>
+                  <Github size={15} className="shrink-0 text-gray-400" />
+                  {repoInput || "Seleccionar repositorio..."}
+                </span>
+                {autofillState === "loading" && <span className="flex items-center gap-1 text-[11px] text-blue-400 font-medium"><Loader2 size={12} className="animate-spin" /> Analizando...</span>}
+              </button>
+              
+              {repoInput && (
+                <button
+                  type="button"
+                  onClick={() => runAutofill(repoInput)}
+                  disabled={autofillState === "loading"}
+                  title="Completar con IA"
+                  className="bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/30 text-blue-400 px-3 py-2.5 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center shrink-0 shadow-lg"
+                >
+                  ✨ IA
+                </button>
+              )}
+            </div>
             {/* input real que viaja con el <form>, oculto porque el botón de arriba lo controla */}
             <input type="hidden" name="github_repo" value={repoInput} />
 
@@ -402,8 +545,62 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">URL (Demo/Play Store)</label>
-            <input type="text" name="demolink" value={demolink} onChange={e => setDemolink(e.target.value)} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm" placeholder="https://... (opcional, déjalo vacío si aún no tienes link)" />
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Arquitectura de Despliegue</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setDomainType("subruta"); setDemolink(""); }}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                  domainType === "subruta" ? "bg-blue-600/10 border-blue-500/50 text-blue-400" : "bg-\[\#1A1A1A\] border-gray-800 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                Página SEO (Subruta)
+              </button>
+              <button
+                type="button"
+                onClick={() => setDomainType("subdominio")}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                  domainType === "subdominio" ? "bg-emerald-600/10 border-emerald-500/50 text-emerald-400" : "bg-\[\#1A1A1A\] border-gray-800 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                Ambos (Página SEO + Link)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setDomainType("externa"); setLongDescription(""); }}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                  domainType === "externa" ? "bg-amber-600/10 border-amber-500/50 text-amber-400" : "bg-\[\#1A1A1A\] border-gray-800 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                Solo Tarjeta (Externa)
+              </button>
+            </div>
+          </div>
+
+          {domainType !== "subruta" && (
+            <div className="flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-2 duration-300">
+              <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                URL Demo Web ({domainType === "subdominio" ? "Ej: almaniq.atpdev.dev" : "Ej: https://..."})
+              </label>
+              <input type="text" name="demolink" value={demolink} onChange={e => setDemolink(e.target.value)} required className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm focus:ring-2 focus:ring-blue-500/20" placeholder="https://..." />
+            </div>
+          )}
+          {/* Si es subruta, la URL queda vacía y no molesta en la UI, el backend lo maneja. */}
+
+          {/* Enlaces de Tiendas (Opcionales) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex-1 flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                Play Store / APK Link (Opcional)
+              </label>
+              <input type="text" name="playstore" value={playstore} onChange={e => setPlaystore(e.target.value)} className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm focus:ring-2 focus:ring-emerald-500/20" placeholder="https://play.google.com/..." />
+            </div>
+            <div className="flex-1 flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                App Store Link (Opcional)
+              </label>
+              <input type="text" name="appstore" value={appstore} onChange={e => setAppstore(e.target.value)} className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm focus:ring-2 focus:ring-blue-500/20" placeholder="https://apps.apple.com/..." />
+            </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -469,10 +666,120 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <textarea name="description" value={description} onChange={e => setDescription(e.target.value)} required rows={2} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm resize-none" placeholder="Breve descripción..."></textarea>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Descripción Larga (SEO)</label>
-            <textarea name="long_description" value={long_description} onChange={e => setLongDescription(e.target.value)} rows={4} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm resize-none" placeholder="Descripción extendida para la página del proyecto (200-300 palabras)..."></textarea>
-          </div>
+          {domainType !== "externa" && (
+            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Maqueta del Artículo (Bloques AI)</label>
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(!showPreview)}
+                  className="flex items-center gap-1.5 text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-lg hover:bg-blue-500/20 transition-all"
+                >
+                  {showPreview ? "Cerrar Vista Previa" : "Ver Vista Previa"}
+                </button>
+              </div>
+
+              {showPreview ? (
+                <div className="bg-[#111] border border-gray-800 p-6 rounded-xl prose prose-invert max-w-none text-sm min-h-[300px]">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {compileBlocksToMarkdown() || "*El artículo está vacío...*"}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4 min-h-[300px]">
+                  {blocks.length === 0 && (
+                    <div className="text-sm text-gray-500 italic p-4 text-center border border-dashed border-gray-800 rounded-xl">
+                      Usa el botón ✨ IA para generar los bloques del artículo.
+                    </div>
+                  )}
+                  {blocks.map((b, i) => (
+                    <div key={b.id} className="relative group border-l-2 border-transparent focus-within:border-blue-500 pl-3 -ml-3 transition-colors">
+                      {b.type === "h2" && (
+                        <input 
+                          type="text" 
+                          value={b.content} 
+                          onChange={(e) => {
+                            const newBlocks = [...blocks];
+                            newBlocks[i].content = e.target.value;
+                            setBlocks(newBlocks);
+                          }}
+                          className="w-full bg-transparent text-xl font-bold text-white focus:outline-none placeholder-gray-600"
+                          placeholder="Subtítulo..."
+                        />
+                      )}
+                      {b.type === "p" && (
+                        <textarea
+                          value={b.content}
+                          onChange={(e) => {
+                            const newBlocks = [...blocks];
+                            newBlocks[i].content = e.target.value;
+                            setBlocks(newBlocks);
+                            // Auto-resize
+                            e.target.style.height = 'inherit';
+                            e.target.style.height = `${e.target.scrollHeight}px`;
+                          }}
+                          className="w-full bg-transparent text-sm text-gray-300 focus:outline-none resize-none overflow-hidden placeholder-gray-600"
+                          placeholder="Escribe un párrafo..."
+                          rows={3}
+                        />
+                      )}
+                      {b.type === "image" && (
+                        <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2">
+                          {b.url ? (
+                            <div className="relative group/img">
+                              <img src={b.url} alt={b.alt} className="max-h-48 rounded-lg object-contain" />
+                              <button 
+                                type="button" 
+                                onClick={() => {
+                                  const newBlocks = [...blocks];
+                                  newBlocks[i].url = "";
+                                  setBlocks(newBlocks);
+                                }}
+                                className="absolute top-2 right-2 bg-black/60 backdrop-blur text-white p-1.5 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <Camera size={24} className="text-gray-600" />
+                              <p className="text-xs text-gray-400 font-medium text-center">
+                                {b.context || "Sube una imagen para este bloque"}
+                              </p>
+                              <div className="relative">
+                                <input 
+                                  type="file" 
+                                  accept="image/*"
+                                  onChange={async (e) => {
+                                    const file = e.target.files?.[0];
+                                    if(!file) return;
+                                    setInlineUploadState("loading");
+                                    const fd = new FormData(); fd.set("file", file);
+                                    const res = await uploadImageFile(fd);
+                                    if(res.imageUrl) {
+                                      const newBlocks = [...blocks];
+                                      newBlocks[i].url = res.imageUrl;
+                                      setBlocks(newBlocks);
+                                    }
+                                    setInlineUploadState("idle");
+                                  }}
+                                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                />
+                                <button type="button" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-emerald-500/20 transition-all pointer-events-none flex items-center gap-2">
+                                  {inlineUploadState === "loading" ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                                  {inlineUploadState === "loading" ? "Subiendo..." : "Subir Foto"}
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <label className="flex items-center gap-2 cursor-pointer mt-2">
             <input 
@@ -486,7 +793,14 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <span className="text-sm font-semibold text-gray-300">Destacar proyecto (Mostrar primero en inicio)</span>
           </label>
 
-          <input type="hidden" name="status" value={editingProject ? editingProject.status : "Activo"} />
+          <input type="hidden" name="status" value={editingProject ? editingProject.status : "Borrador"} />
+
+          {submitError && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-sm text-red-400 mt-2">
+              <span className="font-bold block mb-1">Error al guardar:</span>
+              {submitError}
+            </div>
+          )}
 
           <div className="flex gap-2 mt-4">
             {editingId && (
@@ -500,8 +814,10 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             )}
             <button
               type="submit"
-              className={`${editingId ? 'w-2/3 bg-purple-600 hover:bg-purple-500 shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'w-full bg-blue-600 hover:bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)]'} text-white font-bold px-4 py-3 rounded-xl transition-all`}
+              disabled={submitState === "loading"}
+              className={`${editingId ? 'w-2/3 bg-purple-600 hover:bg-purple-500 shadow-[0_0_15px_rgba(147,51,234,0.4)]' : 'w-full bg-blue-600 hover:bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)]'} text-white font-bold px-4 py-3 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2`}
             >
+              {submitState === "loading" && <Loader2 size={16} className="animate-spin" />}
               {editingId ? "Guardar Cambios" : "Crear Proyecto"}
             </button>
           </div>

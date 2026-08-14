@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import CookieBanner from "@/components/CookieBanner";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import AdSenseInjector from "@/components/AdSenseInjector";
 import { getSiteConfig, translateText } from "@atpdev/database";
 import { Providers } from "@/components/providers";
 import "../globals.css";
@@ -137,9 +138,45 @@ export default async function RootLayout({
   return (
     <html lang={lang} className="scroll-smooth" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={googleFontsUrl} rel="stylesheet" />
+        
+        {/* Consent Mode v2 Default (Must be loaded before GA4/AdSense) */}
+        <Script id="consent-mode-default" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'wait_for_update': 500
+          });
+          gtag('set', 'ads_data_redaction', true);
+        `}} />
+
+        {/* Google AdSense moved to AdSenseInjector component */}
+
+        {/* Google Analytics 4 */}
+        {config?.ga4_id && (
+          <>
+            <Script 
+              id="ga4-script"
+              async 
+              src={`https://www.googletagmanager.com/gtag/js?id=${config.ga4_id}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-config" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${config.ga4_id}');
+            `}} />
+          </>
+        )}
+
         <style dangerouslySetInnerHTML={{
           __html: `
             :root {
@@ -182,6 +219,7 @@ export default async function RootLayout({
       <body className={`font-sans antialiased min-h-screen`} suppressHydrationWarning>
         <Providers>
           <AnalyticsTracker />
+          <AdSenseInjector adsenseId={config?.adsense_id || null} />
           {children}
           <CookieBanner />
         </Providers>

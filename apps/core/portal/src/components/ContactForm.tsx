@@ -223,7 +223,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                   name="name"
                   onChange={() => setFormErrors(prev => ({...prev, name: undefined}))}
                   placeholder={ui.formNamePlaceholder}
-                  className={`w-full border ${formErrors.name ? 'border-red-500' : 'border-transparent'} focus:border-blue-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors placeholder-opacity-50`}
+                  className={`w-full border ${formErrors.name ? 'border-red-500' : 'border-transparent'} focus:border-blue-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all focus:shadow-[0_0_15px_var(--primary)] placeholder-opacity-50`}
                   style={{ backgroundColor: 'var(--pill-bg)', color: 'var(--text-color)' }}
                 />
                 <AnimatePresence>
@@ -241,7 +241,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                   name="email"
                   onChange={() => setFormErrors(prev => ({...prev, email: undefined}))}
                   placeholder={ui.formEmailPlaceholder}
-                  className={`w-full border ${formErrors.email ? 'border-red-500' : 'border-transparent'} focus:border-blue-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors placeholder-opacity-50`}
+                  className={`w-full border ${formErrors.email ? 'border-red-500' : 'border-transparent'} focus:border-blue-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all focus:shadow-[0_0_15px_var(--primary)] placeholder-opacity-50`}
                   style={{ backgroundColor: 'var(--pill-bg)', color: 'var(--text-color)' }}
                 />
                 <AnimatePresence>
@@ -259,7 +259,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                   defaultCountry="PE"
                   value={phoneValue}
                   onChange={setPhoneValue}
-                  className="w-full border border-transparent focus-within:border-blue-500 rounded-xl px-4 py-3 transition-colors"
+                  className="w-full border border-transparent focus-within:border-blue-500 rounded-xl px-4 py-3 transition-all focus-within:shadow-[0_0_15px_var(--primary)]"
                   style={{ backgroundColor: 'var(--pill-bg)', color: 'var(--text-color)' }}
                 />
                 <style dangerouslySetInnerHTML={{__html: `
@@ -286,7 +286,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                   name="message"
                   onChange={() => setFormErrors(prev => ({...prev, message: undefined}))}
                   placeholder={ui.formMessagePlaceholder}
-                  className={`w-full border ${formErrors.message ? 'border-red-500' : 'border-transparent'} focus:border-blue-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors resize-none placeholder-opacity-50`}
+                  className={`w-full border ${formErrors.message ? 'border-red-500' : 'border-transparent'} focus:border-blue-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all focus:shadow-[0_0_15px_var(--primary)] resize-none placeholder-opacity-50`}
                   style={{ backgroundColor: 'var(--pill-bg)', color: 'var(--text-color)' }}
                 ></textarea>
                 <AnimatePresence>
@@ -303,7 +303,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 className={`w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg text-white ${
                   status === "error"
                     ? "bg-red-600 hover:bg-red-700"
-                    : "hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:opacity-90"
+                    : "hover:scale-[1.03] hover:shadow-[0_0_25px_var(--primary)] hover:opacity-90"
                 }`}
                 style={status !== "error" ? { backgroundColor: 'var(--primary)' } : {}}
               >

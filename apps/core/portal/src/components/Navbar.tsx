@@ -54,7 +54,7 @@ export default function Navbar() {
           ))}
           <div className="flex items-center gap-4 border-l pl-4" style={{ borderColor: 'var(--glass-border)' }}>
             <ThemeToggle />
-            <Link href={`${linkPrefix}/#contact`} className="text-white px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)]" style={{ backgroundColor: 'var(--primary)' }}>
+            <Link href={`${linkPrefix}/#contact`} className="text-white px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_20px_var(--primary)]" style={{ backgroundColor: 'var(--primary)' }}>
               {tContacto}
             </Link>
           </div>
