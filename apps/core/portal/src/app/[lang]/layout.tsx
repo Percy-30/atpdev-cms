@@ -177,6 +177,35 @@ export default async function RootLayout({
           </>
         )}
 
+        {/* JSON-LD Schema (Pro SEO) - Native script for SSR */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": config?.full_name || "Percy Acha Taipe",
+                "alternateName": "ATP Dev",
+                "url": BASE_URL,
+                "image": config?.avatar_url || OG_IMAGE,
+                "jobTitle": await translateText("Fullstack & Android Developer", lang),
+                "sameAs": [
+                  config?.github_url,
+                  config?.linkedin_url
+                ].filter(Boolean)
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "ATP Dev",
+                "url": BASE_URL,
+                "description": await translateText("Portafolio Profesional de Percy Acha Taipe, Ingeniero de Sistemas y Desarrollador.", lang)
+              }
+            ])
+          }}
+        />
+
         <style dangerouslySetInnerHTML={{
           __html: `
             :root {
@@ -223,35 +252,6 @@ export default async function RootLayout({
           {children}
           <CookieBanner />
         </Providers>
-        {/* JSON-LD Schema (Pro SEO) */}
-        <Script
-          id="json-ld-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                "@context": "https://schema.org",
-                "@type": "Person",
-                "name": config?.full_name || "Percy Acha Taipe",
-                "alternateName": "ATP Dev",
-                "url": BASE_URL,
-                "image": config?.avatar_url || OG_IMAGE,
-                "jobTitle": await translateText("Fullstack & Android Developer", lang),
-                "sameAs": [
-                  config?.github_url,
-                  config?.linkedin_url
-                ].filter(Boolean)
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "name": "ATP Dev",
-                "url": BASE_URL,
-                "description": await translateText("Portafolio Profesional de Percy Acha Taipe, Ingeniero de Sistemas y Desarrollador.", lang)
-              }
-            ])
-          }}
-        />
       </body>
     </html>
   );
