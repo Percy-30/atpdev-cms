@@ -204,7 +204,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       e.target.value = "";
       return;
     }
-    if (result.imageUrl) {
+    if ("imageUrl" in result && result.imageUrl) {
       setImagePreview(result.imageUrl);
     }
     setUploadState("idle");
@@ -225,7 +225,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     if ("error" in result) {
       setInlineUploadState("error");
       setInlineUploadError(result.error);
-    } else if (result.imageUrl) {
+    } else if ("imageUrl" in result && result.imageUrl) {
       // Inyectar en el textarea
       const textarea = textareaRef.current;
       const markdownImage = `\n![Imagen insertada](${result.imageUrl})\n`;
@@ -756,7 +756,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                                     setInlineUploadState("loading");
                                     const fd = new FormData(); fd.set("file", file);
                                     const res = await uploadImageFile(fd);
-                                    if(res.imageUrl) {
+                                    if("imageUrl" in res && res.imageUrl) {
                                       const newBlocks = [...blocks];
                                       newBlocks[i].url = res.imageUrl;
                                       setBlocks(newBlocks);
