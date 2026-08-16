@@ -20,7 +20,7 @@ export default function Portfolio({
   enableGlow?: boolean;
   glowStyle?: string;
 }) {
-  const glowClass = enableGlow ? `glow-element-${glowStyle}` : "";
+  const glowClass = "interactive-card";
   const [filter, setFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
 
@@ -43,7 +43,13 @@ export default function Portfolio({
       <section id="portfolio" className="py-20 relative border-t border-[var(--glass-border)] transition-colors">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 transition-colors" style={{ color: 'var(--text-color)' }}>{ui.featuredProjects}</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 transition-colors" style={{ color: 'var(--text-color)' }}>
+              {ui.featuredProjects.split(" ")[0]} {ui.featuredProjects.split(" ").slice(1).length > 0 && (
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--primary), var(--tertiary))' }}>
+                  {ui.featuredProjects.split(" ").slice(1).join(" ")}
+                </span>
+              )}
+            </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">{ui.featuredDesc}</p>
           </div>
 

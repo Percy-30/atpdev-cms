@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { translateClient } from "@/utils/translate";
 import ThemeToggle from "./ThemeToggle";
+import MagneticEffect from "./MagneticEffect";
 
 export default function Navbar() {
   const params = useParams();
@@ -30,19 +31,21 @@ export default function Navbar() {
   const linkPrefix = lang === 'es' ? '' : `/${lang}`;
 
   const links = [
-    { href: `${linkPrefix}/#portfolio`, label: tProyectos },
     { href: `${linkPrefix}/#about`,     label: tSobreMi },
     { href: `${linkPrefix}/#experience`, label: tExperiencia },
+    { href: `${linkPrefix}/#portfolio`, label: tProyectos },
     { href: `${linkPrefix}/#contact`,   label: tContacto },
   ];
 
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between border-b transition-colors" style={{ backgroundColor: 'var(--glass-bg)', borderColor: 'var(--glass-border)', backdropFilter: 'blur(20px)' }}>
-        <Link href={`${linkPrefix}/`} className="flex items-center gap-2 font-bold text-xl hover:opacity-80 transition-opacity" style={{ color: 'var(--text-color)' }}>
-          <Terminal size={24} style={{ color: 'var(--primary)' }} />
-          <span>ATP DEV</span>
-        </Link>
+        <MagneticEffect intensity={0.1}>
+          <Link href={`${linkPrefix}/`} className="flex items-center gap-2 font-bold text-xl hover:opacity-80 transition-opacity" style={{ color: 'var(--text-color)' }}>
+            <Terminal size={24} style={{ color: 'var(--primary)' }} />
+            <span>ATP DEV</span>
+          </Link>
+        </MagneticEffect>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
@@ -54,9 +57,11 @@ export default function Navbar() {
           ))}
           <div className="flex items-center gap-4 border-l pl-4" style={{ borderColor: 'var(--glass-border)' }}>
             <ThemeToggle />
-            <Link href={`${linkPrefix}/#contact`} className="text-white px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_20px_var(--primary)]" style={{ backgroundColor: 'var(--primary)' }}>
-              {tContacto}
-            </Link>
+            <MagneticEffect intensity={0.2}>
+              <Link href={`${linkPrefix}/#contact`} className="text-white px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_20px_var(--primary)] flex" style={{ backgroundColor: 'var(--primary)' }}>
+                {tContacto}
+              </Link>
+            </MagneticEffect>
           </div>
         </div>
 

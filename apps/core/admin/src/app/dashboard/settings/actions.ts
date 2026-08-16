@@ -14,7 +14,7 @@ export async function saveSettings(formData: FormData) {
     'github_url', 'linkedin_url', 'twitter_url', 'facebook_url',
     'instagram_url', 'youtube_url', 'tiktok_url', 'whatsapp_url',
     'telegram_url', 'discord_url',
-    'cv_url', 'credly_url', 'ga4_id', 'adsense_id', 'glow_style'
+    'cv_url', 'credly_url', 'ga4_id', 'adsense_id', 'glow_style', 'global_background_image'
   ];
 
   for (const field of textFields) {
@@ -47,5 +47,74 @@ export async function saveSettings(formData: FormData) {
     revalidatePath("/dashboard/settings");
     revalidatePath("/dashboard");
     revalidatePath("/", "layout");
+  }
+}
+
+export async function suggestThemeWithAI(mode: "light" | "dark" = "dark", userPrompt: string = "", includeBackground: boolean = true) {
+  if (!process.env.GEMINI_API_KEY) {
+    return { error: "No hay GEMINI_API_KEY configurada." };
+  }
+
+  try {
+    const { GoogleGenerativeAI } = await import("@google/generative-ai");
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+
+    const prompt = `
+      Eres un experto en diseño UI/UX y director de arte digital.
+      El usuario está configurando el tema de su portafolio web personal (un portal SaaS para desarrolladores).
+      Necesito que generes una configuración visual COMPLETA para un tema en modo "${mode}".
+      
+      ${userPrompt ? `PREFERENCIA ESPECÍFICA DEL USUARIO: "${userPrompt}" (Asegúrate de que la paleta${includeBackground ? ' y el arte de fondo reflejen' : ' refleje'} exactamente esta vibra/estilo).` : `Genera un tema espectacular, profesional y moderno.`}
+      
+      Debes proveer:
+      1. Paleta Sólida (4 colores para la interfaz).
+         - primary: Color de acento principal.
+         - secondary: Color secundario.
+         - tertiary: Color terciario.
+         - neutral: Color neutro.
+      ${includeBackground ? `
+      2. Arte de Fondo (Gradient Background).
+         - type: "mesh", "aurora", "grainy", "flow" o "radial".
+         - colors: Un arreglo de 3 a 5 colores HEX armónicos (distintos a los sólidos o variaciones) que se mezclarán en el fondo. Usa colores preferiblemente oscuros si es modo dark, o claros si es light.
+         - distortion: un número del 1 al 100 (qué tan distorsionadas/mezcladas están las luces).
+         - scale: un número del 1 al 100 (qué tan grande es el efecto).
+         - contrast: un número del 80 al 150.
+      3. Efecto de Interacción (Mouse Effect).
+         - mouse_effect: "spotlight", "tilt", "ripple", "magnet", "glitch", "burst", o "none". (Elige el más adecuado para la "vibra" del diseño. Ej. "glitch" para cyberpunk, "spotlight" para profesional/elegante).
+      ` : ''}
+
+      Instrucciones Críticas:
+      Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
+      {
+        "primary": "#HEX",
+        "secondary": "#HEX",
+        "tertiary": "#HEX",
+        "neutral": "#HEX",
+        "mouse_effect": "spotlight"${includeBackground ? `,
+        "gradient": {
+          "type": "mesh",
+          "colors": ["#HEX", "#HEX", "#HEX"],
+          "distortion": 50,
+          "scale": 100,
+          "contrast": 110
+        }` : ''}
+      }
+    `;
+
+    const response = await model.generateContent(prompt);
+    let text = response.response.text().trim();
+    // Limpieza robusta de Markdown
+    text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+    
+    const parsed = JSON.parse(text);
+    if (parsed.primary && parsed.secondary && parsed.tertiary && parsed.neutral && parsed.mouse_effect) {
+      return { data: parsed };
+    } else {
+      throw new Error("Formato JSON incorrecto");
+    }
+  } catch (error) {
+    console.error("Error en suggestThemeWithAI:", error);
+    return { error: "Error al generar sugerencia de colores." };
   }
 }

@@ -3,8 +3,10 @@ import Script from "next/script";
 import CookieBanner from "@/components/CookieBanner";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import AdSenseInjector from "@/components/AdSenseInjector";
+import LivePreviewListener from "@/components/LivePreviewListener";
 import { getSiteConfig, translateText } from "@atpdev/database";
 import { Providers } from "@/components/providers";
+import CustomCursor from "@/components/CustomCursor";
 import "../globals.css";
 
 const BASE_URL = "https://www.atpdev.dev";
@@ -143,39 +145,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={googleFontsUrl} rel="stylesheet" />
         
-        {/* Consent Mode v2 Default (Must be loaded before GA4/AdSense) */}
-        <Script id="consent-mode-default" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('consent', 'default', {
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied',
-            'analytics_storage': 'denied',
-            'wait_for_update': 500
-          });
-          gtag('set', 'ads_data_redaction', true);
-        `}} />
-
         {/* Google AdSense moved to AdSenseInjector component */}
-
-        {/* Google Analytics 4 */}
-        {config?.ga4_id && (
-          <>
-            <Script 
-              id="ga4-script"
-              async 
-              src={`https://www.googletagmanager.com/gtag/js?id=${config.ga4_id}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-config" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${config.ga4_id}');
-            `}} />
-          </>
-        )}
 
         {/* JSON-LD Schema (Pro SEO) - Native script for SSR */}
         <script
@@ -220,11 +190,14 @@ export default async function RootLayout({
               --font-heading: '${fontHeadline}', sans-serif;
               --font-body: '${fontBody}', sans-serif;
               --font-label: '${fontLabel}', monospace;
+              --neon-thickness: ${(config as any)?.neon_thickness || '4px'};
+              --neon-glow: ${(config as any)?.neon_thickness === '2px' ? '10px' : (config as any)?.neon_thickness === '6px' ? '26px' : (config as any)?.neon_thickness === '8px' ? '36px' : '18px'};
+              ${config?.global_background_image ? `--global-bg-image: url('${config.global_background_image}');` : ''}
               
               /* Liquid Glass Light */
-              --bg1: color-mix(in srgb, ${primary} 15%, #ffffff);
-              --bg2: color-mix(in srgb, ${secondary} 15%, #f8f9fa);
-              --bg3: color-mix(in srgb, ${tertiary} 15%, #ffffff);
+              --bg1: color-mix(in srgb, var(--primary) 15%, #ffffff);
+              --bg2: color-mix(in srgb, var(--secondary) 15%, #f8f9fa);
+              --bg3: color-mix(in srgb, var(--tertiary) 15%, #ffffff);
               --glass-bg: rgba(255, 255, 255, 0.4);
               --glass-border: rgba(255, 255, 255, 0.6);
               --pill-bg: rgba(255, 255, 255, 0.55);
@@ -235,19 +208,61 @@ export default async function RootLayout({
               --foreground: #EDEDED;
               
               /* Liquid Glass Dark (Color-mixed with black for depth) */
-              --bg1: color-mix(in srgb, ${primary} 12%, #000000);
-              --bg2: color-mix(in srgb, ${secondary} 12%, #020202);
-              --bg3: color-mix(in srgb, ${tertiary} 12%, #000000);
+              --bg1: color-mix(in srgb, var(--primary) 12%, #000000);
+              --bg2: color-mix(in srgb, var(--secondary) 12%, #020202);
+              --bg3: color-mix(in srgb, var(--tertiary) 12%, #000000);
               --glass-bg: rgba(20, 20, 30, 0.45);
               --glass-border: rgba(255, 255, 255, 0.15);
               --pill-bg: rgba(255, 255, 255, 0.18);
               --text-color: #ffffff;
             }
+
+            body {
+              background-color: var(--background);
+              background-image: var(--global-bg-image, none);
+              background-size: cover;
+              background-attachment: fixed;
+              background-position: center;
+            }
           `
         }} />
       </head>
-      <body className={`font-sans antialiased min-h-screen`} suppressHydrationWarning>
+      <body className={`font-sans antialiased min-h-screen`} data-interaction={config?.glow_style || 'spotlight'} suppressHydrationWarning>
+        {/* Consent Mode v2 Default (Must be loaded before GA4/AdSense) */}
+        <Script id="consent-mode-default" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'wait_for_update': 500
+          });
+          gtag('set', 'ads_data_redaction', true);
+        `}} />
+
+        {/* Google Analytics 4 */}
+        {config?.ga4_id && (
+          <>
+            <Script 
+              id="ga4-script"
+              async 
+              src={`https://www.googletagmanager.com/gtag/js?id=${config.ga4_id}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-config" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${config.ga4_id}');
+            `}} />
+          </>
+        )}
+
         <Providers>
+          <CustomCursor glowStyle={config?.glow_style || ''} />
+          <LivePreviewListener />
           <AnalyticsTracker />
           <AdSenseInjector adsenseId={config?.adsense_id || null} />
           {children}

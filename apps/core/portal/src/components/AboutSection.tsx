@@ -34,7 +34,7 @@ interface AboutSectionProps {
 }
 
 export default function AboutSection({ initialSkills = [], initialCredlyUrl = "", lang = 'es', enableGlow = true, glowStyle = 'border' }: AboutSectionProps) {
-  const glowClass = enableGlow ? `glow-element-${glowStyle}` : "";
+  const glowClass = "interactive-card";
 
   const [skills, setSkills] = useState<Skill[]>(initialSkills);
   const [credlyUrl, setCredlyUrl] = useState<string>(initialCredlyUrl);

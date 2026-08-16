@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { translateText } from "@atpdev/database";
+import { translateText, getSiteConfig } from "@atpdev/database";
 import { Scale, ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
+import { GlowWrapper } from "@/components/GlowWrapper";
 
 export const metadata: Metadata = {
   title: "Términos de Servicio | ATP Dev",
@@ -15,6 +16,7 @@ export default async function TermsOfService({
   params: Promise<{ lang: string }>;
 }) {
   const { lang = 'es' } = await params;
+  const config = await getSiteConfig();
 
   const t = async (text: string) => {
     if (lang === "es") return text;
@@ -38,56 +40,57 @@ export default async function TermsOfService({
   };
 
   const linkPath = lang === "es" ? "/" : `/${lang}`;
+  const enableGlow = config?.enable_glow_effect !== false;
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-gray-300 py-16 px-6 font-sans relative overflow-hidden">
+    <GlowWrapper enabled={enableGlow} className="w-full text-[var(--text-color)] transition-colors duration-500 min-h-screen py-16 px-6 relative overflow-hidden">
       {/* Glow Effects */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-600/10 blur-[120px] rounded-full pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[var(--tertiary)] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[var(--primary)] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
 
-      <div className="max-w-3xl mx-auto relative z-10 bg-[#12141a] p-8 md:p-12 rounded-3xl border border-gray-800 shadow-2xl">
-        <Link href={linkPath} className="inline-flex items-center gap-2 text-blue-500 hover:text-blue-400 mb-8 font-semibold transition-colors">
+      <div className="max-w-3xl mx-auto relative z-10 glass-panel neon-border p-8 md:p-12 rounded-3xl shadow-2xl">
+        <Link href={linkPath} className="inline-flex items-center gap-2 text-[var(--primary)] hover:opacity-80 mb-8 font-semibold transition-colors magnetic-element">
           <ArrowLeft size={18} /> {texts.back}
         </Link>
         
         <div className="flex items-center gap-4 mb-4">
-          <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20">
+          <div className="p-3 bg-[var(--tertiary)]/10 text-[var(--tertiary)] rounded-xl border border-[var(--tertiary)]/20">
             <Scale size={28} />
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white">{texts.title}</h1>
+          <h1 className="text-3xl md:text-5xl font-black title-gradient">{texts.title}</h1>
         </div>
         
-        <p className="text-sm font-semibold text-gray-500 mb-12 uppercase tracking-widest">{texts.updated}</p>
+        <p className="text-sm font-semibold opacity-60 mb-12 uppercase tracking-widest">{texts.updated}</p>
         
-        <div className="space-y-10 leading-relaxed text-gray-400">
+        <div className="space-y-10 leading-relaxed opacity-90">
           
           <section>
-            <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">{texts.h1}</h2>
+            <h2 className="text-xl font-bold mb-4 border-b border-[var(--glass-border)] pb-2">{texts.h1}</h2>
             <p className="mb-4">{texts.p1}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">{texts.h2}</h2>
+            <h2 className="text-xl font-bold mb-4 border-b border-[var(--glass-border)] pb-2">{texts.h2}</h2>
             <p className="mb-4">{texts.p2}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">{texts.h3}</h2>
+            <h2 className="text-xl font-bold mb-4 border-b border-[var(--glass-border)] pb-2">{texts.h3}</h2>
             <p>{texts.p3}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">{texts.h4}</h2>
+            <h2 className="text-xl font-bold mb-4 border-b border-[var(--glass-border)] pb-2">{texts.h4}</h2>
             <p>{texts.p4}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-800 pb-2">{texts.h5}</h2>
+            <h2 className="text-xl font-bold mb-4 border-b border-[var(--glass-border)] pb-2">{texts.h5}</h2>
             <p>{texts.p5}</p>
           </section>
 
         </div>
       </div>
-    </div>
+    </GlowWrapper>
   );
 }

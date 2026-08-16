@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink } from "lucide-react";
+import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette } from "lucide-react";
 import { Project, GithubRepoSummary } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile } from "./actions";
+import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, suggestGradientColorsWithAI } from "./actions";
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -32,6 +32,8 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [blocks, setBlocks] = useState<UIBlock[]>([]);
   const [showPreview, setShowPreview] = useState(false);
 
+  const [showGradientBuilderModal, setShowGradientBuilderModal] = useState(false);
+
   const [autofillState, setAutofillState] = useState<"idle" | "loading" | "error">("idle");
   const [autofillError, setAutofillError] = useState("");
   const [screenshotState, setScreenshotState] = useState<"idle" | "loading" | "error">("idle");
@@ -41,6 +43,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "error">("idle");
   const [submitError, setSubmitError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   
   // Editor Markdown Enriquecido
   const inlineFileInputRef = useRef<HTMLInputElement>(null);
@@ -111,6 +114,27 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [pickerOpen]);
+
+  // Escuchar mensajes del Iframe de Gradient Builder
+  useEffect(() => {
+    const handleMessage = async (e: MessageEvent) => {
+      if (e.data?.type === 'GRADIENT_GENERATED' && e.data?.payload) {
+        setImagePreview(e.data.payload);
+        setShowGradientBuilderModal(false);
+      }
+      
+      if (e.data?.type === 'REQUEST_AI_COLORS') {
+        const result = await suggestGradientColorsWithAI(title, description);
+        if (result && 'colors' in result && result.colors && iframeRef.current?.contentWindow) {
+          iframeRef.current.contentWindow.postMessage({ type: 'APPLY_AI_COLORS', payload: result.colors }, '*');
+        } else if (iframeRef.current?.contentWindow) {
+          iframeRef.current.contentWindow.postMessage({ type: 'APPLY_AI_COLORS_ERROR' }, '*');
+        }
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [title, description]);
 
   const openPicker = async () => {
     setPickerOpen(true);
@@ -661,6 +685,18 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <input type="hidden" name="image" value={imagePreview} />
           </div>
 
+          {/* BOTÓN GRADIENT BUILDER */}
+          <div className="flex justify-center -mt-2 mb-2 relative z-10">
+            <button
+              type="button"
+              onClick={() => setShowGradientBuilderModal(true)}
+              className="flex items-center gap-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 border border-purple-500/30 text-purple-300 px-6 py-2 rounded-full font-bold text-[11px] uppercase tracking-widest shadow-[0_0_15px_rgba(168,85,247,0.1)] hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all"
+            >
+              <Palette size={14} />
+              Diseñar Portada con Gradiente
+            </button>
+          </div>
+
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Descripción Corta</label>
             <textarea name="description" value={description} onChange={e => setDescription(e.target.value)} required rows={2} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm resize-none" placeholder="Breve descripción..."></textarea>
@@ -823,6 +859,33 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           </div>
         </form>
       </div>
+
+      {/* GRADIENT BUILDER MODAL */}
+      {showGradientBuilderModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-10 animate-in fade-in duration-200">
+          <div className="relative w-full max-w-6xl h-full max-h-[800px] bg-[#17181c] rounded-2xl overflow-hidden border border-gray-800 shadow-2xl flex flex-col">
+            <div className="flex justify-between items-center p-4 border-b border-gray-800 bg-[#1c1d22]">
+              <div className="flex items-center gap-2 text-white font-bold">
+                <Palette size={18} className="text-purple-400" />
+                Diseñador de Portadas
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setShowGradientBuilderModal(false)}
+                className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                Cerrar
+              </button>
+            </div>
+            <iframe 
+              ref={iframeRef}
+              src="/gradient-builder.html" 
+              className="flex-1 w-full h-full border-none"
+              title="Gradient Builder"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

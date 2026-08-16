@@ -105,6 +105,7 @@ export type SiteConfig = {
   // Efectos visuales
   enable_glow_effect?: boolean;
   glow_style?: string;
+  global_background_image?: string;
   // Timestamp
   updated_at?: string;
 };

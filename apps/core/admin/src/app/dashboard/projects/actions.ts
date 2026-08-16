@@ -135,6 +135,46 @@ export async function autofillProjectWithAI(repoFullName: string, domainType: "s
   }
 }
 
+export async function suggestGradientColorsWithAI(title: string, description: string) {
+  if (!process.env.GEMINI_API_KEY) {
+    return { error: "No hay GEMINI_API_KEY configurada." };
+  }
+
+  try {
+    const { GoogleGenerativeAI } = await import("@google/generative-ai");
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+
+    const prompt = `
+      Eres un experto en diseño web y teoría del color.
+      Genera una paleta de 4 colores hexadecimales armónicos y estéticamente agradables para usar en un gradiente fluido de fondo, basándote en el contexto de este proyecto:
+
+      TÍTULO: "${title}"
+      DESCRIPCIÓN: "${description}"
+
+      Instrucciones:
+      Devuelve ÚNICAMENTE un objeto JSON con la propiedad "colors" que contenga un array de 4 strings hexadecimales (ej: ["#123456", "#654321", ...]).
+      Asegúrate de que los colores combinen bien para un fondo oscuro moderno (estilo SaaS "Glassmorphism").
+    `;
+
+    const response = await model.generateContent(prompt);
+    let text = response.response.text().trim();
+    if (text.startsWith("\`\`\`json")) text = text.replace(/^\`\`\`json/, "");
+    if (text.startsWith("\`\`\`")) text = text.replace(/^\`\`\`/, "");
+    if (text.endsWith("\`\`\`")) text = text.replace(/\`\`\`$/, "");
+    
+    const parsed = JSON.parse(text.trim());
+    if (parsed.colors && Array.isArray(parsed.colors)) {
+      return { colors: parsed.colors };
+    } else {
+      throw new Error("Formato JSON incorrecto");
+    }
+  } catch (error) {
+    console.error("Error en suggestGradientColorsWithAI:", error);
+    return { error: "Error al generar sugerencia de colores." };
+  }
+}
+
 type ReposResult = { error: string } | { repos: GithubRepoSummary[] };
 
 export async function getGithubRepos(): Promise<ReposResult> {

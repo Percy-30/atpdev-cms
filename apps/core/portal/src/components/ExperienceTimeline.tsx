@@ -33,7 +33,7 @@ interface ExperienceTimelineProps {
 }
 
 export default function ExperienceTimeline({ initialExperiences = [], lang = 'es', enableGlow = true, glowStyle = 'border' }: ExperienceTimelineProps) {
-  const glowClass = enableGlow ? `glow-element-${glowStyle}` : "";
+  const glowClass = "interactive-card";
 
   const [experiences, setExperiences] = useState<Experience[]>(initialExperiences);
 

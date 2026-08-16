@@ -47,7 +47,7 @@ export const ICONS_MAP: Record<string, React.ReactNode> = {
 };
 
 export default function AIModelsSection({ projects, ui, aiModels, enableGlow = true, glowStyle = 'border' }: { projects: any[], ui: any, aiModels: AIModelData[], enableGlow?: boolean, glowStyle?: string }) {
-  const glowClass = enableGlow ? `glow-element-${glowStyle}` : "";
+  const glowClass = "interactive-card";
   const activeModels = aiModels.map(model => {
     const usedInProjects = projects.filter(p => 
       p.status !== 'Privado' && 

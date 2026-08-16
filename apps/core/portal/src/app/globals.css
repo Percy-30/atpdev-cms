@@ -16,6 +16,7 @@ html {
   --font-heading: 'Hanken Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-label: 'JetBrains Mono', monospace;
+  --glow-opacity: 1;
 }
 
 /* Map Tailwind v4 tokens to our dynamic CSS variables */
@@ -68,110 +69,259 @@ body {
 }
 
 /* =========================================
-   Glow Border Effect (Gradient Border)
+   LABORATORIO DE INTERACCIÓN (MOUSE EFFECTS)
    ========================================= */
-@property --hue {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 140;
-}
 
-@keyframes hue-rotate {
-  0%   { --hue: 140; }
-  33%  { --hue: 300; }
-  66%  { --hue: 45;  }
-  100% { --hue: 140; }
-}
-
-/* ESTILO 1: COMPLETO (Ilumina Fondo) */
-.glow-element-full {
+/* 1. SPOTLIGHT BORDER (Reflector Neón) */
+[data-interaction*="spotlight-border"] .interactive-card {
   --x: 50%;
   --y: 50%;
-  --glow-bg: var(--tertiary);
-  --glow-border: 1.5px;
-  
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  border-color: transparent !important;
-}
-
-.glow-element-full::after {
-  content: "";
-  position: absolute;
-  inset: var(--glow-border);
-  background: var(--glow-bg);
-  border-radius: inherit;
-  z-index: -1;
-}
-
-.glow-element-full::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: radial-gradient(
-    280px circle at var(--x) var(--y),
-    hsl(var(--hue, 140) 90% 55% / 1),
-    transparent 60%
-  );
-  z-index: -2;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  animation: hue-rotate 6s linear infinite;
-  animation-play-state: paused;
-}
-
-.glow-element-full:hover::before {
-  opacity: 1;
-  animation-play-state: running;
-}
-
-/* ESTILO 2: SOLO BORDES (Máscara CSS) */
-.glow-element-border {
-  --x: 50%;
-  --y: 50%;
-  --glow-border: 3px; /* Aumentado de 1.5px a 3px para mayor visibilidad */
-  
   position: relative;
   isolation: isolate;
   border-color: transparent !important;
 }
-
-.glow-element-border::before {
+[data-interaction*="spotlight-border"] .interactive-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 4px; /* Grosor del borde aumentado a 4px para que se note mucho más */
-  
-  /* Gradiente mucho más expansivo y brillante */
-  background: radial-gradient(
-    600px circle at var(--x) var(--y),
-    hsl(var(--hue, 140) 100% 65% / 1),
-    transparent 80%
-  );
-  
-  /* Máscara que excluye el contenido central y dibuja solo en el padding */
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
+  padding: var(--neon-thickness, 4px);
+  background: radial-gradient(600px circle at var(--x) var(--y), var(--primary), transparent 75%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  
   z-index: 10;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.35s ease;
-  animation: hue-rotate 6s linear infinite;
-  animation-play-state: paused;
-  
-  /* Resplandor exterior mucho más potente y expansivo */
-  filter: drop-shadow(0 0 12px hsl(var(--hue, 140) 100% 50% / 0.8));
+  transition: opacity 0.4s ease, padding 0.3s ease;
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) var(--primary));
+}
+[data-interaction*="spotlight-border"] .interactive-card:hover::before {
+  opacity: 1;
 }
 
-.glow-element-border:hover::before {
-  opacity: 1;
+@property --hue {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 200;
+}
+
+@keyframes hueRotateHarmonic {
+  0%   { --hue: 140; }  /* Emerald Green */
+  33%  { --hue: 280; }  /* Deep Violet */
+  66%  { --hue: 45;  }  /* Amber Gold */
+  100% { --hue: 140; }
+}
+
+@keyframes hueRotateMulti {
+  0%   { --hue: 0; }
+  25%  { --hue: 90; }
+  50%  { --hue: 180; }
+  75%  { --hue: 270; }
+  100% { --hue: 360; }
+}
+
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .interactive-card::before {
+  background: radial-gradient(
+    320px circle at var(--x) var(--y),
+    hsl(var(--hue, 200) 95% 60%),
+    hsl(calc(var(--hue, 200) + 60) 95% 55%),
+    transparent 75%
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 200) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .interactive-card:hover::before {
   animation-play-state: running;
+}
+
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .interactive-card::before {
+  background: radial-gradient(
+    300px circle at var(--x) var(--y),
+    hsl(var(--hue, 140) 85% 55%),
+    hsl(calc(var(--hue, 140) + 45) 80% 50%),
+    transparent 75%
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 140) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .interactive-card:hover::before {
+  animation-play-state: running;
+}
+
+/* 1.5. ELECTRIC BORDER (Borde Eléctrico con Filtro SVG Jitter) */
+[data-interaction*="electric"] .interactive-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="electric"] .interactive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 3px);
+  background: radial-gradient(
+    500px circle at var(--x) var(--y),
+    var(--primary),
+    transparent 80%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) var(--primary));
+}
+[data-interaction*="electric"] .interactive-card:hover::before {
+  opacity: 1;
+}
+
+[data-interaction*="electric"][data-interaction*="neon-multi"] .interactive-card::before {
+  background: radial-gradient(
+    320px circle at var(--x) var(--y),
+    hsl(var(--hue, 200) 95% 60%),
+    hsl(calc(var(--hue, 200) + 60) 95% 55%),
+    transparent 75%
+  );
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 200) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="electric"][data-interaction*="neon-multi"] .interactive-card:hover::before {
+  animation-play-state: running;
+}
+
+[data-interaction*="electric"][data-interaction*="neon-harmonic"] .interactive-card::before {
+  background: radial-gradient(
+    300px circle at var(--x) var(--y),
+    hsl(var(--hue, 140) 85% 55%),
+    hsl(calc(var(--hue, 140) + 45) 80% 50%),
+    transparent 75%
+  );
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 140) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="electric"][data-interaction*="neon-harmonic"] .interactive-card:hover::before {
+  animation-play-state: running;
+}
+
+/* 2. SPOTLIGHT FULL (Relleno Neón) */
+[data-interaction*="spotlight-full"] .interactive-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+[data-interaction*="spotlight-full"] .interactive-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(600px circle at var(--x) var(--y), color-mix(in srgb, var(--primary) 35%, transparent), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+[data-interaction*="spotlight-full"] .interactive-card:hover::after {
+  opacity: 1;
+}
+
+[data-interaction*="spotlight-full"][data-interaction*="neon-multi"] .interactive-card::after {
+  background: radial-gradient(
+    350px circle at var(--x) var(--y),
+    hsla(var(--hue, 200), 95%, 60%, 0.35),
+    hsla(calc(var(--hue, 200) + 60), 95%, 55%, 0.25),
+    transparent 75%
+  );
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-full"][data-interaction*="neon-multi"] .interactive-card:hover::after {
+  animation-play-state: running;
+}
+
+[data-interaction*="spotlight-full"][data-interaction*="neon-harmonic"] .interactive-card::after {
+  background: radial-gradient(
+    320px circle at var(--x) var(--y),
+    hsla(var(--hue, 140), 85%, 55%, 0.35),
+    hsla(calc(var(--hue, 140) + 45), 80%, 50%, 0.25),
+    transparent 75%
+  );
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-full"][data-interaction*="neon-harmonic"] .interactive-card:hover::after {
+  animation-play-state: running;
+}
+
+/* 3. TILT 3D */
+[data-interaction*="tilt"] .interactive-card {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+}
+
+/* 4. RIPPLE */
+[data-interaction*="ripple"] .interactive-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.interaction-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.4;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  animation: rippleAnim 900ms ease-out forwards;
+}
+@keyframes rippleAnim {
+  to { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+/* 5. BURST PARTICLES */
+[data-interaction*="burst"] .interactive-card {
+  position: relative;
+  cursor: pointer;
+}
+.interaction-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99;
+  width: 6px;
+  height: 6px;
+  transform: translate(-50%, -50%);
+  animation: burstAnim 600ms ease-out forwards;
+}
+@keyframes burstAnim {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--vx)), calc(-50% + var(--vy))) scale(0); opacity: 0; }
+}
+
+/* 6. GLITCH TEXT */
+[data-interaction*="glitch"] .interactive-card:hover h3,
+[data-interaction*="glitch"] .interactive-card:hover h4 {
+  animation: textGlitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+  color: var(--primary);
+}
+@keyframes textGlitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
 }
 

@@ -7,6 +7,7 @@ import { SOCIAL_ICON_MAP } from "./SocialIcons";
 import { motion, AnimatePresence } from "framer-motion";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import MagneticEffect from "./MagneticEffect";
 
 // Map of social network keys to icon and label metadata
 export const SOCIAL_PLATFORMS = [
@@ -297,24 +298,26 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                   )}
                 </AnimatePresence>
               </div>
-              <button 
-                type="submit" 
-                disabled={status === "submitting"}
-                className={`w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg text-white ${
-                  status === "error"
-                    ? "bg-red-600 hover:bg-red-700"
-                    : "hover:scale-[1.03] hover:shadow-[0_0_25px_var(--primary)] hover:opacity-90"
-                }`}
-                style={status !== "error" ? { backgroundColor: 'var(--primary)' } : {}}
-              >
-                {status === "submitting" ? (
-                  <>{ui.btnSending}</>
-                ) : status === "error" ? (
-                  <><AlertCircle size={20} /> {ui.btnError}</>
-                ) : (
-                  <>{ui.btnSend} <Send size={18} /></>
-                )}
-              </button>                
+              <MagneticEffect intensity={0.15}>
+                <button 
+                  type="submit" 
+                  disabled={status === "submitting"}
+                  className={`w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg text-white ${
+                    status === "error"
+                      ? "bg-red-600 hover:bg-red-700"
+                      : "hover:scale-[1.03] hover:shadow-[0_0_25px_var(--primary)] hover:opacity-90"
+                  }`}
+                  style={status !== "error" ? { backgroundColor: 'var(--primary)' } : {}}
+                >
+                  {status === "submitting" ? (
+                    <>{ui.btnSending}</>
+                  ) : status === "error" ? (
+                    <><AlertCircle size={20} /> {ui.btnError}</>
+                  ) : (
+                    <>{ui.btnSend} <Send size={18} /></>
+                  )}
+                </button>
+              </MagneticEffect>                
                 {status === "error" && (
                   <div className="mt-4 flex items-center gap-2 text-rose-400 text-sm font-medium bg-rose-500/10 p-3 rounded-lg border border-rose-500/20">
                     <AlertCircle size={16} /> Hubo un error al enviar el mensaje. Inténtalo de nuevo.

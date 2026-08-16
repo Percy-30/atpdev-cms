@@ -9,7 +9,7 @@ import { AvatarPicker } from "./AvatarPicker";
 export default async function SettingsPage() {
   const config = await getSiteConfig();
 
-  const inputClass = "bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
+  const inputClass = "bg-[#1A1A1A] border border-gray-800 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full";
   const labelClass = "text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1.5 block";
 
   // Social networks config
@@ -43,7 +43,7 @@ export default async function SettingsPage() {
             <AvatarPicker initialAvatarUrl={config?.avatar_url || "/avatar.png"} />
 
             {/* PERFIL */}
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400"><User size={20} /></div>
                 <div><h2 className="text-lg font-bold text-white">Perfil Personal</h2><p className="text-xs text-gray-500">Tu identidad en el portal público.</p></div>
@@ -56,7 +56,7 @@ export default async function SettingsPage() {
             </div>
 
             {/* HERO */}
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400"><Type size={20} /></div>
                 <div><h2 className="text-lg font-bold text-white">Hero Section</h2><p className="text-xs text-gray-500">Lo primero que ven tus visitantes.</p></div>
@@ -69,7 +69,7 @@ export default async function SettingsPage() {
             </div>
 
             {/* CONTACTO */}
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"><Globe size={20} /></div>
                 <div><h2 className="text-lg font-bold text-white">Contacto</h2><p className="text-xs text-gray-500">Datos de la sección de contacto.</p></div>
@@ -82,7 +82,7 @@ export default async function SettingsPage() {
             </div>
 
             {/* 🔥 REDES SOCIALES CON TOGGLES */}
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400"><MessageCircle size={20} /></div>
                 <div>
@@ -101,7 +101,7 @@ export default async function SettingsPage() {
 
                   return (
                     <div key={network.key} className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${
-                      isEnabled ? 'bg-\[\#1A1A1A\] border-gray-700' : 'bg-\[\#1A1A1A\]/50 border-gray-800/50 opacity-60'
+                      isEnabled ? 'bg-[#1A1A1A] border-gray-700' : 'bg-[#1A1A1A]/50 border-gray-800/50 opacity-60'
                     }`}>
 
                       {/* Toggle Switch */}
@@ -138,7 +138,7 @@ export default async function SettingsPage() {
             </div>
 
             {/* LINKS ESPECIALES */}
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400"><Link2 size={20} /></div>
                 <div><h2 className="text-lg font-bold text-white">Links Especiales</h2><p className="text-xs text-gray-500">CV y certificaciones.</p></div>
@@ -155,46 +155,13 @@ export default async function SettingsPage() {
               </div>
             </div>
 
-            {/* COLORES + EFECTOS VISUALES + INTEGRACIONES */}
+            {/* COLORES + INTEGRACIONES */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ThemeBuilder initialConfig={config} />
               
               <div className="space-y-6">
-                {/* EFECTOS VISUALES */}
-                <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400"><Palette size={18} /></div>
-                    <div>
-                      <h3 className="text-sm font-bold text-white">Efectos Visuales</h3>
-                      <p className="text-[10px] text-gray-500">Efectos avanzados para tarjetas y botones.</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between p-3 bg-\[\#1A1A1A\] border border-gray-800 rounded-xl">
-                      <span className="text-sm font-bold text-white">Activar Efecto Glow</span>
-                      <label className="relative inline-flex items-center cursor-pointer shrink-0">
-                        <input
-                          type="checkbox"
-                          name="enable_glow_effect"
-                          defaultChecked={config?.enable_glow_effect !== false}
-                          className="sr-only peer"
-                        />
-                        <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-fuchsia-600"></div>
-                      </label>
-                    </div>
-                    
-                    <div>
-                      <label className={labelClass}>Estilo del Glow</label>
-                      <select name="glow_style" defaultValue={config?.glow_style || "border"} className={inputClass}>
-                        <option value="full">Completo (Ilumina Fondo)</option>
-                        <option value="border">Solo Bordes (Máscara CSS)</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
                 {/* INTEGRACIONES */}
-                <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+                <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400"><Globe size={18} /></div>
                     <h3 className="text-sm font-bold text-white">Integraciones</h3>
@@ -215,7 +182,7 @@ export default async function SettingsPage() {
 
           {/* === COLUMNA LATERAL === */}
           <div className="space-y-6">
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4"><div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400"><Shield size={18} /></div><h3 className="text-sm font-bold text-white">Seguridad</h3></div>
               <div className="space-y-3">
                 {[{ label: "Autenticación", value: "Supabase Auth" },{ label: "Middleware SSR", value: "Activo" },{ label: "RLS", value: "Habilitado" },{ label: "HTTPS (.dev)", value: "Automático" }].map((item, i) => (
@@ -223,7 +190,7 @@ export default async function SettingsPage() {
                 ))}
               </div>
             </div>
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4"><div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400"><Database size={18} /></div><h3 className="text-sm font-bold text-white">Base de Datos</h3></div>
               <div className="space-y-3">
                 {[{ label: "Proveedor", value: "Supabase" },{ label: "Plan", value: "Free Tier" },{ label: "Tablas", value: "projects, leads, site_config" }].map((item, i) => (
@@ -231,7 +198,7 @@ export default async function SettingsPage() {
                 ))}
               </div>
             </div>
-            <div className="bg-\[\#262626\] border border-gray-800 rounded-2xl p-6">
+            <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4"><div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400"><Globe size={18} /></div><h3 className="text-sm font-bold text-white">Estado del Dominio</h3></div>
               <div className="space-y-3">
                 {[
