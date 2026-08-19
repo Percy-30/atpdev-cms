@@ -6,12 +6,27 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const title = lang === 'es' ? "Sobre Mí | ATP Dev" : await translateText("Sobre Mí | ATP Dev", lang);
   const description = lang === 'es' ? "Perfil profesional y habilidades de Percy Acha Taipe." : await translateText("Perfil profesional y habilidades de Percy Acha Taipe.", lang);
+  
+  const BASE_URL = "https://www.atpdev.dev";
+  const path = "/sobre-mi";
+  const supportedLocales = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
+  
   return {
     title,
     description,
+    alternates: {
+      canonical: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+      languages: {
+        "x-default": `${BASE_URL}${path}`,
+        ...Object.fromEntries(
+          supportedLocales.map(l => [l, `${BASE_URL}${l === 'es' ? '' : '/' + l}${path}`])
+        )
+      },
+    },
     openGraph: {
       title,
       description,
+      url: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
     },
   };
 }
@@ -46,7 +61,7 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row gy-4 justify-content-center">
             <div className="col-lg-4">
-              <Image src="/assets/img/my-profile-img.jpg" width={600} height={600} className="img-fluid" alt="Profile" />
+              <Image src="/assets/img/my-profile-img.jpg" width={600} height={600} className="img-fluid" alt="Profile" priority />
             </div>
             <div className="col-lg-8 content">
               <h2>Software Developer &amp; Mobile Specialist.</h2>
@@ -170,8 +185,8 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
       {/* Resume Section */}
       <section id="resume" className="resume section">
         <div className="container section-title" data-aos="fade-up">
-          <h2>Currículum Vitae</h2>
-          <p>Experiencia comprobada en la publicación de aplicaciones nativas, integración de IA y enseñanza técnica.</p>
+          <h2>{lang === 'es' ? "Currículum Vitae" : await translateText("Currículum Vitae", lang)}</h2>
+          <p>{lang === 'es' ? "Experiencia comprobada en la publicación de aplicaciones nativas, integración de IA y enseñanza técnica." : await translateText("Experiencia comprobada en la publicación de aplicaciones nativas, integración de IA y enseñanza técnica.", lang)}</p>
         </div>
         <div className="container">
           <div className="row">
@@ -230,13 +245,13 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
       {/* Portfolio Section */}
       <section id="portfolio" className="portfolio section light-background">
         <div className="container section-title" data-aos="fade-up">
-          <h2>Portafolio</h2>
-          <p>Explora mis proyectos más recientes, desde aplicaciones nativas en Android hasta plataformas Web impulsadas por Inteligencia Artificial.</p>
+          <h2>{lang === 'es' ? "Portafolio" : await translateText("Portafolio", lang)}</h2>
+          <p>{lang === 'es' ? "Explora mis proyectos más recientes, desde aplicaciones nativas en Android hasta plataformas Web impulsadas por Inteligencia Artificial." : await translateText("Explora mis proyectos más recientes, desde aplicaciones nativas en Android hasta plataformas Web impulsadas por Inteligencia Artificial.", lang)}</p>
         </div>
         <div className="container">
           <div className="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
             <ul className="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-              <li data-filter="*" className="filter-active">Todos</li>
+              <li data-filter="*" className="filter-active">{lang === 'es' ? "Todos" : await translateText("Todos", lang)}</li>
               <li data-filter=".filter-app">Android Apps</li>
               <li data-filter=".filter-product">IA & Bots</li>
               <li data-filter=".filter-branding">Webs</li>
@@ -246,7 +261,7 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
                 <div className="portfolio-content h-100">
                   <Image src="/assets/img/portfolio/app-1.jpg" width={800} height={600} className="img-fluid" alt="ChannelsTV" />
                   <div className="portfolio-info">
-                    <h4>ChannelsTV</h4>
+                    <h3>ChannelsTV</h3>
                     <p>App de Streaming en Android (Kotlin)</p>
                   </div>
                 </div>
@@ -255,7 +270,7 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
                 <div className="portfolio-content h-100">
                   <Image src="/assets/img/portfolio/product-1.jpg" width={800} height={600} className="img-fluid" alt="Almaniq" />
                   <div className="portfolio-info">
-                    <h4>Almaniq Content Pipeline</h4>
+                    <h3>Almaniq Content Pipeline</h3>
                     <p>Automatización de videos cortos con IA</p>
                   </div>
                 </div>
@@ -264,7 +279,7 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
                 <div className="portfolio-content h-100">
                   <Image src="/assets/img/portfolio/branding-1.jpg" width={800} height={600} className="img-fluid" alt="Lector QR" />
                   <div className="portfolio-info">
-                    <h4>Lector QR Pro</h4>
+                    <h3>Lector QR Pro</h3>
                     <p>Lector y generador de QRs con suscripción</p>
                   </div>
                 </div>
@@ -277,30 +292,30 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
       {/* Services Section */}
       <section id="services" className="services section">
         <div className="container section-title" data-aos="fade-up">
-          <h2>Servicios</h2>
-          <p>Soluciones tecnológicas integrales para transformar tu negocio.</p>
+          <h2>{lang === 'es' ? "Servicios" : await translateText("Servicios", lang)}</h2>
+          <p>{lang === 'es' ? "Soluciones tecnológicas integrales para transformar tu negocio." : await translateText("Soluciones tecnológicas integrales para transformar tu negocio.", lang)}</p>
         </div>
         <div className="container">
           <div className="row gy-4">
             <div className="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
               <div className="icon flex-shrink-0"><i className="bi bi-phone"></i></div>
               <div>
-                <h4 className="title">Desarrollo Móvil Nativo</h4>
-                <p className="description">Construcción de aplicaciones Android de alto rendimiento usando Kotlin, Jetpack Compose y Clean Architecture.</p>
+                <h3 className="title">{lang === 'es' ? "Desarrollo Móvil Nativo" : await translateText("Desarrollo Móvil Nativo", lang)}</h3>
+                <p className="description">{lang === 'es' ? "Construcción de aplicaciones Android de alto rendimiento usando Kotlin, Jetpack Compose y Clean Architecture." : await translateText("Construcción de aplicaciones Android de alto rendimiento usando Kotlin, Jetpack Compose y Clean Architecture.", lang)}</p>
               </div>
             </div>
             <div className="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
               <div className="icon flex-shrink-0"><i className="bi bi-laptop"></i></div>
               <div>
-                <h4 className="title">Desarrollo Web Full Stack</h4>
-                <p className="description">Creación de plataformas rápidas y SEO-friendly utilizando Next.js, React y bases de datos como Supabase.</p>
+                <h3 className="title">{lang === 'es' ? "Desarrollo Web Full Stack" : await translateText("Desarrollo Web Full Stack", lang)}</h3>
+                <p className="description">{lang === 'es' ? "Creación de plataformas rápidas y SEO-friendly utilizando Next.js, React y bases de datos como Supabase." : await translateText("Creación de plataformas rápidas y SEO-friendly utilizando Next.js, React y bases de datos como Supabase.", lang)}</p>
               </div>
             </div>
             <div className="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
               <div className="icon flex-shrink-0"><i className="bi bi-robot"></i></div>
               <div>
-                <h4 className="title">Automatización con IA</h4>
-                <p className="description">Integración de LLMs (Gemini, ChatGPT) para automatizar creación de contenido, bots de Telegram y pipelines.</p>
+                <h3 className="title">{lang === 'es' ? "Automatización con IA" : await translateText("Automatización con IA", lang)}</h3>
+                <p className="description">{lang === 'es' ? "Integración de LLMs (Gemini, ChatGPT) para automatizar creación de contenido, bots de Telegram y pipelines." : await translateText("Integración de LLMs (Gemini, ChatGPT) para automatizar creación de contenido, bots de Telegram y pipelines.", lang)}</p>
               </div>
             </div>
           </div>
@@ -310,8 +325,8 @@ export default async function SobreMiPage({ params }: { params: Promise<{ lang: 
       {/* Contact Section */}
       <section id="contact" className="contact section">
         <div className="container section-title" data-aos="fade-up">
-          <h2>Contacto</h2>
-          <p>¿Tienes un proyecto en mente o buscas un desarrollador especializado? Escríbeme.</p>
+          <h2>{lang === 'es' ? "Contacto" : await translateText("Contacto", lang)}</h2>
+          <p>{lang === 'es' ? "¿Tienes un proyecto en mente o buscas un desarrollador especializado? Escríbeme." : await translateText("¿Tienes un proyecto en mente o buscas un desarrollador especializado? Escríbeme.", lang)}</p>
         </div>
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row gy-4">

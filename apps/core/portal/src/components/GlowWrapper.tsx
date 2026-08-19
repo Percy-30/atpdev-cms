@@ -12,8 +12,6 @@ export function GlowWrapper({ children, enabled = true, className = "" }: GlowWr
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!enabled) return;
-    
     const container = containerRef.current;
     if (!container) return;
 

@@ -5,10 +5,34 @@ import { ShieldCheck, ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { GlowWrapper } from "@/components/GlowWrapper";
 
-export const metadata: Metadata = {
-  title: "Política de Privacidad | ATP Dev",
-  description: "Política de privacidad y protección de datos de los servicios y aplicaciones de ATP Dev.",
-};
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const title = lang === 'es' ? "Política de Privacidad | ATP Dev" : await translateText("Política de Privacidad | ATP Dev", lang);
+  const description = lang === 'es' ? "Política de privacidad y protección de datos de los servicios y aplicaciones de ATP Dev." : await translateText("Política de privacidad y protección de datos de los servicios y aplicaciones de ATP Dev.", lang);
+  
+  const BASE_URL = "https://www.atpdev.dev";
+  const path = "/privacy";
+  const supportedLocales = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
+  
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+      languages: {
+        "x-default": `${BASE_URL}${path}`,
+        ...Object.fromEntries(
+          supportedLocales.map(l => [l, `${BASE_URL}${l === 'es' ? '' : '/' + l}${path}`])
+        )
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+    },
+  };
+}
 
 export default async function PrivacyPolicy({
   params,
@@ -50,6 +74,7 @@ export default async function PrivacyPolicy({
   const enableGlow = config?.enable_glow_effect !== false;
 
   return (
+    <main className="main">
     <GlowWrapper enabled={enableGlow} className="w-full text-[var(--text-color)] transition-colors duration-500 min-h-screen py-16 px-6 relative overflow-hidden">
       {/* Glow Effects */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[var(--primary)] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -110,5 +135,6 @@ export default async function PrivacyPolicy({
         </div>
       </div>
     </GlowWrapper>
+    </main>
   );
 }

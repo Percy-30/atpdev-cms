@@ -142,7 +142,7 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 </div>
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-wider transition-colors" style={{ color: 'var(--text-color)', opacity: 0.6 }}>{ui.phoneLabel}</p>
-                  <a href={`https://wa.me/${(config?.phone || '+51987006572').replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="text-lg font-medium transition-colors hover:opacity-80" style={{ color: 'var(--text-color)' }}>
+                  <a href={`https://wa.me/${(config?.phone || '+51987006572').replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" className="text-lg font-medium transition-colors hover:opacity-80" style={{ color: 'var(--text-color)' }}>
                     {config?.phone || '+51 987 006 572'}
                   </a>
                 </div>
@@ -218,8 +218,9 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
             ) : (
               <form onSubmit={handleSubmit} noValidate className="flex flex-col relative z-10">
               <div className="mb-6 relative">
-                <label className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formName}</label>
+                <label htmlFor="contact-name" className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formName}</label>
                 <input 
+                  id="contact-name"
                   type="text" 
                   name="name"
                   onChange={() => setFormErrors(prev => ({...prev, name: undefined}))}
@@ -236,8 +237,9 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 </AnimatePresence>
               </div>
               <div className="mb-6 relative">
-                <label className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formEmail}</label>
+                <label htmlFor="contact-email" className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formEmail}</label>
                 <input 
+                  id="contact-email"
                   type="email" 
                   name="email"
                   onChange={() => setFormErrors(prev => ({...prev, email: undefined}))}
@@ -254,8 +256,9 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 </AnimatePresence>
               </div>
               <div className="mb-6 relative phone-input-wrapper">
-                <label className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formPhone}</label>
+                <label htmlFor="contact-phone" className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formPhone}</label>
                 <PhoneInput
+                  id="contact-phone"
                   international
                   defaultCountry="PE"
                   value={phoneValue}
@@ -281,8 +284,9 @@ export default function ContactForm({ config }: { config?: SiteConfig | null }) 
                 `}} />
               </div>
               <div className="mb-8 relative">
-                <label className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formMessage}</label>
+                <label htmlFor="contact-message" className="block text-sm font-medium mb-2 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.formMessage}</label>
                 <textarea 
+                  id="contact-message"
                   rows={4}
                   name="message"
                   onChange={() => setFormErrors(prev => ({...prev, message: undefined}))}

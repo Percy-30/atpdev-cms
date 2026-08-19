@@ -33,6 +33,7 @@ export type Project = {
   github_description?: string;
   github_is_private?: boolean;
   github_synced_at?: string;
+  theme_config?: string; // JSON string with theme configuration
   created_at?: string;
 };
 
@@ -852,8 +853,8 @@ export async function translateText(sourceText: string, targetLang: string): Pro
     const { text } = await googleTranslate(sourceText, { to: targetLang });
 
     // 3. Guardar asíncronamente en Supabase (fire and forget)
-    // Se usa el service_role internamente (idealmente) o el token anon (que habilitamos con RLS)
-    supabase.from('translation_cache').insert([
+    // Usamos adminSupabase (service_role) para garantizar escritura en SSR/SSG saltando RLS
+    adminSupabase.from('translation_cache').insert([
       { source_text: sourceText, target_lang: targetLang, translated_text: text }
     ]).then(({ error }) => {
       if (error && error.code !== '23505') { // Ignorar error de unique constraint (race condition)

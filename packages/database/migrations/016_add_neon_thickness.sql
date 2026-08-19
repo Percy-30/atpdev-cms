@@ -1,0 +1,1 @@
+ALTER TABLE site_config ADD COLUMN IF NOT EXISTS neon_thickness VARCHAR DEFAULT '4px';

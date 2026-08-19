@@ -100,6 +100,64 @@ body {
   opacity: 1;
 }
 
+/* 1.5. FULL NEON BORDER (Borde Neón Completo) */
+[data-interaction*="full-border"] .interactive-card {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="full-border"] .interactive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: var(--primary);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease, filter 0.4s ease, padding 0.3s ease;
+  filter: drop-shadow(0 0 var(--neon-glow, 12px) var(--primary));
+}
+[data-interaction*="full-border"] .interactive-card:hover::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 20px) var(--primary));
+}
+
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .interactive-card::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 200) 95% 60%),
+    hsl(calc(var(--hue, 200) + 60) 95% 55%),
+    hsl(calc(var(--hue, 200) + 120) 95% 50%)
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 12px) hsl(var(--hue, 200) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .interactive-card:hover::before {
+  animation-play-state: running;
+  filter: drop-shadow(0 0 var(--neon-glow, 20px) hsl(var(--hue, 200) 95% 60%));
+}
+
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .interactive-card::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 140) 85% 55%),
+    hsl(calc(var(--hue, 140) + 45) 80% 50%)
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 12px) hsl(var(--hue, 140) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .interactive-card:hover::before {
+  animation-play-state: running;
+  filter: drop-shadow(0 0 var(--neon-glow, 20px) hsl(var(--hue, 140) 85% 55%));
+}
+
 @property --hue {
   syntax: '<number>';
   inherits: false;
@@ -152,14 +210,14 @@ body {
 }
 
 /* 1.5. ELECTRIC BORDER (Borde Eléctrico con Filtro SVG Jitter) */
-[data-interaction*="electric"] .interactive-card {
+[data-interaction~="electric"] .interactive-card {
   --x: 50%;
   --y: 50%;
   position: relative;
   isolation: isolate;
   border-color: transparent !important;
 }
-[data-interaction*="electric"] .interactive-card::before {
+[data-interaction~="electric"] .interactive-card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -179,11 +237,11 @@ body {
   transition: opacity 0.4s ease;
   filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) var(--primary));
 }
-[data-interaction*="electric"] .interactive-card:hover::before {
+[data-interaction~="electric"] .interactive-card:hover::before {
   opacity: 1;
 }
 
-[data-interaction*="electric"][data-interaction*="neon-multi"] .interactive-card::before {
+[data-interaction~="electric"][data-interaction*="neon-multi"] .interactive-card::before {
   background: radial-gradient(
     320px circle at var(--x) var(--y),
     hsl(var(--hue, 200) 95% 60%),
@@ -194,11 +252,11 @@ body {
   animation: hueRotateMulti 8s linear infinite;
   animation-play-state: paused;
 }
-[data-interaction*="electric"][data-interaction*="neon-multi"] .interactive-card:hover::before {
+[data-interaction~="electric"][data-interaction*="neon-multi"] .interactive-card:hover::before {
   animation-play-state: running;
 }
 
-[data-interaction*="electric"][data-interaction*="neon-harmonic"] .interactive-card::before {
+[data-interaction~="electric"][data-interaction*="neon-harmonic"] .interactive-card::before {
   background: radial-gradient(
     300px circle at var(--x) var(--y),
     hsl(var(--hue, 140) 85% 55%),
@@ -209,7 +267,62 @@ body {
   animation: hueRotateHarmonic 6s linear infinite;
   animation-play-state: paused;
 }
-[data-interaction*="electric"][data-interaction*="neon-harmonic"] .interactive-card:hover::before {
+[data-interaction~="electric"][data-interaction*="neon-harmonic"] .interactive-card:hover::before {
+  animation-play-state: running;
+}
+
+/* 1.6. FULL ELECTRIC BORDER (Borde Eléctrico Completo) */
+[data-interaction*="electric-full"] .interactive-card {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="electric-full"] .interactive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 3px);
+  background: var(--primary);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) var(--primary));
+}
+[data-interaction*="electric-full"] .interactive-card:hover::before {
+  opacity: 1;
+}
+
+[data-interaction*="electric-full"][data-interaction*="neon-multi"] .interactive-card::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 200) 95% 60%),
+    hsl(calc(var(--hue, 200) + 60) 95% 55%),
+    hsl(calc(var(--hue, 200) + 120) 95% 50%)
+  );
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 200) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="electric-full"][data-interaction*="neon-multi"] .interactive-card:hover::before {
+  animation-play-state: running;
+}
+
+[data-interaction*="electric-full"][data-interaction*="neon-harmonic"] .interactive-card::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 140) 85% 55%),
+    hsl(calc(var(--hue, 140) + 45) 80% 50%)
+  );
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 140) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="electric-full"][data-interaction*="neon-harmonic"] .interactive-card:hover::before {
   animation-play-state: running;
 }
 

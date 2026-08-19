@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import CookieBanner from "@/components/CookieBanner";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
@@ -14,6 +14,10 @@ const OG_IMAGE = `${BASE_URL}/og-image.png`;
 
 const supportedLocales = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
 
+export async function generateStaticParams() {
+  return supportedLocales.map((lang) => ({ lang }));
+}
+
 function localeToOgLocale(lang: string) {
   const map: Record<string, string> = {
     es: "es_PE", en: "en_US", ru: "ru_RU", hi: "hi_IN",
@@ -21,6 +25,16 @@ function localeToOgLocale(lang: string) {
   };
   return map[lang] ?? "es_PE";
 }
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f9fafb" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" }
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export async function generateMetadata(
   { params }: { params: Promise<{ lang: string }> }
@@ -36,6 +50,13 @@ export async function generateMetadata(
 
   const path = lang === 'es' ? '' : `/${lang}`;
   
+  const languages: Record<string, string> = {
+    'x-default': BASE_URL,
+  };
+  supportedLocales.forEach(loc => {
+    languages[loc] = `${BASE_URL}${loc === 'es' ? '' : '/' + loc}`;
+  });
+
   return {
     metadataBase: new URL(BASE_URL),
     title: {
@@ -50,6 +71,10 @@ export async function generateMetadata(
     authors: [{ name: "Percy Acha Taipe", url: BASE_URL }],
     creator: "Percy Acha Taipe",
     publisher: "ATP Dev",
+    alternates: {
+      canonical: `${BASE_URL}${path}`,
+      languages,
+    },
     robots: {
       index: true,
       follow: true,
@@ -62,12 +87,6 @@ export async function generateMetadata(
     },
     verification: {
       google: "xLX9HT_roi66Iips-tYL5paIvBDDP_EftOni_R9KyYw",
-    },
-    alternates: {
-      canonical: `${BASE_URL}${path}`,
-      languages: Object.fromEntries(
-        supportedLocales.map(l => [l, `${BASE_URL}${l === 'es' ? '' : '/' + l}`])
-      ),
     },
     openGraph: {
       type: "website",
@@ -105,6 +124,22 @@ function getRadiusValue(scale: string) {
     case "full": return "9999px";
     default: return "0.75rem";
   }
+}
+
+// Normalize legacy glow_style values to current CSS selectors
+function normalizeGlowStyle(raw: string | undefined | null): string {
+  if (!raw) return 'spotlight-border';
+  // Map old single-word values to the current compound names
+  const mapped = raw
+    .split(',')
+    .map(s => s.trim())
+    .map(s => {
+      if (s === 'spotlight' || s === 'border') return 'spotlight-border';
+      if (s === 'full') return 'spotlight-full';
+      return s;
+    })
+    .join(' ');
+  return mapped || 'spotlight-border';
 }
 
 export default async function RootLayout({
@@ -148,7 +183,8 @@ export default async function RootLayout({
         {/* Google AdSense moved to AdSenseInjector component */}
 
         {/* JSON-LD Schema (Pro SEO) - Native script for SSR */}
-        <script
+        <Script
+          id="json-ld-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -227,9 +263,10 @@ export default async function RootLayout({
           `
         }} />
       </head>
-      <body className={`font-sans antialiased min-h-screen`} data-interaction={config?.glow_style || 'spotlight'} suppressHydrationWarning>
+      <body className={`font-sans antialiased min-h-screen`} data-interaction={normalizeGlowStyle(config?.glow_style)} suppressHydrationWarning>
+
         {/* Consent Mode v2 Default (Must be loaded before GA4/AdSense) */}
-        <Script id="consent-mode-default" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: `
+        <Script id="consent-mode-default">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('consent', 'default', {
@@ -240,7 +277,7 @@ export default async function RootLayout({
             'wait_for_update': 500
           });
           gtag('set', 'ads_data_redaction', true);
-        `}} />
+        `}</Script>
 
         {/* Google Analytics 4 */}
         {config?.ga4_id && (
@@ -251,17 +288,17 @@ export default async function RootLayout({
               src={`https://www.googletagmanager.com/gtag/js?id=${config.ga4_id}`}
               strategy="afterInteractive"
             />
-            <Script id="ga4-config" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+            <Script id="ga4-config" strategy="afterInteractive">{`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${config.ga4_id}');
-            `}} />
+            `}</Script>
           </>
         )}
 
         <Providers>
-          <CustomCursor glowStyle={config?.glow_style || ''} />
+          <CustomCursor glowStyle={normalizeGlowStyle(config?.glow_style)} />
           <LivePreviewListener />
           <AnalyticsTracker />
           <AdSenseInjector adsenseId={config?.adsense_id || null} />

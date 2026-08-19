@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0c10;
+  --panel:rgba(255,255,255,0.03);
+  --panel-2:rgba(255,255,255,0.06);
+  --line: rgba(255,255,255,0.1);
+  --line-soft: rgba(255,255,255,0.05);
+  --text: #eceae6;
+  --text-dim: #a0a0a5;
+  --text-faint:#68676c;
+  --accent: #6366f1;      /* primary global */
+  --accent-2: #8b5cf6;    /* secondary global */
+  --paper: #F7F3EA;
+  --radius: 14px;
+  --radius-lg: 20px;
+  font-size: 15px;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'Space Grotesk', 'Inter', 'Manrope', sans-serif;
+  overflow:hidden;
+}
+button{font-family:inherit;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px;}
+
+.app{
+  display:flex; flex-direction:column;
+  height:100vh; width:100vw;
+}
+
+/* ---------- top bar ---------- */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  flex-shrink:0;
+}
+.brand{
+  font-family:'Shippori Mincho', serif;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  display:flex; align-items:baseline; gap:8px;
+}
+.brand span{
+  font-family:'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  border:1px solid var(--line);
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+.tabs-top{ display:flex; gap:4px; background:var(--panel-2); padding:4px; border-radius:999px; border:1px solid var(--line);}
+.tabs-top button{
+  background:transparent; border:none; color:var(--text-dim);
+  padding:7px 16px; border-radius:999px; font-size:13px; cursor:pointer;
+  transition: all .15s ease;
+}
+.tabs-top button:hover{ color:var(--text); }
+.tabs-top button.active{ background: var(--accent); color: white; }
+
+/* ---------- workspace ---------- */
+.workspace{ flex:1; display:flex; min-height:0; }
+.sidebar{
+  width: 300px; flex-shrink:0;
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.subtabs{ display:flex; border-bottom:1px solid var(--line); }
+.subtabs button{
+  flex:1; background:transparent; border:none; color:var(--text-dim);
+  padding: 12px 0; font-size: 13px; cursor:pointer; border-bottom:2px solid transparent;
+}
+.subtabs button.active{ color: var(--text); border-color: var(--accent); }
+.panel{ padding: 16px 18px; overflow-y:auto; flex:1; }
+.panel h3{
+  font-size: 11px; text-transform:uppercase; letter-spacing:.1em;
+  color: var(--text-faint); margin: 18px 0 10px; font-weight:600;
+}
+.panel h3:first-child{ margin-top:0; }
+.panel h3 span{ color: var(--text-dim); text-transform:none; letter-spacing:0; font-family:'IBM Plex Mono',monospace; }
+
+.type-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:6px; }
+.type-btn{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  background: var(--panel-2); border:1px solid var(--line); border-radius: var(--radius);
+  color: var(--text-dim); padding: 10px 4px; cursor:pointer; font-size:11px;
+  transition: all .15s ease;
+}
+.type-btn .ti{ font-size:18px; }
+.type-btn:hover{ border-color: var(--accent-2); color:var(--text); }
+.type-btn.active{ background: var(--accent); border-color:var(--accent); color:white; }
+
+.preset-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:8px; }
+.preset-btn{
+  background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; align-items:center;
+}
+.preset-swatch{
+  width:100%; aspect-ratio:1; border-radius:50%; display:block;
+  border: 1px solid var(--line);
+}
+.preset-name{ font-size:10px; color:var(--text-dim); text-align:center; line-height:1.2; }
+.preset-btn:hover .preset-swatch{ outline: 2px solid var(--accent); outline-offset:2px; }
+
+.slider-row{ display:flex; align-items:center; justify-content:space-between; }
+input[type=range]{
+  width:100%; appearance:none; height:4px; border-radius:2px;
+  background: var(--line); outline:none; margin: 10px 0 4px;
+}
+input[type=range]::-webkit-slider-thumb{
+  appearance:none; width:15px; height:15px; border-radius:50%;
+  background: var(--accent); cursor:pointer; border: 2px solid #fff2;
+}
+.switch{ display:flex; align-items:center; gap:8px; margin-top:16px; font-size:13px; color:var(--text-dim); cursor:pointer;}
+.switch input{ accent-color: var(--accent); width:15px; height:15px; }
+
+.color-row{ display:flex; align-items:center; gap:10px; padding:6px 0; }
+input[type=color].swatch-input{
+  width:30px; height:30px; border-radius:50%; border:1px solid var(--line);
+  padding:0; background:none; cursor:pointer; flex-shrink:0;
+}
+input[type=color].swatch-input::-webkit-color-swatch-wrapper{ padding:2px; border-radius:50%;}
+input[type=color].swatch-input::-webkit-color-swatch{ border-radius:50%; border:none; }
+.color-meta{ flex:1; min-width:0; }
+.color-name{ font-size:12.5px; }
+.color-hex{ font-size:10.5px; color:var(--text-faint); font-family:'IBM Plex Mono',monospace; }
+.remove-color{
+  background:none; border:none; color:var(--text-faint); font-size:16px; cursor:pointer;
+  width:22px; height:22px; border-radius:50%;
+}
+.remove-color:hover{ color:var(--accent); background:var(--panel-2); }
+.remove-color:disabled{ opacity:.25; cursor:not-allowed; }
+.add-color-btn{
+  width:100%; margin-top:6px; padding:9px; border-radius: var(--radius);
+  border:1px dashed var(--line); background:none; color:var(--text-dim); cursor:pointer; font-size:12.5px;
+}
+.add-color-btn:hover{ border-color:var(--accent-2); color:var(--text); }
+
+.field{ margin-bottom:14px; }
+.field label{ font-size:11.5px; color:var(--text-dim); display:block; margin-bottom:6px; }
+.field input[type=text], .field select{
+  width:100%; background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius);
+  color:var(--text); padding:9px 10px; font-size:13px; font-family:inherit;
+}
+.field input[type=color]{ width:100%; height:34px; border-radius:var(--radius); border:1px solid var(--line); background:none; padding:2px; }
+.dropzone{
+  border:1px dashed var(--line); border-radius:var(--radius); padding:16px; text-align:center;
+  color:var(--text-dim); font-size:12px; cursor:pointer; margin-bottom:12px;
+}
+.dropzone:hover{ border-color:var(--accent-2); }
+.small-btn{
+  background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius);
+  color:var(--text-dim); padding:7px 12px; font-size:12px; cursor:pointer;
+}
+.small-btn:hover{ color:var(--text); }
+
+/* ---------- canvas area ---------- */
+.canvas-area{ flex:1; display:flex; flex-direction:column; min-width:0; background: #101013; }
+.canvas-toolbar{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding: 10px 18px; border-bottom:1px solid var(--line);
+}
+.canvas-toolbar #gradName{
+  font-family:'Shippori Mincho', serif; font-size:14px; outline:none; padding:3px 6px; border-radius:6px;
+  min-width: 100px;
+}
+.canvas-toolbar #gradName:focus{ background: var(--panel-2); }
+#hideTags{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim);
+  border-radius:999px; padding:6px 14px; font-size:11.5px; cursor:pointer;
+}
+#hideTags:hover{ color:var(--text); }
+
+.canvas-wrap{
+  flex:1; position:relative; margin: 18px; border-radius: var(--radius-lg); overflow:hidden;
+  border: 1px solid var(--line); min-height: 200px; background:#fff;
+}
+#gfx{ width:100%; height:100%; display:block; }
+#handleLayer{ position:absolute; inset:0; pointer-events:none; }
+.handle-dot{
+  position:absolute; width:16px; height:16px; margin:-8px 0 0 -8px;
+  border-radius:50%; border:2px solid white; box-shadow:0 0 0 1px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.35);
+  background: rgba(255,255,255,.35); cursor:grab; pointer-events:all;
+}
+.handle-dot:active{ cursor:grabbing; }
+.badge{
+  position:absolute; transform: translate(14px,-50%);
+  display:flex; align-items:center; gap:6px;
+  background: rgba(20,20,24,0.82); backdrop-filter: blur(6px);
+  padding: 5px 10px 5px 6px; border-radius:999px; white-space:nowrap;
+  font-size:10.5px; color:#f2f1ee; pointer-events:none;
+}
+.badge-dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; border:1px solid rgba(255,255,255,.4); }
+.badge-name{ font-weight:600; letter-spacing:.03em; }
+.badge-hex{ color:#b9b8c0; font-family:'IBM Plex Mono',monospace; }
+
+.stopbar-wrap{ padding: 0 18px 12px; }
+.stopbar{
+  position:relative; height:14px; border-radius:999px; margin: 26px 4px 8px;
+  border: 1px solid var(--line);
+}
+.stop-handle{
+  position:absolute; top:50%; width:20px; height:20px; margin:-10px 0 0 -10px;
+  border-radius:50%; border:3px solid white; box-shadow:0 2px 6px rgba(0,0,0,.4);
+  cursor:grab;
+}
+.stop-handle:active{ cursor:grabbing; }
+.stopbar-hint{ font-size:10.5px; color:var(--text-faint); padding: 0 6px; }
+
+.bottombar{
+  display:flex; align-items:center; justify-content:flex-end; gap:8px;
+  padding: 12px 18px; border-top:1px solid var(--line);
+}
+.bottombar button{
+  padding: 9px 16px; border-radius: 999px; font-size:13px; cursor:pointer;
+  border:1px solid var(--line); background:var(--panel-2); color:var(--text);
+}
+.bottombar button:hover{ border-color: var(--accent-2); }
+.export-dropdown{ position:relative; }
+#btnExport{ background: var(--accent); border-color:var(--accent); color:white; font-weight:600; }
+.export-menu{
+  position:absolute; bottom: calc(100% + 8px); right:0; background:var(--panel-2);
+  border:1px solid var(--line); border-radius: var(--radius); padding:6px; display:none; flex-direction:column;
+  min-width:150px; box-shadow: 0 10px 30px rgba(0,0,0,.4);
+}
+.export-menu.open{ display:flex; }
+.export-menu button{
+  background:none; border:none; color:var(--text); text-align:left; padding:9px 10px;
+  border-radius:6px; font-size:12.5px; cursor:pointer;
+}
+.export-menu button:hover{ background:var(--panel); }
+
+/* ---------- secondary views ---------- */
+.view-panel{ flex:1; overflow-y:auto; padding: 28px 32px; }
+.view-panel h2{ font-family:'Shippori Mincho', serif; font-weight:500; font-size:22px; margin: 0 0 4px; }
+.view-panel p.sub{ color:var(--text-dim); font-size:13px; margin:0 0 24px; }
+
+.palette-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:10px; }
+.palette-chip{
+  background:var(--panel); border:1px solid var(--line); border-radius: var(--radius);
+  padding:12px; display:flex; flex-direction:column; gap:8px; align-items:flex-start; cursor:pointer;
+}
+.palette-chip:hover{ border-color:var(--accent-2); }
+.chip-swatch{ width:100%; height:44px; border-radius:8px; display:block; }
+.chip-name{ font-size:12.5px; }
+.chip-hex{ font-size:10.5px; color:var(--text-faint); font-family:'IBM Plex Mono',monospace; }
+
+.gallery-grid, .saved-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap:16px; }
+.gallery-card{
+  background:var(--panel); border:1px solid var(--line); border-radius: var(--radius-lg);
+  padding:10px; cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:8px;
+}
+.gallery-card:hover{ border-color:var(--accent); }
+.gallery-preview{ width:100%; aspect-ratio: 16/10; border-radius:10px; display:block; background-size:cover; background-position:center; }
+.gallery-name{ font-size:13px; }
+.gallery-type{ font-size:10.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.06em; }
+.empty{ color:var(--text-dim); font-size:13px; padding: 40px 0; }
+
+.toast{
+  position:fixed; bottom:26px; left:50%; transform: translateX(-50%) translateY(20px);
+  background: var(--panel-2); border:1px solid var(--line); color:var(--text);
+  padding: 10px 18px; border-radius:999px; font-size:12.5px; opacity:0; pointer-events:none;
+  transition: all .25s ease; z-index: 50;
+}
+.toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 860px){
+  .sidebar{ width:100%; position:absolute; inset:0; z-index:5; }
+  .workspace{ position:relative; }
+}
+
+#btnUseProject {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+  margin-right: auto;
+  font-weight: 600;
+}
+#btnUseProject:hover {
+  background: #059669;
+  border-color: #059669;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">Gradient Builder <span>studio</span></div>
+    <nav class="tabs-top">
+      <button data-tab="studio" class="active">Studio</button>
+      <button data-tab="gallery">Gallery</button>
+      <button data-tab="palette">Palette</button>
+      <button data-tab="saved">Saved</button>
+    </nav>
+    <div style="width:150px"></div>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar">
+      <div class="subtabs">
+        <button data-subtab="design" class="active">Design</button>
+        <button data-subtab="text">Text</button>
+        <button data-subtab="image">Image</button>
+      </div>
+
+      <div class="panel" data-panel="design">
+        <h3>Type</h3>
+        <div class="type-grid" id="typeGrid"></div>
+
+        <h3>Presets</h3>
+        <div class="preset-grid" id="presetGrid"></div>
+
+        <h3>Colours</h3>
+        <div id="colorList"></div>
+        <div style="display:flex; gap:8px;">
+          <button class="add-color-btn" id="addColor" style="flex:1;">+ Add colour</button>
+          <button class="add-color-btn" id="btnAiSuggest" style="flex:1; border-color: #E9546B; color: #E9546B;">✨ IA</button>
+        </div>
+
+        <h3>Scale <span id="scaleVal"></span></h3>
+        <input type="range" id="scale" min="10" max="100" value="55">
+
+        <h3 id="distortionLabel">Blur <span id="distortionVal"></span></h3>
+        <input type="range" id="distortion" min="0" max="100" value="55">
+
+        <h3>Contrast <span id="contrastVal"></span></h3>
+        <input type="range" id="contrast" min="60" max="160" value="100">
+
+        <label class="switch"><input type="checkbox" id="animate"> Animate gradient</label>
+      </div>
+
+      <div class="panel" data-panel="text" hidden>
+        <label class="switch" style="margin-top:0"><input type="checkbox" id="textShow"> Show text overlay</label>
+        <div class="field" style="margin-top:16px">
+          <label>Text</label>
+          <input type="text" id="textContent" placeholder="Nebula">
+        </div>
+        <div class="field">
+          <label>Font</label>
+          <select id="textFont">
+            <option value="serif">Shippori Mincho (serif)</option>
+            <option value="sans">Manrope (sans)</option>
+            <option value="mono">IBM Plex Mono</option>
+          </select>
+        </div>
+        <h3>Size <span id="textSizeVal"></span></h3>
+        <input type="range" id="textSize" min="16" max="160" value="64">
+        <div class="field">
+          <label>Colour</label>
+          <input type="color" id="textColor" value="#1a1a1a">
+        </div>
+      </div>
+
+      <div class="panel" data-panel="image" hidden>
+        <div class="dropzone" id="dropzoneLabel">
+          <input type="file" id="imageInput" accept="image/*" style="display:none">
+          Click to upload an image to blend into the gradient
+        </div>
+        <h3>Opacity <span id="imageOpacityVal"></span></h3>
+        <input type="range" id="imageOpacity" min="0" max="100" value="35">
+        <div class="field">
+          <label>Blend mode</label>
+          <select id="imageBlend">
+            <option value="overlay">Overlay</option>
+            <option value="multiply">Multiply</option>
+            <option value="screen">Screen</option>
+            <option value="soft-light">Soft light</option>
+            <option value="luminosity">Luminosity</option>
+          </select>
+        </div>
+        <button class="small-btn" id="imageClear">Remove image</button>
+      </div>
+    </aside>
+
+    <section class="canvas-area">
+      <div class="canvas-toolbar">
+        <button id="hideTags">Hide tags</button>
+        <div id="gradName" contenteditable="true" spellcheck="false">Untitled gradient</div>
+        <div style="width:80px"></div>
+      </div>
+
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="gfx"></canvas>
+        <div id="handleLayer"></div>
+      </div>
+
+      <div class="stopbar-wrap" id="stopbarWrap" hidden>
+        <div class="stopbar" id="stopbar"></div>
+        <div class="stopbar-hint">Arrastra los círculos para mover cada color a lo largo del degradado</div>
+      </div>
+
+      <div class="bottombar">
+        <button id="btnUseProject">Usar como Portada</button>
+        <button id="btnSave">Save</button>
+        <button id="btnCopySvg">Copy SVG</button>
+        <button id="btnPreview">Preview</button>
+        <div class="export-dropdown">
+          <button id="btnExport">Export ▾</button>
+          <div class="export-menu" id="exportMenu">
+            <button data-fmt="png">PNG image</button>
+            <button data-fmt="svg">SVG vector</button>
+            <button data-fmt="video">Video (MP4/WebM)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="view-panel" data-view="gallery" hidden>
+    <h2>Gallery</h2>
+    <p class="sub">Ejemplos listos para explorar — haz clic para abrirlos en el estudio.</p>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+
+  <div class="view-panel" data-view="palette" hidden>
+    <h2>Palette</h2>
+    <p class="sub">Colores tradicionales japoneses. Haz clic en cualquiera para copiar su código hex.</p>
+    <div class="palette-grid" id="paletteGrid"></div>
+  </div>
+
+  <div class="view-panel" data-view="saved" hidden>
+    <h2>Saved</h2>
+    <p class="sub">Tus degradados guardados.</p>
+    <div class="saved-grid" id="savedGrid"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ===================== Gradient Builder — core engine ===================== */
+
+const JAPANESE_COLORS = [
+  { name: 'Shu-iro', hex: '#EB6238' },
+  { name: 'Kurenai', hex: '#D1364B' },
+  { name: 'Ai-iro', hex: '#165E83' },
+  { name: 'Rurikon', hex: '#1B315E' },
+  { name: 'Wakatake', hex: '#6EAA78' },
+  { name: 'Matcha', hex: '#A5A051' },
+  { name: 'Yamabuki', hex: '#F8B500' },
+  { name: 'Tokiwa', hex: '#007947' },
+  { name: 'Momo-iro', hex: '#F5A9B8' },
+  { name: 'Fuji-iro', hex: '#9490C4' },
+  { name: 'Sakura-iro', hex: '#FEEEED' },
+  { name: 'Nezumi', hex: '#9E9689' },
+  { name: 'Kurotsurubami', hex: '#4D4C46' },
+  { name: 'Gunjo-iro', hex: '#1D2088' },
+  { name: 'Enji-iro', hex: '#A02724' },
+  { name: 'Uguisu-iro', hex: '#767C39' },
+  { name: 'Hanada-iro', hex: '#1868AE' },
+  { name: 'Moegi-iro', hex: '#6B8B33' },
+  { name: 'Suou-iro', hex: '#7B3B3B' },
+  { name: 'Kikyo-iro', hex: '#4A4E7C' },
+  { name: 'Nando-iro', hex: '#2E6280' },
+  { name: 'Karakurenai', hex: '#E9546B' },
+  { name: 'Byakuroku', hex: '#BDDBC9' },
+  { name: 'Kohaku-iro', hex: '#C77F32' },
+  { name: 'Gofun-iro', hex: '#FFFEFA' },
+  { name: 'Sumi-iro', hex: '#1C1C1C' }
+];
+
+function findColorName(hex) {
+  const hit = JAPANESE_COLORS.find(c => c.hex.toLowerCase() === hex.toLowerCase());
+  return hit ? hit.name : 'Custom';
+}
+
+const SPATIAL_TYPES = ['mesh', 'flow', 'grainy'];
+const SEQUENTIAL_TYPES = ['linear', 'radial', 'conic', 'wave', 'aurora', 'rings'];
+
+const TYPE_META = {
+  mesh:    { label: 'Mesh',    group: 'spatial',    slider2: 'Blur' },
+  flow:    { label: 'Flow',    group: 'spatial',    slider2: 'Blur' },
+  grainy:  { label: 'Grainy',  group: 'spatial',    slider2: 'Grain' },
+  linear:  { label: 'Linear',  group: 'sequential', slider2: 'Angle' },
+  radial:  { label: 'Radial',  group: 'sequential', slider2: 'Softness' },
+  conic:   { label: 'Conic',   group: 'sequential', slider2: 'Angle' },
+  rings:   { label: 'Rings',   group: 'sequential', slider2: 'Softness' },
+  wave:    { label: 'Wave',    group: 'sequential', slider2: 'Motion' },
+  aurora:  { label: 'Aurora',  group: 'sequential', slider2: 'Motion' }
+};
+
+const PRESETS = [
+  { name: 'Ai nagare',      type: 'mesh',   colors: ['#165E83', '#1B315E', '#9490C4', '#FFFEFA'] },
+  { name: 'Yuuyake',        type: 'flow',   colors: ['#EB6238', '#F8B500', '#F5A9B8', '#D1364B'] },
+  { name: 'Uguisu no mori', type: 'grainy', colors: ['#007947', '#767C39', '#6B8B33', '#BDDBC9'] },
+  { name: 'Kikyo yoru',     type: 'aurora', colors: ['#4A4E7C', '#1D2088', '#2E6280', '#9490C4'] },
+  { name: 'Sakura nami',    type: 'wave',   colors: ['#FEEEED', '#F5A9B8', '#9490C4', '#FFFEFA'] },
+  { name: 'Kohaku kasumi',  type: 'radial', colors: ['#C77F32', '#F8B500', '#7B3B3B', '#1C1C1C'] },
+  { name: 'Rurikon ring',   type: 'rings',  colors: ['#1B315E', '#165E83', '#1868AE', '#FFFEFA'] },
+  { name: 'Karakurenai',    type: 'linear', colors: ['#E9546B', '#A02724', '#F5A9B8', '#FFFEFA'] },
+  { name: 'Nando conic',    type: 'conic',  colors: ['#2E6280', '#165E83', '#4A4E7C', '#BDDBC9'] }
+];
+
+/* ---------- helpers ---------- */
+function hexToRgb(hex) {
+  let h = hex.replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  const num = parseInt(h, 16);
+  return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+}
+function hexToRgba(hex, a) {
+  const { r, g, b } = hexToRgb(hex);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function uid() { return Math.random().toString(36).slice(2, 9); }
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+/* ---------- default layouts ---------- */
+function defaultSpatialPos(index, count) {
+  if (count === 1) return { x: 0.5, y: 0.5 };
+  const layouts = [
+    [[0.28, 0.32], [0.74, 0.28], [0.3, 0.75], [0.78, 0.72], [0.5, 0.5], [0.5, 0.15]]
+  ];
+  const arr = layouts[0];
+  return { x: arr[index % arr.length][0], y: arr[index % arr.length][1] };
+}
+function defaultSeqPos(index, count) {
+  if (count === 1) return 0.5;
+  return index / (count - 1);
+}
+
+/* ===================== State ===================== */
+function makeInitialState() {
+  const preset = PRESETS[0];
+  const colors = preset.colors.map((hex, i) => ({ id: uid(), hex, name: findColorName(hex) }));
+  const state = {
+    name: 'Untitled gradient',
+    type: preset.type,
+    colors,
+    points: {},
+    stops: {},
+    scale: 55,
+    distortion: 55,
+    contrast: 100,
+    animate: false,
+    text: { show: false, content: 'Nebula', size: 64, color: '#1a1a1a', font: 'serif' },
+    image: { dataUrl: null, opacity: 35, blend: 'overlay' }
+  };
+  ensurePositions(state);
+  return state;
+}
+
+function ensurePositions(state) {
+  const n = state.colors.length;
+  state.colors.forEach((c, i) => {
+    if (!state.points[c.id]) {
+      const p = defaultSpatialPos(i, n);
+      state.points[c.id] = p;
+    }
+    if (state.stops[c.id] === undefined) {
+      state.stops[c.id] = defaultSeqPos(i, n);
+    }
+  });
+}
+
+/* ===================== Rendering ===================== */
+let noiseCache = null;
+function getNoiseCanvas(size) {
+  if (noiseCache && noiseCache.size === size) return noiseCache.canvas;
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const cx = c.getContext('2d');
+  const imgData = cx.createImageData(size, size);
+  for (let i = 0; i < imgData.data.length; i += 4) {
+    const v = Math.random() * 255;
+    imgData.data[i] = v; imgData.data[i + 1] = v; imgData.data[i + 2] = v;
+    imgData.data[i + 3] = 255;
+  }
+  cx.putImageData(imgData, 0, 0);
+  noiseCache = { size, canvas: c };
+  return c;
+}
+
+function orderedColors(state) {
+  return state.colors;
+}
+
+function drawSpatial(ctx, W, H, state, t) {
+  const cols = orderedColors(state);
+  // base wash: soft average of all colours so edges never show raw white
+  ctx.fillStyle = cols.length ? cols[0].hex : '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  const spread = 0.35 + (state.scale / 100) * 0.55;
+  ctx.globalCompositeOperation = 'source-over';
+  cols.forEach((c, i) => {
+    const p = state.points[c.id];
+    let cx = p.x * W, cy = p.y * H;
+    if (state.animate) {
+      cx += Math.sin(t * 0.00035 + i * 2.1) * W * 0.03;
+      cy += Math.cos(t * 0.0003 + i * 1.7) * H * 0.03;
+    }
+    const r = spread * Math.max(W, H) * (state.type === 'flow' ? 0.95 : 0.65);
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+    g.addColorStop(0, hexToRgba(c.hex, 0.9));
+    g.addColorStop(0.7, hexToRgba(c.hex, 0.45));
+    g.addColorStop(1, hexToRgba(c.hex, 0));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  });
+  ctx.globalCompositeOperation = 'source-over';
+
+  if (state.type === 'grainy') {
+    const grainAmt = state.distortion / 100;
+    const tile = getNoiseCanvas(160);
+    const pattern = ctx.createPattern(tile, 'repeat');
+    ctx.save();
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.globalAlpha = clamp(grainAmt * 0.55, 0, 0.55);
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+}
+
+function sortedStops(state) {
+  return orderedColors(state)
+    .map(c => ({ color: c.hex, pos: clamp(state.stops[c.id], 0, 1) }))
+    .sort((a, b) => a.pos - b.pos);
+}
+
+function drawSequential(ctx, W, H, state, t) {
+  const stops = sortedStops(state);
+  const type = state.type;
+
+  if (type === 'linear') {
+    const angle = (state.distortion / 100) * Math.PI * 2;
+    const cx = W / 2, cy = H / 2;
+    const len = Math.max(W, H) * (0.5 + state.scale / 200);
+    const x0 = cx - Math.cos(angle) * len, y0 = cy - Math.sin(angle) * len;
+    const x1 = cx + Math.cos(angle) * len, y1 = cy + Math.sin(angle) * len;
+    const g = ctx.createLinearGradient(x0, y0, x1, y1);
+    stops.forEach(s => g.addColorStop(s.pos, s.color));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  } else if (type === 'radial' || type === 'rings') {
+    const r = (0.25 + (state.scale / 100) * 0.85) * (Math.max(W, H) / (type === 'rings' ? 1.3 : 1.15));
+    const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, r);
+    let list = stops;
+    if (type === 'rings') {
+      // repeat the stop pattern to create banding
+      const reps = 2;
+      list = [];
+      for (let k = 0; k < reps; k++) {
+        stops.forEach(s => {
+          list.push({ pos: clamp((s.pos + k) / reps, 0, 1), color: s.color });
+        });
+      }
+      list.sort((a, b) => a.pos - b.pos);
+    }
+    list.forEach(s => g.addColorStop(s.pos, s.color));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    if (type === 'radial') {
+      const soft = state.distortion / 100 * 30;
+      if (soft > 1) {
+        const tmp = document.createElement('canvas');
+        tmp.width = W; tmp.height = H;
+        tmp.getContext('2d').drawImage(ctx.canvas, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+        ctx.filter = `blur(${soft}px)`;
+        ctx.drawImage(tmp, 0, 0);
+        ctx.filter = 'none';
+      }
+    }
+  } else if (type === 'conic') {
+    const angle = (state.distortion / 100) * Math.PI * 2;
+    if (ctx.createConicGradient) {
+      const g = ctx.createConicGradient(angle, W / 2, H / 2);
+      stops.forEach(s => g.addColorStop(s.pos, s.color));
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    } else {
+      ctx.fillStyle = stops[0].color;
+      ctx.fillRect(0, 0, W, H);
+    }
+  } else if (type === 'wave') {
+    ctx.fillStyle = stops[0].color;
+    ctx.fillRect(0, 0, W, H);
+    const n = stops.length;
+    stops.forEach((s, i) => {
+      const amp = H * 0.09 * (0.4 + state.scale / 100);
+      const freq = 1.4 + i * 0.6;
+      const speed = state.animate ? t * 0.0005 : 0;
+      const phase = speed * (i + 1) + i * 1.3;
+      const baseY = H * (0.18 + i * (0.7 / Math.max(1, n - 1 || 1)));
+      ctx.beginPath();
+      ctx.moveTo(0, baseY);
+      for (let x = 0; x <= W; x += 6) {
+        const turb = (state.distortion / 100) * 0.6 + 0.15;
+        const y = baseY + Math.sin(x * 0.008 * freq + phase) * amp * turb;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(W, H); ctx.lineTo(0, H);
+      ctx.closePath();
+      ctx.fillStyle = hexToRgba(s.color, 0.88);
+      ctx.fill();
+    });
+  } else if (type === 'aurora') {
+    ctx.fillStyle = '#0c1120';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'screen';
+    const n = stops.length;
+    stops.forEach((s, i) => {
+      const amp = H * 0.16 * (0.4 + state.scale / 100);
+      const speed = state.animate ? t * 0.00035 : 0;
+      const phase = speed * (i + 1) + i * 2;
+      const baseY = H * (0.15 + i * (0.65 / Math.max(1, n - 1 || 1)));
+      ctx.beginPath();
+      ctx.moveTo(0, baseY);
+      const pts = [];
+      for (let x = 0; x <= W; x += 6) {
+        const turb = (state.distortion / 100) * 0.8 + 0.2;
+        const y = baseY + Math.sin(x * 0.006 + phase) * amp * turb + Math.sin(x * 0.002 - phase) * amp * 0.35;
+        pts.push([x, y]);
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(W, baseY + amp * 1.6); ctx.lineTo(0, baseY + amp * 1.6);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, baseY - amp, 0, baseY + amp * 1.6);
+      grad.addColorStop(0, hexToRgba(s.color, 0));
+      grad.addColorStop(0.45, hexToRgba(s.color, 0.75));
+      grad.addColorStop(1, hexToRgba(s.color, 0));
+      ctx.fillStyle = grad;
+      ctx.fill();
+    });
+    ctx.globalCompositeOperation = 'source-over';
+  }
+}
+
+function drawImageOverlay(ctx, W, H, state) {
+  if (!state.image.dataUrl || !state.image.el) return;
+  ctx.save();
+  ctx.globalAlpha = state.image.opacity / 100;
+  ctx.globalCompositeOperation = state.image.blend;
+  const img = state.image.el;
+  const scale = Math.max(W / img.width, H / img.height);
+  const iw = img.width * scale, ih = img.height * scale;
+  ctx.drawImage(img, (W - iw) / 2, (H - ih) / 2, iw, ih);
+  ctx.restore();
+}
+
+function drawText(ctx, W, H, state) {
+  if (!state.text.show || !state.text.content) return;
+  ctx.save();
+  ctx.fillStyle = state.text.color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const fam = state.text.font === 'serif'
+    ? "'Shippori Mincho', serif"
+    : state.text.font === 'mono' ? "'IBM Plex Mono', monospace" : "'Manrope', sans-serif";
+  ctx.font = `${state.text.size}px ${fam}`;
+  ctx.fillText(state.text.content, W / 2, H / 2);
+  ctx.restore();
+}
+
+function renderToCanvas(canvas, state, t) {
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const buf = renderToCanvas._buf || (renderToCanvas._buf = document.createElement('canvas'));
+  if (buf.width !== W || buf.height !== H) { buf.width = W; buf.height = H; }
+  const bctx = buf.getContext('2d');
+  bctx.clearRect(0, 0, W, H);
+
+  if (TYPE_META[state.type].group === 'spatial') drawSpatial(bctx, W, H, state, t);
+  else drawSequential(bctx, W, H, state, t);
+
+  drawImageOverlay(bctx, W, H, state);
+  drawText(bctx, W, H, state);
+
+  ctx.clearRect(0, 0, W, H);
+  const blurAmt = (state.type === 'mesh' || state.type === 'flow')
+    ? (state.distortion / 100) * (Math.max(W, H) * 0.025)
+    : 0;
+  ctx.filter = `contrast(${state.contrast}%) blur(${blurAmt}px)`;
+  ctx.drawImage(buf, 0, 0);
+  ctx.filter = 'none';
+}
+
+/* ===================== SVG export ===================== */
+function buildSVG(state, W, H) {
+  const stops = sortedStops(state);
+  const defs = [];
+  let body = `<rect width="${W}" height="${H}" fill="${stops[0] ? stops[0].color : '#fff'}"/>`;
+  const group = TYPE_META[state.type].group;
+
+  if (group === 'spatial') {
+    defs.push(`<filter id="blur"><feGaussianBlur stdDeviation="${(state.distortion / 100) * 18}"/></filter>`);
+    let circles = '';
+    orderedColors(state).forEach((c, i) => {
+      const p = state.points[c.id];
+      const gid = `sp${i}`;
+      const r = (0.35 + state.scale / 100 * 0.55) * Math.max(W, H) * (state.type === 'flow' ? 0.85 : 0.6);
+      defs.push(`<radialGradient id="${gid}" cx="${p.x * W}" cy="${p.y * H}" r="${r}" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="${c.hex}" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="${c.hex}" stop-opacity="0"/>
+      </radialGradient>`);
+      circles += `<rect width="${W}" height="${H}" fill="url(#${gid})" style="mix-blend-mode:${i === 0 ? 'normal' : 'screen'}"/>`;
+    });
+    body += `<g filter="url(#blur)">${circles}</g>`;
+    if (state.type === 'grainy') {
+      defs.push(`<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0"/></filter>`);
+      body += `<rect width="${W}" height="${H}" filter="url(#grain)" opacity="${(state.distortion / 100) * 0.5}"/>`;
+    }
+  } else if (state.type === 'linear') {
+    const angleDeg = (state.distortion / 100) * 360;
+    defs.push(`<linearGradient id="g1" gradientTransform="rotate(${angleDeg} 0.5 0.5)">${
+      stops.map(s => `<stop offset="${(s.pos * 100).toFixed(1)}%" stop-color="${s.color}"/>`).join('')
+    }</linearGradient>`);
+    body += `<rect width="${W}" height="${H}" fill="url(#g1)"/>`;
+  } else if (state.type === 'radial' || state.type === 'rings') {
+    let list = stops;
+    if (state.type === 'rings') {
+      list = [];
+      for (let k = 0; k < 2; k++) stops.forEach(s => list.push({ pos: (s.pos + k) / 2, color: s.color }));
+      list.sort((a, b) => a.pos - b.pos);
+    }
+    defs.push(`<radialGradient id="g1">${list.map(s => `<stop offset="${(s.pos * 100).toFixed(1)}%" stop-color="${s.color}"/>`).join('')}</radialGradient>`);
+    body += `<rect width="${W}" height="${H}" fill="url(#g1)"/>`;
+  } else if (state.type === 'conic') {
+    const stopsCss = stops.map(s => `${s.color} ${(s.pos * 100).toFixed(1)}%`).join(', ');
+    body += `<foreignObject width="${W}" height="${H}"><div xmlns="http://www.w3.org/1999/xhtml" style="width:${W}px;height:${H}px;background:conic-gradient(from ${(state.distortion / 100) * 360}deg, ${stopsCss})"></div></foreignObject>`;
+  } else if (state.type === 'wave' || state.type === 'aurora') {
+    if (state.type === 'aurora') body = `<rect width="${W}" height="${H}" fill="#0c1120"/>`;
+    defs.push(`<filter id="blur2"><feGaussianBlur stdDeviation="${state.type === 'aurora' ? 6 : 0}"/></filter>`);
+    let paths = '';
+    const n = stops.length;
+    stops.forEach((s, i) => {
+      const amp = H * (state.type === 'aurora' ? 0.16 : 0.09) * (0.4 + state.scale / 100);
+      const baseY = H * (0.18 + i * (0.68 / Math.max(1, n - 1 || 1)));
+      let d = `M 0 ${baseY}`;
+      for (let x = 0; x <= W; x += 20) {
+        const y = baseY + Math.sin(x * 0.008 + i) * amp * ((state.distortion / 100) * 0.6 + 0.2);
+        d += ` L ${x} ${y}`;
+      }
+      d += ` L ${W} ${H} L 0 ${H} Z`;
+      paths += `<path d="${d}" fill="${s.color}" opacity="0.8"/>`;
+    });
+    body += `<g filter="url(#blur2)">${paths}</g>`;
+  }
+
+  if (state.text.show && state.text.content) {
+    body += `<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="${state.text.size}" fill="${state.text.color}" font-family="Georgia, serif">${escapeXml(state.text.content)}</text>`;
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs>${defs.join('')}</defs>${body}</svg>`;
+}
+function escapeXml(s) {
+  return s.replace(/[<>&'"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = { JAPANESE_COLORS, PRESETS, TYPE_META, hexToRgba, findColorName, makeInitialState, ensurePositions, buildSVG };
+}
+
+</script>
+<script>
+/* ===================== UI Controller ===================== */
+(function () {
+  let state = makeInitialState();
+  let dragging = null;
+  let rafId = null;
+  let recording = false;
+  let savedItems = [];
+  let storageMode = 'memory';
+
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  const gfx = $('#gfx');
+  const canvasWrap = $('#canvasWrap');
+  const handleLayer = $('#handleLayer');
+  const stopbarWrap = $('#stopbarWrap');
+  const stopbar = $('#stopbar');
+  const gradNameEl = $('#gradName');
+  const scaleInput = $('#scale');
+  const distInput = $('#distortion');
+  const contrastInput = $('#contrast');
+  const scaleVal = $('#scaleVal');
+  const distVal = $('#distortionVal');
+  const distLabel = $('#distortionLabel');
+  const contrastVal = $('#contrastVal');
+  const animateToggle = $('#animate');
+  const colorList = $('#colorList');
+  const addColorBtn = $('#addColor');
+  const hideTagsBtn = $('#hideTags');
+  const toastEl = $('#toast');
+
+  let tagsHidden = false;
+
+  /* ---------- sizing ---------- */
+  function fitCanvas() {
+    const rect = canvasWrap.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(320, Math.floor(rect.width));
+    const h = Math.max(240, Math.floor(rect.height));
+    gfx.style.width = w + 'px';
+    gfx.style.height = h + 'px';
+    gfx.width = Math.floor(w * dpr);
+    gfx.height = Math.floor(h * dpr);
+    handleLayer.style.width = w + 'px';
+    handleLayer.style.height = h + 'px';
+    requestRender();
+  }
+  window.addEventListener('resize', fitCanvas);
+
+  /* ---------- render loop ---------- */
+  let needsRender = true;
+  function requestRender() { needsRender = true; if (!rafId) loop(); }
+  function loop(ts) {
+    if (state.animate || needsRender || recording) {
+      renderToCanvas(gfx, state, ts || performance.now());
+      needsRender = false;
+    }
+    if (state.animate || recording) {
+      rafId = requestAnimationFrame(loop);
+    } else {
+      rafId = null;
+    }
+  }
+
+  /* ---------- build sidebar: type grid ---------- */
+  const TYPE_ICONS = {
+    mesh: '◐', flow: '〰', grainy: '▦', linear: '▤', radial: '◎',
+    conic: '◔', rings: '◉', wave: '∿', aurora: '☄'
+  };
+  function buildTypeGrid() {
+    const grid = $('#typeGrid');
+    grid.innerHTML = '';
+    Object.keys(TYPE_META).forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'type-btn' + (state.type === t ? ' active' : '');
+      btn.dataset.type = t;
+      btn.innerHTML = `<span class="ti">${TYPE_ICONS[t]}</span><span>${TYPE_META[t].label}</span>`;
+      btn.addEventListener('click', () => {
+        state.type = t;
+        ensurePositions(state);
+        syncGroupUI();
+        buildTypeGrid();
+        requestRender();
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  function buildPresetGrid() {
+    const grid = $('#presetGrid');
+    grid.innerHTML = '';
+    PRESETS.forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'preset-btn';
+      btn.title = p.name;
+      const swatch = p.colors.map(c => `linear-gradient(135deg, ${c}, ${c})`).join(',');
+      btn.innerHTML = `<span class="preset-swatch" style="background:conic-gradient(${p.colors.join(',')})"></span><span class="preset-name">${p.name}</span>`;
+      btn.addEventListener('click', () => applyPreset(p));
+      grid.appendChild(btn);
+    });
+  }
+
+  function applyPreset(p) {
+    state.type = p.type;
+    state.colors = p.colors.map(hex => ({ id: uid(), hex, name: findColorName(hex) }));
+    state.points = {}; state.stops = {};
+    ensurePositions(state);
+    state.name = p.name;
+    gradNameEl.textContent = state.name;
+    buildTypeGrid();
+    syncGroupUI();
+    buildColorList();
+    requestRender();
+  }
+
+  /* ---------- color list (design panel) ---------- */
+  function buildColorList() {
+    colorList.innerHTML = '';
+    state.colors.forEach((c, i) => {
+      const row = document.createElement('div');
+      row.className = 'color-row';
+      row.innerHTML = `
+        <input type="color" value="${c.hex}" class="swatch-input">
+        <div class="color-meta">
+          <div class="color-name">${c.name}</div>
+          <div class="color-hex">${c.hex.toUpperCase()}</div>
+        </div>
+        <button class="remove-color" ${state.colors.length <= 2 ? 'disabled' : ''}>&times;</button>
+      `;
+      row.querySelector('.swatch-input').addEventListener('input', e => {
+        c.hex = e.target.value;
+        c.name = findColorName(c.hex);
+        row.querySelector('.color-name').textContent = c.name;
+        row.querySelector('.color-hex').textContent = c.hex.toUpperCase();
+        requestRender(); buildBadges(); buildStopbar();
+      });
+      row.querySelector('.remove-color').addEventListener('click', () => {
+        if (state.colors.length <= 2) return;
+        state.colors.splice(i, 1);
+        delete state.points[c.id]; delete state.stops[c.id];
+        buildColorList(); buildBadges(); buildStopbar(); requestRender();
+      });
+      colorList.appendChild(row);
+    });
+  }
+  addColorBtn.addEventListener('click', () => {
+    if (state.colors.length >= 6) return;
+    const pool = JAPANESE_COLORS[Math.floor(Math.random() * JAPANESE_COLORS.length)];
+    const c = { id: uid(), hex: pool.hex, name: pool.name };
+    state.colors.push(c);
+    ensurePositions(state);
+    buildColorList(); buildBadges(); buildStopbar(); requestRender();
+  });
+
+  $('#btnAiSuggest').addEventListener('click', () => {
+    $('#btnAiSuggest').textContent = '...';
+    window.parent.postMessage({ type: 'REQUEST_AI_COLORS' }, '*');
+  });
+
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === 'INIT_PROJECT_DATA' && e.data?.payload) {
+      const { title } = e.data.payload;
+      if (title) {
+        state.name = title + ' Cover';
+        $('#gradName').textContent = state.name;
+        state.text.show = true;
+        state.text.content = title;
+        $('#textShow').checked = true;
+        $('#textContent').value = title;
+        requestRender();
+      }
+    }
+
+    if (e.data?.type === 'APPLY_AI_COLORS' && e.data?.payload) {
+      $('#btnAiSuggest').textContent = '✨ IA';
+      const newColors = e.data.payload;
+      state.colors = newColors.map((hex) => ({ id: uid(), hex, name: findColorName(hex) }));
+      state.points = {}; state.stops = {};
+      ensurePositions(state);
+      buildColorList();
+      buildBadges();
+      buildStopbar();
+      requestRender();
+    }
+    
+    if (e.data?.type === 'GENERATE_BACKGROUND_SILENTLY' && e.data?.payload) {
+      const gState = e.data.payload;
+      state.type = gState.type || 'mesh';
+      state.distortion = gState.distortion || 50;
+      state.scale = gState.scale || 100;
+      state.contrast = gState.contrast || 110;
+      state.colors = (gState.colors || []).map(hex => ({ id: uid(), hex, name: findColorName(hex) }));
+      state.points = {}; state.stops = {};
+      ensurePositions(state);
+      
+      const big = document.createElement('canvas');
+      big.width = 1600; big.height = 1000;
+      renderToCanvas(big, state, performance.now());
+      const dataUrl = big.toDataURL('image/png', 0.9);
+      
+      window.parent.postMessage({ type: 'GRADIENT_GENERATED_SILENTLY', payload: dataUrl }, '*');
+    }
+  });
+
+  /* ---------- spatial handles + badges ---------- */
+  function buildBadges() {
+    handleLayer.innerHTML = '';
+    if (TYPE_META[state.type].group !== 'spatial') return;
+    state.colors.forEach((c) => {
+      const p = state.points[c.id];
+      const dot = document.createElement('div');
+      dot.className = 'handle-dot';
+      dot.style.left = (p.x * 100) + '%';
+      dot.style.top = (p.y * 100) + '%';
+      dot.addEventListener('pointerdown', e => startDragPoint(e, c.id));
+      handleLayer.appendChild(dot);
+
+      if (!tagsHidden) {
+        const tag = document.createElement('div');
+        tag.className = 'badge';
+        tag.style.left = (p.x * 100) + '%';
+        tag.style.top = (p.y * 100) + '%';
+        tag.innerHTML = `<span class="badge-dot" style="background:${c.hex}"></span><span class="badge-name">${c.name.toUpperCase()}</span><span class="badge-hex">${c.hex.toUpperCase()}</span>`;
+        handleLayer.appendChild(tag);
+      }
+    });
+  }
+
+  function startDragPoint(e, id) {
+    e.preventDefault();
+    dragging = { id, kind: 'point' };
+    const move = (ev) => {
+      const rect = handleLayer.getBoundingClientRect();
+      const x = clamp((ev.clientX - rect.left) / rect.width, 0, 1);
+      const y = clamp((ev.clientY - rect.top) / rect.height, 0, 1);
+      state.points[id] = { x, y };
+      buildBadges();
+      requestRender();
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      dragging = null;
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }
+
+  /* ---------- sequential stop bar ---------- */
+  function buildStopbar() {
+    stopbar.innerHTML = '';
+    if (TYPE_META[state.type].group !== 'sequential') return;
+    const stops = sortedStops(state);
+    stopbar.style.background = `linear-gradient(90deg, ${stops.map(s => `${s.color} ${(s.pos * 100).toFixed(0)}%`).join(',')})`;
+    state.colors.forEach(c => {
+      const pos = state.stops[c.id];
+      const handle = document.createElement('div');
+      handle.className = 'stop-handle';
+      handle.style.left = (pos * 100) + '%';
+      handle.style.background = c.hex;
+      handle.title = `${c.name} · ${c.hex}`;
+      handle.addEventListener('pointerdown', e => startDragStop(e, c.id));
+      stopbar.appendChild(handle);
+    });
+  }
+  function startDragStop(e, id) {
+    e.preventDefault();
+    dragging = { id, kind: 'stop' };
+    const move = (ev) => {
+      const rect = stopbar.getBoundingClientRect();
+      const pos = clamp((ev.clientX - rect.left) / rect.width, 0, 1);
+      state.stops[id] = pos;
+      buildStopbar();
+      requestRender();
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      dragging = null;
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }
+
+  hideTagsBtn.addEventListener('click', () => {
+    tagsHidden = !tagsHidden;
+    hideTagsBtn.textContent = tagsHidden ? 'Show tags' : 'Hide tags';
+    buildBadges();
+  });
+
+  /* ---------- sliders ---------- */
+  function syncGroupUI() {
+    const isSpatial = TYPE_META[state.type].group === 'spatial';
+    canvasWrap.classList.toggle('mode-spatial', isSpatial);
+    stopbarWrap.hidden = isSpatial;
+    handleLayer.hidden = !isSpatial;
+    distLabel.textContent = TYPE_META[state.type].slider2;
+    buildBadges();
+    buildStopbar();
+  }
+  scaleInput.addEventListener('input', () => { state.scale = +scaleInput.value; scaleVal.textContent = state.scale; requestRender(); });
+  distInput.addEventListener('input', () => { state.distortion = +distInput.value; distVal.textContent = state.distortion; requestRender(); });
+  contrastInput.addEventListener('input', () => { state.contrast = +contrastInput.value; contrastVal.textContent = state.contrast + '%'; requestRender(); });
+  animateToggle.addEventListener('change', () => { state.animate = animateToggle.checked; requestRender(); });
+
+  /* ---------- text panel ---------- */
+  const textShow = $('#textShow');
+  const textContent = $('#textContent');
+  const textSize = $('#textSize');
+  const textColor = $('#textColor');
+  const textFont = $('#textFont');
+  textShow.addEventListener('change', () => { state.text.show = textShow.checked; requestRender(); });
+  textContent.addEventListener('input', () => { state.text.content = textContent.value; requestRender(); });
+  textSize.addEventListener('input', () => { state.text.size = +textSize.value; textSizeVal.textContent = state.text.size + 'px'; requestRender(); });
+  textColor.addEventListener('input', () => { state.text.color = textColor.value; requestRender(); });
+  textFont.addEventListener('change', () => { state.text.font = textFont.value; requestRender(); });
+
+  /* ---------- image panel ---------- */
+  const imageInput = $('#imageInput');
+  const imageOpacity = $('#imageOpacity');
+  const imageBlend = $('#imageBlend');
+  const imageClear = $('#imageClear');
+  const dropzoneLabel = $('#dropzoneLabel');
+  const imageOpacityVal = $('#imageOpacityVal');
+  const textSizeVal = $('#textSizeVal');
+  dropzoneLabel.addEventListener('click', () => imageInput.click());
+  imageInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        state.image.dataUrl = reader.result;
+        state.image.el = img;
+        requestRender();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  imageOpacity.addEventListener('input', () => { state.image.opacity = +imageOpacity.value; imageOpacityVal.textContent = state.image.opacity + '%'; requestRender(); });
+  imageBlend.addEventListener('change', () => { state.image.blend = imageBlend.value; requestRender(); });
+  imageClear.addEventListener('click', () => { state.image.dataUrl = null; state.image.el = null; imageInput.value = ''; requestRender(); });
+
+  /* ---------- name ---------- */
+  gradNameEl.addEventListener('blur', () => { state.name = gradNameEl.textContent.trim() || 'Untitled gradient'; });
+  gradNameEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); gradNameEl.blur(); } });
+
+  /* ---------- top tabs ---------- */
+  $$('.tabs-top button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.tabs-top button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      $$('.view-panel').forEach(v => v.hidden = v.dataset.view !== tab);
+      $('.workspace').hidden = tab !== 'studio';
+      if (tab === 'palette') buildPaletteView();
+      if (tab === 'saved') buildSavedView();
+      if (tab === 'gallery') buildGalleryView();
+      if (tab === 'studio') fitCanvas();
+    });
+  });
+
+  /* ---------- sub tabs (design/text/image) ---------- */
+  $$('.subtabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.subtabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      $$('.panel').forEach(p => p.hidden = p.dataset.panel !== btn.dataset.subtab);
+    });
+  });
+
+  /* ---------- palette view ---------- */
+  function buildPaletteView() {
+    const el = $('#paletteGrid');
+    el.innerHTML = '';
+    JAPANESE_COLORS.forEach(c => {
+      const chip = document.createElement('button');
+      chip.className = 'palette-chip';
+      chip.innerHTML = `<span class="chip-swatch" style="background:${c.hex}"></span><span class="chip-name">${c.name}</span><span class="chip-hex">${c.hex}</span>`;
+      chip.addEventListener('click', () => {
+        navigator.clipboard && navigator.clipboard.writeText(c.hex).catch(() => {});
+        showToast(`${c.name} · ${c.hex} copied`);
+      });
+      el.appendChild(chip);
+    });
+  }
+
+  /* ---------- gallery view ---------- */
+  function buildGalleryView() {
+    const el = $('#galleryGrid');
+    el.innerHTML = '';
+    PRESETS.forEach(p => {
+      const card = document.createElement('button');
+      card.className = 'gallery-card';
+      card.innerHTML = `<span class="gallery-preview" style="background:conic-gradient(${p.colors.join(',')})"></span><span class="gallery-name">${p.name}</span><span class="gallery-type">${TYPE_META[p.type].label}</span>`;
+      card.addEventListener('click', () => {
+        applyPreset(p);
+        $$('.tabs-top button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'studio'));
+        $$('.view-panel').forEach(v => v.hidden = true);
+        $('.workspace').hidden = false;
+        fitCanvas();
+      });
+      el.appendChild(card);
+    });
+  }
+
+  /* ---------- saved view + storage ---------- */
+  async function storageGet(key) {
+    try { const r = await window.storage.get(key, false); return r ? r.value : null; }
+    catch (e) { return null; }
+  }
+  async function storageSet(key, value) {
+    try { await window.storage.set(key, value, false); return true; }
+    catch (e) { return false; }
+  }
+  async function loadSaved() {
+    if (window.storage) {
+      try {
+        const list = await window.storage.list('gradient:', false);
+        if (list && list.keys) {
+          savedItems = [];
+          for (const k of list.keys) {
+            const v = await storageGet(k);
+            if (v) savedItems.push(JSON.parse(v));
+          }
+          storageMode = 'persistent';
+          return;
+        }
+      } catch (e) { /* fall through to memory */ }
+    }
+    storageMode = 'memory';
+  }
+  function buildSavedView() {
+    const el = $('#savedGrid');
+    el.innerHTML = '';
+    if (!savedItems.length) {
+      el.innerHTML = `<div class="empty">No saved gradients yet. Use "Save" in the studio to keep one here.</div>`;
+      return;
+    }
+    savedItems.slice().reverse().forEach(item => {
+      const card = document.createElement('button');
+      card.className = 'gallery-card';
+      card.innerHTML = `<span class="gallery-preview" style="background-image:url(${item.thumb})"></span><span class="gallery-name">${item.name}</span><span class="gallery-type">${TYPE_META[item.state.type].label}</span>`;
+      card.addEventListener('click', () => {
+        state = JSON.parse(JSON.stringify(item.state));
+        gradNameEl.textContent = state.name;
+        buildTypeGrid(); syncGroupUI(); buildColorList();
+        $$('.tabs-top button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'studio'));
+        $$('.view-panel').forEach(v => v.hidden = true);
+        $('.workspace').hidden = false;
+        fitCanvas();
+      });
+      el.appendChild(card);
+    });
+  }
+
+  /* ---------- toast ---------- */
+  let toastTimer = null;
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+
+  /* ---------- actions: use in project / save / copy / export ---------- */
+
+  $('#btnUseProject').addEventListener('click', () => {
+    // Generar imagen PNG de alta calidad
+    const big = document.createElement('canvas');
+    big.width = 1600; big.height = 1000;
+    renderToCanvas(big, state, performance.now());
+    const dataUrl = big.toDataURL('image/png', 0.9);
+    
+    // Mandar mensaje al padre (React)
+    window.parent.postMessage({
+      type: 'GRADIENT_GENERATED',
+      payload: dataUrl
+    }, '*');
+    
+    showToast('Generando portada para el proyecto...');
+  });
+
+  $('#btnSave').addEventListener('click', async () => {
+    const thumbCanvas = document.createElement('canvas');
+    thumbCanvas.width = 240; thumbCanvas.height = 150;
+    renderToCanvas(thumbCanvas, state, performance.now());
+    const thumb = thumbCanvas.toDataURL('image/png');
+    const id = uid();
+    const item = { id, name: state.name, thumb, state: JSON.parse(JSON.stringify(state)) };
+    delete item.state.image.el;
+    savedItems.push(item);
+    const ok = await storageSet('gradient:' + id, JSON.stringify(item));
+    showToast(ok ? 'Saved to your library' : 'Saved for this session');
+  });
+
+  $('#btnCopySvg').addEventListener('click', () => {
+    const svg = buildSVG(state, 960, 600);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(svg).then(() => showToast('SVG copied — paste into Figma or code'))
+        .catch(() => showToast('Could not copy automatically — use Export instead'));
+    } else {
+      showToast('Clipboard unavailable — use Export instead');
+    }
+  });
+
+  $('#btnPreview').addEventListener('click', () => {
+    const wasAnimate = state.animate;
+    state.animate = true;
+    requestRender();
+    setTimeout(() => { state.animate = wasAnimate; requestRender(); }, 3500);
+  });
+
+  const exportBtn = $('#btnExport');
+  const exportMenu = $('#exportMenu');
+  exportBtn.addEventListener('click', () => exportMenu.classList.toggle('open'));
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.export-dropdown')) exportMenu.classList.remove('open');
+  });
+
+  function download(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+
+  exportMenu.addEventListener('click', (e) => {
+    const fmt = e.target.dataset.fmt;
+    if (!fmt) return;
+    exportMenu.classList.remove('open');
+    if (fmt === 'png') exportPNG();
+    if (fmt === 'svg') exportSVG();
+    if (fmt === 'video') exportVideo();
+  });
+
+  function exportPNG() {
+    const big = document.createElement('canvas');
+    big.width = 1600; big.height = 1000;
+    renderToCanvas(big, state, performance.now());
+    big.toBlob(blob => {
+      download(blob, safeName() + '.png');
+      showToast('PNG exported');
+    }, 'image/png');
+  }
+  function exportSVG() {
+    const svg = buildSVG(state, 1600, 1000);
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    download(blob, safeName() + '.svg');
+    showToast('SVG exported');
+  }
+  function exportVideo() {
+    if (recording) return;
+    if (!gfx.captureStream) { showToast('Video export not supported in this browser'); return; }
+    recording = true;
+    const wasAnimate = state.animate;
+    state.animate = true;
+    requestRender();
+    const stream = gfx.captureStream(30);
+    const candidates = ['video/mp4;codecs=avc1', 'video/webm;codecs=vp9', 'video/webm'];
+    let mime = candidates.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m));
+    if (!mime) mime = '';
+    let recorder;
+    try {
+      recorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+    } catch (err) {
+      recording = false; state.animate = wasAnimate;
+      showToast('Video export not supported in this browser');
+      return;
+    }
+    const chunks = [];
+    recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    recorder.onstop = () => {
+      const type = recorder.mimeType || 'video/webm';
+      const blob = new Blob(chunks, { type });
+      const ext = type.includes('mp4') ? 'mp4' : 'webm';
+      download(blob, safeName() + '.' + ext);
+      recording = false;
+      state.animate = wasAnimate;
+      showToast('Video exported (' + ext.toUpperCase() + ')');
+    };
+    showToast('Recording 4s clip…');
+    recorder.start();
+    setTimeout(() => recorder.state !== 'inactive' && recorder.stop(), 4000);
+  }
+  function safeName() {
+    return (state.name || 'gradient').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  /* ---------- init ---------- */
+  async function init() {
+    buildTypeGrid();
+    buildPresetGrid();
+    buildColorList();
+    scaleInput.value = state.scale; scaleVal.textContent = state.scale;
+    distInput.value = state.distortion; distVal.textContent = state.distortion;
+    contrastInput.value = state.contrast; contrastVal.textContent = state.contrast + '%';
+    textShow.checked = state.text.show;
+    textContent.value = state.text.content;
+    textSize.value = state.text.size; textSizeVal.textContent = state.text.size + 'px';
+    textColor.value = state.text.color;
+    imageOpacityVal.textContent = state.image.opacity + '%';
+    gradNameEl.textContent = state.name;
+    syncGroupUI();
+    await loadSaved();
+    fitCanvas();
+  }
+  init();
+})();
+
+</script>
+</body>
+</html>

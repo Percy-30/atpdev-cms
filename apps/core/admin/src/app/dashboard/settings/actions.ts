@@ -14,7 +14,7 @@ export async function saveSettings(formData: FormData) {
     'github_url', 'linkedin_url', 'twitter_url', 'facebook_url',
     'instagram_url', 'youtube_url', 'tiktok_url', 'whatsapp_url',
     'telegram_url', 'discord_url',
-    'cv_url', 'credly_url', 'ga4_id', 'adsense_id', 'glow_style', 'global_background_image'
+    'cv_url', 'credly_url', 'ga4_id', 'adsense_id', 'glow_style', 'neon_thickness', 'global_background_image'
   ];
 
   for (const field of textFields) {

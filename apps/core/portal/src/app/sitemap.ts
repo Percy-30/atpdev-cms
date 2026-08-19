@@ -7,7 +7,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allLangs = ['es', ...langs];
 
   const buildAlternates = (path: string) => {
-    const languages: Record<string, string> = {};
+    const languages: Record<string, string> = {
+      "x-default": `${BASE_URL}${path}`
+    };
     allLangs.forEach(l => {
       const prefix = l === 'es' ? '' : `/${l}`;
       languages[l] = `${BASE_URL}${prefix}${path}`;
@@ -80,7 +82,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic projects routes
   let projectRoutes: MetadataRoute.Sitemap = [];
   try {
-    const projects = await getProjects();
+    const allProjects = await getProjects();
+    const projects = allProjects.filter(p => p.status !== 'Privado');
     
     // Main lang (es)
     const esProjectRoutes = projects.filter(p => p.slug).map(p => ({

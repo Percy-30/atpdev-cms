@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Code } from "lucide-react";
 import type { Metadata } from "next";
+import Script from "next/script";
 import { GlowWrapper } from "@/components/GlowWrapper";
 
 export async function generateStaticParams() {
@@ -36,9 +37,46 @@ export async function generateMetadata(
     ? (project.long_description || project.description) 
     : await translateText(project.long_description || project.description, lang);
 
+  const BASE_URL = "https://www.atpdev.dev";
+  const supportedLocales = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
+  const path = `/apps/${slug}`;
+  const ogImage = project.image || `${BASE_URL}/og-image.png`;
+
+  const isPrivate = project.status === 'Privado';
+
   return {
     title,
     description,
+    ...(isPrivate ? { robots: { index: false, follow: false } } : {}),
+    alternates: {
+      canonical: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+      languages: {
+        "x-default": `${BASE_URL}${path}`,
+        ...Object.fromEntries(
+          supportedLocales.map(l => [l, `${BASE_URL}${l === 'es' ? '' : '/' + l}${path}`])
+        )
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
   };
 }
 
@@ -79,30 +117,89 @@ export default async function ProjectPage({
 
   const enableGlow = config?.enable_glow_effect !== false;
 
+  let localTheme = null;
+  if (project.theme_config) {
+    try {
+      localTheme = JSON.parse(project.theme_config);
+    } catch (e) {
+      console.error("Error parsing project theme config", e);
+    }
+  }
+
   return (
-    <GlowWrapper enabled={enableGlow} className="w-full text-[var(--text-color)] transition-colors duration-500 min-h-screen py-16 px-6 relative overflow-hidden">
+    <main className="main">
+      <GlowWrapper enabled={enableGlow} className="w-full text-[var(--text-color)] transition-colors duration-500 min-h-screen py-16 px-6 relative overflow-hidden">
+      {localTheme && (
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root {
+              --primary: ${localTheme.primary_color || 'var(--primary)'};
+              --background: ${localTheme.theme_mode === 'light' ? '#ffffff' : '#0b0c10'};
+              --text-color: ${localTheme.theme_mode === 'light' ? '#000000' : '#ffffff'};
+              --font-headline: '${localTheme.font_headline || 'var(--font-headline)'}', sans-serif;
+              --font-body: '${localTheme.font_body || 'var(--font-body)'}', sans-serif;
+            }
+            .glass-panel {
+              ${localTheme.theme_mode === 'light' ? 'background: rgba(255, 255, 255, 0.8); border-color: rgba(0, 0, 0, 0.1); color: #000;' : ''}
+              ${localTheme.radius_scale === 'full' ? 'border-radius: 2rem;' : localTheme.radius_scale === 'small' ? 'border-radius: 0.5rem;' : localTheme.radius_scale === 'none' ? 'border-radius: 0;' : ''}
+            }
+            ${localTheme.glow_style && localTheme.glow_style.includes('cursor-') ? `
+              body {
+                cursor: ${localTheme.glow_style.includes('cursor-ia') ? 'url(/cursors/ia-cursor.svg), auto' : 'auto'};
+              }
+            ` : ''}
+          `
+        }} />
+      )}
       {/* JSON-LD Schema (Pro SEO) for Project */}
-      <script
+      <Script
+        id={`json-ld-app-${project.id}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": translatedTitle,
-            "description": translatedDesc,
-            "applicationCategory": translatedCat,
-            "image": project.image || "https://www.atpdev.dev/og-image.png",
-            "operatingSystem": project.playstore ? "Android" : "Web",
-            "url": `https://www.atpdev.dev/${lang === 'es' ? '' : lang + '/'}apps/${project.slug}`,
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "author": {
-              "@type": "Person",
-              "name": "Percy Acha Taipe"
-            }
+            "@graph": [
+              {
+                "@type": "SoftwareApplication",
+                "name": translatedTitle,
+                "description": translatedDesc,
+                "applicationCategory": translatedCat,
+                "image": project.image || "https://www.atpdev.dev/og-image.png",
+                "operatingSystem": project.playstore ? "Android" : "Web",
+                "url": `https://www.atpdev.dev/${lang === 'es' ? '' : lang + '/'}apps/${project.slug}`,
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                },
+                "author": {
+                  "@type": "Person",
+                  "name": "Percy Acha Taipe"
+                }
+              },
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": lang === 'es' ? "Inicio" : "Home",
+                    "item": `https://www.atpdev.dev/${lang === 'es' ? '' : lang}`
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Apps",
+                    "item": `https://www.atpdev.dev/${lang === 'es' ? '' : lang + '/'}#portfolio`
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": translatedTitle
+                  }
+                ]
+              }
+            ]
           })
         }}
       />
@@ -136,9 +233,9 @@ export default async function ProjectPage({
 
           <div className="space-y-8 glass-panel p-8 rounded-3xl h-fit">
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-[var(--glass-border)] pb-2">
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-[var(--glass-border)] pb-2">
                 {texts.technologies}
-              </h3>
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {project.stack.map(tech => (
                   <span key={tech} className="px-3 py-1 bg-[var(--pill-bg)] rounded-lg text-sm border border-[var(--glass-border)] font-medium">
@@ -174,5 +271,6 @@ export default async function ProjectPage({
         </div>
       </div>
     </GlowWrapper>
+    </main>
   );
 }

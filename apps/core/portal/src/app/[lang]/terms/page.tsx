@@ -5,10 +5,34 @@ import { Scale, ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { GlowWrapper } from "@/components/GlowWrapper";
 
-export const metadata: Metadata = {
-  title: "Términos de Servicio | ATP Dev",
-  description: "Términos de servicio y condiciones de uso aplicables a todos los sitios web y subdominios de ATP Dev.",
-};
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const title = lang === 'es' ? "Términos de Servicio | ATP Dev" : await translateText("Términos de Servicio | ATP Dev", lang);
+  const description = lang === 'es' ? "Términos de servicio y condiciones de uso aplicables a todos los sitios web y subdominios de ATP Dev." : await translateText("Términos de servicio y condiciones de uso aplicables a todos los sitios web y subdominios de ATP Dev.", lang);
+  
+  const BASE_URL = "https://www.atpdev.dev";
+  const path = "/terms";
+  const supportedLocales = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
+  
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+      languages: {
+        "x-default": `${BASE_URL}${path}`,
+        ...Object.fromEntries(
+          supportedLocales.map(l => [l, `${BASE_URL}${l === 'es' ? '' : '/' + l}${path}`])
+        )
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${BASE_URL}${lang === 'es' ? '' : '/' + lang}${path}`,
+    },
+  };
+}
 
 export default async function TermsOfService({
   params,
@@ -43,6 +67,7 @@ export default async function TermsOfService({
   const enableGlow = config?.enable_glow_effect !== false;
 
   return (
+    <main className="main">
     <GlowWrapper enabled={enableGlow} className="w-full text-[var(--text-color)] transition-colors duration-500 min-h-screen py-16 px-6 relative overflow-hidden">
       {/* Glow Effects */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[var(--tertiary)] opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -92,5 +117,6 @@ export default async function TermsOfService({
         </div>
       </div>
     </GlowWrapper>
+    </main>
   );
 }

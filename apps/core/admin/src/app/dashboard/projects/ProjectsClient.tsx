@@ -6,6 +6,7 @@ import { Project, GithubRepoSummary } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, suggestGradientColorsWithAI } from "./actions";
+import { ProjectThemeStudio, type ProjectThemeConfig } from "./ProjectThemeStudio";
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -26,6 +27,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [playstore, setPlaystore] = useState("");
   const [appstore, setAppstore] = useState("");
   const [imagePreview, setImagePreview] = useState(""); // screenshot capturado, viaja en input oculto "image"
+  const [themeConfig, setThemeConfig] = useState<string>("");
   
   // Estado para el editor de bloques (Pseudo-Block Editor)
   type UIBlock = { id: string; type: "h2" | "p" | "image"; content: string; alt?: string; url?: string; context?: string };
@@ -87,6 +89,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setDemolink(demo);
     setPlaystore(editingProject?.playstore || "");
     setAppstore((editingProject as any)?.appstore || "");
+    setThemeConfig(editingProject?.theme_config || "");
     setDomainType(!demo ? "subruta" : demo.includes("play.google.com") ? "externa" : "subdominio");
     
     setUploadState("idle");
@@ -121,6 +124,24 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       if (e.data?.type === 'GRADIENT_GENERATED' && e.data?.payload) {
         setImagePreview(e.data.payload);
         setShowGradientBuilderModal(false);
+
+        try {
+          setUploadState("loading");
+          const res = await fetch(e.data.payload);
+          const blob = await res.blob();
+          const file = new File([blob], `cover_${Date.now()}.png`, { type: "image/png" });
+          const fd = new FormData();
+          fd.set("file", file);
+          const result = await uploadImageFile(fd);
+          if (result && "imageUrl" in result && result.imageUrl) {
+            setImagePreview(result.imageUrl);
+          }
+          setUploadState("idle");
+        } catch (error) {
+          console.error("Error uploading gradient", error);
+          setUploadState("error");
+          setUploadError("Error al subir la imagen autogenerada.");
+        }
       }
       
       if (e.data?.type === 'REQUEST_AI_COLORS') {
@@ -693,7 +714,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
               className="flex items-center gap-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 border border-purple-500/30 text-purple-300 px-6 py-2 rounded-full font-bold text-[11px] uppercase tracking-widest shadow-[0_0_15px_rgba(168,85,247,0.1)] hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all"
             >
               <Palette size={14} />
-              Diseñar Portada con Gradiente
+              🎨 Personalizar Tema y Portada
             </button>
           </div>
 
@@ -830,6 +851,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           </label>
 
           <input type="hidden" name="status" value={editingProject ? editingProject.status : "Borrador"} />
+          <input type="hidden" name="theme_config" value={themeConfig} />
 
           {submitError && (
             <div className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-sm text-red-400 mt-2">
@@ -862,29 +884,32 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
 
       {/* GRADIENT BUILDER MODAL */}
       {showGradientBuilderModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-10 animate-in fade-in duration-200">
-          <div className="relative w-full max-w-6xl h-full max-h-[800px] bg-[#17181c] rounded-2xl overflow-hidden border border-gray-800 shadow-2xl flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b border-gray-800 bg-[#1c1d22]">
-              <div className="flex items-center gap-2 text-white font-bold">
-                <Palette size={18} className="text-purple-400" />
-                Diseñador de Portadas
-              </div>
-              <button 
-                type="button" 
-                onClick={() => setShowGradientBuilderModal(false)}
-                className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
-              >
-                Cerrar
-              </button>
-            </div>
-            <iframe 
-              ref={iframeRef}
-              src="/gradient-builder.html" 
-              className="flex-1 w-full h-full border-none"
-              title="Gradient Builder"
-            />
-          </div>
-        </div>
+        <ProjectThemeStudio 
+          title={title}
+          initialConfig={themeConfig}
+          onClose={() => setShowGradientBuilderModal(false)}
+          onChange={(config) => setThemeConfig(JSON.stringify(config))}
+          onCoverGenerated={async (dataUrl) => {
+            setImagePreview(dataUrl);
+            try {
+              setUploadState("loading");
+              const res = await fetch(dataUrl);
+              const blob = await res.blob();
+              const file = new File([blob], `cover_${Date.now()}.png`, { type: "image/png" });
+              const fd = new FormData();
+              fd.set("file", file);
+              const result = await uploadImageFile(fd);
+              if (result && "imageUrl" in result && result.imageUrl) {
+                setImagePreview(result.imageUrl);
+              }
+              setUploadState("idle");
+            } catch (error) {
+              console.error("Error uploading gradient", error);
+              setUploadState("error");
+              setUploadError("Error al subir la imagen autogenerada.");
+            }
+          }}
+        />
       )}
     </div>
   );

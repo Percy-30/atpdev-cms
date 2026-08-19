@@ -10,6 +10,7 @@ CREATE TABLE projects (
   demoLink TEXT,
   playStore TEXT,
   status TEXT NOT NULL,
+  theme_config JSONB,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

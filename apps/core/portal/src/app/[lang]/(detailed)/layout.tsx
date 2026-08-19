@@ -23,7 +23,7 @@ export default function DetailedLayout({
         <i className="header-toggle d-xl-none bi bi-list"></i>
 
         <div className="profile-img">
-          <Image src="/assets/img/my-profile-img.jpg" alt="" width={120} height={120} className="img-fluid rounded-circle" />
+          <Image src="/assets/img/my-profile-img.jpg" alt="ATP Dev Profile - Percy Acha" width={120} height={120} className="img-fluid rounded-circle" />
         </div>
 
         <a href="/" className="logo d-flex flex-column align-items-center justify-content-center text-center">
@@ -35,11 +35,11 @@ export default function DetailedLayout({
         </a>
 
         <div className="social-links text-center">
-          <a href="#" className="twitter"><i className="bi bi-twitter-x"></i></a>
-          <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
-          <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
-          <a href="#" className="google-plus"><i className="bi bi-skype"></i></a>
-          <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
+          <a href="#" className="twitter" aria-label="Twitter"><i className="bi bi-twitter-x"></i></a>
+          <a href="#" className="facebook" aria-label="Facebook"><i className="bi bi-facebook"></i></a>
+          <a href="#" className="instagram" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
+          <a href="#" className="google-plus" aria-label="Skype"><i className="bi bi-skype"></i></a>
+          <a href="#" className="linkedin" aria-label="LinkedIn"><i className="bi bi-linkedin"></i></a>
         </div>
 
         <nav id="navmenu" className="navmenu">
@@ -70,7 +70,7 @@ export default function DetailedLayout({
       </footer>
 
       {/* Scroll Top */}
-      <a href="#" id="scroll-top" className="scroll-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short"></i></a>
+      <a href="#" id="scroll-top" className="scroll-top d-flex align-items-center justify-content-center" aria-label="Volver arriba"><i className="bi bi-arrow-up-short"></i></a>
 
 
       {/* Vendor JS Files */}
@@ -79,11 +79,11 @@ export default function DetailedLayout({
       <Script src="/assets/vendor/aos/aos.js" strategy="afterInteractive" />
       <Script src="/assets/vendor/typed.js/typed.umd.js" strategy="afterInteractive" />
       <Script src="/assets/vendor/purecounter/purecounter_vanilla.js" strategy="afterInteractive" />
-      <Script src="/assets/vendor/waypoints/noframework.waypoints.js" strategy="afterInteractive" />
-      <Script src="/assets/vendor/glightbox/js/glightbox.min.js" strategy="afterInteractive" />
-      <Script src="/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js" strategy="afterInteractive" />
-      <Script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js" strategy="afterInteractive" />
-      <Script src="/assets/vendor/swiper/swiper-bundle.min.js" strategy="afterInteractive" />
+      <Script src="/assets/vendor/waypoints/noframework.waypoints.js" strategy="lazyOnload" />
+      <Script src="/assets/vendor/glightbox/js/glightbox.min.js" strategy="lazyOnload" />
+      <Script src="/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js" strategy="lazyOnload" />
+      <Script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js" strategy="lazyOnload" />
+      <Script src="/assets/vendor/swiper/swiper-bundle.min.js" strategy="lazyOnload" />
 
       {/* Main JS File */}
       <Script src="/assets/js/main.js" strategy="afterInteractive" />

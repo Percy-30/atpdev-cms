@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SiteConfig } from "@atpdev/database";
 
 export default function Footer({
@@ -25,8 +26,8 @@ export default function Footer({
         <div>
           <h4 className="font-bold mb-4 uppercase tracking-widest text-xs" style={{ color: 'var(--text-color)' }}>{ui.footerLegal}</h4>
           <ul className="space-y-3">
-            <li><a href="/privacy" className="hover:text-blue-500 text-sm transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.linkPrivacy}</a></li>
-            <li><a href="/terms" className="hover:text-blue-500 text-sm transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.linkTerms}</a></li>
+            <li><Link href="/privacy" className="hover:text-blue-500 text-sm transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.linkPrivacy}</Link></li>
+            <li><Link href="/terms" className="hover:text-blue-500 text-sm transition-colors" style={{ color: 'var(--text-color)', opacity: 0.8 }}>{ui.linkTerms}</Link></li>
           </ul>
         </div>
       </div>
@@ -47,7 +48,7 @@ export default function Footer({
             const urlKey = `${social.key}_url` as keyof typeof config;
             if (!config[enabledKey] || !config[urlKey]) return null;
             return (
-              <a key={social.key} href={config[urlKey] as string} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-blue-400 transition-colors">
+              <a key={social.key} href={config[urlKey] as string} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-400 transition-colors">
                 {social.name}
               </a>
             );

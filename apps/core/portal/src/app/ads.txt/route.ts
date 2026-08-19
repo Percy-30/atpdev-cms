@@ -4,19 +4,21 @@ export async function GET() {
   const config = await getSiteConfig();
   
   if (!config?.adsense_id) {
-    return new Response("No AdSense ID configured.", { status: 404 });
+    return new Response("# Google AdSense no configurado aún", {
+      headers: { "Content-Type": "text/plain" },
+    });
   }
 
-  // Remove the 'ca-' prefix if it exists to form the correct pub-XXXXXXXX format
-  const pubId = config.adsense_id.replace(/^ca-/, '');
-  
-  const adsTxt = `google.com, ${pubId}, DIRECT, f08c47fec0942fa0`;
+  // Extraer solo la parte numérica o prefijo pub-
+  const pubId = config.adsense_id.replace(/^ca-/, "");
 
-  return new Response(adsTxt, {
-    status: 200,
+  // Formato oficial de Google AdSense ads.txt
+  const content = `google.com, ${pubId}, DIRECT, f08c47fec0942fa0\n`;
+
+  return new Response(content, {
     headers: {
-      "Content-Type": "text/plain",
-      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=43200",
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=86400, s-maxage=86400",
     },
   });
 }

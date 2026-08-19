@@ -23,6 +23,8 @@ out/
 # misc
 .DS_Store
 *.pem
+.turbo/
+*.tar.zst
 
 # debug
 npm-debug.log*

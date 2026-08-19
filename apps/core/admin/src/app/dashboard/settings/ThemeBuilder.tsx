@@ -90,7 +90,17 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const hiddenIframeRef = useRef<HTMLIFrameElement>(null);
-  const portalUrl = process.env.NEXT_PUBLIC_PORTAL_URL || "http://localhost:3000";
+  const [portalUrl, setPortalUrl] = useState<string>("http://localhost:3000");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (process.env.NEXT_PUBLIC_PORTAL_URL) {
+        setPortalUrl(process.env.NEXT_PUBLIC_PORTAL_URL);
+      } else {
+        setPortalUrl("https://atpdev.dev");
+      }
+    }
+  }, []);
 
   // States
   const [mode, setMode] = useState(initialConfig?.theme_mode || "dark");
@@ -523,8 +533,10 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
                 <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl overflow-hidden flex flex-col">
                   {[
                     { id: 'spotlight-border', label: 'Reflector Neón', icon: <Sparkles size={14} className="text-blue-400" /> },
+                    { id: 'full-border', label: 'Borde Neón Completo', icon: <Square size={14} className="text-emerald-400" /> },
                     { id: 'spotlight-full', label: 'Relleno Neón', icon: <Sparkles size={14} className="text-purple-400" /> },
-                    { id: 'electric', label: 'Borde Eléctrico', icon: <Zap size={14} className="text-amber-400" /> },
+                    { id: 'electric', label: 'Reflector Eléctrico', icon: <Zap size={14} className="text-amber-400" /> },
+                    { id: 'electric-full', label: 'Borde Eléctrico Completo', icon: <Zap size={14} className="text-amber-400" /> },
                     { id: 'tilt', label: 'Inclinación 3D', icon: <div className="w-3 h-3 border border-green-400 transform rotate-12 skew-x-12" /> },
                     { id: 'ripple', label: 'Ondas (Clic)', icon: <div className="w-3 h-3 rounded-full border border-cyan-400" /> },
                     { id: 'burst', label: 'Explosión (Clic)', icon: <div className="w-1 h-1 bg-yellow-400 rounded-full shadow-[0_0_8px_2px_#fbbf24]" /> },
@@ -545,15 +557,28 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
                         }
                         setMouseEffects(prev => {
                           let next = prev.filter(e => e !== 'none' && e !== 'neon-multi' && e !== 'neon-harmonic');
+                          
+                          // Handle mutual exclusivity for border effects (sharing ::before)
+                          if (effect.id === 'spotlight-border') {
+                            next = next.filter(e => e !== 'electric' && e !== 'full-border' && e !== 'electric-full');
+                          } else if (effect.id === 'full-border') {
+                            next = next.filter(e => e !== 'electric' && e !== 'spotlight-border' && e !== 'electric-full');
+                          } else if (effect.id === 'electric') {
+                            next = next.filter(e => e !== 'spotlight-border' && e !== 'full-border' && e !== 'electric-full');
+                          } else if (effect.id === 'electric-full') {
+                            next = next.filter(e => e !== 'spotlight-border' && e !== 'full-border' && e !== 'electric');
+                          }
+
                           if (next.includes(effect.id)) {
                             next = next.filter(e => e !== effect.id);
                           } else {
                             next = [...next, effect.id];
                           }
-                          if (prev.includes('neon-multi') && (next.includes('spotlight-border') || next.includes('spotlight-full') || next.includes('electric'))) {
+                          
+                          if (prev.includes('neon-multi') && (next.includes('spotlight-border') || next.includes('full-border') || next.includes('spotlight-full') || next.includes('electric') || next.includes('electric-full'))) {
                             next.push('neon-multi');
                           }
-                          if (prev.includes('neon-harmonic') && (next.includes('spotlight-border') || next.includes('spotlight-full') || next.includes('electric'))) {
+                          if (prev.includes('neon-harmonic') && (next.includes('spotlight-border') || next.includes('full-border') || next.includes('spotlight-full') || next.includes('electric') || next.includes('electric-full'))) {
                             next.push('neon-harmonic');
                           }
                           return next.length === 0 ? ['none'] : next;
@@ -574,7 +599,7 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
                 </div>
 
                 {/* Sub-menu para Neón */}
-                {(mouseEffects.includes('spotlight-border') || mouseEffects.includes('spotlight-full') || mouseEffects.includes('electric')) && (
+                {(mouseEffects.includes('spotlight-border') || mouseEffects.includes('spotlight-full') || mouseEffects.includes('electric') || mouseEffects.includes('electric-full') || mouseEffects.includes('full-border')) && (
                   <div className="mt-3 p-4 bg-[#1A1A1A] border border-blue-500/30 rounded-xl animate-in fade-in slide-in-from-top-2">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-bold text-blue-400 flex items-center gap-2"><Sparkles size={14}/> Estilo del Neón</span>
@@ -756,6 +781,21 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
               src={portalUrl}
               className="w-full h-full border-0"
               title="Portal Live Preview"
+              onLoad={() => {
+                if (iframeRef.current && iframeRef.current.contentWindow) {
+                  iframeRef.current.contentWindow.postMessage({
+                    type: "UPDATE_THEME_PREVIEW",
+                    payload: {
+                      mode, primary, secondary, tertiary, neutral, 
+                      fontHeadline, fontBody, fontLabel, radiusScale, 
+                      globalBackgroundImage, 
+                      glowStyle: mouseEffects.join(','),
+                      neonThickness,
+                      neonGlow: neonThickness === "2px" ? "10px" : neonThickness === "4px" ? "18px" : neonThickness === "6px" ? "26px" : "36px"
+                    }
+                  }, "*");
+                }
+              }}
             />
           </div>
         </div>

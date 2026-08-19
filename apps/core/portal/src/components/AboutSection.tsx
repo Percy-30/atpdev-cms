@@ -125,7 +125,7 @@ export default function AboutSection({ initialSkills = [], initialCredlyUrl = ""
                   <h4 className="font-semibold transition-colors" style={{ color: 'var(--text-color)' }}>{ui.card3Title}</h4>
                   <p className="text-sm mt-1 transition-colors" style={{ color: 'var(--text-color)', opacity: 0.7 }}>
                     {credlyUrl ? (
-                      <a href={credlyUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline underline-offset-2" style={{ color: 'var(--primary)' }}>
+                      <a href={credlyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline underline-offset-2" style={{ color: 'var(--primary)' }}>
                         CCNAv7 <ExternalLink size={12} />
                       </a>
                     ) : "CCNAv7"}
