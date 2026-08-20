@@ -597,13 +597,22 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Categoría</label>
-            <select name="category" value={category} onChange={e => setCategory(e.target.value)} className="bg-\[\#1A1A1A\] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm">
-              <option value="Android">Android Apps</option>
-              <option value="iOS">iOS</option>
-              <option value="Web">Web</option>
-              <option value="IA">IA & Bots</option>
-              <option value="Otro">Otro</option>
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Categoría / Nicho de Mercado</label>
+            <select name="category" value={category} onChange={e => setCategory(e.target.value)} className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm">
+              <optgroup label="🏷️ Nichos e Industrias Especializadas">
+                <option value="Medicina">🩺 Medicina & Salud (Health & Medical)</option>
+                <option value="Juegos">🎮 Juegos & Entretenimiento (Games)</option>
+                <option value="Musica">🎵 Música & Audio</option>
+                <option value="MedioAmbiente">🌿 Medio Ambiente & Ecología</option>
+                <option value="Herramientas">🛠️ Herramientas & Productividad</option>
+                <option value="IA">🤖 Inteligencia Artificial & Bots</option>
+              </optgroup>
+              <optgroup label="📱 Tipo de Plataforma">
+                <option value="Android">📱 Android Native App</option>
+                <option value="iOS">🍏 iOS App</option>
+                <option value="Web">🌐 Web App / SaaS</option>
+                <option value="Otro">📦 Otro</option>
+              </optgroup>
             </select>
           </div>
 
