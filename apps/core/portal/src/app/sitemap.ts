@@ -85,24 +85,70 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const allProjects = await getProjects();
     const projects = allProjects.filter(p => p.status !== 'Privado');
     
-    // Main lang (es)
-    const esProjectRoutes = projects.filter(p => p.slug).map(p => ({
-      url: `${BASE_URL}/apps/${p.slug}`,
-      lastModified: new Date(p.created_at || new Date()),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-      alternates: buildAlternates(`/apps/${p.slug}`),
-    }));
-
-    // Other langs
-    const otherLangProjectRoutes = langs.flatMap(lang => 
-      projects.filter(p => p.slug).map(p => ({
-        url: `${BASE_URL}/${lang}/apps/${p.slug}`,
+    // Main lang (es) project routes
+    const esProjectRoutes = projects.filter(p => p.slug).flatMap(p => [
+      {
+        url: `${BASE_URL}/apps/${p.slug}`,
         lastModified: new Date(p.created_at || new Date()),
         changeFrequency: 'weekly' as const,
-        priority: 0.6,
+        priority: 0.8,
         alternates: buildAlternates(`/apps/${p.slug}`),
-      }))
+      },
+      {
+        url: `${BASE_URL}/apps/${p.slug}/privacy`,
+        lastModified: new Date(p.created_at || new Date()),
+        changeFrequency: 'monthly' as const,
+        priority: 0.4,
+        alternates: buildAlternates(`/apps/${p.slug}/privacy`),
+      },
+      {
+        url: `${BASE_URL}/apps/${p.slug}/terms`,
+        lastModified: new Date(p.created_at || new Date()),
+        changeFrequency: 'monthly' as const,
+        priority: 0.4,
+        alternates: buildAlternates(`/apps/${p.slug}/terms`),
+      },
+      {
+        url: `${BASE_URL}/apps/${p.slug}/credits`,
+        lastModified: new Date(p.created_at || new Date()),
+        changeFrequency: 'monthly' as const,
+        priority: 0.4,
+        alternates: buildAlternates(`/apps/${p.slug}/credits`),
+      },
+    ]);
+
+    // Other langs project routes
+    const otherLangProjectRoutes = langs.flatMap(lang => 
+      projects.filter(p => p.slug).flatMap(p => [
+        {
+          url: `${BASE_URL}/${lang}/apps/${p.slug}`,
+          lastModified: new Date(p.created_at || new Date()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.7,
+          alternates: buildAlternates(`/apps/${p.slug}`),
+        },
+        {
+          url: `${BASE_URL}/${lang}/apps/${p.slug}/privacy`,
+          lastModified: new Date(p.created_at || new Date()),
+          changeFrequency: 'monthly' as const,
+          priority: 0.3,
+          alternates: buildAlternates(`/apps/${p.slug}/privacy`),
+        },
+        {
+          url: `${BASE_URL}/${lang}/apps/${p.slug}/terms`,
+          lastModified: new Date(p.created_at || new Date()),
+          changeFrequency: 'monthly' as const,
+          priority: 0.3,
+          alternates: buildAlternates(`/apps/${p.slug}/terms`),
+        },
+        {
+          url: `${BASE_URL}/${lang}/apps/${p.slug}/credits`,
+          lastModified: new Date(p.created_at || new Date()),
+          changeFrequency: 'monthly' as const,
+          priority: 0.3,
+          alternates: buildAlternates(`/apps/${p.slug}/credits`),
+        },
+      ])
     );
 
     projectRoutes = [...esProjectRoutes, ...otherLangProjectRoutes];
