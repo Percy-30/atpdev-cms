@@ -598,40 +598,21 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
-              🏷️ Categoría / Nicho & Impacto ODS (ONU)
+              🏷️ Categoría / Nicho del Proyecto
             </label>
             <select name="category" value={category} onChange={e => setCategory(e.target.value)} className="bg-[#1A1A1A] border border-emerald-500/40 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm font-medium">
-              <optgroup label="🇺🇳 Objetivos de Desarrollo Sostenible (ODS - ONU)">
-                <option value="ODS 3: Salud y Bienestar">🩺 ODS 3: Salud y Bienestar (CIE-10 & Medical)</option>
-                <option value="ODS 4: Educación de Calidad">🎓 ODS 4: Educación de Calidad</option>
-                <option value="ODS 9: Industria e Innovación">🛠️ ODS 9: Industria, Innovación e Infraestructura</option>
-                <option value="ODS 13: Acción por el Clima">🌍 ODS 13: Acción por el Clima & Sostenibilidad</option>
-                <option value="ODS 1: Fin de la Pobreza">🤝 ODS 1: Fin de la Pobreza</option>
-                <option value="ODS 2: Hambre Cero">🌾 ODS 2: Hambre Cero</option>
-                <option value="ODS 5: Igualdad de Género">⚖️ ODS 5: Igualdad de Género</option>
-                <option value="ODS 6: Agua Limpia">💧 ODS 6: Agua Limpia y Saneamiento</option>
-                <option value="ODS 7: Energía Asequible">⚡ ODS 7: Energía Asequible y No Contaminante</option>
-                <option value="ODS 8: Trabajo Decente">💼 ODS 8: Trabajo Decente y Crecimiento Económico</option>
-                <option value="ODS 10: Reducción de Desigualdades">📉 ODS 10: Reducción de las Desigualdades</option>
-                <option value="ODS 11: Ciudades Sostenibles">🏙️ ODS 11: Ciudades y Comunidades Sostenibles</option>
-                <option value="ODS 12: Producción Responsable">♻️ ODS 12: Producción y Consumo Responsables</option>
-                <option value="ODS 14: Vida Submarina">🌊 ODS 14: Vida Submarina</option>
-                <option value="ODS 15: Vida Terrestre">🌳 ODS 15: Vida de Ecosistemas Terrestres</option>
-                <option value="ODS 16: Paz y Justicia">🕊️ ODS 16: Paz, Justicia e Instituciones Sólidas</option>
-                <option value="ODS 17: Alianzas">🤝 ODS 17: Alianzas para Lograr los Objetivos</option>
-              </optgroup>
-              <optgroup label="🏷️ Nichos e Industrias Comerciales">
+              <optgroup label="🏷️ Nichos e Industrias Principales">
                 <option value="Medicina">🩺 Medicina, Salud & Farmacia</option>
                 <option value="Juegos">🎮 Juegos & Entretenimiento</option>
                 <option value="Musica">🎵 Música & Audio</option>
                 <option value="MedioAmbiente">🌿 Ecología & Medio Ambiente</option>
                 <option value="Herramientas">🛠️ Herramientas & Utilitarios</option>
-                <option value="IA">🤖 Inteligencia Artificial & Automation</option>
+                <option value="IA">🤖 Inteligencia Artificial & Automatización</option>
                 <option value="Finanzas">💰 Finanzas, Crypto & Banca</option>
                 <option value="Productividad">📊 Productividad & Gestión</option>
                 <option value="Social">🗣️ Redes Sociales & Comunidad</option>
               </optgroup>
-              <optgroup label="📱 Tipo de Plataforma">
+              <optgroup label="📱 Plataformas Básicas">
                 <option value="Android">📱 Android Native App</option>
                 <option value="iOS">🍏 iOS App</option>
                 <option value="Web">🌐 Web App / SaaS</option>
