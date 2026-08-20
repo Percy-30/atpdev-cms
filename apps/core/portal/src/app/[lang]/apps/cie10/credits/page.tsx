@@ -77,11 +77,11 @@ export default async function Cie10CreditsPage({
             ← {lang === "es" ? "Volver a ATP Dev" : "Back to ATP Dev"}
           </Link>
           <div className="flex gap-4 text-xs text-neutral-500">
-            <Link href="/privacy" className="hover:underline">
+            <Link href="/apps/cie10/privacy" className="hover:underline">
               {lang === "es" ? "Privacidad" : "Privacy"}
             </Link>
             <span>•</span>
-            <Link href="/terms" className="hover:underline">
+            <Link href="/apps/cie10/terms" className="hover:underline">
               {lang === "es" ? "Términos" : "Terms"}
             </Link>
           </div>
