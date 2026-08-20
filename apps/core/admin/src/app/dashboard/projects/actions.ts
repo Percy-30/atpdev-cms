@@ -98,7 +98,7 @@ export async function autofillProjectWithAI(repoFullName: string, domainType: "s
           { "type": "image", "alt": "Arquitectura general", "url": "", "context": "Sube un diagrama de arquitectura aquí" }
         ],
         "stack": ["tecnologia1", "tecnologia2"],
-        "category": "La categoría sugerida u otra si consideras que encaja mejor (Android Apps, Web, IA & Bots, Otro)"
+        "category": "Selecciona la categoría más precisa entre: Medicina, Juegos, Musica, MedioAmbiente, Herramientas, IA, Finanzas, Productividad, Social, Android, iOS, Web"
       }
     `;
 

@@ -372,10 +372,15 @@ export type GithubAutofillData = {
 };
 
 const CATEGORY_KEYWORDS: { keywords: string[]; category: string }[] = [
+  { keywords: ['cie', 'cie10', 'medical', 'salud', 'health', 'doctor', 'medicine', 'enfermedad', 'medicina', 'hospital'], category: 'Medicina' },
+  { keywords: ['game', 'juego', 'unity', 'godot', 'play', 'arcade', 'gamer'], category: 'Juegos' },
+  { keywords: ['music', 'musica', 'audio', 'sound', 'song', 'mp3', 'spotify'], category: 'Musica' },
+  { keywords: ['eco', 'clima', 'environment', 'medio ambiente', 'reciclaje', 'sostenible'], category: 'MedioAmbiente' },
+  { keywords: ['finance', 'bank', 'banca', 'crypto', 'money', 'finanzas', 'presupuesto'], category: 'Finanzas' },
+  { keywords: ['python', 'jupyter notebook', 'ai', 'ml', 'machine-learning', 'tensorflow', 'pytorch', 'gemini', 'openai'], category: 'IA' },
   { keywords: ['kotlin', 'java', 'android'], category: 'Android' },
   { keywords: ['swift', 'ios'], category: 'iOS' },
   { keywords: ['next.js', 'nextjs', 'react', 'vue', 'typescript', 'javascript', 'html', 'css'], category: 'Web' },
-  { keywords: ['python', 'jupyter notebook', 'ai', 'ml', 'machine-learning', 'tensorflow', 'pytorch'], category: 'IA' },
 ];
 
 function guessCategory(languages: string[], topics: string[]): string {

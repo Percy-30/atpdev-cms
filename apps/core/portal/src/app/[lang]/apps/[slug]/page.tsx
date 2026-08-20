@@ -247,8 +247,8 @@ export default async function ProjectPage({
 
             <div className="space-y-4">
               {project.demolink && project.demolink !== '#' && (
-                <a href={project.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--primary)] hover:opacity-90 text-white rounded-xl font-bold transition-all magnetic-element hover:scale-[1.02] neon-border">
-                  <ExternalLink size={20} /> {texts.demo}
+                <a href={project.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-bold transition-all magnetic-element hover:scale-[1.02] neon-border shadow-lg shadow-blue-500/20">
+                  <ExternalLink size={20} /> {lang === 'es' ? '🌐 Visitar Web App / Subdominio en Vivo' : '🌐 Visit Live Web App / Subdomain'}
                 </a>
               )}
               {project.github_repo && (
