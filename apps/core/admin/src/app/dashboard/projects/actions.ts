@@ -266,6 +266,7 @@ export async function createProject(formData: FormData) {
   const long_description = formData.get("long_description") as string;
   const is_featured = formData.get("is_featured") === "true";
   const theme_config = formData.get("theme_config") as string || null;
+  const legal_config = formData.get("legal_config") as string || null;
 
   const result = await dbCreateProject({
     title,
@@ -283,6 +284,7 @@ export async function createProject(formData: FormData) {
     metrics,
     github_repo: githubRepo || undefined,
     theme_config: theme_config || undefined,
+    legal_config: legal_config || undefined,
   });
 
   if (result.success) {
@@ -327,6 +329,7 @@ export async function updateProjectAction(id: number, formData: FormData) {
   const long_description = formData.get("long_description") as string;
   const is_featured = formData.get("is_featured") === "true";
   const theme_config = formData.get("theme_config") as string || null;
+  const legal_config = formData.get("legal_config") as string || null;
 
   const { updateProject: dbUpdateProject } = await import("@atpdev/database");
 
@@ -344,6 +347,7 @@ export async function updateProjectAction(id: number, formData: FormData) {
     status,
     github_repo: githubRepo || undefined,
     theme_config: theme_config || undefined,
+    legal_config: legal_config || undefined,
     ...(capturedImage ? { image: capturedImage } : {}),
   });
 

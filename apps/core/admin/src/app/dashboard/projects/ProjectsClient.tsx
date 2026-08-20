@@ -28,6 +28,13 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [appstore, setAppstore] = useState("");
   const [imagePreview, setImagePreview] = useState(""); // screenshot capturado, viaja en input oculto "image"
   const [themeConfig, setThemeConfig] = useState<string>("");
+
+  // Módulos Legales y Subpáginas Dinámicas
+  const [hasPrivacy, setHasPrivacy] = useState(true);
+  const [hasTerms, setHasTerms] = useState(true);
+  const [hasCredits, setHasCredits] = useState(true);
+  const [hasAi, setHasAi] = useState(true);
+  const [hasAdmob, setHasAdmob] = useState(true);
   
   // Estado para el editor de bloques (Pseudo-Block Editor)
   type UIBlock = { id: string; type: "h2" | "p" | "image"; content: string; alt?: string; url?: string; context?: string };
@@ -90,6 +97,22 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setPlaystore(editingProject?.playstore || "");
     setAppstore((editingProject as any)?.appstore || "");
     setThemeConfig(editingProject?.theme_config || "");
+    
+    if (editingProject?.legal_config) {
+      try {
+        const parsed = JSON.parse(editingProject.legal_config);
+        setHasPrivacy(parsed.has_privacy ?? true);
+        setHasTerms(parsed.has_terms ?? true);
+        setHasCredits(parsed.has_credits ?? true);
+        setHasAi(parsed.has_ai ?? true);
+        setHasAdmob(parsed.has_admob ?? true);
+      } catch {
+        setHasPrivacy(true); setHasTerms(true); setHasCredits(true); setHasAi(true); setHasAdmob(true);
+      }
+    } else {
+      setHasPrivacy(true); setHasTerms(true); setHasCredits(true); setHasAi(true); setHasAdmob(true);
+    }
+
     setDomainType(!demo ? "subruta" : demo.includes("play.google.com") ? "externa" : "subdominio");
     
     setUploadState("idle");
@@ -646,6 +669,55 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
               </label>
               <input type="text" name="appstore" value={appstore} onChange={e => setAppstore(e.target.value)} className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm focus:ring-2 focus:ring-blue-500/20" placeholder="https://apps.apple.com/..." />
             </div>
+          </div>
+
+          {/* Módulos Legales y Subpáginas Dinámicas */}
+          <div className="bg-[#151515] border border-gray-800/80 p-4 rounded-2xl flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                🛡️ Módulos Legales y Subpáginas Dinámicas
+              </span>
+              <span className="text-[11px] text-gray-500">Selecciona los módulos a activar</span>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 pt-1">
+              <label className="flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-gray-700 transition-all text-xs text-gray-300">
+                <input type="checkbox" checked={hasPrivacy} onChange={e => setHasPrivacy(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-emerald-500 focus:ring-emerald-500/20" />
+                <span>🔒 Política de Privacidad</span>
+              </label>
+
+              <label className="flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-gray-700 transition-all text-xs text-gray-300">
+                <input type="checkbox" checked={hasTerms} onChange={e => setHasTerms(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-emerald-500 focus:ring-emerald-500/20" />
+                <span>⚖️ Términos y Condiciones</span>
+              </label>
+
+              <label className="flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-gray-700 transition-all text-xs text-gray-300">
+                <input type="checkbox" checked={hasCredits} onChange={e => setHasCredits(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-emerald-500 focus:ring-emerald-500/20" />
+                <span>📜 Créditos y Fuentes</span>
+              </label>
+
+              <label className="flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-gray-700 transition-all text-xs text-gray-300">
+                <input type="checkbox" checked={hasAi} onChange={e => setHasAi(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-purple-500 focus:ring-purple-500/20" />
+                <span>🤖 Cláusulas de IA (Gemini)</span>
+              </label>
+
+              <label className="flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-gray-700 transition-all text-xs text-gray-300">
+                <input type="checkbox" checked={hasAdmob} onChange={e => setHasAdmob(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-amber-500 focus:ring-amber-500/20" />
+                <span>📢 Cláusulas de Anuncios (AdMob)</span>
+              </label>
+            </div>
+
+            <input
+              type="hidden"
+              name="legal_config"
+              value={JSON.stringify({
+                has_privacy: hasPrivacy,
+                has_terms: hasTerms,
+                has_credits: hasCredits,
+                has_ai: hasAi,
+                has_admob: hasAdmob
+              })}
+            />
           </div>
 
           <div className="flex flex-col gap-1.5">

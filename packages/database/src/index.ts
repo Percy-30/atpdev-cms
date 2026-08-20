@@ -9,6 +9,14 @@ const globalForSupabase = globalThis as unknown as { _supabase?: SupabaseClient 
 export const supabase = globalForSupabase._supabase ?? createClient(supabaseUrl, supabaseKey);
 if (process.env.NODE_ENV !== 'production') globalForSupabase._supabase = supabase;
 
+export type LegalConfig = {
+  has_privacy?: boolean;
+  has_terms?: boolean;
+  has_credits?: boolean;
+  has_ai?: boolean;
+  has_admob?: boolean;
+};
+
 // Definición de Tipos
 export type Project = {
   id: number;
@@ -34,6 +42,7 @@ export type Project = {
   github_is_private?: boolean;
   github_synced_at?: string;
   theme_config?: string; // JSON string with theme configuration
+  legal_config?: string; // JSON string with legal & dynamic modules configuration
   created_at?: string;
 };
 
