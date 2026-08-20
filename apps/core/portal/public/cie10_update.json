@@ -1,0 +1,18 @@
+[
+  {
+    "code": "U07.1",
+    "description": "COVID-19, virus identificado"
+  },
+  {
+    "code": "U07.2",
+    "description": "COVID-19, virus no identificado"
+  },
+  {
+    "code": "U08.9",
+    "description": "Historia personal de COVID-19, no especificada"
+  },
+  {
+    "code": "U09.9",
+    "description": "Condición posterior a COVID-19, no especificada"
+  }
+]
