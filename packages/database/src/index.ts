@@ -349,12 +349,24 @@ export function slugify(title: string): string {
 }
 
 export async function createProject(project: Omit<Project, 'id' | 'created_at'>): Promise<{ success: boolean, error?: string }> {
-  const { error } = await adminSupabase.from('projects').insert([project]);
-  if (error) {
-    console.error('Error creating project:', error);
+  let payload: Record<string, any> = { ...project };
+  let attempts = 0;
+  while (attempts < 5) {
+    const { error } = await adminSupabase.from('projects').insert([payload]);
+    if (!error) return { success: true };
+
+    console.error('Error creating project attempt', attempts, error);
+    const match = (error.message || '').match(/Could not find the '([^']+)' column/i) || (error.details || '').match(/Could not find the '([^']+)' column/i);
+    if (match && match[1] && match[1] in payload) {
+      const missingCol = match[1];
+      console.warn(`Columna '${missingCol}' no existe en la tabla projects de Supabase. Removiendo automáticamente para guardar.`);
+      delete payload[missingCol];
+      attempts++;
+      continue;
+    }
     return { success: false, error: error.message || error.details || "Error desconocido en BD" };
   }
-  return { success: true };
+  return { success: false, error: "Máximo de reintentos alcanzado al guardar en BD" };
 }
 
 // =====================================================
@@ -764,12 +776,24 @@ export async function updateProjectStatus(id: number, status: string): Promise<b
 }
 
 export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at'>>): Promise<{ success: boolean, error?: string }> {
-  const { error } = await adminSupabase.from('projects').update(project).eq('id', id);
-  if (error) {
-    console.error('Error updating project:', error);
+  let payload: Record<string, any> = { ...project };
+  let attempts = 0;
+  while (attempts < 5) {
+    const { error } = await adminSupabase.from('projects').update(payload).eq('id', id);
+    if (!error) return { success: true };
+
+    console.error('Error updating project attempt', attempts, error);
+    const match = (error.message || '').match(/Could not find the '([^']+)' column/i) || (error.details || '').match(/Could not find the '([^']+)' column/i);
+    if (match && match[1] && match[1] in payload) {
+      const missingCol = match[1];
+      console.warn(`Columna '${missingCol}' no existe en la tabla projects de Supabase. Removiendo automáticamente para actualizar.`);
+      delete payload[missingCol];
+      attempts++;
+      continue;
+    }
     return { success: false, error: error.message || error.details || "Error desconocido en BD" };
   }
-  return { success: true };
+  return { success: false, error: "Máximo de reintentos alcanzado al actualizar en BD" };
 }
 
 export async function uploadImage(file: File): Promise<string | null> {
