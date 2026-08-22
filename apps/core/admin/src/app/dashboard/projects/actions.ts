@@ -70,70 +70,97 @@ export async function autofillProjectWithAI(repoFullName: string, domainType: "s
     const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" }); // Usamos el modelo rápido
 
     const prompt = `
-      Eres un experto en SEO, redactor técnico y desarrollador de software. Analiza este proyecto de GitHub y extrae/mejora la información para publicarlo en un portafolio profesional.
-      
-      DATOS OBTENIDOS DE GITHUB:
+      Eres un Arquitecto de Producto Senior, Experto en SEO de Google y Diseñador UX/UI de Nivel Dios.
+      Analiza este repositorio de GitHub y toma EL CONTROL TOTAL para transformarlo en una publicación de nivel profesional.
+
+      DATOS DE GITHUB:
+      Nombre repo: ${repoFullName}
       Título original: ${data.title}
       Descripción original: ${data.description}
       Lenguajes detectados: ${data.stack.join(", ")}
-      Categoría sugerida: ${data.category}
+      Categoría sugerida inicial: ${data.category}
       
-      README DEL PROYECTO:
-      ${readme.substring(0, 4000)}
+      README COMPLETO DEL PROYECTO:
+      ${readme.substring(0, 5000)}
       
-      REGLAS CRÍTICAS DE ESTRUCTURA Y SEO (IMPORTANTE PARA EVITAR PATRONES REPETITIVOS):
-      1. El tipo de enlace solicitado es "${domainType}". 
-         - Si es "externa", el proyecto NO tendrá página interna. Mantén "long_description" u "blocks" vacío o básico.
-         - Si es "subruta" o "subdominio", DEBES generar una página SEO completa estructurada en bloques.
-      2. DEBES variar el contenido dependiendo de la categoría (${data.category}).
-      3. SEO E INTENCIÓN DE BÚSQUEDA: Dedica al menos un bloque (h2 y p) a responder exactamente lo que un usuario buscaría en Google. Por ejemplo, si es una app de escaneo, incluye un bloque tipo "La mejor solución para escanear múltiples códigos a la vez" o "Por qué elegir este aplicativo". En ese párrafo, destaca claramente cómo la app resuelve ese problema o necesidad específica del mercado (Beneficios Clave).
-      4. No devuelvas un solo bloque de texto. Devuelve un Array de "blocks". Cada bloque puede ser de tipo "h2", "p", o "image".
-         - Para tipo "image", incluye "alt" y un "url" vacío o con placeholder, y describe en "context" qué tipo de captura se necesita ahí (ej: "Sube aquí una captura de pantalla principal").
+      REGLAS DE SELECCIÓN DE CATEGORÍA / NICHO (CRÍTICO):
+      Debes clasificar el proyecto en la categoría/nicho MÁS ESPECÍFICO e impacto de negocio, NUNCA en la plataforma genérica si existe un nicho claro.
+      - Si trata sobre códigos de diagnóstico, enfermedades, doctores, salud, CIE-10, CIE-11, medicina, farmacia -> DEBES elegir estrictamente: "Medicina".
+      - Si trata sobre videojuegos, entretenimientos, motores de juego -> "Juegos".
+      - Si trata sobre audio, música, reproductor -> "Musica".
+      - Si trata sobre ecología, clima, sostenibilidad -> "MedioAmbiente".
+      - Si trata sobre chatbots, LLMs, modelos de IA, visión artificial -> "IA".
+      - Si trata sobre crypto, banca, contabilidad, pagos -> "Finanzas".
+      - Si trata sobre gestión, tareas, notas, utilidades de trabajo -> "Productividad".
+      - Si trata sobre redes sociales, chat, comunidad -> "Social".
+      - Si no encaja en ninguna industria anterior -> "Herramientas" (o "Android" / "iOS" / "Web" si es una app genérica sin nicho industrial).
+      Opciones exactas permitidas para "category": "Medicina", "Juegos", "Musica", "MedioAmbiente", "Herramientas", "IA", "Finanzas", "Productividad", "Social", "Android", "iOS", "Web", "Otro".
 
-      Instrucciones:
-      Devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
+      REGLAS DE TEMA Y ESTÉTICA (PERSONALIZAR TEMA Y PORTADA):
+      Debes crear una configuración visual ("theme_config") espectacular adaptada al nicho y vibe del proyecto:
+      - Para "Medicina": Colores médicos/tecnológicos fluidos. Seed/Primary cyan/teal/emerald (#00E5FF, #06B6D4 o #10B981), fondo oscuro slate (#0F172A), fuentes "Hanken Grotesk" e "Inter", glow_style "spotlight-border,neon-harmonic,cursor-ia", neon_thickness "4px".
+      - Para "Juegos": Colores gamer neón electrizante (#A855F7 o #EF4444), glow_style "electric,neon-multi,cursor-trail".
+      - Para "IA": Púrpura/Índigo futurista (#6366F1 o #8B5CF6), glow_style "spotlight-border,neon-harmonic,cursor-ia".
+      - Para otros: Selecciona un seed_color elegante y profesional que combine perfecto con el logo/vibe del proyecto.
+
+      REGLAS DE SEO Y CONTENIDO EN BLOQUES:
+      1. Título: Máximo 4 palabras, ultra atractivo y limpio.
+      2. Descripción corta: Máximo 110 caracteres, enfocada en la propuesta de valor.
+      3. Bloques SEO: Genera bloques (h2, p, image) que respondan exactamente a lo que busca un usuario en Google (Beneficios, Solución al Reto, Arquitectura).
+         - Para tipo "image", incluye "alt" descriptivo y "context" indicando qué captura se debe subir.
+
+      Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta:
       {
-        "title": "Un título comercial, limpio y atractivo (no más de 4 palabras)",
-        "description": "Una descripción corta de máximo 100 caracteres, punchy.",
+        "title": "Un título comercial impecable",
+        "description": "Descripción concisa y potente",
+        "category": "Medicina",
+        "stack": ["Kotlin", "Android SDK", "Room Database"],
         "blocks": [
-          { "type": "h2", "content": "El Reto Técnico" },
-          { "type": "p", "content": "Párrafo sobre el desarrollo..." },
-          { "type": "image", "alt": "Arquitectura general", "url": "", "context": "Sube un diagrama de arquitectura aquí" }
+          { "type": "h2", "content": "El Reto: Acceso Instantáneo a Diagnósticos Médicos" },
+          { "type": "p", "content": "Explicación detallada..." },
+          { "type": "image", "alt": "Interfaz de Búsqueda Médica", "url": "", "context": "Sube una captura de la pantalla principal de la app" }
         ],
-        "stack": ["tecnologia1", "tecnologia2"],
-        "category": "Selecciona la categoría más precisa entre: Medicina, Juegos, Musica, MedioAmbiente, Herramientas, IA, Finanzas, Productividad, Social, Android, iOS, Web"
+        "theme_config": {
+          "theme_mode": "dark",
+          "seed_color": "#00E5FF",
+          "color_theme": "custom",
+          "primary_color": "#00E5FF",
+          "secondary_color": "#0F172A",
+          "tertiary_color": "#1E293B",
+          "neutral_color": "#64748B",
+          "font_headline": "Hanken Grotesk",
+          "font_body": "Inter",
+          "font_label": "JetBrains Mono",
+          "radius_scale": "medium",
+          "glow_style": "spotlight-border,neon-harmonic,cursor-ia",
+          "neon_thickness": "4px"
+        }
       }
     `;
 
     const response = await model.generateContent(prompt);
     let text = response.response.text().trim();
-    // Limpiar si Gemini devuelve ```json ... ```
-    if (text.startsWith("\`\`\`json")) text = text.replace(/^\`\`\`json/, "");
-    if (text.startsWith("\`\`\`")) text = text.replace(/^\`\`\`/, "");
-    if (text.endsWith("\`\`\`")) text = text.replace(/\`\`\`$/, "");
+    if (text.startsWith("```json")) text = text.replace(/^```json/, "");
+    if (text.startsWith("```")) text = text.replace(/^```/, "");
+    if (text.endsWith("```")) text = text.replace(/```$/, "");
     text = text.trim();
 
     const aiData = JSON.parse(text || "{}");
-    
-    // Convertir blocks a long_description markdown si se desea, o pasar blocks al cliente
-    // El cliente esperará blocks si enviamos blocks, pero GithubAutofillData no tiene blocks.
-    // Lo podemos mandar serializado en long_description
     const blocksJSON = JSON.stringify(aiData.blocks || []);
 
-    // Merge de la data original con la IA
     return {
       data: {
         ...data,
         title: aiData.title || data.title,
         description: aiData.description || data.description,
-        long_description: blocksJSON, // enviamos el JSON de bloques dentro de long_description para no cambiar los tipos de DB
+        long_description: blocksJSON,
         stack: Array.isArray(aiData.stack) ? aiData.stack : data.stack,
         category: aiData.category || data.category,
-      },
+        theme_config: aiData.theme_config ? JSON.stringify(aiData.theme_config) : undefined,
+      } as any,
     };
   } catch (error) {
     console.error("Error en Gemini AI autofill:", error);
-    // Si falla la IA, devolvemos la data base
     return { data: { ...data, long_description: "" } as any };
   }
 }

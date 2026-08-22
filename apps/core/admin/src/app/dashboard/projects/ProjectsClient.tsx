@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette } from "lucide-react";
-import { Project, GithubRepoSummary } from "@atpdev/database";
+import { Project, GithubRepoSummary, slugify } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, uploadApkFile, uploadIpaFile, suggestGradientColorsWithAI } from "./actions";
@@ -226,8 +226,14 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     }
 
     setStack(result.data.stack.join(", "));
-    setCategory(result.data.category);
-    setSlug(prev => prev || result.data.title.toLowerCase().replace(/\s+/g, "-"));
+    if (result.data.category) {
+      setCategory(result.data.category);
+    }
+    if ((result.data as any).theme_config) {
+      const tc = (result.data as any).theme_config;
+      setThemeConfig(typeof tc === "string" ? tc : JSON.stringify(tc));
+    }
+    setSlug(slugify(result.data.title));
     setAutofillState("idle");
   };
 
