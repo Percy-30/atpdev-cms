@@ -2,7 +2,7 @@
 
 import { useState, cloneElement } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlayCircle, X, Download, FileText, ExternalLink, ArrowRight } from "lucide-react";
+import { PlayCircle, X, Download, Eye, Globe, ExternalLink, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,6 +25,7 @@ export default function Portfolio({
   const glowClass = "interactive-card";
   const [filter, setFilter] = useState("all");
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [navigatingSlug, setNavigatingSlug] = useState<string | null>(null);
 
   // Build filter categories
   const uniqueCats = Array.from(new Set(projects.map(p => p.originalCategory || p.category)));
@@ -125,10 +126,23 @@ export default function Portfolio({
                       {project.slug && (
                         <Link 
                           href={`/apps/${project.slug}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 transition-all hover:scale-105 flex-shrink-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setNavigatingSlug(project.slug);
+                          }}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 transition-all hover:scale-105 active:scale-95 flex-shrink-0"
                         >
-                          <span>Ir a la página</span> <ArrowRight size={13} />
+                          {navigatingSlug === project.slug ? (
+                            <>
+                              <Loader2 size={13} className="animate-spin" />
+                              <span>Cargando...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Eye size={14} />
+                              <span>Ver Página</span>
+                            </>
+                          )}
                         </Link>
                       )}
                     </div>
@@ -192,14 +206,41 @@ export default function Portfolio({
                         {p.slug && (
                           <Link
                             href={`/apps/${p.slug}`}
-                            className="flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500"
+                            onClick={() => setNavigatingSlug(p.slug)}
+                            className="flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-2xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] active:scale-95 group bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 shadow-blue-500/25 neon-border"
                           >
-                            <FileText size={20} className="transition-transform duration-300 group-hover:scale-110" /> 📄 Ir a la Página del Proyecto
+                            {navigatingSlug === p.slug ? (
+                              <>
+                                <Loader2 size={19} className="animate-spin" />
+                                <span>Cargando página...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Eye size={19} className="transition-transform duration-300 group-hover:scale-110" />
+                                <span>Ver Artículo Completo</span>
+                              </>
+                            )}
                           </Link>
                         )}
                         {p.demolink && p.demolink.trim() !== '' && p.demolink !== '#' && !p.demolink.includes('/apps/') && !p.demolink.includes(p.slug) && (
-                          <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] group bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500">
-                            <ExternalLink size={20} className="transition-transform duration-300 group-hover:scale-110" /> 🌐 Ir a la Web App
+                          <a 
+                            href={p.demolink} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            onClick={() => setNavigatingSlug(`web-${p.slug}`)}
+                            className="flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-2xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] active:scale-95 group bg-gradient-to-r from-teal-600 via-emerald-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 shadow-teal-500/25 neon-border"
+                          >
+                            {navigatingSlug === `web-${p.slug}` ? (
+                              <>
+                                <Loader2 size={19} className="animate-spin" />
+                                <span>Abriendo Web App...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Globe size={19} className="transition-transform duration-300 group-hover:scale-110" />
+                                <span>Visitar Web App</span>
+                              </>
+                            )}
                           </a>
                         )}
                         {p.playstore && (
