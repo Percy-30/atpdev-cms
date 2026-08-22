@@ -2,8 +2,9 @@
 
 import { useState, cloneElement } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlayCircle, X, Download } from "lucide-react";
+import { PlayCircle, X, Download, FileText, ExternalLink, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Project, AIModelData } from "@atpdev/database";
 import { ICONS_MAP } from "@/components/AIModelsSection";
@@ -112,10 +113,24 @@ export default function Portfolio({
                       </div>
                     </h3>
                     <p className="text-gray-400 text-sm mb-6 line-clamp-2 flex-1">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-auto">
-                      {project.stack.map((tech: string) => (
-                        <span key={tech} className="text-xs px-2.5 py-1 rounded-md border shadow-sm" style={{ backgroundColor: 'var(--pill-bg)', borderColor: 'var(--glass-border)', color: 'var(--text-color)' }}>{tech}</span>
-                      ))}
+                    <div className="flex items-center justify-between gap-2 mt-auto pt-4 border-t border-[var(--glass-border)]">
+                      <div className="flex flex-wrap gap-1.5 overflow-hidden max-h-7">
+                        {project.stack.slice(0, 3).map((tech: string) => (
+                          <span key={tech} className="text-[11px] px-2.5 py-0.5 rounded-md border shadow-sm truncate" style={{ backgroundColor: 'var(--pill-bg)', borderColor: 'var(--glass-border)', color: 'var(--text-color)' }}>{tech}</span>
+                        ))}
+                        {project.stack.length > 3 && (
+                          <span className="text-[11px] px-2 py-0.5 rounded-md border" style={{ backgroundColor: 'var(--pill-bg)', borderColor: 'var(--glass-border)', color: 'var(--text-color)' }}>+{project.stack.length - 3}</span>
+                        )}
+                      </div>
+                      {project.slug && (
+                        <Link 
+                          href={`/apps/${project.slug}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 transition-all hover:scale-105 flex-shrink-0"
+                        >
+                          <span>Ir a la página</span> <ArrowRight size={13} />
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -174,9 +189,17 @@ export default function Portfolio({
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-4 pt-6 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+                        {p.slug && (
+                          <Link
+                            href={`/apps/${p.slug}`}
+                            className="flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500"
+                          >
+                            <FileText size={20} className="transition-transform duration-300 group-hover:scale-110" /> 📄 Ir a la Página del Proyecto
+                          </Link>
+                        )}
                         {p.demolink && p.demolink.trim() !== '' && p.demolink !== '#' && !p.demolink.includes('/apps/') && !p.demolink.includes(p.slug) && (
-                          <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-white px-8 py-3.5 rounded-xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:opacity-90 group" style={{ backgroundColor: 'var(--primary)' }}>
-                            <PlayCircle size={20} className="transition-transform duration-300 group-hover:scale-110" /> 🌐 Ir a la Web App
+                          <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] group bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500">
+                            <ExternalLink size={20} className="transition-transform duration-300 group-hover:scale-110" /> 🌐 Ir a la Web App
                           </a>
                         )}
                         {p.playstore && (
