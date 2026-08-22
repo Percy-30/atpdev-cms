@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { QrCode, X, Eye, Share2, Check, Download, ShieldCheck, Globe } from "lucide-react";
+import { QrCode, X, Eye, Share2, Check, Download, ShieldCheck, Globe, Camera, Sparkles } from "lucide-react";
 
 import { StickyDownloadBar } from "./StickyDownloadBar";
 
@@ -13,6 +13,37 @@ interface ProjectArticleViewerProps {
   title: string;
   playstore?: string | null;
   appstore?: string | null;
+}
+
+type ArticleBlock = {
+  type: "h2" | "p" | "image" | "callout" | "quote";
+  content?: string;
+  alt?: string;
+  url?: string;
+  context?: string;
+};
+
+function parseContentBlocks(rawDescription: string): ArticleBlock[] {
+  const trimmed = (rawDescription || "").trim();
+  if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].type) {
+        return parsed as ArticleBlock[];
+      }
+    } catch (e) {
+      console.warn("Could not parse description JSON blocks, falling back to text:", e);
+    }
+  }
+
+  // Fallback: parse text lines into blocks
+  const lines = trimmed.split("\n").filter((l) => l.trim() !== "");
+  return lines.map((line) => {
+    if (line.startsWith("# ") || line.startsWith("## ")) {
+      return { type: "h2", content: line.replace(/^#+\s*/, "") };
+    }
+    return { type: "p", content: line };
+  });
 }
 
 const SUPPORTED_LANGS = [
@@ -52,7 +83,7 @@ export function ProjectArticleViewer({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const paragraphs = description.split("\n").filter((p) => p.trim() !== "");
+  const blocks = parseContentBlocks(description);
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -117,22 +148,66 @@ export function ProjectArticleViewer({
         </div>
       </div>
 
-      {/* Article Body */}
+      {/* Rich Article Body */}
       <div className="space-y-6 text-lg leading-relaxed text-[var(--text-color)] opacity-95">
-        {paragraphs.map((paragraph, idx) => {
-          // Detect H2 style headings or regular paragraphs
-          if (paragraph.startsWith("# ") || paragraph.startsWith("## ")) {
-            const headingText = paragraph.replace(/^#+\s*/, "");
+        {blocks.map((block, idx) => {
+          if (block.type === "h2") {
             return (
               <h2
                 key={idx}
-                className="text-2xl font-bold text-white pt-4 pb-2 border-b border-white/10 title-gradient"
+                className="text-2xl md:text-3xl font-black text-white pt-8 pb-3 border-b border-white/10 title-gradient flex items-center gap-3"
               >
-                {headingText}
+                <span className="w-2 h-6 bg-cyan-400 rounded-full shadow-[0_0_12px_#06b6d4]"></span>
+                {block.content}
               </h2>
             );
           }
-          return <p key={idx}>{paragraph}</p>;
+
+          if (block.type === "image") {
+            return (
+              <div key={idx} className="my-8 rounded-3xl p-6 bg-white/5 border border-white/15 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
+                {block.url ? (
+                  <div
+                    className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer"
+                    onClick={() => setActiveImage(block.url!)}
+                  >
+                    <Image
+                      src={block.url}
+                      alt={block.alt || title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-2 font-semibold">
+                      <Eye size={20} /> Ampliar Imagen
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-white/20 rounded-2xl text-center bg-black/30">
+                    <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                      <Camera size={28} />
+                    </div>
+                    <h4 className="text-base font-bold text-white mb-1">{block.alt || "Captura de la Aplicación"}</h4>
+                    <p className="text-xs text-gray-400 max-w-md">{block.context || "Vista previa de la interfaz nativa del sistema."}</p>
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          if (block.type === "callout") {
+            return (
+              <div key={idx} className="my-6 p-6 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 text-cyan-200 backdrop-blur-md flex items-start gap-4 shadow-lg">
+                <Sparkles size={24} className="text-cyan-400 flex-shrink-0 mt-1" />
+                <div className="text-base leading-relaxed">{block.content}</div>
+              </div>
+            );
+          }
+
+          return (
+            <p key={idx} className="text-lg leading-relaxed text-gray-200/90 font-sans font-normal">
+              {block.content}
+            </p>
+          );
         })}
       </div>
 
