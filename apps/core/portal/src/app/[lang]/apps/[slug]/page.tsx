@@ -8,6 +8,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { GlowWrapper } from "@/components/GlowWrapper";
 
+import { AdSenseBanner } from "@/components/AdSenseBanner";
+
 export async function generateStaticParams() {
   const projects = await getProjects();
   const langs = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
@@ -130,6 +132,12 @@ export default async function ProjectPage({
     }
   }
 
+  const osList: string[] = [];
+  if (project.playstore) osList.push("Android");
+  if ((project as any).appstore) osList.push("iOS");
+  if (project.demolink) osList.push("Web");
+  const operatingSystems = osList.length > 0 ? osList.join(", ") : "Android, iOS, Web";
+
   return (
     <main className="main">
       <GlowWrapper enabled={enableGlow} className="w-full text-[var(--text-color)] transition-colors duration-500 min-h-screen py-16 px-6 relative overflow-hidden">
@@ -169,7 +177,7 @@ export default async function ProjectPage({
                 "description": translatedDesc,
                 "applicationCategory": translatedCat,
                 "image": project.image || "https://www.atpdev.dev/og-image.png",
-                "operatingSystem": project.playstore ? "Android" : "Web",
+                "operatingSystem": operatingSystems,
                 "url": `https://www.atpdev.dev/${lang === 'es' ? '' : lang + '/'}apps/${project.slug}`,
                 "offers": {
                   "@type": "Offer",
@@ -233,6 +241,11 @@ export default async function ProjectPage({
             {translatedDesc.split('\n').map((paragraph, idx) => (
               <p key={idx}>{paragraph}</p>
             ))}
+
+            {/* In-article Google AdSense Slot */}
+            {config?.adsense_id && (
+              <AdSenseBanner adsenseId={config.adsense_id} />
+            )}
           </div>
 
           <div className="space-y-8 glass-panel p-8 rounded-3xl h-fit">
