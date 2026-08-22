@@ -103,22 +103,36 @@ export async function autofillProjectWithAI(repoFullName: string, domainType: "s
       - Para "IA": Púrpura/Índigo futurista (#6366F1 o #8B5CF6), glow_style "spotlight-border,neon-harmonic,cursor-ia".
       - Para otros: Selecciona un seed_color elegante y profesional que combine perfecto con el logo/vibe del proyecto.
 
-      REGLAS DE SEO Y CONTENIDO EN BLOQUES:
-      1. Título: Máximo 4 palabras, ultra atractivo y limpio.
-      2. Descripción corta: Máximo 110 caracteres, enfocada en la propuesta de valor.
-      3. Bloques SEO: Genera bloques (h2, p, image) que respondan exactamente a lo que busca un usuario en Google (Beneficios, Solución al Reto, Arquitectura).
-         - Para tipo "image", incluye "alt" descriptivo y "context" indicando qué captura se debe subir.
+      REGLAS DE SEO Y CONTENIDO EN BLOQUES (PROFUNDIDAD SENIOR DE ALTO IMPACTO - 3 A 4 FOTOS):
+      1. Título: Máximo 4 palabras, ultra atractivo y profesional.
+      2. Descripción corta: Máximo 110 caracteres, enfocada en la propuesta de valor principal.
+      3. Extensión y Estructura: Genera un caso de estudio técnico exhaustivo y completo (al menos 5-6 secciones H2 con párrafos explicativos de 100-150 palabras cada uno).
+      4. Slots de Imágenes Estratégicas: DEBES incluir EXACTAMENTE entre 3 y 4 bloques de tipo "image" distribuidos a lo largo del artículo para mantener alto engagement visual y aprobación en Google AdSense:
+         - Slot 1 de imagen: Captura de la pantalla principal / interfaz de inicio de la aplicación.
+         - Slot 2 de imagen: Captura de la funcionalidad estrella (ej. Búsqueda predictiva en tiempo real o uso principal).
+         - Slot 3 de imagen: Diagrama de arquitectura técnica (Clean Architecture, Room DB, Coroutines, etc.).
+         - Slot 4 de imagen: Captura de métricas de velocidad, interfaz de marcadores/favoritos o modo oscuro.
+      5. Para tipo "image", incluye "alt" descriptivo optimizado para SEO, "url": "", y en "context" la instrucción precisa de qué foto subir.
 
       Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta:
       {
-        "title": "Un título comercial impecable",
-        "description": "Descripción concisa y potente",
+        "title": "Buscador Médico CIE-10 Pro",
+        "description": "App móvil ultra rápida y 100% offline para la búsqueda de diagnósticos médicos CIE-10.",
         "category": "Medicina",
-        "stack": ["Kotlin", "Android SDK", "Room Database"],
+        "stack": ["Kotlin", "Android SDK", "Room Database", "Coroutines", "Clean Architecture"],
         "blocks": [
           { "type": "h2", "content": "El Reto: Acceso Instantáneo a Diagnósticos Médicos" },
-          { "type": "p", "content": "Explicación detallada..." },
-          { "type": "image", "alt": "Interfaz de Búsqueda Médica", "url": "", "context": "Sube una captura de la pantalla principal de la app" }
+          { "type": "p", "content": "Explicación técnica y necesidad del mercado..." },
+          { "type": "image", "alt": "Interfaz Principal de la App", "url": "", "context": "Sube aquí una captura de pantalla de la interfaz de búsqueda principal" },
+          { "type": "h2", "content": "Búsqueda Predictiva en Milisegundos" },
+          { "type": "p", "content": "Detalles del motor de búsqueda..." },
+          { "type": "image", "alt": "Demostración de Autocompletado", "url": "", "context": "Sube una captura mostrando la búsqueda predictiva con resultados instantáneos" },
+          { "type": "h2", "content": "Arquitectura de Alto Rendimiento y Persistencia Local" },
+          { "type": "p", "content": "Explicación de Clean Architecture y Room..." },
+          { "type": "image", "alt": "Diagrama de Arquitectura", "url": "", "context": "Sube un diagrama del flujo de datos entre UI, ViewModel y Room DB" },
+          { "type": "h2", "content": "Usabilidad, Accesibilidad Médica y Modo Oscuro" },
+          { "type": "p", "content": "Detalles sobre diseño visual y fatiga de personal de salud..." },
+          { "type": "image", "alt": "Pantalla de Favoritos y Marcadores", "url": "", "context": "Sube una captura de la lista de diagnósticos guardados o vista secundaria" }
         ],
         "theme_config": {
           "theme_mode": "dark",
