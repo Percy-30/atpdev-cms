@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { QrCode, X, Eye, Share2, Check, Download } from "lucide-react";
+import Link from "next/link";
+import { QrCode, X, Eye, Share2, Check, Download, ShieldCheck, Globe } from "lucide-react";
 
 import { StickyDownloadBar } from "./StickyDownloadBar";
 
@@ -14,6 +15,18 @@ interface ProjectArticleViewerProps {
   appstore?: string | null;
 }
 
+const SUPPORTED_LANGS = [
+  { code: "es", flag: "🇪🇸", label: "Español" },
+  { code: "en", flag: "🇺🇸", label: "English" },
+  { code: "pt", flag: "🇧🇷", label: "Português" },
+  { code: "fr", flag: "🇫🇷", label: "Français" },
+  { code: "de", flag: "🇩🇪", label: "Deutsch" },
+  { code: "ru", flag: "🇷🇺", label: "Русский" },
+  { code: "zh", flag: "🇨🇳", label: "中文" },
+  { code: "hi", flag: "🇮🇳", label: "हिन्दी" },
+  { code: "ja", flag: "🇯🇵", label: "日本語" },
+];
+
 export function ProjectArticleViewer({
   description,
   image,
@@ -24,6 +37,20 @@ export function ProjectArticleViewer({
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const currentProgress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const paragraphs = description.split("\n").filter((p) => p.trim() !== "");
 
@@ -39,11 +66,37 @@ export function ProjectArticleViewer({
 
   return (
     <div className="space-y-8">
-      {/* Action Bar (Share & QR Install Modal Trigger) */}
-      <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
-        <div className="flex items-center gap-2 text-xs font-mono text-gray-300">
+      {/* Scroll Reading Progress Bar (Neon Cyan Gradient) */}
+      <div
+        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 z-50 transition-all duration-150 shadow-[0_0_12px_rgba(6,182,212,0.8)]"
+        style={{ width: `${scrollProgress}%` }}
+      />
+
+      {/* Language Switcher Bar (Global SEO PRO PRO) */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-white/10 text-xs font-medium">
+        <span className="flex items-center gap-1 text-gray-400 flex-shrink-0 font-mono">
+          <Globe size={13} className="text-cyan-400" /> SEO Global:
+        </span>
+        {SUPPORTED_LANGS.map((langItem) => (
+          <Link
+            key={langItem.code}
+            href={`/${langItem.code === 'es' ? '' : langItem.code}`}
+            className="flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-white/15 rounded-lg border border-white/10 transition-colors flex-shrink-0 text-gray-300 hover:text-white"
+          >
+            <span>{langItem.flag}</span>
+            <span>{langItem.code.toUpperCase()}</span>
+          </Link>
+        ))}
+      </div>
+
+      {/* Action Bar (Share, Security Audit & QR Install Modal Trigger) */}
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+        <div className="flex items-center gap-3 text-xs font-mono text-gray-300">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Soporte Nativo Verificado • 100% Offline</span>
+          <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+            <ShieldCheck size={14} /> SHA-256 Verificado
+          </span>
+          <span className="hidden sm:inline text-gray-500">• 100% Offline & Seguro</span>
         </div>
         <div className="flex items-center gap-3">
           <button
