@@ -99,7 +99,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       setBlocks([{ id: "0", type: "p", content: rawLongDesc }]);
     }
     
-    const demo = editingProject?.demolink && editingProject.demolink !== "#" ? editingProject.demolink : "";
+    const rawDemo = editingProject?.demolink && editingProject.demolink !== "#" ? editingProject.demolink : "";
+    const isSubrutaUrl = rawDemo.includes("/apps/") || (editingProject?.slug && rawDemo.includes(editingProject.slug));
+    const demo = isSubrutaUrl ? "" : rawDemo;
     setDemolink(demo);
     setPlaystore(editingProject?.playstore || "");
     setAppstore((editingProject as any)?.appstore || "");
@@ -392,9 +394,11 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setSubmitState("loading");
     setSubmitError("");
     
-    // Si es subruta, forzamos que demolink sea "#" internamente
+    formData.set("domainType", domainType);
+
+    // Si es subruta, forzamos que demolink sea "" internamente
     if (domainType === "subruta") {
-      formData.set("demolink", "#");
+      formData.set("demolink", "");
     }
     // Convertir los bloques visuales a un solo string Markdown antes de guardar
     if (domainType !== "externa") {

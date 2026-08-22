@@ -174,9 +174,9 @@ export default function Portfolio({
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-4 pt-6 border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                        {p.demolink !== "#" && (
+                        {p.demolink && p.demolink.trim() !== '' && p.demolink !== '#' && !p.demolink.includes('/apps/') && !p.demolink.includes(p.slug) && (
                           <a href={p.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-white px-8 py-3.5 rounded-xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:opacity-90 group" style={{ backgroundColor: 'var(--primary)' }}>
-                            <PlayCircle size={20} className="transition-transform duration-300 group-hover:scale-110" /> {ui.btnDemo}
+                            <PlayCircle size={20} className="transition-transform duration-300 group-hover:scale-110" /> 🌐 Ir a la Web App
                           </a>
                         )}
                         {p.playstore && (

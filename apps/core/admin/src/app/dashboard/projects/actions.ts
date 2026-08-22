@@ -340,10 +340,16 @@ export async function uploadIpaFile(formData: FormData): Promise<{ error?: strin
 
 
 export async function createProject(formData: FormData) {
+  const domainType = (formData.get("domainType") as string) || "subruta";
   const title = formData.get("title") as string;
   const category = formData.get("category") as string;
   const description = formData.get("description") as string;
-  const demolink = normalizeUrl(formData.get("demolink") as string || "");
+  
+  let demolink = normalizeUrl(formData.get("demolink") as string || "");
+  if (domainType === "subruta" || demolink === "#" || demolink.includes("/apps/")) {
+    demolink = "";
+  }
+  
   const playstore = normalizeUrl(formData.get("playstore") as string || "");
   const appstore = normalizeUrl(formData.get("appstore") as string || "");
   const stack = (formData.get("stack") as string).split(',').map(s => s.trim());
@@ -372,7 +378,7 @@ export async function createProject(formData: FormData) {
     description,
     long_description,
     is_featured,
-    demolink: demolink === "#" ? "" : demolink,
+    demolink,
     playstore: playstore === "#" ? undefined : playstore,
     appstore: appstore === "#" ? undefined : appstore,
     stack,
@@ -411,10 +417,16 @@ export async function syncGithub(id: number, repoFullName: string) {
 }
 
 export async function updateProjectAction(id: number, formData: FormData) {
+  const domainType = (formData.get("domainType") as string) || "subruta";
   const title = formData.get("title") as string;
   const category = formData.get("category") as string;
   const description = formData.get("description") as string;
-  const demolink = normalizeUrl(formData.get("demolink") as string || "");
+
+  let demolink = normalizeUrl(formData.get("demolink") as string || "");
+  if (domainType === "subruta" || demolink === "#" || demolink.includes("/apps/")) {
+    demolink = "";
+  }
+
   const playstore = normalizeUrl(formData.get("playstore") as string || "");
   const appstore = normalizeUrl(formData.get("appstore") as string || "");
   const stack = (formData.get("stack") as string).split(',').map(s => s.trim());
@@ -437,7 +449,7 @@ export async function updateProjectAction(id: number, formData: FormData) {
     description,
     long_description,
     is_featured,
-    demolink: demolink === "#" ? "" : demolink,
+    demolink,
     playstore: playstore === "#" ? undefined : playstore,
     appstore: appstore === "#" ? undefined : appstore,
     stack,

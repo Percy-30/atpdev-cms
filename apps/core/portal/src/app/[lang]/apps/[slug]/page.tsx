@@ -1,9 +1,10 @@
-// Trigger dual deployment sync for Vercel admin & portal (All-Active Sync)
 import { getProjects, translateText, getSiteConfig } from "@atpdev/database";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Code, Download } from "lucide-react";
+
+export const revalidate = 0;
 
 import type { Metadata } from "next";
 import Script from "next/script";
@@ -305,9 +306,13 @@ export default async function ProjectPage({
             </div>
 
             <div className="space-y-4">
-              {project.demolink && project.demolink !== '#' && (
-                <a href={project.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-bold transition-all magnetic-element hover:scale-[1.02] neon-border shadow-lg shadow-blue-500/20">
-                  <ExternalLink size={20} /> {lang === 'es' ? '🌐 Visitar Web App / Subdominio en Vivo' : '🌐 Visit Live Web App / Subdomain'}
+              {project.demolink &&
+               project.demolink.trim() !== '' &&
+               project.demolink !== '#' &&
+               !project.demolink.includes('/apps/') &&
+               !project.demolink.includes(project.slug) && (
+                <a href={project.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2.5 w-full px-6 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-2xl font-bold transition-all magnetic-element hover:scale-[1.02] neon-border shadow-xl shadow-blue-500/25">
+                  <ExternalLink size={20} /> {lang === 'es' ? '🌐 Ir a la Web App' : '🌐 Visit Web App'}
                 </a>
               )}
               {project.github_repo && (
