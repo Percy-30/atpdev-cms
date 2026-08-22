@@ -10,6 +10,7 @@ import Script from "next/script";
 import { GlowWrapper } from "@/components/GlowWrapper";
 
 import { AdSenseBanner } from "@/components/AdSenseBanner";
+import { ProjectArticleViewer } from "@/components/ProjectArticleViewer";
 
 export async function generateStaticParams() {
   const projects = await getProjects();
@@ -275,9 +276,13 @@ export default async function ProjectPage({
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="md:col-span-2 space-y-6 text-lg leading-relaxed text-[var(--text-color)] opacity-90 glass-panel p-8 rounded-3xl">
-            {translatedDesc.split('\n').map((paragraph, idx) => (
-              <p key={idx}>{paragraph}</p>
-            ))}
+            <ProjectArticleViewer 
+              description={translatedDesc} 
+              image={project.image} 
+              title={translatedTitle}
+              playstore={project.playstore}
+              appstore={(project as any).appstore}
+            />
 
             {/* In-article Google AdSense Slot */}
             {config?.adsense_id && (
