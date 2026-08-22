@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { QrCode, X, Eye, Share2, Check, Download } from "lucide-react";
 
+import { StickyDownloadBar } from "./StickyDownloadBar";
+
 interface ProjectArticleViewerProps {
   description: string;
   image: string;
@@ -80,6 +82,14 @@ export function ProjectArticleViewer({
           return <p key={idx}>{paragraph}</p>;
         })}
       </div>
+
+      {/* Persistent Floating Bottom Download CTA Bar */}
+      <StickyDownloadBar
+        title={title}
+        playstore={playstore}
+        appstore={appstore}
+        onOpenQr={() => setShowQrModal(true)}
+      />
 
       {/* Image Lightbox Modal */}
       {activeImage && (
