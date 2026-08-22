@@ -549,35 +549,48 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
 
         <form action={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5" ref={pickerRef} style={{ position: "relative" }}>
-            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Repo de GitHub</label>
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center justify-between">
+              <span>Repo de GitHub / Código Fuente</span>
+              <span className="text-[11px] text-gray-500 font-normal">Pega una URL o selecciona de tu cuenta</span>
+            </label>
 
             <div className="flex gap-2">
+              <div className="relative flex-1">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                  <Github size={16} />
+                </div>
+                <input
+                  type="text"
+                  name="github_repo"
+                  value={repoInput}
+                  onChange={e => setRepoInput(e.target.value)}
+                  placeholder="https://github.com/usuario/repositorio..."
+                  className="w-full bg-[#1A1A1A] border border-gray-800 text-white pl-9 pr-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
               <button
                 type="button"
                 onClick={openPicker}
-                className="flex-1 flex items-center justify-between gap-2 bg-\[\#1A1A1A\] border border-gray-800 text-left px-4 py-2.5 rounded-xl hover:border-blue-500/50 transition-all text-sm"
+                className="bg-[#1A1A1A] hover:bg-white/10 border border-gray-800 text-gray-300 px-3 py-2.5 rounded-xl transition-all flex items-center gap-1.5 text-xs font-semibold shrink-0"
+                title="Seleccionar repositorio desde tu cuenta de GitHub"
               >
-                <span className={`flex items-center gap-2 truncate ${repoInput ? "text-white" : "text-gray-500"}`}>
-                  <Github size={15} className="shrink-0 text-gray-400" />
-                  {repoInput || "Seleccionar repositorio..."}
-                </span>
-                {autofillState === "loading" && <span className="flex items-center gap-1 text-[11px] text-blue-400 font-medium"><Loader2 size={12} className="animate-spin" /> Analizando...</span>}
+                <Search size={14} />
+                <span>Repos</span>
               </button>
-              
+
               {repoInput && (
                 <button
                   type="button"
                   onClick={() => runAutofill(repoInput)}
                   disabled={autofillState === "loading"}
-                  title="Completar con IA"
-                  className="bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/30 text-blue-400 px-3 py-2.5 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center shrink-0 shadow-lg"
+                  title="Completar datos con IA analizando el repositorio"
+                  className="bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/30 text-blue-400 px-3.5 py-2.5 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-1.5 text-xs font-bold shrink-0 shadow-lg"
                 >
-                  ✨ IA
+                  {autofillState === "loading" ? <Loader2 size={14} className="animate-spin" /> : "✨ IA"}
                 </button>
               )}
             </div>
-            {/* input real que viaja con el <form>, oculto porque el botón de arriba lo controla */}
-            <input type="hidden" name="github_repo" value={repoInput} />
 
             {pickerOpen && (
               <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 bg-\[\#262626\] border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
