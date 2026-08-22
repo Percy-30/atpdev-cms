@@ -316,7 +316,12 @@ export default async function ProjectPage({
                 </a>
               )}
               {project.github_repo && (
-                <a href={project.github_repo} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--glass-bg)] hover:bg-[var(--glass-border)] text-[var(--text-color)] rounded-xl font-bold transition-all border border-[var(--glass-border)] magnetic-element hover:scale-[1.02] neon-border">
+                <a 
+                  href={project.github_repo.startsWith('http') ? project.github_repo : `https://github.com/${project.github_repo}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--glass-bg)] hover:bg-[var(--glass-border)] text-[var(--text-color)] rounded-xl font-bold transition-all border border-[var(--glass-border)] magnetic-element hover:scale-[1.02] neon-border"
+                >
                   <Code size={20} /> {texts.source}
                 </a>
               )}

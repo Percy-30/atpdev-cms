@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { QrCode, X, Eye, Share2, Check, Download, ShieldCheck, Globe, Camera, Sparkles } from "lucide-react";
+import { QrCode, X, Eye, Share2, Check, ShieldCheck, Globe, Camera } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import { StickyDownloadBar } from "./StickyDownloadBar";
 
@@ -13,84 +14,6 @@ interface ProjectArticleViewerProps {
   title: string;
   playstore?: string | null;
   appstore?: string | null;
-}
-
-type ArticleBlock = {
-  type: "h2" | "p" | "image" | "callout" | "quote";
-  content?: string;
-  alt?: string;
-  url?: string;
-  context?: string;
-};
-
-function parseContentBlocks(rawDescription: string): ArticleBlock[] {
-  const trimmed = (rawDescription || "").trim();
-  let initialBlocks: ArticleBlock[] = [];
-
-  if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
-    try {
-      const parsed = JSON.parse(trimmed);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        initialBlocks = parsed as ArticleBlock[];
-      }
-    } catch (e) {
-      console.warn("Could not parse description JSON blocks, falling back to text:", e);
-    }
-  }
-
-  if (initialBlocks.length === 0) {
-    const lines = trimmed.split("\n").filter((l) => l.trim() !== "");
-    initialBlocks = lines.map((line) => {
-      if (line.startsWith("# ") || line.startsWith("## ")) {
-        return { type: "h2", content: line.replace(/^#+\s*/, "") };
-      }
-      return { type: "p", content: line };
-    });
-  }
-
-  // Second pass: scan all blocks to extract embedded markdown images ![alt](url)
-  const finalBlocks: ArticleBlock[] = [];
-
-  for (const block of initialBlocks) {
-    if (block.type === "image") {
-      finalBlocks.push(block);
-      continue;
-    }
-
-    const content = block.content || "";
-    const imgRegex = /!\[(.*?)\]\((.*?)\)/g;
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-    let hasMatches = false;
-
-    while ((match = imgRegex.exec(content)) !== null) {
-      hasMatches = true;
-      const textBefore = content.substring(lastIndex, match.index).trim();
-      if (textBefore) {
-        finalBlocks.push({ type: block.type, content: textBefore });
-      }
-      const alt = match[1];
-      const url = match[2];
-      finalBlocks.push({
-        type: "image",
-        alt: alt || "Captura del sistema",
-        url: url,
-        context: alt,
-      });
-      lastIndex = imgRegex.lastIndex;
-    }
-
-    if (hasMatches) {
-      const textAfter = content.substring(lastIndex).trim();
-      if (textAfter) {
-        finalBlocks.push({ type: block.type, content: textAfter });
-      }
-    } else {
-      finalBlocks.push(block);
-    }
-  }
-
-  return finalBlocks;
 }
 
 const SUPPORTED_LANGS = [
@@ -129,8 +52,6 @@ export function ProjectArticleViewer({
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const blocks = parseContentBlocks(description);
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -195,73 +116,124 @@ export function ProjectArticleViewer({
         </div>
       </div>
 
-      {/* Rich Article Body */}
-      <div className="space-y-6 text-lg leading-relaxed text-[var(--text-color)] opacity-95">
-        {blocks.map((block, idx) => {
-          if (block.type === "h2") {
-            return (
-              <h2
-                key={idx}
-                className="text-2xl md:text-3xl font-black text-white pt-8 pb-3 border-b border-white/10 title-gradient flex items-center gap-3"
-              >
+      {/* Rich Article Body (ReactMarkdown + remarkGfm Level God Styling) */}
+      <div className="prose prose-invert max-w-none space-y-6 text-lg leading-relaxed text-gray-200">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h1: ({ children }) => (
+              <h1 className="text-3xl md:text-4xl font-black text-white pt-8 pb-3 border-b border-white/10 title-gradient flex items-center gap-3">
+                <span className="w-2 h-7 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6]"></span>
+                {children}
+              </h1>
+            ),
+            h2: ({ children }) => (
+              <h2 className="text-2xl md:text-3xl font-black text-white pt-8 pb-3 border-b border-white/10 title-gradient flex items-center gap-3">
                 <span className="w-2 h-6 bg-cyan-400 rounded-full shadow-[0_0_12px_#06b6d4]"></span>
-                {block.content}
+                {children}
               </h2>
-            );
-          }
-
-          if (block.type === "image") {
-            return (
-              <div key={idx} className="my-8 rounded-3xl p-4 md:p-6 bg-white/5 border border-white/15 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
-                {block.url ? (
-                  <div
-                    className="relative rounded-2xl overflow-hidden cursor-pointer bg-black/40 flex flex-col items-center justify-center p-2"
-                    onClick={() => setActiveImage(block.url!)}
-                  >
-                    <img
-                      src={block.url}
-                      alt={block.alt || title}
-                      className="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.01] transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-2 font-semibold backdrop-blur-xs rounded-2xl">
-                      <Eye size={22} className="text-cyan-400" />
-                      <span>Ampliar Imagen en HD</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-white/20 rounded-2xl text-center bg-black/30">
-                    <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-                      <Camera size={28} />
-                    </div>
-                    <h4 className="text-base font-bold text-white mb-1">{block.alt || "Captura de la Aplicación"}</h4>
-                    <p className="text-xs text-gray-400 max-w-md">{block.context || "Vista previa de la interfaz nativa del sistema."}</p>
-                  </div>
-                )}
-                {block.alt && block.url && (
+            ),
+            h3: ({ children }) => (
+              <h3 className="text-xl md:text-2xl font-bold text-white pt-6 pb-2 flex items-center gap-2">
+                <span className="w-1.5 h-5 bg-indigo-500 rounded-full"></span>
+                {children}
+              </h3>
+            ),
+            p: ({ children }) => (
+              <p className="text-base md:text-lg leading-relaxed text-gray-200/90 font-sans my-4">
+                {children}
+              </p>
+            ),
+            ul: ({ children }) => (
+              <ul className="space-y-2.5 my-4 pl-2">
+                {children}
+              </ul>
+            ),
+            li: ({ children }) => (
+              <li className="flex items-start gap-2.5 text-base md:text-lg text-gray-200/90">
+                <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 mt-2.5 flex-shrink-0 shadow-[0_0_8px_#06b6d4]"></span>
+                <span className="flex-1">{children}</span>
+              </li>
+            ),
+            ol: ({ children }) => (
+              <ol className="space-y-2.5 my-4 list-decimal list-inside text-base md:text-lg text-gray-200/90">
+                {children}
+              </ol>
+            ),
+            blockquote: ({ children }) => (
+              <blockquote className="my-6 p-5 rounded-2xl bg-cyan-950/40 border-l-4 border-cyan-400 text-cyan-200 backdrop-blur-md italic text-base">
+                {children}
+              </blockquote>
+            ),
+            table: ({ children }) => (
+              <div className="overflow-x-auto my-8 rounded-2xl border border-white/10 shadow-2xl bg-white/5 backdrop-blur-md">
+                <table className="w-full text-left border-collapse text-sm md:text-base">
+                  {children}
+                </table>
+              </div>
+            ),
+            thead: ({ children }) => (
+              <thead className="bg-white/10 text-cyan-400 font-bold border-b border-white/10 uppercase tracking-wider text-xs">
+                {children}
+              </thead>
+            ),
+            tbody: ({ children }) => (
+              <tbody className="divide-y divide-white/5 text-gray-200">
+                {children}
+              </tbody>
+            ),
+            tr: ({ children }) => (
+              <tr className="hover:bg-white/5 transition-colors">
+                {children}
+              </tr>
+            ),
+            th: ({ children }) => (
+              <th className="p-4 font-semibold">
+                {children}
+              </th>
+            ),
+            td: ({ children }) => (
+              <td className="p-4">
+                {children}
+              </td>
+            ),
+            code: ({ className, children }) => {
+              const isInline = !className;
+              if (isInline) {
+                return (
+                  <code className="px-2 py-0.5 rounded-md bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 font-mono text-sm font-semibold">
+                    {children}
+                  </code>
+                );
+              }
+              return (
+                <div className="my-6 p-4 rounded-2xl bg-black/80 border border-white/15 text-emerald-400 font-mono text-sm overflow-x-auto shadow-inner">
+                  <code>{children}</code>
+                </div>
+              );
+            },
+            hr: () => (
+              <hr className="my-10 border-t border-white/10" />
+            ),
+            img: ({ src, alt }) => (
+              <div className="my-8 rounded-3xl p-4 md:p-6 bg-white/5 border border-white/15 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
+                <img
+                  src={src}
+                  alt={alt || "Captura del sistema"}
+                  className="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.01] transition-transform duration-500"
+                />
+                {alt && (
                   <p className="mt-3 text-center text-xs text-cyan-300/80 font-mono flex items-center justify-center gap-1.5">
                     <Camera size={13} className="text-cyan-400" />
-                    {block.alt}
+                    {alt}
                   </p>
                 )}
               </div>
-            );
-          }
-
-          if (block.type === "callout") {
-            return (
-              <div key={idx} className="my-6 p-6 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 text-cyan-200 backdrop-blur-md flex items-start gap-4 shadow-lg">
-                <Sparkles size={24} className="text-cyan-400 flex-shrink-0 mt-1" />
-                <div className="text-base leading-relaxed">{block.content}</div>
-              </div>
-            );
-          }
-
-          return (
-            <p key={idx} className="text-lg leading-relaxed text-gray-200/90 font-sans font-normal">
-              {block.content}
-            </p>
-          );
-        })}
+            )
+          }}
+        >
+          {description}
+        </ReactMarkdown>
       </div>
 
       {/* Persistent Floating Bottom Download CTA Bar */}
@@ -278,63 +250,58 @@ export function ProjectArticleViewer({
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={() => setActiveImage(null)}
         >
-          <button
-            onClick={() => setActiveImage(null)}
-            className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-10"
-          >
-            <X size={24} />
-          </button>
-          <div className="relative max-w-5xl max-h-[85vh] w-full h-full flex items-center justify-center">
+          <div className="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center">
+            <button
+              onClick={() => setActiveImage(null)}
+              className="absolute -top-12 right-0 text-white/70 hover:text-white bg-white/10 p-2 rounded-full transition-colors"
+            >
+              <X size={24} />
+            </button>
             <img
               src={activeImage}
-              alt="Vista ampliada HD"
-              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/20"
+              alt="Ampliada"
+              className="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/20"
             />
           </div>
         </div>
       )}
 
-      {/* QR Code Quick Install Modal */}
+      {/* QR Download & Mobile Installation Modal */}
       {showQrModal && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={() => setShowQrModal(false)}
         >
           <div
-            className="bg-[#12141c] border border-white/15 rounded-3xl p-8 max-w-sm w-full text-center space-y-6 relative neon-border shadow-2xl"
+            className="bg-[#12141c] border border-cyan-500/30 rounded-3xl p-6 md:p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(6,182,212,0.25)] flex flex-col items-center text-center"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setShowQrModal(false)}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white rounded-full"
+              className="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5 transition-colors"
             >
               <X size={20} />
             </button>
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center mx-auto text-blue-400">
-              <QrCode size={28} />
+
+            <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-4 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+              <QrCode size={24} />
             </div>
-            <div>
-              <h3 className="text-xl font-black text-white">Instalar en Smartphone</h3>
-              <p className="text-xs text-gray-400 mt-1">
-                Escanea este código QR con la cámara de tu móvil para descargar el instalador directamente.
-              </p>
-            </div>
-            <div className="p-4 bg-white rounded-2xl inline-block mx-auto shadow-inner">
-              {/* Dynamic QR Code Image via API */}
+
+            <h3 className="text-xl font-bold text-white mb-2">Escanear para Instalar en Móvil</h3>
+            <p className="text-xs text-gray-400 mb-6">
+              Apunta la cámara de tu smartphone (Android o iOS) para descargar la aplicación nativa al instante.
+            </p>
+
+            <div className="p-4 bg-white rounded-2xl border-4 border-cyan-400/40 shadow-xl mb-6">
               <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-                  activeDownloadUrl
-                )}`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(activeDownloadUrl)}`}
                 alt="Código QR de Instalación"
-                width={180}
-                height={180}
-                className="mx-auto"
+                className="w-48 h-48 rounded-lg"
               />
             </div>
-            <div className="pt-2">
-              <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-                ✓ Enlace Seguro Directo
-              </span>
+
+            <div className="w-full text-xs font-mono text-gray-400 bg-white/5 p-3 rounded-xl border border-white/10 break-all truncate">
+              {activeDownloadUrl}
             </div>
           </div>
         </div>
