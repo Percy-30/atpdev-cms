@@ -1,3 +1,4 @@
+// Trigger dual deployment sync for Vercel admin & portal
 import { getProjects, translateText, getSiteConfig } from "@atpdev/database";
 import { notFound } from "next/navigation";
 import Image from "next/image";
