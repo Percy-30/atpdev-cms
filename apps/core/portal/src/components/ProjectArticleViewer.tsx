@@ -25,25 +25,72 @@ type ArticleBlock = {
 
 function parseContentBlocks(rawDescription: string): ArticleBlock[] {
   const trimmed = (rawDescription || "").trim();
+  let initialBlocks: ArticleBlock[] = [];
+
   if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
     try {
       const parsed = JSON.parse(trimmed);
-      if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].type) {
-        return parsed as ArticleBlock[];
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        initialBlocks = parsed as ArticleBlock[];
       }
     } catch (e) {
       console.warn("Could not parse description JSON blocks, falling back to text:", e);
     }
   }
 
-  // Fallback: parse text lines into blocks
-  const lines = trimmed.split("\n").filter((l) => l.trim() !== "");
-  return lines.map((line) => {
-    if (line.startsWith("# ") || line.startsWith("## ")) {
-      return { type: "h2", content: line.replace(/^#+\s*/, "") };
+  if (initialBlocks.length === 0) {
+    const lines = trimmed.split("\n").filter((l) => l.trim() !== "");
+    initialBlocks = lines.map((line) => {
+      if (line.startsWith("# ") || line.startsWith("## ")) {
+        return { type: "h2", content: line.replace(/^#+\s*/, "") };
+      }
+      return { type: "p", content: line };
+    });
+  }
+
+  // Second pass: scan all blocks to extract embedded markdown images ![alt](url)
+  const finalBlocks: ArticleBlock[] = [];
+
+  for (const block of initialBlocks) {
+    if (block.type === "image") {
+      finalBlocks.push(block);
+      continue;
     }
-    return { type: "p", content: line };
-  });
+
+    const content = block.content || "";
+    const imgRegex = /!\[(.*?)\]\((.*?)\)/g;
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+    let hasMatches = false;
+
+    while ((match = imgRegex.exec(content)) !== null) {
+      hasMatches = true;
+      const textBefore = content.substring(lastIndex, match.index).trim();
+      if (textBefore) {
+        finalBlocks.push({ type: block.type, content: textBefore });
+      }
+      const alt = match[1];
+      const url = match[2];
+      finalBlocks.push({
+        type: "image",
+        alt: alt || "Captura del sistema",
+        url: url,
+        context: alt,
+      });
+      lastIndex = imgRegex.lastIndex;
+    }
+
+    if (hasMatches) {
+      const textAfter = content.substring(lastIndex).trim();
+      if (textAfter) {
+        finalBlocks.push({ type: block.type, content: textAfter });
+      }
+    } else {
+      finalBlocks.push(block);
+    }
+  }
+
+  return finalBlocks;
 }
 
 const SUPPORTED_LANGS = [
@@ -165,20 +212,20 @@ export function ProjectArticleViewer({
 
           if (block.type === "image") {
             return (
-              <div key={idx} className="my-8 rounded-3xl p-6 bg-white/5 border border-white/15 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
+              <div key={idx} className="my-8 rounded-3xl p-4 md:p-6 bg-white/5 border border-white/15 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
                 {block.url ? (
                   <div
-                    className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer"
+                    className="relative rounded-2xl overflow-hidden cursor-pointer bg-black/40 flex flex-col items-center justify-center p-2"
                     onClick={() => setActiveImage(block.url!)}
                   >
-                    <Image
+                    <img
                       src={block.url}
                       alt={block.alt || title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.01] transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-2 font-semibold">
-                      <Eye size={20} /> Ampliar Imagen
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-2 font-semibold backdrop-blur-xs rounded-2xl">
+                      <Eye size={22} className="text-cyan-400" />
+                      <span>Ampliar Imagen en HD</span>
                     </div>
                   </div>
                 ) : (
@@ -189,6 +236,12 @@ export function ProjectArticleViewer({
                     <h4 className="text-base font-bold text-white mb-1">{block.alt || "Captura de la Aplicación"}</h4>
                     <p className="text-xs text-gray-400 max-w-md">{block.context || "Vista previa de la interfaz nativa del sistema."}</p>
                   </div>
+                )}
+                {block.alt && block.url && (
+                  <p className="mt-3 text-center text-xs text-cyan-300/80 font-mono flex items-center justify-center gap-1.5">
+                    <Camera size={13} className="text-cyan-400" />
+                    {block.alt}
+                  </p>
                 )}
               </div>
             );
@@ -227,16 +280,15 @@ export function ProjectArticleViewer({
         >
           <button
             onClick={() => setActiveImage(null)}
-            className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+            className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-10"
           >
             <X size={24} />
           </button>
           <div className="relative max-w-5xl max-h-[85vh] w-full h-full flex items-center justify-center">
-            <Image
+            <img
               src={activeImage}
-              alt="Vista ampliada"
-              fill
-              className="object-contain rounded-2xl"
+              alt="Vista ampliada HD"
+              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/20"
             />
           </div>
         </div>
