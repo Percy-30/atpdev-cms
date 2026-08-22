@@ -45,18 +45,23 @@ export async function autofillProjectWithAI(repoFullName: string, domainType: "s
     };
   }
 
-  // 2. Intentar obtener el README.md para más contexto
+  // 2. Intentar obtener el README.md para más contexto (API GitHub oficial con Token)
   let readme = "";
   try {
-    const readmeRes = await fetch(`https://raw.githubusercontent.com/${repoFullName}/main/README.md`);
+    const headers: Record<string, string> = { Accept: "application/vnd.github.v3.raw" };
+    if (process.env.GITHUB_TOKEN) {
+      headers["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+    const readmeRes = await fetch(`https://api.github.com/repos/${repoFullName}/readme`, { headers });
     if (readmeRes.ok) {
       readme = await readmeRes.text();
     } else {
-      const readmeMaster = await fetch(`https://raw.githubusercontent.com/${repoFullName}/master/README.md`);
-      if (readmeMaster.ok) readme = await readmeMaster.text();
+      // Fallback a raw github
+      const rawRes = await fetch(`https://raw.githubusercontent.com/${repoFullName}/main/README.md`, { headers });
+      if (rawRes.ok) readme = await rawRes.text();
     }
   } catch (e) {
-    console.warn("No se pudo obtener el README", e);
+    console.warn("No se pudo obtener el README via API", e);
   }
 
   // 3. Llamar a Gemini para mejorar la data y generar la long_description
