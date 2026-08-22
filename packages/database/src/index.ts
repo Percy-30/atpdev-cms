@@ -458,6 +458,59 @@ export async function uploadProjectImage(
   }
 }
 
+// Sube un archivo APK a Supabase Storage y devuelve su URL pública
+export async function uploadProjectApk(
+  fileBuffer: Buffer,
+  fileName: string
+): Promise<string | null> {
+  try {
+    const cleanName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `apks/${Date.now()}-${cleanName}`;
+
+    const { error: uploadError } = await adminSupabase.storage
+      .from(PROJECT_IMAGES_BUCKET)
+      .upload(path, fileBuffer, { contentType: 'application/vnd.android.package-archive', upsert: true });
+
+    if (uploadError) {
+      console.error('Error subiendo APK a Storage:', uploadError);
+      return null;
+    }
+
+    const { data } = adminSupabase.storage.from(PROJECT_IMAGES_BUCKET).getPublicUrl(path);
+    return data.publicUrl;
+  } catch (err) {
+    console.error('Error uploading project APK:', err);
+    return null;
+  }
+}
+
+// Sube un archivo IPA (iOS App Package) a Supabase Storage y devuelve su URL pública
+export async function uploadProjectIpa(
+  fileBuffer: Buffer,
+  fileName: string
+): Promise<string | null> {
+  try {
+    const cleanName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `ipas/${Date.now()}-${cleanName}`;
+
+    const { error: uploadError } = await adminSupabase.storage
+      .from(PROJECT_IMAGES_BUCKET)
+      .upload(path, fileBuffer, { contentType: 'application/x-itunes-ipa', upsert: true });
+
+    if (uploadError) {
+      console.error('Error subiendo IPA a Storage:', uploadError);
+      return null;
+    }
+
+    const { data } = adminSupabase.storage.from(PROJECT_IMAGES_BUCKET).getPublicUrl(path);
+    return data.publicUrl;
+  } catch (err) {
+    console.error('Error uploading project IPA:', err);
+    return null;
+  }
+}
+
+
 // =====================================================
 // Screenshot real del sitio en vivo (tipo Vercel), NO del repo de GitHub
 // =====================================================

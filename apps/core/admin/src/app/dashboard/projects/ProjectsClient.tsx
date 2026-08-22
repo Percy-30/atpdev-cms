@@ -5,7 +5,7 @@ import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock,
 import { Project, GithubRepoSummary } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, suggestGradientColorsWithAI } from "./actions";
+import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, uploadApkFile, uploadIpaFile, suggestGradientColorsWithAI } from "./actions";
 import { ProjectThemeStudio, type ProjectThemeConfig } from "./ProjectThemeStudio";
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
@@ -49,10 +49,17 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [screenshotError, setScreenshotError] = useState("");
   const [uploadState, setUploadState] = useState<"idle" | "loading" | "error">("idle");
   const [uploadError, setUploadError] = useState("");
+  const [apkUploadState, setApkUploadState] = useState<"idle" | "loading" | "error">("idle");
+  const [apkUploadError, setApkUploadError] = useState("");
+  const [ipaUploadState, setIpaUploadState] = useState<"idle" | "loading" | "error">("idle");
+  const [ipaUploadError, setIpaUploadError] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "error">("idle");
   const [submitError, setSubmitError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const apkFileInputRef = useRef<HTMLInputElement>(null);
+  const ipaFileInputRef = useRef<HTMLInputElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
   
   // Editor Markdown Enriquecido
   const inlineFileInputRef = useRef<HTMLInputElement>(null);
@@ -278,6 +285,51 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setUploadState("idle");
     e.target.value = "";
   };
+
+  const handleApkFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setApkUploadState("loading");
+    setApkUploadError("");
+    const fd = new FormData();
+    fd.set("file", file);
+    const result = await uploadApkFile(fd);
+    if ("error" in result && result.error) {
+      setApkUploadState("error");
+      setApkUploadError(result.error);
+      e.target.value = "";
+      return;
+    }
+    if ("apkUrl" in result && result.apkUrl) {
+      setPlaystore(result.apkUrl);
+    }
+    setApkUploadState("idle");
+    e.target.value = "";
+  };
+
+  const handleIpaFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIpaUploadState("loading");
+    setIpaUploadError("");
+    const fd = new FormData();
+    fd.set("file", file);
+    const result = await uploadIpaFile(fd);
+    if ("error" in result && result.error) {
+      setIpaUploadState("error");
+      setIpaUploadError(result.error);
+      e.target.value = "";
+      return;
+    }
+    if ("ipaUrl" in result && result.ipaUrl) {
+      setAppstore(result.ipaUrl);
+    }
+    setIpaUploadState("idle");
+    e.target.value = "";
+  };
+
 
   const handleInlineImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -669,21 +721,76 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           )}
           {/* Si es subruta, la URL queda vacía y no molesta en la UI, el backend lo maneja. */}
 
-          {/* Enlaces de Tiendas (Opcionales) */}
+          {/* Enlaces de Tiendas (Opcionales) y Subida Directa de APK */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex-1 flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                Play Store / APK Link (Opcional)
-              </label>
-              <input type="text" name="playstore" value={playstore} onChange={e => setPlaystore(e.target.value)} className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm focus:ring-2 focus:ring-emerald-500/20" placeholder="https://play.google.com/..." />
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                  Play Store / APK Link
+                </label>
+                <button
+                  type="button"
+                  onClick={() => apkFileInputRef.current?.click()}
+                  disabled={apkUploadState === "loading"}
+                  className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-0.5 rounded-md border border-emerald-500/30 transition-all disabled:opacity-50"
+                  title="Sube un archivo .apk directamente a Supabase Storage"
+                >
+                  {apkUploadState === "loading" ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                  Subir APK
+                </button>
+              </div>
+              <input
+                type="text"
+                name="playstore"
+                value={playstore}
+                onChange={e => setPlaystore(e.target.value)}
+                className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm focus:ring-2 focus:ring-emerald-500/20"
+                placeholder="https://play.google.com/... o URL de APK"
+              />
+              <input
+                ref={apkFileInputRef}
+                type="file"
+                accept=".apk,application/vnd.android.package-archive"
+                onChange={handleApkFileUpload}
+                className="hidden"
+              />
+              {apkUploadState === "error" && <p className="text-[11px] text-red-400">{apkUploadError}</p>}
             </div>
             <div className="flex-1 flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                App Store Link (Opcional)
-              </label>
-              <input type="text" name="appstore" value={appstore} onChange={e => setAppstore(e.target.value)} className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm focus:ring-2 focus:ring-blue-500/20" placeholder="https://apps.apple.com/..." />
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                  App Store / iOS Link
+                </label>
+                <button
+                  type="button"
+                  onClick={() => ipaFileInputRef.current?.click()}
+                  disabled={ipaUploadState === "loading"}
+                  className="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded-md border border-sky-500/30 transition-all disabled:opacity-50"
+                  title="Sube un archivo .ipa (iOS) directamente a Supabase Storage"
+                >
+                  {ipaUploadState === "loading" ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                  Subir IPA (iOS)
+                </button>
+              </div>
+              <input
+                type="text"
+                name="appstore"
+                value={appstore}
+                onChange={e => setAppstore(e.target.value)}
+                className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm focus:ring-2 focus:ring-blue-500/20"
+                placeholder="https://apps.apple.com/... o URL de .ipa / Appetize"
+              />
+              <input
+                ref={ipaFileInputRef}
+                type="file"
+                accept=".ipa,.zip,application/x-itunes-ipa,application/zip"
+                onChange={handleIpaFileUpload}
+                className="hidden"
+              />
+              {ipaUploadState === "error" && <p className="text-[11px] text-red-400">{ipaUploadError}</p>}
             </div>
           </div>
+
 
           {/* Módulos Legales y Subpáginas Dinámicas */}
           <div className="bg-[#151515] border border-gray-800/80 p-4 rounded-2xl flex flex-col gap-3">

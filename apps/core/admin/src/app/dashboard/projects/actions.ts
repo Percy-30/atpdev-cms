@@ -11,7 +11,10 @@ import {
   listGithubRepos,
   fetchScreenshotFromUrl,
   uploadProjectImage,
+  uploadProjectApk,
+  uploadProjectIpa,
   slugify,
+
   type GithubAutofillData,
   type GithubRepoSummary,
 } from "@atpdev/database";
@@ -241,6 +244,53 @@ export async function uploadImageFile(formData: FormData): Promise<ScreenshotRes
   }
   return { imageUrl };
 }
+
+const MAX_APK_BYTES = 100 * 1024 * 1024; // 100MB
+
+export async function uploadApkFile(formData: FormData): Promise<{ error?: string; apkUrl?: string }> {
+  const file = formData.get("file") as File | null;
+  if (!file || file.size === 0) {
+    return { error: "Selecciona un archivo APK primero." };
+  }
+  if (!file.name.toLowerCase().endsWith(".apk")) {
+    return { error: "El archivo debe tener la extensión .apk" };
+  }
+  if (file.size > MAX_APK_BYTES) {
+    return { error: "El APK pesa más de 100MB, usa un archivo más liviano." };
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const apkUrl = await uploadProjectApk(buffer, file.name);
+  if (!apkUrl) {
+    return { error: "No se pudo subir el APK a Supabase Storage." };
+  }
+  return { apkUrl };
+}
+
+const MAX_IPA_BYTES = 100 * 1024 * 1024; // 100MB
+
+export async function uploadIpaFile(formData: FormData): Promise<{ error?: string; ipaUrl?: string }> {
+  const file = formData.get("file") as File | null;
+  if (!file || file.size === 0) {
+    return { error: "Selecciona un archivo IPA (iOS) primero." };
+  }
+  if (!file.name.toLowerCase().endsWith(".ipa") && !file.name.toLowerCase().endsWith(".zip")) {
+    return { error: "El archivo de iOS debe tener extensión .ipa o .zip" };
+  }
+  if (file.size > MAX_IPA_BYTES) {
+    return { error: "El archivo IPA pesa más de 100MB, usa un paquete más liviano." };
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const ipaUrl = await uploadProjectIpa(buffer, file.name);
+  if (!ipaUrl) {
+    return { error: "No se pudo subir el archivo IPA a Supabase Storage." };
+  }
+  return { ipaUrl };
+}
+
 
 export async function createProject(formData: FormData) {
   const title = formData.get("title") as string;
