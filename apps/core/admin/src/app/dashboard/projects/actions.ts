@@ -1,5 +1,5 @@
 "use server";
-// Trigger dual deployment sync for Vercel admin & portal (Sync: 2026-08-21T22:28)
+// Trigger dual deployment sync for Vercel admin & portal (All-Active Sync)
 
 import { revalidatePath } from "next/cache";
 import {
