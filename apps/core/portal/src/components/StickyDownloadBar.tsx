@@ -10,9 +10,12 @@ interface StickyDownloadBarProps {
   onOpenQr: () => void;
 }
 
-const PlayStoreIcon = ({ size = 14 }: { size?: number }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" className="flex-shrink-0">
-    <path d="M3.609 1.814L13.792 12 3.61 22.186a2.37 2.37 0 0 1-.61-1.606V3.42c0-.606.22-1.18.609-1.606zM15.206 13.414l2.453 2.453-12.87 7.43a2.374 2.374 0 0 1-1.18.317l11.597-10.2zm0-2.828L3.609.386A2.374 2.374 0 0 1 4.789.07l12.87 7.43-2.453 2.453zm2.115 1.414l3.585-2.07c.8-.462.8-1.216 0-1.678L17.32 8.182l-2.115 2.115 2.115 2.115z" />
+const GooglePlay2022Icon = ({ size = 16 }: { size?: number }) => (
+  <svg viewBox="0 0 512 512" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+    <path fill="#00D2FF" d="M51.5 5.3C41.8 13.9 36 27.6 36 44.8v422.4c0 17.2 5.8 30.9 15.5 39.5L268 256 51.5 5.3z"/>
+    <path fill="#00E676" d="M344.2 374.2 268 298l-216.5 210c8.2 8.7 20.3 12.5 32.8 5.3l260-139.1z"/>
+    <path fill="#FF3D00" d="M344.2 137.8 84.3 0c-12.5-7.2-24.6-3.4-32.8 5.3L268 215.3l76.2-77.5z"/>
+    <path fill="#FFC107" d="M466 230.2 344.2 137.8 268 256l76.2 118.2L466 281.8c14.6-8.4 14.6-43.2 0-51.6z"/>
   </svg>
 );
 
@@ -67,7 +70,7 @@ export function StickyDownloadBar({
             {playstore.toLowerCase().includes('.apk') || playstore.includes('/apks/') ? (
               <><Download size={14} /> Android APK</>
             ) : (
-              <><PlayStoreIcon size={14} /> Play Store</>
+              <><GooglePlay2022Icon size={16} /> Play Store</>
             )}
           </a>
         )}
