@@ -12,6 +12,7 @@ import { GlowWrapper } from "@/components/GlowWrapper";
 
 import { AdSenseBanner } from "@/components/AdSenseBanner";
 import { ProjectArticleViewer } from "@/components/ProjectArticleViewer";
+import { FaqAccordion } from "@/components/FaqAccordion";
 
 const GooglePlay2022Icon = ({ size = 24 }: { size?: number }) => (
   <svg viewBox="0 0 512 512" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
@@ -298,18 +299,44 @@ export default async function ProjectPage({
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
       
       <div className="max-w-4xl mx-auto relative z-10 pt-8">
-        <div className="flex items-center justify-between mb-8">
-          <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-2 text-blue-500 hover:text-blue-400 font-semibold transition-colors magnetic-element">
-            <ArrowLeft size={18} /> {texts.back}
+        {/* Breadcrumb Trail */}
+        <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-medium">
+          <Link href={`/${lang === 'es' ? '' : lang}`} className="hover:text-white transition-colors">
+            {lang === 'es' ? 'Inicio' : 'Home'}
           </Link>
-          <span className="text-xs px-3 py-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full font-mono text-[var(--text-color)] opacity-80 flex items-center gap-1.5">
-            <Clock size={12} className="text-cyan-400" />
+          <span>/</span>
+          <Link href={`/${lang === 'es' ? '' : lang}#portfolio`} className="hover:text-white transition-colors">
+            Apps
+          </Link>
+          <span>/</span>
+          <span className="text-emerald-400 font-bold truncate max-w-[200px]">{translatedTitle}</span>
+        </nav>
+
+        <div className="flex items-center justify-between mb-6">
+          <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition-colors magnetic-element text-sm">
+            <ArrowLeft size={16} /> {texts.back}
+          </Link>
+          <span className="text-xs px-3.5 py-1.5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full font-mono text-[var(--text-color)] opacity-90 flex items-center gap-1.5 shadow-sm">
+            <Clock size={13} className="text-cyan-400" />
             <span>{readingTimeMinutes} min {lang === 'es' ? 'de lectura' : 'read'}</span>
           </span>
         </div>
         
-        <h1 className="text-4xl md:text-6xl font-black mb-4 title-gradient">{translatedTitle}</h1>
-        <p className="text-xl text-[var(--primary)] font-semibold mb-8">{translatedCat}</p>
+        <h1 className="text-4xl md:text-6xl font-black mb-3 title-gradient leading-tight">{translatedTitle}</h1>
+        
+        {/* Security & Certification Badges */}
+        <div className="flex flex-wrap items-center gap-2.5 mb-8">
+          <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold rounded-full flex items-center gap-1.5 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            SHA-256 Verificado
+          </span>
+          <span className="px-3 py-1 bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold rounded-full flex items-center gap-1.5 shadow-sm">
+            ⚡ 100% Offline & Latencia Cero
+          </span>
+          <span className="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold rounded-full flex items-center gap-1.5 shadow-sm">
+            🔒 Privacidad & Sin Rastreadores
+          </span>
+        </div>
         
         <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl glass-panel neon-border mb-12">
           <Image 
@@ -336,6 +363,9 @@ export default async function ProjectPage({
             {config?.adsense_id && (
               <AdSenseBanner adsenseId={config.adsense_id} />
             )}
+
+            {/* FAQ Accordion Section */}
+            <FaqAccordion lang={lang} />
           </div>
 
           <div className="space-y-8 glass-panel p-8 rounded-3xl h-fit">

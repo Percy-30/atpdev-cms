@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { StickyDownloadBar } from "./StickyDownloadBar";
+import { QrModal } from "./QrModal";
 
 interface ProjectArticleViewerProps {
   description: string;
@@ -271,45 +272,12 @@ export function ProjectArticleViewer({
       )}
 
       {/* QR Download & Mobile Installation Modal */}
-      {showQrModal && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={() => setShowQrModal(false)}
-        >
-          <div
-            className="bg-[#12141c] border border-cyan-500/30 rounded-3xl p-6 md:p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(6,182,212,0.25)] flex flex-col items-center text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowQrModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5 transition-colors"
-            >
-              <X size={20} />
-            </button>
-
-            <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-4 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-              <QrCode size={24} />
-            </div>
-
-            <h3 className="text-xl font-bold text-white mb-2">Escanear para Instalar en Móvil</h3>
-            <p className="text-xs text-gray-400 mb-6">
-              Apunta la cámara de tu smartphone (Android o iOS) para descargar la aplicación nativa al instante.
-            </p>
-
-            <div className="p-4 bg-white rounded-2xl border-4 border-cyan-400/40 shadow-xl mb-6">
-              <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(activeDownloadUrl)}`}
-                alt="Código QR de Instalación"
-                className="w-48 h-48 rounded-lg"
-              />
-            </div>
-
-            <div className="w-full text-xs font-mono text-gray-400 bg-white/5 p-3 rounded-xl border border-white/10 break-all truncate">
-              {activeDownloadUrl}
-            </div>
-          </div>
-        </div>
-      )}
+      <QrModal
+        isOpen={showQrModal}
+        onClose={() => setShowQrModal(false)}
+        title={title}
+        url={activeDownloadUrl}
+      />
     </div>
   );
 }
