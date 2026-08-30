@@ -9,6 +9,21 @@ import Link from "next/link";
 import { Project, AIModelData } from "@atpdev/database";
 import { ICONS_MAP } from "@/components/AIModelsSection";
 
+const GooglePlay2022Icon = ({ size = 20 }: { size?: number }) => (
+  <svg viewBox="0 0 512 512" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+    <path fill="#00D2FF" d="M51.5 5.3C41.8 13.9 36 27.6 36 44.8v422.4c0 17.2 5.8 30.9 15.5 39.5L268 256 51.5 5.3z"/>
+    <path fill="#00E676" d="M344.2 374.2 268 298l-216.5 210c8.2 8.7 20.3 12.5 32.8 5.3l260-139.1z"/>
+    <path fill="#FF3D00" d="M344.2 137.8 84.3 0c-12.5-7.2-24.6-3.4-32.8 5.3L268 215.3l76.2-77.5z"/>
+    <path fill="#FFC107" d="M466 230.2 344.2 137.8 268 256l76.2 118.2L466 281.8c14.6-8.4 14.6-43.2 0-51.6z"/>
+  </svg>
+);
+
+const AppleStoreIcon = ({ size = 20 }: { size?: number }) => (
+  <svg viewBox="0 0 384 512" width={size} height={size} fill="currentColor" className="flex-shrink-0 mb-0.5">
+    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+  </svg>
+);
+
 export default function Portfolio({
   projects,
   aiModels,
@@ -244,21 +259,31 @@ export default function Portfolio({
                           </a>
                         )}
                         {p.playstore && (
-                          <a href={p.playstore} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 border px-8 py-3.5 rounded-xl transition-all duration-300 font-bold shadow-lg hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] hover:bg-black/5 dark:hover:bg-white/10 group" style={{ backgroundColor: 'var(--pill-bg)', borderColor: 'var(--glass-border)', color: 'var(--text-color)' }}>
+                          <a 
+                            href={p.playstore} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-2xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] active:scale-95 group bg-[#0e1714] hover:bg-[#14231e] border border-emerald-500/40 hover:border-emerald-400 shadow-emerald-950/30 neon-border"
+                          >
                             {p.playstore.toLowerCase().includes('.apk') || p.playstore.includes('/apks/') ? (
-                              <><Download size={18} className="transition-transform duration-300 group-hover:scale-110 text-emerald-400" /> Descargar APK Directo</>
+                              <><Download size={19} className="transition-transform duration-300 group-hover:scale-110 text-emerald-400" /> <span>Descargar APK Directo</span></>
                             ) : (
-                              <><svg viewBox="0 0 512 512" width="18" height="18" fill="currentColor" className="transition-transform duration-300 group-hover:scale-110"><path d="M325.3 234.3L104.6 13.5C72 6.6 44 26 44 60.5v391c0 34.5 28 53.9 60.6 47l220.7-220.8c5.4-5.4 5.4-14.2 0-19.6c0 0-42.3-42.2-42.3-42.2-5.4-5.4-14.2-5.4-19.6 0l41.9-41.6zm-177 17.7c-5.4-5.4-5.4-14.2 0-19.6l216-216c5.4-5.4 14.2-5.4 19.6 0l90 90c12.1 12.1 12.1 31.8 0 43.9L352 372.2c-5.4 5.4-14.2 5.4-19.6 0l-184-184zM476 220l-71-71-224 224 71 71c12.1 12.1 31.8 12.1 43.9 0l180.1-180.1c12.1-12.1 12.1-31.8 0-43.9z"/></svg> Play Store</>
+                              <><GooglePlay2022Icon size={20} /> <span className="tracking-wide">Play Store</span></>
                             )}
                           </a>
                         )}
 
                         {(p as any).appstore && (
-                          <a href={(p as any).appstore} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 border px-8 py-3.5 rounded-xl transition-all duration-300 font-bold shadow-lg hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] hover:bg-black/5 dark:hover:bg-white/10 group" style={{ backgroundColor: 'var(--pill-bg)', borderColor: 'var(--glass-border)', color: 'var(--text-color)' }}>
+                          <a 
+                            href={(p as any).appstore} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-2xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] active:scale-95 group bg-[#121620] hover:bg-[#191f2d] border border-sky-500/40 hover:border-sky-400 shadow-sky-950/30 neon-border"
+                          >
                             {(p as any).appstore.toLowerCase().includes('.ipa') || (p as any).appstore.includes('/ipas/') ? (
-                              <><Download size={18} className="transition-transform duration-300 group-hover:scale-110 text-sky-400" /> Descargar IPA Directo (iOS)</>
+                              <><Download size={19} className="transition-transform duration-300 group-hover:scale-110 text-sky-400" /> <span>Descargar IPA Directo (iOS)</span></>
                             ) : (
-                              <><svg viewBox="0 0 384 512" width="18" height="18" fill="currentColor" className="transition-transform duration-300 group-hover:scale-110 mb-1"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> App Store</>
+                              <><AppleStoreIcon size={20} /> <span className="tracking-wide">App Store</span></>
                             )}
                           </a>
                         )}
