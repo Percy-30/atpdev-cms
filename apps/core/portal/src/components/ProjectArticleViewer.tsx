@@ -53,6 +53,13 @@ export function ProjectArticleViewer({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const [currentUrl, setCurrentUrl] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
+
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
@@ -61,7 +68,15 @@ export function ProjectArticleViewer({
     }
   };
 
-  const activeDownloadUrl = appstore || playstore || (typeof window !== "undefined" ? window.location.href : "");
+  const activeDownloadUrl = appstore || playstore || currentUrl;
+
+  const formattedDescription = React.useMemo(() => {
+    if (!description) return "";
+    return description.replace(/!\[([\s\S]*?)\]\(([\s\S]*?)\)/g, (match, alt, url) => {
+      const cleanUrl = url.replace(/\s+/g, "");
+      return `![${alt}](${cleanUrl})`;
+    });
+  }, [description]);
 
   return (
     <div className="space-y-8">
@@ -71,22 +86,7 @@ export function ProjectArticleViewer({
         style={{ width: `${scrollProgress}%` }}
       />
 
-      {/* Language Switcher Bar (Global SEO PRO PRO) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-white/10 text-xs font-medium">
-        <span className="flex items-center gap-1 text-gray-400 flex-shrink-0 font-mono">
-          <Globe size={13} className="text-cyan-400" /> SEO Global:
-        </span>
-        {SUPPORTED_LANGS.map((langItem) => (
-          <Link
-            key={langItem.code}
-            href={`/${langItem.code === 'es' ? '' : langItem.code}`}
-            className="flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-white/15 rounded-lg border border-white/10 transition-colors flex-shrink-0 text-gray-300 hover:text-white"
-          >
-            <span>{langItem.flag}</span>
-            <span>{langItem.code.toUpperCase()}</span>
-          </Link>
-        ))}
-      </div>
+
 
       {/* Action Bar (Share, Security Audit & QR Install Modal Trigger) */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
@@ -117,30 +117,31 @@ export function ProjectArticleViewer({
       </div>
 
       {/* Rich Article Body (ReactMarkdown + remarkGfm Level God Styling) */}
-      <div className="prose prose-invert max-w-none space-y-6 text-lg leading-relaxed text-gray-200">
+      <div className="prose max-w-none space-y-6 text-lg leading-relaxed text-[var(--text-color)]">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
+          urlTransform={(url) => url}
           components={{
             h1: ({ children }) => (
-              <h1 className="text-3xl md:text-4xl font-black text-white pt-8 pb-3 border-b border-white/10 title-gradient flex items-center gap-3">
+              <h1 className="text-3xl md:text-4xl font-black text-[var(--text-color)] pt-8 pb-3 border-b border-[var(--glass-border)] title-gradient flex items-center gap-3">
                 <span className="w-2 h-7 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6]"></span>
                 {children}
               </h1>
             ),
             h2: ({ children }) => (
-              <h2 className="text-2xl md:text-3xl font-black text-white pt-8 pb-3 border-b border-white/10 title-gradient flex items-center gap-3">
+              <h2 className="text-2xl md:text-3xl font-black text-[var(--text-color)] pt-8 pb-3 border-b border-[var(--glass-border)] title-gradient flex items-center gap-3">
                 <span className="w-2 h-6 bg-cyan-400 rounded-full shadow-[0_0_12px_#06b6d4]"></span>
                 {children}
               </h2>
             ),
             h3: ({ children }) => (
-              <h3 className="text-xl md:text-2xl font-bold text-white pt-6 pb-2 flex items-center gap-2">
+              <h3 className="text-xl md:text-2xl font-bold text-[var(--text-color)] pt-6 pb-2 flex items-center gap-2">
                 <span className="w-1.5 h-5 bg-indigo-500 rounded-full"></span>
                 {children}
               </h3>
             ),
             p: ({ children }) => (
-              <p className="text-base md:text-lg leading-relaxed text-gray-200/90 font-sans my-4">
+              <p className="text-base md:text-lg leading-relaxed text-[var(--text-color)] opacity-90 font-sans my-4">
                 {children}
               </p>
             ),
@@ -150,50 +151,50 @@ export function ProjectArticleViewer({
               </ul>
             ),
             li: ({ children }) => (
-              <li className="flex items-start gap-2.5 text-base md:text-lg text-gray-200/90">
+              <li className="flex items-start gap-2.5 text-base md:text-lg text-[var(--text-color)] opacity-90">
                 <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 mt-2.5 flex-shrink-0 shadow-[0_0_8px_#06b6d4]"></span>
                 <span className="flex-1">{children}</span>
               </li>
             ),
             ol: ({ children }) => (
-              <ol className="space-y-2.5 my-4 list-decimal list-inside text-base md:text-lg text-gray-200/90">
+              <ol className="space-y-2.5 my-4 list-decimal list-inside text-base md:text-lg text-[var(--text-color)] opacity-90">
                 {children}
               </ol>
             ),
             blockquote: ({ children }) => (
-              <blockquote className="my-6 p-5 rounded-2xl bg-cyan-950/40 border-l-4 border-cyan-400 text-cyan-200 backdrop-blur-md italic text-base">
+              <blockquote className="my-6 p-5 rounded-2xl bg-cyan-500/10 border-l-4 border-cyan-400 text-[var(--text-color)] backdrop-blur-md italic text-base">
                 {children}
               </blockquote>
             ),
             table: ({ children }) => (
-              <div className="overflow-x-auto my-8 rounded-2xl border border-white/10 shadow-2xl bg-white/5 backdrop-blur-md">
+              <div className="overflow-x-auto my-8 rounded-2xl border border-[var(--glass-border)] shadow-2xl bg-[var(--glass-bg)] backdrop-blur-md">
                 <table className="w-full text-left border-collapse text-sm md:text-base">
                   {children}
                 </table>
               </div>
             ),
             thead: ({ children }) => (
-              <thead className="bg-white/10 text-cyan-400 font-bold border-b border-white/10 uppercase tracking-wider text-xs">
+              <thead className="bg-cyan-500/10 text-cyan-400 font-bold border-b border-[var(--glass-border)] uppercase tracking-wider text-xs">
                 {children}
               </thead>
             ),
             tbody: ({ children }) => (
-              <tbody className="divide-y divide-white/5 text-gray-200">
+              <tbody className="divide-y divide-[var(--glass-border)] text-[var(--text-color)]">
                 {children}
               </tbody>
             ),
             tr: ({ children }) => (
-              <tr className="hover:bg-white/5 transition-colors">
+              <tr className="hover:bg-cyan-500/5 transition-colors">
                 {children}
               </tr>
             ),
             th: ({ children }) => (
-              <th className="p-4 font-semibold">
+              <th className="p-4 font-semibold text-[var(--text-color)]">
                 {children}
               </th>
             ),
             td: ({ children }) => (
-              <td className="p-4">
+              <td className="p-4 text-[var(--text-color)] opacity-90">
                 {children}
               </td>
             ),
@@ -201,38 +202,41 @@ export function ProjectArticleViewer({
               const isInline = !className;
               if (isInline) {
                 return (
-                  <code className="px-2 py-0.5 rounded-md bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 font-mono text-sm font-semibold">
+                  <code className="px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono text-sm font-semibold">
                     {children}
                   </code>
                 );
               }
               return (
-                <div className="my-6 p-4 rounded-2xl bg-black/80 border border-white/15 text-emerald-400 font-mono text-sm overflow-x-auto shadow-inner">
+                <div className="my-6 p-4 rounded-2xl bg-[#090d16] border border-[var(--glass-border)] text-emerald-400 font-mono text-sm overflow-x-auto shadow-inner">
                   <code>{children}</code>
                 </div>
               );
             },
             hr: () => (
-              <hr className="my-10 border-t border-white/10" />
+              <hr className="my-10 border-t border-[var(--glass-border)]" />
             ),
-            img: ({ src, alt }) => (
-              <div className="my-8 rounded-3xl p-4 md:p-6 bg-white/5 border border-white/15 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
-                <img
-                  src={src}
-                  alt={alt || "Captura del sistema"}
-                  className="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.01] transition-transform duration-500"
-                />
-                {alt && (
-                  <p className="mt-3 text-center text-xs text-cyan-300/80 font-mono flex items-center justify-center gap-1.5">
-                    <Camera size={13} className="text-cyan-400" />
-                    {alt}
-                  </p>
-                )}
-              </div>
-            )
+            img: ({ src, alt }) => {
+              if (!src || typeof src !== "string" || src.trim() === "") return null;
+              return (
+                <span className="block my-8 rounded-3xl p-4 md:p-6 bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/50 transition-all shadow-2xl">
+                  <img
+                    src={src}
+                    alt={typeof alt === "string" ? alt : "Captura del sistema"}
+                    className="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.01] transition-transform duration-500"
+                  />
+                  {alt && typeof alt === "string" && (
+                    <span className="mt-3 text-center text-xs text-cyan-400 font-mono flex items-center justify-center gap-1.5">
+                      <Camera size={13} className="text-cyan-400" />
+                      {alt}
+                    </span>
+                  )}
+                </span>
+              );
+            }
           }}
         >
-          {description}
+          {formattedDescription}
         </ReactMarkdown>
       </div>
 

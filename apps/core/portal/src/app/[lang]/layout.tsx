@@ -253,6 +253,20 @@ export default async function RootLayout({
               --text-color: #ffffff;
             }
 
+            @media (prefers-color-scheme: dark) {
+              :root:not([data-theme="light"]) {
+                --background: #0A0A0A;
+                --foreground: #EDEDED;
+                --bg1: color-mix(in srgb, var(--primary) 12%, #000000);
+                --bg2: color-mix(in srgb, var(--secondary) 12%, #020202);
+                --bg3: color-mix(in srgb, var(--tertiary) 12%, #000000);
+                --glass-bg: rgba(20, 20, 30, 0.45);
+                --glass-border: rgba(255, 255, 255, 0.15);
+                --pill-bg: rgba(255, 255, 255, 0.18);
+                --text-color: #ffffff;
+              }
+            }
+
             body {
               background-color: var(--background);
               background-image: var(--global-bg-image, none);

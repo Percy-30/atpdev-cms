@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Moon, Sun, Wand2, Square, ChevronDown, Sparkles, Loader2, Palette, X, Eye, Zap } from "lucide-react";
+import { Moon, Sun, Wand2, Square, ChevronDown, Sparkles, Loader2, Palette, X, Eye, Zap, Laptop } from "lucide-react";
 import { suggestThemeWithAI } from "../settings/actions";
 
 export type ProjectThemeConfig = {
@@ -134,7 +134,7 @@ export function ProjectThemeStudio({
     try { parsedConfig = JSON.parse(initialConfig); } catch (e) {}
   }
 
-  const [mode, setMode] = useState(parsedConfig.theme_mode || "dark");
+  const [mode, setMode] = useState(parsedConfig.theme_mode || "auto");
   const [seedColor, setSeedColor] = useState(parsedConfig.seed_color || "#0052FF");
   const [colorTheme, setColorTheme] = useState(parsedConfig.color_theme || "vibrant");
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
@@ -366,20 +366,30 @@ export function ProjectThemeStudio({
               <button
                 type="button"
                 onClick={() => setMode("dark")}
-                className={`flex-1 py-2.5 px-4 rounded-xl border font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                className={`flex-1 py-2.5 px-2 rounded-xl border font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all ${
                   mode === "dark" ? "bg-blue-500/20 border-blue-500 text-white shadow-[0_0_12px_rgba(59,130,246,0.3)]" : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:border-gray-600"
                 }`}
               >
-                <Moon size={14} className={mode === "dark" ? "text-blue-400" : ""} /> Modo Oscuro
+                <Moon size={13} className={mode === "dark" ? "text-blue-400" : ""} /> Oscuro
               </button>
               <button
                 type="button"
                 onClick={() => setMode("light")}
-                className={`flex-1 py-2.5 px-4 rounded-xl border font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                className={`flex-1 py-2.5 px-2 rounded-xl border font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all ${
                   mode === "light" ? "bg-blue-500/20 border-blue-500 text-white shadow-[0_0_12px_rgba(59,130,246,0.3)]" : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:border-gray-600"
                 }`}
               >
-                <Sun size={14} className={mode === "light" ? "text-yellow-400" : ""} /> Modo Claro
+                <Sun size={13} className={mode === "light" ? "text-yellow-400" : ""} /> Claro
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("auto")}
+                className={`flex-1 py-2.5 px-2 rounded-xl border font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all ${
+                  mode === "auto" ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_12px_rgba(168,85,247,0.3)]" : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:border-gray-600"
+                }`}
+                title="Detectar automáticamente el tema del sistema operativo (Windows/Mac/iOS/Android)"
+              >
+                <Laptop size={13} className={mode === "auto" ? "text-purple-400" : ""} /> Auto (S.O.)
               </button>
             </div>
           </div>

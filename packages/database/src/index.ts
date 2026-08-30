@@ -15,6 +15,7 @@ export type LegalConfig = {
   has_credits?: boolean;
   has_ai?: boolean;
   has_admob?: boolean;
+  has_source_code?: boolean;
 };
 
 // Definición de Tipos

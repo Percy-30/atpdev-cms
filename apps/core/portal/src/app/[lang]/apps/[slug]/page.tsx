@@ -2,7 +2,7 @@ import { getProjects, translateText, getSiteConfig } from "@atpdev/database";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Code, Download } from "lucide-react";
+import { ArrowLeft, ExternalLink, Code, Download, Clock } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -40,13 +40,13 @@ export async function generateMetadata(
 
   const title = lang === 'es' ? project.title : await translateText(project.title, lang);
   const description = lang === 'es' 
-    ? (project.long_description || project.description) 
-    : await translateText(project.long_description || project.description, lang);
+    ? project.description 
+    : await translateText(project.description, lang);
 
   const BASE_URL = "https://www.atpdev.dev";
   const supportedLocales = ['es', 'en', 'ru', 'hi', 'zh', 'fr', 'de', 'pt', 'ja'];
   const path = `/apps/${slug}`;
-  const ogImage = project.image || `${BASE_URL}/og-image.png`;
+  const ogImage = (project.image && project.image.trim() !== "") ? project.image : `${BASE_URL}/og-image.png`;
 
   const isPrivate = project.status === 'Privado';
 
@@ -152,13 +152,44 @@ export default async function ProjectPage({
           __html: `
             :root {
               --primary: ${localTheme.primary_color || 'var(--primary)'};
-              --background: ${localTheme.theme_mode === 'light' ? '#ffffff' : '#0b0c10'};
-              --text-color: ${localTheme.theme_mode === 'light' ? '#000000' : '#ffffff'};
               --font-headline: '${localTheme.font_headline || 'var(--font-headline)'}', sans-serif;
               --font-body: '${localTheme.font_body || 'var(--font-body)'}', sans-serif;
+              ${localTheme.theme_mode === 'light' ? `
+                --background: #f8fafc;
+                --text-color: #0f172a;
+                --glass-bg: rgba(255, 255, 255, 0.85);
+                --glass-border: rgba(15, 23, 42, 0.15);
+                --pill-bg: rgba(15, 23, 42, 0.06);
+              ` : localTheme.theme_mode === 'dark' ? `
+                --background: #0b0c10;
+                --text-color: #ffffff;
+                --glass-bg: rgba(255, 255, 255, 0.05);
+                --glass-border: rgba(255, 255, 255, 0.12);
+                --pill-bg: rgba(255, 255, 255, 0.1);
+              ` : `
+                /* Modo Auto (Detección de Sistema Operativo del Usuario Nivel Dios Pro) */
+                --background: #f8fafc;
+                --text-color: #0f172a;
+                --glass-bg: rgba(255, 255, 255, 0.85);
+                --glass-border: rgba(15, 23, 42, 0.15);
+                --pill-bg: rgba(15, 23, 42, 0.06);
+              `}
             }
+            ${(!localTheme.theme_mode || localTheme.theme_mode === 'auto') ? `
+              @media (prefers-color-scheme: dark) {
+                :root {
+                  --background: #0b0c10;
+                  --text-color: #ffffff;
+                  --glass-bg: rgba(255, 255, 255, 0.05);
+                  --glass-border: rgba(255, 255, 255, 0.12);
+                  --pill-bg: rgba(255, 255, 255, 0.1);
+                }
+              }
+            ` : ''}
             .glass-panel {
-              ${localTheme.theme_mode === 'light' ? 'background: rgba(255, 255, 255, 0.8); border-color: rgba(0, 0, 0, 0.1); color: #000;' : ''}
+              background: var(--glass-bg);
+              border: 1px solid var(--glass-border);
+              color: var(--text-color);
               ${localTheme.radius_scale === 'full' ? 'border-radius: 2rem;' : localTheme.radius_scale === 'small' ? 'border-radius: 0.5rem;' : localTheme.radius_scale === 'none' ? 'border-radius: 0;' : ''}
             }
             ${localTheme.glow_style && localTheme.glow_style.includes('cursor-') ? `
@@ -182,7 +213,7 @@ export default async function ProjectPage({
                 "name": translatedTitle,
                 "description": translatedDesc,
                 "applicationCategory": translatedCat,
-                "image": project.image || "https://www.atpdev.dev/og-image.png",
+                "image": (project.image && project.image.trim() !== "") ? project.image : "https://www.atpdev.dev/og-image.png",
                 "operatingSystem": operatingSystems,
                 "url": `https://www.atpdev.dev/${lang === 'es' ? '' : lang + '/'}apps/${project.slug}`,
                 "aggregateRating": {
@@ -256,8 +287,9 @@ export default async function ProjectPage({
           <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-2 text-blue-500 hover:text-blue-400 font-semibold transition-colors magnetic-element">
             <ArrowLeft size={18} /> {texts.back}
           </Link>
-          <span className="text-xs px-3 py-1 bg-white/5 border border-white/10 rounded-full font-mono text-gray-400">
-            ⏱️ {readingTimeMinutes} min {lang === 'es' ? 'de lectura' : 'read'} • ★★★★★ 4.9
+          <span className="text-xs px-3 py-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full font-mono text-[var(--text-color)] opacity-80 flex items-center gap-1.5">
+            <Clock size={12} className="text-cyan-400" />
+            <span>{readingTimeMinutes} min {lang === 'es' ? 'de lectura' : 'read'}</span>
           </span>
         </div>
         
@@ -266,8 +298,8 @@ export default async function ProjectPage({
         
         <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl glass-panel neon-border mb-12">
           <Image 
-            src={project.image} 
-            alt={project.title} 
+            src={project.image && project.image.trim() !== "" ? project.image : "/og-image.png"} 
+            alt={project.title || "Project Image"} 
             fill 
             sizes="100vw"
             className="object-cover"
@@ -279,7 +311,7 @@ export default async function ProjectPage({
           <div className="md:col-span-2 space-y-6 text-lg leading-relaxed text-[var(--text-color)] opacity-90 glass-panel p-8 rounded-3xl">
             <ProjectArticleViewer 
               description={translatedDesc} 
-              image={project.image} 
+              image={project.image && project.image.trim() !== "" ? project.image : "/og-image.png"} 
               title={translatedTitle}
               playstore={project.playstore}
               appstore={(project as any).appstore}
@@ -312,19 +344,35 @@ export default async function ProjectPage({
                !project.demolink.includes('/apps/') &&
                !project.demolink.includes(project.slug) && (
                 <a href={project.demolink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2.5 w-full px-6 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-2xl font-bold transition-all magnetic-element hover:scale-[1.02] neon-border shadow-xl shadow-blue-500/25">
-                  <ExternalLink size={20} /> {lang === 'es' ? '🌐 Ir a la Web App' : '🌐 Visit Web App'}
+                  <ExternalLink size={20} /> <span>{lang === 'es' ? 'Ir a la Web App' : 'Visit Web App'}</span>
                 </a>
               )}
-              {project.github_repo && (
-                <a 
-                  href={project.github_repo.startsWith('http') ? project.github_repo : `https://github.com/${project.github_repo}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--glass-bg)] hover:bg-[var(--glass-border)] text-[var(--text-color)] rounded-xl font-bold transition-all border border-[var(--glass-border)] magnetic-element hover:scale-[1.02] neon-border"
-                >
-                  <Code size={20} /> {texts.source}
-                </a>
-              )}
+              {(() => {
+                let showSourceCode = !!(project.github_repo && project.github_repo.trim() !== "");
+                if (project.github_is_private) {
+                  showSourceCode = false;
+                }
+                if (project.legal_config) {
+                  try {
+                    const parsedLegal = JSON.parse(project.legal_config);
+                    if (typeof parsedLegal.has_source_code === "boolean") {
+                      showSourceCode = parsedLegal.has_source_code && !!(project.github_repo && project.github_repo.trim() !== "");
+                    }
+                  } catch (e) {}
+                }
+                if (!showSourceCode) return null;
+
+                return (
+                  <a 
+                    href={project.github_repo!.startsWith('http') ? project.github_repo! : `https://github.com/${project.github_repo}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--glass-bg)] hover:bg-[var(--glass-border)] text-[var(--text-color)] rounded-xl font-bold transition-all border border-[var(--glass-border)] magnetic-element hover:scale-[1.02] neon-border"
+                  >
+                    <Code size={20} /> {texts.source}
+                  </a>
+                );
+              })()}
               {project.playstore && (
                 <a href={project.playstore} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all magnetic-element hover:scale-[1.02] neon-border shadow-lg shadow-emerald-600/20">
                   {project.playstore.toLowerCase().includes('.apk') || project.playstore.includes('/apks/') ? (

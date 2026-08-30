@@ -1,12 +1,117 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette } from "lucide-react";
 import { Project, GithubRepoSummary, slugify } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, uploadApkFile, uploadIpaFile, suggestGradientColorsWithAI } from "./actions";
 import { ProjectThemeStudio, type ProjectThemeConfig } from "./ProjectThemeStudio";
+
+type UIBlock = { id: string; type: "h2" | "p" | "image"; content: string; alt?: string; url?: string; context?: string };
+
+function parseMarkdownToBlocks(markdown: string): UIBlock[] {
+  if (!markdown || !markdown.trim()) return [];
+
+  if (markdown.trim().startsWith("[")) {
+    try {
+      const parsed = JSON.parse(markdown);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map((b: any, i: number) => ({
+          id: b.id || String(i),
+          type: b.type || "p",
+          content: b.content || "",
+          alt: b.alt || "",
+          url: b.url || "",
+          context: b.context || ""
+        }));
+      }
+    } catch (e) {}
+  }
+
+  const blocks: UIBlock[] = [];
+  let idCounter = Date.now();
+  const rawSections = markdown.split(/\n\s*\n/);
+
+  for (const section of rawSections) {
+    const trimmed = section.trim();
+    if (!trimmed) continue;
+
+    const imgMatch = trimmed.match(/^!\[([\s\S]*?)\]\(([\s\S]*?)\)$/);
+    if (imgMatch) {
+      blocks.push({
+        id: String(idCounter++),
+        type: "image",
+        content: "",
+        alt: imgMatch[1] || "Imagen del artículo",
+        url: imgMatch[2] || "",
+        context: imgMatch[1] || "Imagen del artículo"
+      });
+      continue;
+    }
+
+    if (trimmed.startsWith("##")) {
+      blocks.push({
+        id: String(idCounter++),
+        type: "h2",
+        content: trimmed.replace(/^#+\s*/, "")
+      });
+      continue;
+    }
+
+    const lines = trimmed.split("\n");
+    let currentParagraphLines: string[] = [];
+
+    for (const line of lines) {
+      const lineTrimmed = line.trim();
+      const lineImgMatch = lineTrimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+      if (lineImgMatch) {
+        if (currentParagraphLines.length > 0) {
+          blocks.push({
+            id: String(idCounter++),
+            type: "p",
+            content: currentParagraphLines.join("\n")
+          });
+          currentParagraphLines = [];
+        }
+        blocks.push({
+          id: String(idCounter++),
+          type: "image",
+          content: "",
+          alt: lineImgMatch[1] || "Imagen del artículo",
+          url: lineImgMatch[2] || "",
+          context: lineImgMatch[1] || "Imagen del artículo"
+        });
+      } else if (lineTrimmed.startsWith("##")) {
+        if (currentParagraphLines.length > 0) {
+          blocks.push({
+            id: String(idCounter++),
+            type: "p",
+            content: currentParagraphLines.join("\n")
+          });
+          currentParagraphLines = [];
+        }
+        blocks.push({
+          id: String(idCounter++),
+          type: "h2",
+          content: lineTrimmed.replace(/^#+\s*/, "")
+        });
+      } else {
+        currentParagraphLines.push(line);
+      }
+    }
+
+    if (currentParagraphLines.length > 0) {
+      blocks.push({
+        id: String(idCounter++),
+        type: "p",
+        content: currentParagraphLines.join("\n")
+      });
+    }
+  }
+
+  return blocks;
+}
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -35,6 +140,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [hasCredits, setHasCredits] = useState(true);
   const [hasAi, setHasAi] = useState(true);
   const [hasAdmob, setHasAdmob] = useState(true);
+  const [hasSourceCode, setHasSourceCode] = useState(true);
   
   // Estado para el editor de bloques (Pseudo-Block Editor)
   type UIBlock = { id: string; type: "h2" | "p" | "image"; content: string; alt?: string; url?: string; context?: string };
@@ -86,18 +192,8 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setCategory(editingProject?.category || "Android");
     setSlug(editingProject?.slug || "");
     
-    const rawLongDesc = editingProject?.long_description || "";
-    try {
-      if (rawLongDesc.startsWith("[")) {
-        setBlocks(JSON.parse(rawLongDesc).map((b: any, i: number) => ({ ...b, id: b.id || String(i) })));
-      } else if (rawLongDesc) {
-        setBlocks([{ id: "0", type: "p", content: rawLongDesc }]);
-      } else {
-        setBlocks([]);
-      }
-    } catch {
-      setBlocks([{ id: "0", type: "p", content: rawLongDesc }]);
-    }
+    const rawLongDesc = editingProject?.long_description || editingProject?.description || "";
+    setBlocks(parseMarkdownToBlocks(rawLongDesc));
     
     const rawDemo = editingProject?.demolink && editingProject.demolink !== "#" ? editingProject.demolink : "";
     const isSubrutaUrl = rawDemo.includes("/apps/") || (editingProject?.slug && rawDemo.includes(editingProject.slug));
@@ -115,11 +211,12 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
         setHasCredits(parsed.has_credits ?? true);
         setHasAi(parsed.has_ai ?? true);
         setHasAdmob(parsed.has_admob ?? true);
+        setHasSourceCode(parsed.has_source_code ?? true);
       } catch {
-        setHasPrivacy(true); setHasTerms(true); setHasCredits(true); setHasAi(true); setHasAdmob(true);
+        setHasPrivacy(true); setHasTerms(true); setHasCredits(true); setHasAi(true); setHasAdmob(true); setHasSourceCode(true);
       }
     } else {
-      setHasPrivacy(true); setHasTerms(true); setHasCredits(true); setHasAi(true); setHasAdmob(true);
+      setHasPrivacy(true); setHasTerms(true); setHasCredits(true); setHasAi(true); setHasAdmob(true); setHasSourceCode(true);
     }
 
     setDomainType(!demo ? "subruta" : demo.includes("play.google.com") ? "externa" : "subdominio");
@@ -216,16 +313,8 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setDescription(result.data.description);
     
     const rawDesc = result.data.long_description || "";
-    try {
-      if (rawDesc.startsWith("[")) {
-        setBlocks(JSON.parse(rawDesc).map((b: any, i: number) => ({ ...b, id: b.id || String(i) })));
-        setLongDescription(""); 
-      } else {
-        setBlocks([{ id: "0", type: "p", content: rawDesc }]);
-      }
-    } catch {
-      setBlocks([{ id: "0", type: "p", content: rawDesc }]);
-    }
+    setBlocks(parseMarkdownToBlocks(rawDesc));
+    setLongDescription("");
 
     setStack(result.data.stack.join(", "));
     if (result.data.category) {
@@ -378,13 +467,27 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     e.target.value = "";
   };
 
+  const insertBlockAt = (index: number, type: "h2" | "p" | "image") => {
+    const newBlock: UIBlock = {
+      id: String(Date.now() + Math.random()),
+      type,
+      content: "",
+      url: type === "image" ? "" : undefined,
+      alt: type === "image" ? "Imagen del artículo" : undefined,
+    };
+    const newBlocks = [...blocks];
+    newBlocks.splice(index, 0, newBlock);
+    setBlocks(newBlocks);
+  };
+
   const compileBlocksToMarkdown = () => {
     return blocks.map(b => {
       if (b.type === "h2") return `## ${b.content}`;
       if (b.type === "p") return b.content;
       if (b.type === "image") {
         if (!b.url) return ""; // Avoid empty src attribute error in ReactMarkdown
-        return `![${b.alt || "Imagen insertada"}](${b.url})`;
+        const cleanUrl = b.url.replace(/\s+/g, "");
+        return `![${b.alt || "Imagen insertada"}](${cleanUrl})`;
       }
       return b.content;
     }).filter(Boolean).join("\n\n");
@@ -849,6 +952,11 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                 <input type="checkbox" checked={hasAdmob} onChange={e => setHasAdmob(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-amber-500 focus:ring-amber-500/20" />
                 <span>📢 Cláusulas de Anuncios (AdMob)</span>
               </label>
+
+              <label className="flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-gray-700 transition-all text-xs text-gray-300">
+                <input type="checkbox" checked={hasSourceCode} onChange={e => setHasSourceCode(e.target.checked)} className="rounded border-gray-700 bg-gray-900 text-blue-500 focus:ring-blue-500/20" />
+                <span>💻 Botón "Código Fuente"</span>
+              </label>
             </div>
 
             <input
@@ -859,7 +967,8 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                 has_terms: hasTerms,
                 has_credits: hasCredits,
                 has_ai: hasAi,
-                has_admob: hasAdmob
+                has_admob: hasAdmob,
+                has_source_code: hasSourceCode
               })}
             />
           </div>
@@ -961,94 +1070,172 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
               ) : (
                 <div className="flex flex-col gap-4 min-h-[300px]">
                   {blocks.length === 0 && (
-                    <div className="text-sm text-gray-500 italic p-4 text-center border border-dashed border-gray-800 rounded-xl">
-                      Usa el botón ✨ IA para generar los bloques del artículo.
+                    <div className="text-sm text-gray-500 italic p-6 text-center border border-dashed border-gray-800 rounded-2xl bg-[#141414]">
+                      <p className="font-semibold text-gray-400 mb-1">El artículo no contiene bloques visuales aún.</p>
+                      <p className="text-xs text-gray-500">Puedes crearlos manualmente con los botones de abajo o autocompletar con IA.</p>
                     </div>
                   )}
                   {blocks.map((b, i) => (
-                    <div key={b.id} className="relative group border-l-2 border-transparent focus-within:border-blue-500 pl-3 -ml-3 transition-colors">
-                      {b.type === "h2" && (
-                        <input 
-                          type="text" 
-                          value={b.content} 
-                          onChange={(e) => {
-                            const newBlocks = [...blocks];
-                            newBlocks[i].content = e.target.value;
-                            setBlocks(newBlocks);
-                          }}
-                          className="w-full bg-transparent text-xl font-bold text-white focus:outline-none placeholder-gray-600"
-                          placeholder="Subtítulo..."
-                        />
-                      )}
-                      {b.type === "p" && (
-                        <textarea
-                          value={b.content}
-                          onChange={(e) => {
-                            const newBlocks = [...blocks];
-                            newBlocks[i].content = e.target.value;
-                            setBlocks(newBlocks);
-                            // Auto-resize
-                            e.target.style.height = 'inherit';
-                            e.target.style.height = `${e.target.scrollHeight}px`;
-                          }}
-                          className="w-full bg-transparent text-sm text-gray-300 focus:outline-none resize-none overflow-hidden placeholder-gray-600"
-                          placeholder="Escribe un párrafo..."
-                          rows={3}
-                        />
-                      )}
-                      {b.type === "image" && (
-                        <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl p-4 flex flex-col items-center justify-center gap-2">
-                          {b.url ? (
-                            <div className="relative group/img">
-                              <img src={b.url} alt={b.alt} className="max-h-48 rounded-lg object-contain" />
-                              <button 
-                                type="button" 
-                                onClick={() => {
-                                  const newBlocks = [...blocks];
-                                  newBlocks[i].url = "";
-                                  setBlocks(newBlocks);
-                                }}
-                                className="absolute top-2 right-2 bg-black/60 backdrop-blur text-white p-1.5 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity"
-                              >
-                                <Trash2 size={14} />
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <Camera size={24} className="text-gray-600" />
-                              <p className="text-xs text-gray-400 font-medium text-center">
-                                {b.context || "Sube una imagen para este bloque"}
-                              </p>
-                              <div className="relative">
-                                <input 
-                                  type="file" 
-                                  accept="image/*"
-                                  onChange={async (e) => {
-                                    const file = e.target.files?.[0];
-                                    if(!file) return;
-                                    setInlineUploadState("loading");
-                                    const fd = new FormData(); fd.set("file", file);
-                                    const res = await uploadImageFile(fd);
-                                    if("imageUrl" in res && res.imageUrl) {
-                                      const newBlocks = [...blocks];
-                                      newBlocks[i].url = res.imageUrl;
-                                      setBlocks(newBlocks);
-                                    }
-                                    setInlineUploadState("idle");
-                                  }}
-                                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                                />
-                                <button type="button" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-emerald-500/20 transition-all pointer-events-none flex items-center gap-2">
-                                  {inlineUploadState === "loading" ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                                  {inlineUploadState === "loading" ? "Subiendo..." : "Subir Foto"}
-                                </button>
-                              </div>
-                            </>
-                          )}
+                    <Fragment key={b.id}>
+                      <div className="relative group bg-[#161616] border border-gray-800/80 hover:border-gray-700 rounded-xl p-4 transition-all shadow-sm">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-800 text-gray-400">
+                            {b.type === "h2" ? "Subtítulo H2" : b.type === "p" ? "Párrafo" : "Imagen / Captura"}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setBlocks(blocks.filter((_, idx) => idx !== i))}
+                            className="text-gray-500 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-colors"
+                            title="Eliminar este bloque"
+                          >
+                            <Trash2 size={14} />
+                          </button>
                         </div>
-                      )}
-                    </div>
+
+                        {b.type === "h2" && (
+                          <input 
+                            type="text" 
+                            value={b.content} 
+                            onChange={(e) => {
+                              const newBlocks = [...blocks];
+                              newBlocks[i].content = e.target.value;
+                              setBlocks(newBlocks);
+                            }}
+                            className="w-full bg-[#111] border border-gray-800 rounded-lg px-3 py-2 text-base font-bold text-white focus:outline-none focus:border-blue-500 placeholder-gray-600"
+                            placeholder="Subtítulo..."
+                          />
+                        )}
+                        {b.type === "p" && (
+                          <textarea
+                            value={b.content}
+                            onChange={(e) => {
+                              const newBlocks = [...blocks];
+                              newBlocks[i].content = e.target.value;
+                              setBlocks(newBlocks);
+                            }}
+                            className="w-full bg-[#111] border border-gray-800 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-blue-500 resize-y min-h-[90px] placeholder-gray-600"
+                            placeholder="Escribe el texto del párrafo..."
+                            rows={3}
+                          />
+                        )}
+                        {b.type === "image" && (
+                          <div className="bg-[#111] border border-gray-800 rounded-lg p-3 flex flex-col items-center gap-3">
+                            {b.url ? (
+                              <div className="w-full flex flex-col gap-3">
+                                <div className="relative group/img bg-black/40 rounded-lg overflow-hidden border border-gray-800 flex items-center justify-center p-2">
+                                  <img src={b.url} alt={b.alt || "Previsualización"} className="max-h-56 rounded-md object-contain" />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="text"
+                                    value={b.alt || ""}
+                                    onChange={(e) => {
+                                      const newBlocks = [...blocks];
+                                      newBlocks[i].alt = e.target.value;
+                                      setBlocks(newBlocks);
+                                    }}
+                                    placeholder="Leyenda o descripción de la imagen..."
+                                    className="flex-1 bg-[#1A1A1A] border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-300 focus:outline-none focus:border-blue-500"
+                                  />
+                                  <div className="relative">
+                                    <input 
+                                      type="file" 
+                                      accept="image/*"
+                                      onChange={async (e) => {
+                                        const file = e.target.files?.[0];
+                                        if(!file) return;
+                                        setInlineUploadState("loading");
+                                        const fd = new FormData(); fd.set("file", file);
+                                        const res = await uploadImageFile(fd);
+                                        if("imageUrl" in res && res.imageUrl) {
+                                          const newBlocks = [...blocks];
+                                          newBlocks[i].url = res.imageUrl;
+                                          setBlocks(newBlocks);
+                                        }
+                                        setInlineUploadState("idle");
+                                      }}
+                                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                    />
+                                    <button type="button" className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-500/20 transition-all pointer-events-none flex items-center gap-1.5">
+                                      <Upload size={12} />
+                                      Cambiar
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="py-4 flex flex-col items-center gap-2">
+                                <Camera size={24} className="text-gray-500" />
+                                <p className="text-xs text-gray-400 font-medium text-center">
+                                  {b.context || "Sube una imagen para este bloque"}
+                                </p>
+                                <div className="relative mt-1">
+                                  <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if(!file) return;
+                                      setInlineUploadState("loading");
+                                      const fd = new FormData(); fd.set("file", file);
+                                      const res = await uploadImageFile(fd);
+                                      if("imageUrl" in res && res.imageUrl) {
+                                        const newBlocks = [...blocks];
+                                        newBlocks[i].url = res.imageUrl;
+                                        setBlocks(newBlocks);
+                                      }
+                                      setInlineUploadState("idle");
+                                    }}
+                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                  />
+                                  <button type="button" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-emerald-500/20 transition-all pointer-events-none flex items-center gap-2">
+                                    {inlineUploadState === "loading" ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                                    {inlineUploadState === "loading" ? "Subiendo..." : "Subir Foto"}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* DIVIDER DE INSERCIÓN INTERMEDIA EN HOVER */}
+                      <div className="relative my-1 group/divider flex items-center justify-center h-6">
+                        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-gray-800/40 group-hover/divider:bg-blue-500/50 transition-colors" />
+                        <div className="opacity-0 group-hover/divider:opacity-100 transition-all duration-200 z-10 flex items-center gap-1.5 bg-[#181818] border border-blue-500/40 px-3 py-1 rounded-full shadow-xl text-[10px] font-bold text-blue-400">
+                          <span className="text-gray-400 font-medium mr-1">Insertar aquí:</span>
+                          <button type="button" onClick={() => insertBlockAt(i + 1, "h2")} className="hover:text-white bg-blue-500/10 px-2 py-0.5 rounded transition-colors">+ H2</button>
+                          <button type="button" onClick={() => insertBlockAt(i + 1, "p")} className="hover:text-white bg-purple-500/10 px-2 py-0.5 rounded text-purple-300 transition-colors">+ Párrafo</button>
+                          <button type="button" onClick={() => insertBlockAt(i + 1, "image")} className="hover:text-white bg-emerald-500/10 px-2 py-0.5 rounded text-emerald-300 transition-colors">+ Imagen</button>
+                        </div>
+                      </div>
+                    </Fragment>
                   ))}
+
+                  {/* CONTROLES PARA AÑADIR NUEVOS BLOQUES */}
+                  <div className="flex items-center gap-2 pt-2 border-t border-gray-800">
+                    <button
+                      type="button"
+                      onClick={() => setBlocks([...blocks, { id: String(Date.now()), type: "h2", content: "" }])}
+                      className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 text-xs font-semibold transition-all"
+                    >
+                      <Plus size={13} /> Subtítulo H2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBlocks([...blocks, { id: String(Date.now()), type: "p", content: "" }])}
+                      className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 text-xs font-semibold transition-all"
+                    >
+                      <Plus size={13} /> Párrafo
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBlocks([...blocks, { id: String(Date.now()), type: "image", content: "", url: "", alt: "Imagen del artículo" }])}
+                      className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 text-xs font-semibold transition-all"
+                    >
+                      <Camera size={13} /> Imagen
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
