@@ -12,9 +12,10 @@ interface FaqItem {
 interface FaqAccordionProps {
   items?: FaqItem[];
   lang?: string;
+  hideHeader?: boolean;
 }
 
-export function FaqAccordion({ items, lang = "es" }: FaqAccordionProps) {
+export function FaqAccordion({ items, lang = "es", hideHeader = false }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const defaultFaqs: FaqItem[] = [
@@ -55,20 +56,22 @@ export function FaqAccordion({ items, lang = "es" }: FaqAccordionProps) {
   };
 
   return (
-    <div className="mt-12 pt-8 border-t border-[var(--glass-border)]">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-xl bg-primary/10 border border-primary/30 text-primary">
-          <HelpCircle size={22} />
+    <div className="mt-8 pt-6 border-t border-[var(--glass-border)]">
+      {!hideHeader && (
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+            <HelpCircle size={22} />
+          </div>
+          <div>
+            <h3 className="text-xl font-extrabold text-[var(--text-color)]">
+              {lang === "es" ? "Preguntas Frecuentes & Soporte" : "Frequently Asked Questions & Support"}
+            </h3>
+            <p className="text-xs text-[var(--text-color)] opacity-70">
+              {lang === "es" ? "Guía de instalación y especificaciones técnicas" : "Installation guide and technical specifications"}
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-xl font-extrabold text-[var(--text-color)]">
-            {lang === "es" ? "Preguntas Frecuentes & Soporte" : "Frequently Asked Questions & Support"}
-          </h3>
-          <p className="text-xs text-gray-400">
-            {lang === "es" ? "Guía de instalación y especificaciones técnicas" : "Installation guide and technical specifications"}
-          </p>
-        </div>
-      </div>
+      )}
 
       <div className="space-y-3">
         {faqList.map((item, idx) => {
@@ -78,8 +81,8 @@ export function FaqAccordion({ items, lang = "es" }: FaqAccordionProps) {
               key={idx}
               className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                 isOpen
-                  ? "bg-[var(--glass-bg)] border-emerald-500/40 shadow-lg shadow-emerald-950/20"
-                  : "bg-[var(--pill-bg)] border-[var(--glass-border)] hover:border-gray-600"
+                  ? "bg-[var(--glass-bg)] border-emerald-500/40 shadow-lg"
+                  : "bg-[var(--pill-bg)] border-[var(--glass-border)] hover:border-emerald-500/30"
               }`}
             >
               <button
@@ -92,14 +95,14 @@ export function FaqAccordion({ items, lang = "es" }: FaqAccordionProps) {
                 </div>
                 <ChevronDown
                   size={18}
-                  className={`text-gray-400 transition-transform duration-300 flex-shrink-0 ${
-                    isOpen ? "rotate-180 text-emerald-400" : ""
+                  className={`text-[var(--text-color)] opacity-60 transition-transform duration-300 flex-shrink-0 ${
+                    isOpen ? "rotate-180 text-emerald-400 opacity-100" : ""
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="px-5 pb-5 text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3 animate-in fade-in duration-200">
+                <div className="px-5 pb-5 text-sm text-[var(--text-color)] opacity-90 leading-relaxed border-t border-[var(--glass-border)] pt-3 animate-in fade-in duration-200">
                   {item.answer}
                 </div>
               )}

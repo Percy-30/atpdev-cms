@@ -406,7 +406,10 @@ export default async function ProjectPage({
             )}
 
             {/* FAQ Accordion Section */}
-            <FaqAccordion lang={lang} />
+            <FaqAccordion 
+              lang={lang} 
+              hideHeader={(project.long_description || project.description || '').includes("Preguntas Frecuentes") || (project.long_description || project.description || '').includes("Frequently Asked")} 
+            />
           </div>
 
           <div className="space-y-8 glass-panel p-8 rounded-3xl h-fit">
