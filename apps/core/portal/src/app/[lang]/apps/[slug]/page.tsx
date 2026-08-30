@@ -151,9 +151,23 @@ export default async function ProjectPage({
     }
   }
 
+  let customLegalSettings: any = {};
+  if (project.legal_config) {
+    try {
+      customLegalSettings = JSON.parse(project.legal_config);
+    } catch (e) {}
+  }
+
+  const showSha256 = customLegalSettings.show_sha256_badge !== false;
+  const showOffline = customLegalSettings.show_offline_badge !== false;
+  const showPrivacy = customLegalSettings.show_privacy_badge !== false;
+
+  const hasAppstore = !!(project as any).appstore;
+  const appstoreUrl = (project as any).appstore || null;
+
   const osList: string[] = [];
   if (project.playstore) osList.push("Android");
-  if ((project as any).appstore) osList.push("iOS");
+  if (hasAppstore) osList.push("iOS");
   if (project.demolink) osList.push("Web");
   const operatingSystems = osList.length > 0 ? osList.join(", ") : "Android, iOS, Web";
 
@@ -300,56 +314,68 @@ export default async function ProjectPage({
       
       <div className="max-w-4xl mx-auto relative z-10 pt-6">
         {/* Header Hero Glass Card */}
-        <div className="glass-panel p-6 md:p-8 rounded-3xl neon-border mb-8 backdrop-blur-xl bg-gradient-to-b from-[#121622]/90 to-[#0e1017]/90 border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="p-6 md:p-8 rounded-3xl neon-border mb-8 backdrop-blur-xl bg-[#0d111a] border border-white/20 shadow-2xl relative overflow-hidden text-white">
           {/* Subtle Ambient Background Light */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Navigation & Reading Time Row */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
-            <nav className="flex items-center gap-2 text-xs text-gray-300 font-medium">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10 relative z-10">
+            <nav className="flex items-center gap-2 text-xs text-slate-300 font-medium">
               <Link href={`/${lang === 'es' ? '' : lang}`} className="hover:text-white transition-colors">
                 {lang === 'es' ? 'Inicio' : 'Home'}
               </Link>
-              <span className="text-gray-600">/</span>
+              <span className="text-slate-500">/</span>
               <Link href={`/${lang === 'es' ? '' : lang}#portfolio`} className="hover:text-white transition-colors">
                 Apps
               </Link>
-              <span className="text-gray-600">/</span>
-              <span className="text-emerald-400 font-semibold truncate max-w-[180px] sm:max-w-xs">{translatedTitle}</span>
+              <span className="text-slate-500">/</span>
+              <span className="text-emerald-400 font-bold truncate max-w-[180px] sm:max-w-xs">{translatedTitle}</span>
             </nav>
 
             <div className="flex items-center gap-3">
-              <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 transition-all active:scale-95">
-                <ArrowLeft size={14} /> {texts.back}
+              <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all active:scale-95 shadow-sm">
+                <ArrowLeft size={14} /> {customLegalSettings.back_button_text || customLegalSettings.backText || texts.back}
               </Link>
-              <span className="text-xs px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-xl font-mono flex items-center gap-1.5 shadow-sm">
-                <Clock size={13} className="text-cyan-400" />
+              <span className="text-xs px-3.5 py-1.5 bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 rounded-xl font-mono flex items-center gap-1.5 shadow-sm font-semibold">
+                <Clock size={13} className="text-cyan-300" />
                 <span>{readingTimeMinutes} min {lang === 'es' ? 'de lectura' : 'read'}</span>
               </span>
             </div>
           </div>
 
           {/* Category Pill & Main Title */}
-          <div className="mb-4">
-            <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mb-3 tracking-wide uppercase">
+          <div className="mb-4 relative z-10">
+            <span className="inline-block px-3.5 py-1 rounded-full text-xs font-black bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 mb-3 tracking-wider uppercase shadow-sm">
               {translatedCat}
             </span>
-            <h1 className="text-3xl sm:text-5xl font-black title-gradient leading-tight">{translatedTitle}</h1>
+            <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight drop-shadow-md tracking-tight">
+              {translatedTitle}
+            </h1>
           </div>
 
           {/* Security & Verification Badges */}
-          <div className="flex flex-wrap items-center gap-2.5 pt-2">
-            <span className="px-3.5 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              SHA-256 Verificado
-            </span>
-            <span className="px-3.5 py-1.5 bg-sky-500/10 border border-sky-500/30 text-sky-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
-              ⚡ 100% Offline & Latencia Cero
-            </span>
-            <span className="px-3.5 py-1.5 bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
-              🔒 Privacidad & Sin Rastreadores
-            </span>
+          <div className="flex flex-wrap items-center gap-2.5 pt-2 relative z-10">
+            {showSha256 && (
+              <span className="px-3.5 py-1.5 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                {customLegalSettings.sha256_badge_text || "SHA-256 Verificado"}
+              </span>
+            )}
+            {showOffline && (
+              <span className="px-3.5 py-1.5 bg-sky-500/20 border border-sky-400/40 text-sky-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
+                ⚡ {customLegalSettings.offline_badge_text || (
+                  (project.playstore || hasAppstore)
+                    ? "100% Offline & Latencia Cero"
+                    : "Carga Ultra Rápida & SSR"
+                )}
+              </span>
+            )}
+            {showPrivacy && (
+              <span className="px-3.5 py-1.5 bg-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
+                🔒 {customLegalSettings.privacy_badge_text || "Privacidad & Sin Rastreadores"}
+              </span>
+            )}
           </div>
         </div>
         
@@ -371,7 +397,7 @@ export default async function ProjectPage({
               image={project.image && project.image.trim() !== "" ? project.image : "/og-image.png"} 
               title={translatedTitle}
               playstore={project.playstore}
-              appstore={(project as any).appstore}
+              appstore={appstoreUrl}
             />
 
             {/* In-article Google AdSense Slot */}
@@ -447,14 +473,14 @@ export default async function ProjectPage({
                   )}
                 </a>
               )}
-              {(project as any).appstore && (
+              {appstoreUrl && (
                 <a 
-                  href={(project as any).appstore} 
+                  href={appstoreUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-[#121620] hover:bg-[#191f2d] text-white rounded-2xl font-bold transition-all border border-sky-500/40 hover:border-sky-400 magnetic-element hover:scale-[1.02] shadow-xl shadow-sky-950/40 group neon-border"
                 >
-                  {(project as any).appstore.toLowerCase().includes('.ipa') || (project as any).appstore.includes('/ipas/') ? (
+                  {appstoreUrl.toLowerCase().includes('.ipa') || appstoreUrl.includes('/ipas/') ? (
                     <><AppleStoreIcon size={22} /> <span>{texts.downloadIpa}</span></>
                   ) : (
                     <><AppleStoreIcon size={24} /> <span className="text-base tracking-wide">{texts.appstore}</span></>
