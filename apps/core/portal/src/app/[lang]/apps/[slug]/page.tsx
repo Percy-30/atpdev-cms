@@ -426,7 +426,7 @@ export default async function ProjectPage({
                   className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-[#0e1714] hover:bg-[#14231e] text-white rounded-2xl font-bold transition-all border border-emerald-500/40 hover:border-emerald-400 magnetic-element hover:scale-[1.02] shadow-xl shadow-emerald-950/40 group neon-border"
                 >
                   {project.playstore.toLowerCase().includes('.apk') || project.playstore.includes('/apks/') ? (
-                    <><Download size={22} className="text-emerald-400 group-hover:translate-y-0.5 transition-transform" /> <span>{texts.downloadApk}</span></>
+                    <><GooglePlay2022Icon size={22} /> <span>{texts.downloadApk}</span></>
                   ) : (
                     <><GooglePlay2022Icon size={24} /> <span className="text-base tracking-wide">{texts.playstore}</span></>
                   )}
@@ -440,7 +440,7 @@ export default async function ProjectPage({
                   className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-[#121620] hover:bg-[#191f2d] text-white rounded-2xl font-bold transition-all border border-sky-500/40 hover:border-sky-400 magnetic-element hover:scale-[1.02] shadow-xl shadow-sky-950/40 group neon-border"
                 >
                   {(project as any).appstore.toLowerCase().includes('.ipa') || (project as any).appstore.includes('/ipas/') ? (
-                    <><Download size={22} className="text-sky-400 group-hover:translate-y-0.5 transition-transform" /> <span>{texts.downloadIpa}</span></>
+                    <><AppleStoreIcon size={22} /> <span>{texts.downloadIpa}</span></>
                   ) : (
                     <><AppleStoreIcon size={24} /> <span className="text-base tracking-wide">{texts.appstore}</span></>
                   )}

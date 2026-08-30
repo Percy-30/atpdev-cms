@@ -112,6 +112,18 @@ export default function Portfolio({
                     ) : (
                       <div className="text-4xl font-black text-gray-700 uppercase tracking-widest">{project.title.substring(0,2)}</div>
                     )}
+                    <div className="absolute top-4 left-4 flex gap-1.5 z-10">
+                      {project.playstore && (
+                        <div className="bg-black/70 backdrop-blur-md p-1.5 rounded-full border border-emerald-500/40 shadow-md" title="Disponible para Android">
+                          <GooglePlay2022Icon size={14} />
+                        </div>
+                      )}
+                      {(project as any).appstore && (
+                        <div className="bg-black/70 backdrop-blur-md p-1.5 rounded-full border border-sky-500/40 shadow-md text-white" title="Disponible para iOS">
+                          <AppleStoreIcon size={14} />
+                        </div>
+                      )}
+                    </div>
                     <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border" style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}>
                       {project.status}
                     </div>
