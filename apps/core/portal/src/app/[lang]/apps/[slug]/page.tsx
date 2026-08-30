@@ -298,44 +298,59 @@ export default async function ProjectPage({
       />
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
       
-      <div className="max-w-4xl mx-auto relative z-10 pt-8">
-        {/* Breadcrumb Trail */}
-        <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-medium">
-          <Link href={`/${lang === 'es' ? '' : lang}`} className="hover:text-white transition-colors">
-            {lang === 'es' ? 'Inicio' : 'Home'}
-          </Link>
-          <span>/</span>
-          <Link href={`/${lang === 'es' ? '' : lang}#portfolio`} className="hover:text-white transition-colors">
-            Apps
-          </Link>
-          <span>/</span>
-          <span className="text-emerald-400 font-bold truncate max-w-[200px]">{translatedTitle}</span>
-        </nav>
+      <div className="max-w-4xl mx-auto relative z-10 pt-6">
+        {/* Header Hero Glass Card */}
+        <div className="glass-panel p-6 md:p-8 rounded-3xl neon-border mb-8 backdrop-blur-xl bg-gradient-to-b from-[#121622]/90 to-[#0e1017]/90 border border-white/10 shadow-2xl relative overflow-hidden">
+          {/* Subtle Ambient Background Light */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="flex items-center justify-between mb-6">
-          <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-semibold transition-colors magnetic-element text-sm">
-            <ArrowLeft size={16} /> {texts.back}
-          </Link>
-          <span className="text-xs px-3.5 py-1.5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full font-mono text-[var(--text-color)] opacity-90 flex items-center gap-1.5 shadow-sm">
-            <Clock size={13} className="text-cyan-400" />
-            <span>{readingTimeMinutes} min {lang === 'es' ? 'de lectura' : 'read'}</span>
-          </span>
-        </div>
-        
-        <h1 className="text-4xl md:text-6xl font-black mb-3 title-gradient leading-tight">{translatedTitle}</h1>
-        
-        {/* Security & Certification Badges */}
-        <div className="flex flex-wrap items-center gap-2.5 mb-8">
-          <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold rounded-full flex items-center gap-1.5 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            SHA-256 Verificado
-          </span>
-          <span className="px-3 py-1 bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold rounded-full flex items-center gap-1.5 shadow-sm">
-            ⚡ 100% Offline & Latencia Cero
-          </span>
-          <span className="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold rounded-full flex items-center gap-1.5 shadow-sm">
-            🔒 Privacidad & Sin Rastreadores
-          </span>
+          {/* Navigation & Reading Time Row */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
+            <nav className="flex items-center gap-2 text-xs text-gray-300 font-medium">
+              <Link href={`/${lang === 'es' ? '' : lang}`} className="hover:text-white transition-colors">
+                {lang === 'es' ? 'Inicio' : 'Home'}
+              </Link>
+              <span className="text-gray-600">/</span>
+              <Link href={`/${lang === 'es' ? '' : lang}#portfolio`} className="hover:text-white transition-colors">
+                Apps
+              </Link>
+              <span className="text-gray-600">/</span>
+              <span className="text-emerald-400 font-semibold truncate max-w-[180px] sm:max-w-xs">{translatedTitle}</span>
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <Link href={`/${lang === 'es' ? '' : lang}/#portfolio`} className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 transition-all active:scale-95">
+                <ArrowLeft size={14} /> {texts.back}
+              </Link>
+              <span className="text-xs px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-xl font-mono flex items-center gap-1.5 shadow-sm">
+                <Clock size={13} className="text-cyan-400" />
+                <span>{readingTimeMinutes} min {lang === 'es' ? 'de lectura' : 'read'}</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Category Pill & Main Title */}
+          <div className="mb-4">
+            <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mb-3 tracking-wide uppercase">
+              {translatedCat}
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-black title-gradient leading-tight">{translatedTitle}</h1>
+          </div>
+
+          {/* Security & Verification Badges */}
+          <div className="flex flex-wrap items-center gap-2.5 pt-2">
+            <span className="px-3.5 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              SHA-256 Verificado
+            </span>
+            <span className="px-3.5 py-1.5 bg-sky-500/10 border border-sky-500/30 text-sky-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
+              ⚡ 100% Offline & Latencia Cero
+            </span>
+            <span className="px-3.5 py-1.5 bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-bold rounded-xl flex items-center gap-2 shadow-sm">
+              🔒 Privacidad & Sin Rastreadores
+            </span>
+          </div>
         </div>
         
         <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl glass-panel neon-border mb-12">
