@@ -3,7 +3,7 @@ import { getJobPostings } from '@atpdev/database';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const jobs = await getJobPostings();
-  const baseUrl = 'https://chamba.atpdev.dev';
+  const baseUrl = 'https://empleos.atpdev.dev';
 
   const jobUrls = jobs.map((job) => ({
     url: `${baseUrl}/empleos/${job.slug}`,
@@ -21,11 +21,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/preguntas-entrevista-cas',
     '/simulador-entrevista-ia',
     '/quienes-somos',
+    '/politica-de-privacidad',
+    '/terminos-y-condiciones',
+    '/contacto',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
-    priority: 0.95,
+    priority: route.includes('politica') || route.includes('terminos') ? 0.6 : 0.95,
   }));
 
   return [

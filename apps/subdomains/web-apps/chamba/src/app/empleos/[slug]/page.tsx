@@ -28,12 +28,18 @@ export async function generateMetadata({
   const job = await getJobPostingBySlug(slug);
   if (!job) return {};
 
+  const pageUrl = `https://empleos.atpdev.dev/empleos/${slug}`;
+
   return {
     title: `${job.title} — ${job.entity_name} | chamba pro`,
     description: job.description,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: `${job.title} - ${job.entity_name}`,
       description: job.description,
+      url: pageUrl,
       type: "article",
     },
   };
@@ -62,7 +68,7 @@ export default async function JobDetailPage({
     "@context": "https://schema.org/",
     "@type": "JobPosting",
     title: job.title,
-    description: job.description,
+    description: `${job.description}\n\nRequisitos del puesto:\n${job.requirements.join("\n")}`,
     identifier: {
       "@type": "PropertyValue",
       name: job.entity_name,
@@ -71,6 +77,7 @@ export default async function JobDetailPage({
     datePosted: job.start_date,
     validThrough: job.end_date,
     employmentType: job.sector_type === "CAS 1057" ? "CONTRACT" : "FULL_TIME",
+    directApply: true,
     hiringOrganization: {
       "@type": "Organization",
       name: job.entity_name,
@@ -96,6 +103,32 @@ export default async function JobDetailPage({
     } : undefined,
   };
 
+  // BreadcrumbList JSON-LD Schema for Google Rich Results
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: "https://empleos.atpdev.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Convocatorias",
+        item: "https://empleos.atpdev.dev/empleos",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: job.title,
+        item: `https://empleos.atpdev.dev/empleos/${job.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       {/* Google for Jobs JSON-LD Injection */}
@@ -103,6 +136,12 @@ export default async function JobDetailPage({
         id="job-posting-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {/* BreadcrumbList JSON-LD Injection */}
+      <Script
+        id="breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
