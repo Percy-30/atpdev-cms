@@ -55,6 +55,9 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://empleos.atpdev.dev",
+    types: {
+      "application/rss+xml": "https://empleos.atpdev.dev/rss.xml",
+    },
   },
   openGraph: {
     title: "chamba pro — Agregador de Convocatorias y Empleos Perú",
@@ -282,6 +285,16 @@ export default function RootLayout({
                   <li>
                     <a href="/ads.txt" target="_blank" className="hover:text-emerald-400 transition-colors font-mono">
                       Archivo ads.txt
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rss.xml" target="_blank" className="hover:text-emerald-400 transition-colors font-mono flex items-center gap-1.5">
+                      <span>📡 Feed RSS Oficial</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/llms.txt" target="_blank" className="hover:text-emerald-400 transition-colors font-mono">
+                      🤖 Manifiesto AI (llms.txt)
                     </a>
                   </li>
                 </ul>
