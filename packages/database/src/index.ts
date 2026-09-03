@@ -58,6 +58,8 @@ export type GithubRepoData = {
 
 export * from './aiModels';
 export * from './analytics';
+export * from './jobs';
+export * from './scraper';
 export type SiteConfig = {
   id: number;
   // Hero
@@ -180,14 +182,17 @@ export type Skill = {
 // =====================================================
 export async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-  if (error) {
-    console.error('Error fetching projects:', error);
-    return [];
+  const projectsList = (data as Project[]) || [];
+  if (!projectsList.some(p => p.slug === 'chamba-pro' || p.slug === 'empleos-pro')) {
+    projectsList.unshift(STATIC_CHAMBA_PROJECT);
   }
-  return data as Project[];
+  return projectsList;
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  if (slug === 'chamba-pro' || slug === 'empleos-pro' || slug === 'chamba') {
+    return STATIC_CHAMBA_PROJECT;
+  }
   const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
   if (error) {
     console.error('Error fetching project by slug:', error);
@@ -195,6 +200,54 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   }
   return data as Project;
 }
+
+const STATIC_CHAMBA_PROJECT: Project = {
+  id: 9991,
+  title: "chamba pro - Agregador de Empleos Perú Nivel Dios",
+  slug: "chamba-pro",
+  category: "Web & SaaS Platform",
+  metrics: "⚡ FTS & Google for Jobs",
+  description: "Plataforma agregadora de ofertas laborales y convocatorias CAS 1057, 728, 276 y Sector Privado en el Perú con derivación 100% oficial y verificación RUC.",
+  long_description: `# 💼 chamba pro — Agregador Informativo de Empleos y Convocatorias Perú Nivel Dios
+
+> **Plataforma Web Agregadora de Ofertas Laborales (empleos.atpdev.dev)** construida con Next.js 16 App Router, TypeScript, Tailwind CSS y arquitectura de derivación 100% oficial y transparente.
+
+---
+
+## ⚡ 1. ¿Qué es chamba pro?
+
+**chamba pro** es una plataforma de **agregación informativa laboral para el mercado peruano**. A diferencia de las bolsas tradicionales que imponen registros forzosos o cobran comisiones por postulación, **chamba pro funciona como un motor de búsqueda ultra rápido y transparente**.
+
+Cada oferta laboral o convocatoria publicada es verificada previamente y redirige directamente mediante el botón **"Ver oferta oficial"** a la fuente institucional oficial del Estado (SUNAT, MINEDU, BCRP, Poder Judicial, etc.) o al portal oficial de empleo de las empresas del sector privado.
+
+---
+
+## 🚀 2. Características Clave frente a la Competencia
+
+| Función | Agregadores Tradicionales | **chamba pro (Nivel Dios)** |
+| :--- | :--- | :--- |
+| **Experiencia de Usuario** | Directorios estáticos lentos con publicidad invasiva. | **Glassmorphic Dark Tech & Clean Light**, 60fps responsive. |
+| **Buscador & Filtros** | Búsqueda básica por texto sin combinación de criterios. | **Buscador Instantáneo Multi-Faceta** (Región, Régimen CAS/728/276, Salario, Nivel Educativo). |
+| **Optimización SEO** | Metadata básica sin esquema de datos. | **Google for Jobs Nativo (\`JobPosting\` JSON-LD)** para indexación prioritaria en Google. |
+| **Pre-Evaluador de CV** | Ninguno. | **Herramienta IA de Compatibilidad CV** para calcular el porcentaje de alineación con los requisitos. |
+| **Verificación RUC** | Cero filtro de fraudes. | **Insignia "Verificado" RUC** para validar instituciones oficiales y empresas registradas. |
+
+---
+
+## 🛠️ 3. Arquitectura Técnica y Stack
+
+- **Framework Frontend:** Next.js 16 (App Router) + TypeScript Estricto.
+- **Diseño & Estilos:** Tailwind CSS con tipografías Google Fonts (*Space Grotesk*, *Inter*, *IBM Plex Mono*).
+- **Esquema SEO:** Inyección dinámica de \`schema.org/JobPosting\` con salarios, ubicaciones y vigencias en PEN.
+- **Mapeo de Datos:** \`@atpdev/database\` con modelos de instituciones, regímenes laborales y conteo de vacantes.
+`,
+  is_featured: true,
+  stack: ["Next.js 16", "TypeScript", "Tailwind CSS", "PostgreSQL", "Google for Jobs JSON-LD", "Glassmorphism UI"],
+  image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80",
+  demolink: "https://empleos.atpdev.dev",
+  status: "Público",
+  created_at: new Date().toISOString()
+};
 
 export async function getSiteConfig(): Promise<SiteConfig | null> {
   const { data, error } = await supabase.from('site_config').select('*').limit(1).single();
@@ -323,7 +376,7 @@ export async function getLeads(): Promise<Lead[]> {
 
 // Funciones de Escritura (Para el Admin Panel - Requiere permisos altos)
 const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const adminSupabase = createClient(supabaseUrl, adminKey || 'dummy');
+const adminSupabase = createClient(supabaseUrl, adminKey || supabaseKey);
 
 export async function updateSiteConfig(newConfig: Partial<SiteConfig>): Promise<boolean> {
   const { error } = await adminSupabase

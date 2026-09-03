@@ -1,10 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseKey;
-const adminSupabase = createClient(supabaseUrl, adminKey);
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+const adminSupabase = (supabaseUrl && adminKey) ? createClient(supabaseUrl, adminKey) : null as any;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null as any;
+
 
 export type PageView = {
   id: string;
@@ -74,7 +76,7 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary | null> {
   const domainMap: Record<string, number> = {};
   const pathMap: Record<string, number> = {};
 
-  visits.forEach(v => {
+  visits.forEach((v: { domain: string; path: string }) => {
     domainMap[v.domain] = (domainMap[v.domain] || 0) + 1;
     const fullPath = `${v.domain}${v.path}`;
     pathMap[fullPath] = (pathMap[fullPath] || 0) + 1;
@@ -134,7 +136,7 @@ export async function getTrafficChartData(): Promise<TrafficChartData[]> {
   }
 
   // Agrupar
-  data?.forEach(v => {
+  data?.forEach((v: { created_at: string }) => {
     const dateStr = v.created_at.split('T')[0];
     if (chartData[dateStr] !== undefined) {
       chartData[dateStr] += 1;

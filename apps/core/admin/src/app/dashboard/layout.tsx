@@ -16,7 +16,8 @@ import {
   Code2,
   X,
   Menu,
-  User2
+  User2,
+  Briefcase
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
@@ -69,6 +70,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navItems = [
     { label: "Overview",   icon: <LayoutDashboard size={18} />, href: "/dashboard" },
     { label: "Projects",   icon: <FolderKanban size={18} />,    href: "/dashboard/projects" },
+    { label: "Chamba Pro", icon: <Briefcase size={18} />,       href: "/dashboard/chamba" },
     { label: "AI Models",  icon: <BrainCircuit size={18} />,    href: "/dashboard/ai-models" },
     { label: "Leads (CRM)",icon: <Users size={18} />,           href: "/dashboard/leads" },
     { label: "Analytics",  icon: <BarChart3 size={18} />,       href: "/dashboard/analytics" },
