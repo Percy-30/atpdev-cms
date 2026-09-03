@@ -1,4 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: "#0b0f19",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import Script from "next/script";
@@ -59,6 +66,16 @@ export const metadata: Metadata = {
       "application/rss+xml": "https://empleos.atpdev.dev/rss.xml",
     },
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
+  manifest: "/manifest.webmanifest",
   openGraph: {
     title: "chamba pro — Agregador de Convocatorias y Empleos Perú",
     description: "Buscador profesional de convocatorias de trabajo CAS 1057, 728, 276 y Sector Privado en Perú. Con derivación 100% oficial y transparencia.",

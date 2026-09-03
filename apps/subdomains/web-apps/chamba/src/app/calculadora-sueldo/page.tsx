@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import { ChevronRight, Calculator, ShieldCheck, Sparkles, HelpCircle } from 'lucide-react';
 import { CalculadoraSueldo } from '@/components/CalculadoraSueldo';
 
@@ -17,9 +18,72 @@ export const metadata: Metadata = {
   ],
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué descuentos se aplican al contrato CAS 1057?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los trabajadores CAS aportan obligatoriamente al sistema de pensiones (ONP 13% o AFP ~12.8%). Asimismo, si la remuneración anual bruta excede las 7 UIT (S/ 36,050), se descuenta Impuesto a la Renta de 5ta Categoría."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿A cuántos aguinaldos tiene derecho un servidor CAS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Por Ley N° 31639, los servidores bajo régimen CAS reciben dos aguinaldos al año (Fiestas Patrias en Julio y Navidad en Diciembre) fijados por Ley de Presupuesto (S/ 300 cada uno)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Diferencia entre CAS (1057) y Planilla D.L. 728?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El régimen D.L. 728 incluye gratificaciones equivalentes a 1 sueldo completo en Julio y Diciembre (+9% EsSalud) más depósito de CTS (1.16 sueldos por año), mientras que el CAS otorga aguinaldos fijos y no incluye CTS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Locación de Servicios (RHO) descuenta AFP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El contrato por Locación de Servicios es de naturaleza civil y no incluye aportes a fondos de pensión obligatorios ni vacaciones. Solo aplica la retención del 8% por Renta de 4ta Categoría si el recibo supera S/ 1,500."
+      }
+    }
+  ]
+};
+
+const appSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Sueldo Neto CAS & 728 Perú",
+  "operatingSystem": "All",
+  "applicationCategory": "BusinessApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "PEN"
+  }
+};
+
 export default function CalculadoraSueldoPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <>
+      <Script
+        id="faq-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <Script
+        id="app-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }}
+      />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
         <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
@@ -82,5 +146,6 @@ export default function CalculadoraSueldoPage() {
         </div>
       </div>
     </div>
-  );
+  </>
+);
 }
