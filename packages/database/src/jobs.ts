@@ -894,13 +894,19 @@ export const INITIAL_JOBS: JobPosting[] = [
 
 import { scrapeLiveConvocatoriasFeed } from './scraper';
 
+// In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
+const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
+
 export async function getJobPostings(): Promise<JobPosting[]> {
   const jobsMap = new Map<string, JobPosting>();
 
   // 1. Cargar catálogo verificado de respaldo
   INITIAL_JOBS.forEach(j => jobsMap.set(j.slug, j));
 
-  // 2. Cargar ingesta en vivo del feed oficial (convocatoriasdetrabajo.com & portaltrabajos.pe)
+  // 2. Cargar modificaciones y convocatorias añadidas localmente en memoria
+  LOCAL_DYNAMIC_JOBS.forEach(j => jobsMap.set(j.slug, j));
+
+  // 3. Cargar ingesta en vivo del feed oficial (convocatoriasdetrabajo.com & portaltrabajos.pe)
   try {
     const liveFeed = await scrapeLiveConvocatoriasFeed();
     if (liveFeed && liveFeed.length > 0) {
@@ -910,7 +916,7 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     console.warn('Live feed fallback to static catalog:', err);
   }
 
-  // 3. Intentar fusionar con Supabase en tiempo real
+  // 4. Intentar fusionar con Supabase en tiempo real
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -954,12 +960,12 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
     console.warn('Falling back to local lookup for slug:', slug);
   }
 
+  const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j.slug === slug);
+  if (localDynamic) return localDynamic;
+
   const job = INITIAL_JOBS.find(j => j.slug === slug);
   return job || null;
 }
-
-// In-memory overrides para desarrollo local y fallback
-const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
 
 export async function saveJobPosting(
   jobData: Partial<JobPosting> & {

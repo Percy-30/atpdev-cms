@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale } from 'lucide-react';
+import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail } from 'lucide-react';
 
 export function MobileNavMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -133,6 +133,37 @@ export function MobileNavMenu() {
               <ShieldCheck size={18} className="text-emerald-400" />
               <span>Quiénes Somos</span>
             </Link>
+
+            {/* Legal & Compliance Links */}
+            <div className="pt-2 border-t border-white/5 space-y-1">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-mono px-3">Transparencia & Legal</span>
+              <Link
+                href="/politica-de-privacidad"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-900/50 text-slate-300 hover:text-white transition-colors text-xs"
+              >
+                <Lock size={15} className="text-slate-400" />
+                <span>Política de Privacidad</span>
+              </Link>
+
+              <Link
+                href="/terminos-y-condiciones"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-900/50 text-slate-300 hover:text-white transition-colors text-xs"
+              >
+                <FileCheck2 size={15} className="text-slate-400" />
+                <span>Términos y Condiciones</span>
+              </Link>
+
+              <Link
+                href="/contacto"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-900/50 text-slate-300 hover:text-emerald-400 transition-colors text-xs"
+              >
+                <Mail size={15} className="text-emerald-400" />
+                <span>Contacto & Redacción</span>
+              </Link>
+            </div>
           </nav>
         </div>
 
