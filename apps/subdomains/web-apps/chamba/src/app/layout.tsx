@@ -75,7 +75,6 @@ export const metadata: Metadata = {
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
   },
-  manifest: "/manifest.webmanifest",
   openGraph: {
     title: "chamba pro — Agregador de Convocatorias y Empleos Perú",
     description: "Buscador profesional de convocatorias de trabajo CAS 1057, 728, 276 y Sector Privado en Perú. Con derivación 100% oficial y transparencia.",
