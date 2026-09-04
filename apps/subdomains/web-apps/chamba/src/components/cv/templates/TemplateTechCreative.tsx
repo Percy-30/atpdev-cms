@@ -22,12 +22,12 @@ export function TemplateTechCreative({ data }: TemplateProps) {
   const { personal, profileSummary, education, courses, experiences, skills, languages } = data;
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-[11px] leading-relaxed p-8 sm:p-10 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none space-y-5">
+    <div className="bg-white text-slate-900 font-sans text-[11px] leading-relaxed p-8 sm:p-10 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none space-y-5 print:space-y-3.5">
       {/* Top Banner Accent */}
       <div className="h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full print:bg-emerald-600 -mt-2 mb-2" />
 
       {/* Header */}
-      <header className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-4 border-b border-slate-200 cv-avoid-break">
+      <header className="flex flex-col sm:flex-row print:flex-row justify-between items-start gap-4 pb-4 border-b border-slate-200 cv-avoid-break">
         <div className="space-y-1 flex-1">
           <h1 className="text-2xl font-black tracking-tight text-slate-950 font-display">
             {personal.fullName || 'NOMBRES Y APELLIDOS'}
@@ -100,14 +100,14 @@ export function TemplateTechCreative({ data }: TemplateProps) {
       )}
 
       {/* Experiencia Laboral */}
-      <section className="space-y-3 cv-avoid-break">
+      <section className="space-y-3 print:space-y-2 cv-avoid-break">
         <div className="flex items-center gap-1.5 text-xs font-bold font-display uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
           <Briefcase size={14} className="text-emerald-500" />
           <span>Trayectoria & Experiencia Profesional</span>
         </div>
-        <div className="space-y-3.5">
+        <div className="space-y-3 print:space-y-2">
           {experiences.map((exp, idx) => (
-            <div key={exp.id || idx} className="space-y-1.5 cv-avoid-break">
+            <div key={exp.id || idx} className="space-y-1 cv-avoid-break">
               <div className="flex justify-between items-baseline gap-2">
                 <div>
                   <h3 className="font-bold text-slate-950 text-[11px]">
@@ -141,14 +141,14 @@ export function TemplateTechCreative({ data }: TemplateProps) {
       </section>
 
       {/* Grid: Formación Académica & Habilidades */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 cv-avoid-break">
+      <div className="grid grid-cols-1 sm:grid-cols-2 print:grid-cols-2 gap-4 print:gap-3 cv-avoid-break">
         {/* Educación */}
-        <section className="space-y-2">
+        <section className="space-y-1.5">
           <div className="flex items-center gap-1.5 text-xs font-bold font-display uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
             <BookOpen size={14} className="text-emerald-500" />
             <span>Formación Académica</span>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {education.map((edu, idx) => (
               <div key={edu.id || idx} className="space-y-0.5">
                 <div className="font-bold text-slate-900 text-[10.5px]">
@@ -166,7 +166,7 @@ export function TemplateTechCreative({ data }: TemplateProps) {
         </section>
 
         {/* Stack Tecnológico & Habilidades */}
-        <section className="space-y-2">
+        <section className="space-y-1.5">
           <div className="flex items-center gap-1.5 text-xs font-bold font-display uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
             <Terminal size={14} className="text-emerald-500" />
             <span>Stack Técnico & Competencias</span>
@@ -184,11 +184,11 @@ export function TemplateTechCreative({ data }: TemplateProps) {
             </div>
           )}
           {languages && languages.length > 0 && (
-            <div className="pt-2 text-[10px]">
-              <span className="font-bold text-slate-900 block mb-1">Idiomas:</span>
-              <div className="flex flex-wrap gap-2">
+            <div className="pt-1 text-[10px]">
+              <span className="font-bold text-slate-900 block mb-0.5">Idiomas:</span>
+              <div className="flex flex-wrap gap-1.5">
                 {languages.map((l) => (
-                  <span key={l.id} className="text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                  <span key={l.id} className="text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-200 text-[9.5px]">
                     {l.name} <strong className="text-emerald-600 font-mono">({l.level})</strong>
                   </span>
                 ))}
@@ -200,12 +200,12 @@ export function TemplateTechCreative({ data }: TemplateProps) {
 
       {/* Cursos y Especializaciones */}
       {courses && courses.length > 0 && (
-        <section className="space-y-2 cv-avoid-break">
+        <section className="space-y-1.5 cv-avoid-break">
           <div className="flex items-center gap-1.5 text-xs font-bold font-display uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
             <Award size={14} className="text-emerald-500" />
             <span>Cursos de Especialización & Certificaciones</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 print:grid-cols-2 gap-2 text-[10px]">
             {courses.map((course, idx) => (
               <div key={course.id || idx} className="p-2 rounded-xl bg-slate-50 border border-slate-100 flex justify-between items-center gap-2">
                 <div>

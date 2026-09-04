@@ -304,7 +304,10 @@ export function CvCasGenerator() {
               👉 <strong>Opción 2 (PDF directo sin impresora física):</strong> En la ventana de impresión de Windows, cambia la impresora a <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Microsoft Print to PDF</strong> o <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Guardar como PDF</strong>. De esa manera Windows no busca ninguna máquina física y genera el PDF al instante.
             </li>
             <li>
-              👉 <strong>Gráficos de fondo:</strong> Recuerda marcar la casilla <strong className="text-white">&quot;Gráficos de fondo&quot;</strong> en <em>Más ajustes</em> para que se impriman los bordes y colores institucionales.
+              👉 <strong>Disposición Vertical (Hoja A4):</strong> En la ventana de impresión, asegúrate de que la <strong>Disposición</strong> esté seleccionada en <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Vertical</strong> para que la hoja encaje con exactitud y no se divida.
+            </li>
+            <li>
+              👉 <strong>Gráficos de fondo:</strong> Recuerda verificar que la casilla <strong className="text-white">&quot;Gráficos de fondo&quot;</strong> esté marcada para que se impriman con máxima nitidez los bordes, insignias y colores institucionales.
             </li>
           </ul>
         </div>
@@ -380,7 +383,7 @@ export function CvCasGenerator() {
                 transformOrigin: 'top center',
                 transition: 'transform 0.15s ease-out',
               }}
-              className="w-full max-w-[820px] print:transform-none"
+              className="w-full max-w-[820px] print:max-w-none print:w-full print:transform-none"
             >
               {renderTemplate()}
             </div>
