@@ -320,9 +320,36 @@ export async function scrapeLiveConvocatoriasFeed(): Promise<JobPosting[]> {
 
       if (linkMatch && titleMatch) {
         const fullTitle = titleMatch[1].trim();
-        const parts = fullTitle.split(':');
-        const entityName = parts.length > 1 ? parts[0].trim() : "ENTIDAD PÚBLICA DE PERÚ";
-        const jobTitle = parts.length > 1 ? parts.slice(1).join(':').trim() : fullTitle;
+        let entityName = '';
+        let jobTitle = fullTitle;
+
+        // 1. Separación por dos puntos: "ENTIDAD: PUESTO"
+        if (fullTitle.includes(':')) {
+          const parts = fullTitle.split(':');
+          entityName = parts[0].trim();
+          jobTitle = parts.slice(1).join(':').trim();
+        } 
+        // 2. Separación por verbos comunes de convocatorias: "requiere", "busca", "solicita", "convoca"
+        else {
+          const verbMatch = fullTitle.match(/^(.+?)\s+(?:requiere|busca|solicita|convoca)\s+(.+)$/i);
+          if (verbMatch) {
+            entityName = verbMatch[1].trim();
+            jobTitle = verbMatch[2].trim();
+          }
+        }
+
+        // 3. Extracción por prefijos institucionales reconocidos si aún no se detectó
+        if (!entityName) {
+          const entityPattern = /^(MUNICIPALIDAD\s+(?:DISTRITAL\s+|PROVINCIAL\s+)?(?:DE\s+|DEL\s+)?[A-ZÁÉÍÓÚÑ\s-]+|GOBIERNO\s+REGIONAL\s+(?:DE\s+|DEL\s+)?[A-ZÁÉÍÓÚÑ\s-]+|HOSPITAL\s+[A-ZÁÉÍÓÚÑ\s-]+|RED\s+DE\s+SALUD\s+[A-ZÁÉÍÓÚÑ\s-]+|UNIVERSIDAD\s+(?:NACIONAL\s+)?[A-ZÁÉÍÓÚÑ\s-]+|UGEL\s*[0-9A-ZÁÉÍÓÚÑ\s-]+|MINISTERIO\s+[A-ZÁÉÍÓÚÑ\s-]+|INSTITUTO\s+[A-ZÁÉÍÓÚÑ\s-]+|DIRECCI[OÓ]N\s+REGIONAL\s+[A-ZÁÉÍÓÚÑ\s-]+|GERENCIA\s+[A-ZÁÉÍÓÚÑ\s-]+)/i;
+          const match = fullTitle.match(entityPattern);
+          if (match) {
+            entityName = match[1].trim();
+            jobTitle = fullTitle.replace(match[1], '').replace(/^[\s:-]+/, '').trim();
+          } else {
+            entityName = "ENTIDAD PÚBLICA DE PERÚ";
+          }
+        }
+
         const vacMatch = fullTitle.match(/(\d[\d,]*)\s+(?:vacantes|plazas|puestos|personas)/i);
         const vacanciesCount = vacMatch ? parseInt(vacMatch[1].replace(/,/g, ''), 10) : 1;
         const slug = makeSlug(`live-${entityName}-${jobTitle}`);

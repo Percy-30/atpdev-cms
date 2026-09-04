@@ -74,7 +74,7 @@ const LOCAL_LOGO_MAP: { keywords: string[]; file: string }[] = [
   { keywords: ['ZOFRATACNA'], file: '/logos/zofratacna.jpg' },
 
   // Municipalidades Principales
-  { keywords: ['SAN MARTÍN DE PORRES', 'SAN MARTIN DE PORRES', 'SMP'], file: '/logos/san-martin-de-porres.svg' },
+  { keywords: ['SAN MARTÍN DE PORRES', 'SAN MARTIN DE PORRES', 'SMP'], file: '/logos/san-martin-de-porres.png' },
   { keywords: ['MUNICIPALIDAD PROVINCIAL DEL CUSCO', 'MUNICIPALIDAD DEL CUSCO'], file: '/logos/cusco.jpg' },
   { keywords: ['MUNICIPALIDAD METROPOLITANA DE LIMA', 'MUNILIMA'], file: '/logos/lima.jpg' },
   { keywords: ['SANTIAGO DE SURCO', 'SURCO'], file: '/logos/surco.jpg' },

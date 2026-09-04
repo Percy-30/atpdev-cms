@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import { scrapeLiveConvocatoriasFeed } from '../../../../../packages/database/src/scraper';
 
 async function test() {
@@ -36,14 +35,12 @@ async function test() {
     }
 
     // 2. Check orgLogos (292 downloaded logos)
-    // Direct or fuzzy matching
     for (const org of orgLogos) {
       const orgNorm = normalize(org.name);
       if (upper.includes(orgNorm) || orgNorm.includes(upper)) {
         return { file: org.file, source: 'ORG_LOGOS' };
       }
 
-      // Check key distinctive word (e.g. "USQUIL", "SABANDIA", "YURA", "MARAS")
       const words = orgNorm.split(' ').filter(w => w.length >= 4 && !['MUNICIPALIDAD', 'DISTRITAL', 'PROVINCIAL', 'GOBIERNO', 'REGIONAL', 'NACIONAL', 'PARA', 'LIMA', 'PERU'].includes(w));
       if (words.length > 0 && words.every(w => upper.includes(w))) {
         return { file: org.file, source: 'ORG_WORDS' };
@@ -88,13 +85,12 @@ async function test() {
   console.log(`LIVE FEED MATCH RATE: ${matched} / ${jobs.length} (${((matched / jobs.length) * 100).toFixed(1)}%)`);
   console.log(`========================================================\n`);
 
-  console.log('Sample Matches:');
-  console.log(matches.slice(0, 15));
+  for (const m of matches) {
+    console.log(`✅ "${m.entity}" -> ${m.logo} (${m.source})`);
+  }
 
   if (unmatched.length > 0) {
     console.log('\nUnmatched:', [...new Set(unmatched)]);
-  } else {
-    console.log('\n🎉 ALL 100% OF LIVE FEED JOBS MATCHED TO OFFICIAL LOGOS!');
   }
 }
 
