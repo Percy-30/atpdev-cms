@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import orgLogos from './org-logos.json';
 
 interface EntityLogoProps {
   entityName: string;
@@ -93,16 +94,58 @@ const LOCAL_LOGO_MAP: { keywords: string[]; file: string }[] = [
   { keywords: ['GOBIERNO REGIONAL MOQUEGUA', 'MOQUEGUA'], file: '/logos/moquegua.jpg' },
 ];
 
+
+function normalize(str: string): string {
+  return str
+    .toUpperCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function findLocalLogo(entityName: string): string | null {
-  const upper = entityName.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const upper = normalize(entityName);
+
+  // 1. Direct and curated logos from LOCAL_LOGO_MAP (SVGs and high-priority brands)
   for (const entry of LOCAL_LOGO_MAP) {
-    if (entry.keywords.some(k => {
-      const normK = k.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      return upper.includes(normK);
-    })) {
+    if (entry.keywords.some(k => upper.includes(normalize(k)))) {
       return entry.file;
     }
   }
+
+  // 2. Exact or distinctive fuzzy match against all 292 downloaded institutional logos
+  for (const org of orgLogos) {
+    const orgNorm = normalize(org.name);
+    if (upper.includes(orgNorm) || orgNorm.includes(upper)) {
+      return org.file;
+    }
+
+    // Match distinctive geographical or entity name (e.g. "USQUIL", "SABANDIA", "YURA", "MARAS")
+    const words = orgNorm.split(' ').filter(w => w.length >= 4 && !['MUNICIPALIDAD', 'DISTRITAL', 'PROVINCIAL', 'GOBIERNO', 'REGIONAL', 'NACIONAL', 'PARA', 'LIMA', 'PERU'].includes(w));
+    if (words.length > 0 && words.every(w => upper.includes(w))) {
+      return org.file;
+    }
+  }
+
+  // 3. Sector matching for regional directorates and public networks
+  if (upper.includes('HOSPITAL') || upper.includes('SALUD') || upper.includes('DIRESA')) {
+    return '/logos/minsa.jpg';
+  }
+  if (upper.includes('UGEL') || upper.includes('DRE') || upper.includes('EDUCACION') || upper.includes('PEDAGOGICA')) {
+    return '/logos/minedu.jpg';
+  }
+  if (upper.includes('AGRICULTURA') || upper.includes('DRA') || upper.includes('AGRARIA')) {
+    return '/logos/senasa.jpg';
+  }
+  if (upper.includes('CALLAO')) {
+    return '/logos/callao.jpg';
+  }
+  if (upper.includes('LIMA') || upper.includes('CATASTRAL')) {
+    return '/logos/lima.jpg';
+  }
+
   return null;
 }
 
