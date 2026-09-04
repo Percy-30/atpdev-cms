@@ -67,15 +67,31 @@
    A4 Professional CV Print Engine & Media Query Rules
    ========================================================================== */
 @media print {
-  /* Complete stealth mode for web UI chrome */
-  header,
-  footer,
-  nav,
-  .print-hidden,
-  [data-no-print],
-  button,
-  .cookie-consent-banner {
-    display: none !important;
+  /* Hide all website chrome, layout wrappers, headers, footers and navigation */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Make ONLY the printable CV sheet and its descendants visible */
+  #cv-print-area,
+  #cv-print-area * {
+    visibility: visible !important;
+  }
+
+  /* Position the CV sheet at the exact top-left origin of the A4 paper */
+  #cv-print-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
   }
 
   html, body {
@@ -84,29 +100,10 @@
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
+    min-height: 100% !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     font-size: 10.5pt !important;
-  }
-
-  main {
-    min-height: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    max-width: none !important;
-  }
-
-  /* The printable CV sheet */
-  #cv-print-area {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-    color: #0f172a !important;
-    box-shadow: none !important;
-    border: none !important;
   }
 
   @page {

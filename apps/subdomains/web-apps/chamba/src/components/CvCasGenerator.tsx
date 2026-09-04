@@ -14,6 +14,7 @@ import { TemplateModernExecutive } from './cv/templates/TemplateModernExecutive'
 import { TemplateMinimalAts } from './cv/templates/TemplateMinimalAts';
 import { TemplateTechCreative } from './cv/templates/TemplateTechCreative';
 import { generatePlainResumeText } from './cv/textExport';
+import { downloadCvAsWord } from './cv/wordExport';
 
 const STORAGE_KEY_DATA = 'chamba_pro_cv_data_v2';
 const STORAGE_KEY_TEMPLATE = 'chamba_pro_cv_template_v2';
@@ -69,6 +70,10 @@ export function CvCasGenerator() {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleDownloadWord = () => {
+    downloadCvAsWord(data, templateId);
   };
 
   const handlePrint = () => {
@@ -187,15 +192,26 @@ export function CvCasGenerator() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Main Download Word (.DOC) Button */}
+          <button
+            type="button"
+            onClick={handleDownloadWord}
+            className="px-4 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold font-display text-xs transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center gap-2 cursor-pointer hover:scale-[1.02]"
+            title="Descargar tu CV en formato Word (.doc) 100% editable con tablas y membrete oficial"
+          >
+            <FileText size={16} />
+            <span>Descargar en Word (.DOC)</span>
+          </button>
+
           {/* Main Print / Save PDF Button */}
           <button
             type="button"
             onClick={handlePrint}
             className="px-4 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center gap-2 cursor-pointer hover:scale-[1.02]"
-            title="Abre el diálogo nativo para guardar en PDF o imprimir en papel A4"
+            title="Abre el diálogo para guardar como PDF o imprimir en papel A4"
           >
             <Printer size={16} />
-            <span>Imprimir / Guardar en PDF</span>
+            <span>Guardar / Imprimir PDF</span>
           </button>
 
           {/* Copy Plain Text Resume */}
@@ -214,7 +230,7 @@ export function CvCasGenerator() {
             type="button"
             onClick={() => setShowPrintTips(!showPrintTips)}
             className="p-2.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors border border-white/10 cursor-pointer"
-            title="Ver recomendaciones para exportar a PDF perfecto"
+            title="¿Problemas con la impresora? Ver ayuda de exportación"
           >
             <Info size={16} className="text-amber-400" />
           </button>
@@ -263,32 +279,32 @@ export function CvCasGenerator() {
 
       {/* PDF Export Tips Banner (Collapsible) */}
       {showPrintTips && (
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs space-y-2 print:hidden">
+        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs space-y-2.5 print:hidden">
           <div className="flex items-center justify-between font-bold">
             <span className="flex items-center gap-1.5">
               <ShieldCheck size={16} className="text-amber-400" />
-              <span>¿Cómo guardar tu CV en PDF con la máxima calidad?</span>
+              <span>¿Te sale &quot;Esperando conexión de impresora...&quot; en Windows?</span>
             </span>
             <button
               type="button"
               onClick={() => setShowPrintTips(false)}
-              className="text-amber-400 hover:text-white"
+              className="text-amber-400 hover:text-white cursor-pointer"
             >
               Entendido ✕
             </button>
           </div>
-          <ul className="list-disc list-inside space-y-1 text-slate-300 text-[11px] leading-relaxed">
+          <p className="text-slate-300 text-[11px] leading-relaxed">
+            Ese mensaje del sistema aparece cuando Windows intenta comunicarse con una impresora física que está apagada o desconectada. Para resolverlo en 1 segundo:
+          </p>
+          <ul className="list-disc list-inside space-y-1.5 text-slate-300 text-[11px] leading-relaxed">
             <li>
-              Al presionar <strong>"Imprimir / Guardar en PDF"</strong>, en el destino de tu navegador selecciona: <strong className="text-white font-mono">"Guardar como PDF"</strong>.
+              👉 <strong>Opción 1 (Más rápida):</strong> Pulsa el botón azul <strong className="text-blue-400 font-bold">&quot;Descargar en Word (.DOC)&quot;</strong> arriba. Se descargará el archivo de inmediato, 100% editable en Microsoft Word o Google Docs, y puedes guardarlo como PDF cuando quieras.
             </li>
             <li>
-              En la sección <em>Más ajustes</em> de la ventana de impresión, asegúrate de activar la casilla <strong className="text-white">"Gráficos de fondo"</strong> para conservar los colores y líneas.
+              👉 <strong>Opción 2 (PDF directo sin impresora física):</strong> En la ventana de impresión de Windows, cambia la impresora a <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Microsoft Print to PDF</strong> o <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Guardar como PDF</strong>. De esa manera Windows no busca ninguna máquina física y genera el PDF al instante.
             </li>
             <li>
-              Configura los márgenes en <strong className="text-white font-mono">"Ninguno" o "Predeterminado"</strong> y tamaño de papel <strong className="text-white font-mono">A4</strong>.
-            </li>
-            <li>
-              Los menús, botones, encabezados y pies de página de la web se ocultan automáticamente al imprimir.
+              👉 <strong>Gráficos de fondo:</strong> Recuerda marcar la casilla <strong className="text-white">&quot;Gráficos de fondo&quot;</strong> en <em>Más ajustes</em> para que se impriman los bordes y colores institucionales.
             </li>
           </ul>
         </div>

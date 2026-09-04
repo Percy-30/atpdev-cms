@@ -22,7 +22,7 @@ export function TemplateModernExecutive({ data }: TemplateProps) {
   const { personal, profileSummary, education, courses, experiences, skills, languages } = data;
 
   return (
-    <div className="bg-white text-slate-800 font-sans text-[11px] leading-relaxed max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none grid grid-cols-12 min-h-[1100px]">
+    <div className="bg-white text-slate-800 font-sans text-[11px] leading-relaxed max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none print:w-full print:min-h-0 grid grid-cols-12 min-h-[1100px]">
       {/* Columna Izquierda (Sidebar con acento azul pizarra corporativo) */}
       <aside className="col-span-4 bg-slate-900 text-slate-200 p-6 sm:p-7 space-y-6 print:bg-slate-900 print:text-slate-200">
         {/* Foto de Perfil si está presente */}
@@ -31,7 +31,7 @@ export function TemplateModernExecutive({ data }: TemplateProps) {
             <img
               src={personal.photoUrl}
               alt={personal.fullName}
-              className="w-28 h-28 rounded-full object-cover border-3 border-emerald-400/80 shadow-md mb-3"
+              className="w-28 h-28 rounded-full object-cover border-2 border-emerald-400 shadow-md mb-3"
             />
           ) : (
             <div className="w-24 h-24 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-slate-400 mb-3">

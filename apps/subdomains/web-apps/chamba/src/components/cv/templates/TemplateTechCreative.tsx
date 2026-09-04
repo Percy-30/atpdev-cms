@@ -28,19 +28,10 @@ export function TemplateTechCreative({ data }: TemplateProps) {
 
       {/* Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-4 border-b border-slate-200 cv-avoid-break">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black tracking-tight text-slate-950 font-display">
-              {personal.fullName || 'NOMBRES Y APELLIDOS'}
-            </h1>
-            {personal.photoUrl && (
-              <img
-                src={personal.photoUrl}
-                alt={personal.fullName}
-                className="w-12 h-12 rounded-xl object-cover border border-emerald-500 sm:hidden"
-              />
-            )}
-          </div>
+        <div className="space-y-1 flex-1">
+          <h1 className="text-2xl font-black tracking-tight text-slate-950 font-display">
+            {personal.fullName || 'NOMBRES Y APELLIDOS'}
+          </h1>
           <p className="text-xs font-bold text-emerald-600 tracking-wide font-mono">
             {personal.headline || 'PROFESIONAL TECNOLÓGICO & DIGITAL'}
           </p>
@@ -78,20 +69,20 @@ export function TemplateTechCreative({ data }: TemplateProps) {
           </div>
         </div>
 
-        {/* Photo desktop and IDs */}
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          {personal.photoUrl ? (
+        {/* Photo and IDs */}
+        <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 shrink-0">
+          {personal.photoUrl && (
             <img
               src={personal.photoUrl}
-              alt={personal.fullName}
-              className="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-500 shadow-sm hidden sm:block"
+              alt={personal.fullName || 'Foto'}
+              className="w-18 h-18 rounded-2xl object-cover border-2 border-emerald-500 shadow-sm"
+              style={{ width: '72px', height: '72px' }}
             />
-          ) : (
-            <div className="text-right font-mono text-[9px] text-slate-500">
-              {personal.dni && <div>DNI: {personal.dni}</div>}
-              {personal.ruc && <div>RUC: {personal.ruc}</div>}
-            </div>
           )}
+          <div className="text-right font-mono text-[9px] text-slate-500">
+            {personal.dni && <div>DNI: {personal.dni}</div>}
+            {personal.ruc && <div>RUC: {personal.ruc}</div>}
+          </div>
         </div>
       </header>
 

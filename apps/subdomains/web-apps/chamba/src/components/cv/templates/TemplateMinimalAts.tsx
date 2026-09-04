@@ -22,29 +22,44 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
 
   return (
     <div className="bg-white text-slate-900 font-serif text-[11px] leading-normal p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none space-y-4">
-      {/* Encabezado Clásico Centrado Estilo Harvard */}
-      <header className="text-center border-b border-slate-900 pb-3 space-y-1 cv-avoid-break">
-        <h1 className="text-2xl font-bold uppercase tracking-wide text-slate-950">
-          {personal.fullName || 'NOMBRES Y APELLIDOS'}
-        </h1>
-        {personal.headline && (
-          <p className="text-xs font-sans font-semibold text-slate-700 uppercase tracking-wider">
-            {personal.headline}
-          </p>
-        )}
-        <div className="text-[10px] font-sans text-slate-600 flex flex-wrap justify-center gap-x-2.5 gap-y-1 pt-1">
-          {contactPieces.map((piece, idx) => (
-            <React.Fragment key={idx}>
-              <span>{piece}</span>
-              {idx < contactPieces.length - 1 && <span className="text-slate-400">•</span>}
-            </React.Fragment>
-          ))}
-        </div>
-        {personal.colegiatoria && (
-          <div className="text-[9.5px] font-sans text-slate-700 italic">
-            {personal.colegiatoria}
+      {/* Encabezado Clásico Estilo Harvard (con soporte opcional de Foto) */}
+      <header className="border-b border-slate-900 pb-3 cv-avoid-break">
+        <div className={`flex items-center gap-4 ${personal.photoUrl ? 'justify-between text-left' : 'justify-center text-center'}`}>
+          <div className="space-y-1 flex-1">
+            <h1 className="text-2xl font-bold uppercase tracking-wide text-slate-950 font-serif">
+              {personal.fullName || 'NOMBRES Y APELLIDOS'}
+            </h1>
+            {personal.headline && (
+              <p className="text-xs font-sans font-semibold text-slate-700 uppercase tracking-wider">
+                {personal.headline}
+              </p>
+            )}
+            <div className={`text-[10px] font-sans text-slate-600 flex flex-wrap gap-x-2.5 gap-y-1 pt-1 ${personal.photoUrl ? 'justify-start' : 'justify-center'}`}>
+              {contactPieces.map((piece, idx) => (
+                <React.Fragment key={idx}>
+                  <span>{piece}</span>
+                  {idx < contactPieces.length - 1 && <span className="text-slate-400">•</span>}
+                </React.Fragment>
+              ))}
+            </div>
+            {personal.colegiatoria && (
+              <div className="text-[9.5px] font-sans text-slate-700 italic">
+                {personal.colegiatoria}
+              </div>
+            )}
           </div>
-        )}
+
+          {personal.photoUrl && (
+            <div className="shrink-0">
+              <img
+                src={personal.photoUrl}
+                alt={personal.fullName || 'Foto'}
+                className="w-18 h-22 object-cover rounded border border-slate-300 shadow-sm"
+                style={{ width: '72px', height: '88px' }}
+              />
+            </div>
+          )}
+        </div>
       </header>
 
       {/* Resumen Profesional */}

@@ -15,7 +15,7 @@ export function TemplateServirCas({ data }: TemplateProps) {
   const expGeneral = experiences.filter((e) => e.type === 'General');
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-[11px] leading-tight p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none">
+    <div className="bg-white text-slate-900 font-sans text-[11px] leading-tight p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none print:w-full">
       {/* Header Institucional SERVIR */}
       <div className="text-center border-b-2 border-slate-900 pb-3 mb-4 space-y-1">
         <div className="text-[10px] font-bold uppercase tracking-widest text-slate-700">
@@ -35,41 +35,68 @@ export function TemplateServirCas({ data }: TemplateProps) {
           <span>I. DATOS PERSONALES DEL POSTULANTE</span>
           <span className="text-[9px] font-mono text-slate-300">SECCIÓN OFICIAL</span>
         </div>
-        <table className="w-full border-collapse border border-slate-400 text-[10.5px]">
-          <tbody>
-            <tr className="border-b border-slate-300">
-              <td className="bg-slate-100 font-bold p-1.5 w-1/4 border-r border-slate-300">Nombres y Apellidos:</td>
-              <td className="p-1.5 font-semibold text-slate-950 uppercase" colSpan={3}>
-                {personal.fullName || '—'}
-              </td>
-            </tr>
-            <tr className="border-b border-slate-300">
-              <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">N° DNI / C.E.:</td>
-              <td className="p-1.5 font-mono border-r border-slate-300 w-1/4">{personal.dni || '—'}</td>
-              <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300 w-1/4">N° RUC:</td>
-              <td className="p-1.5 font-mono w-1/4">{personal.ruc || '—'}</td>
-            </tr>
-            <tr className="border-b border-slate-300">
-              <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Teléfono / Celular:</td>
-              <td className="p-1.5 border-r border-slate-300">{personal.phone || '—'}</td>
-              <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Correo Electrónico:</td>
-              <td className="p-1.5 font-mono text-[10px] break-all">{personal.email || '—'}</td>
-            </tr>
-            <tr className="border-b border-slate-300">
-              <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Dirección Domiciliaria:</td>
-              <td className="p-1.5 border-r border-slate-300" colSpan={2}>
-                {personal.address || '—'}
-              </td>
-              <td className="p-1.5 text-slate-700">{personal.city || '—'}</td>
-            </tr>
-            <tr>
-              <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Colegiatura Profesional:</td>
-              <td className="p-1.5" colSpan={3}>
-                {personal.colegiatoria || 'No aplica / No requerida para el cargo'}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="flex gap-2.5 items-stretch">
+          <table className="flex-1 border-collapse border border-slate-400 text-[10.5px]">
+            <tbody>
+              <tr className="border-b border-slate-300">
+                <td className="bg-slate-100 font-bold p-1.5 w-1/4 border-r border-slate-300">Nombres y Apellidos:</td>
+                <td className="p-1.5 font-semibold text-slate-950 uppercase" colSpan={3}>
+                  {personal.fullName || '—'}
+                </td>
+              </tr>
+              <tr className="border-b border-slate-300">
+                <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">N° DNI / C.E.:</td>
+                <td className="p-1.5 font-mono border-r border-slate-300 w-1/4">{personal.dni || '—'}</td>
+                <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300 w-1/4">N° RUC:</td>
+                <td className="p-1.5 font-mono w-1/4">{personal.ruc || '—'}</td>
+              </tr>
+              <tr className="border-b border-slate-300">
+                <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Teléfono / Celular:</td>
+                <td className="p-1.5 border-r border-slate-300">{personal.phone || '—'}</td>
+                <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Correo Electrónico:</td>
+                <td className="p-1.5 font-mono text-[10px] break-all">{personal.email || '—'}</td>
+              </tr>
+              <tr className="border-b border-slate-300">
+                <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Dirección Domiciliaria:</td>
+                <td className="p-1.5 border-r border-slate-300" colSpan={2}>
+                  {personal.address || '—'}
+                </td>
+                <td className="p-1.5 text-slate-700">{personal.city || '—'}</td>
+              </tr>
+              <tr>
+                <td className="bg-slate-100 font-bold p-1.5 border-r border-slate-300">Colegiatura Profesional:</td>
+                <td className="p-1.5" colSpan={3}>
+                  {personal.colegiatoria || 'No aplica / No requerida para el cargo'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          {personal.photoUrl ? (
+            <div className="w-24 shrink-0 flex flex-col items-center justify-center p-1.5 bg-slate-50 border border-slate-400 rounded">
+              <img
+                src={personal.photoUrl}
+                alt={personal.fullName || 'Foto Carné'}
+                className="w-20 h-26 object-cover border border-slate-300 shadow-sm rounded-xs"
+                style={{ width: '82px', height: '102px' }}
+              />
+              <span className="text-[7.5px] font-mono text-slate-700 uppercase mt-1 text-center font-bold tracking-wider">
+                FOTO CARNÉ
+              </span>
+            </div>
+          ) : (
+            <div className="w-24 shrink-0 flex flex-col items-center justify-center p-1.5 bg-slate-50/70 border border-dashed border-slate-300 rounded text-center">
+              <div 
+                className="border border-dashed border-slate-300 bg-white flex flex-col items-center justify-center text-[7px] text-slate-400 text-center leading-tight p-1 font-mono uppercase"
+                style={{ width: '80px', height: '100px' }}
+              >
+                <span>Espacio Foto</span>
+                <span className="font-bold text-[7.5px] text-slate-500">Carné</span>
+                <span className="text-[6.5px] text-slate-400 mt-1">(Opcional)</span>
+              </div>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* II. FORMACIÓN ACADÉMICA */}

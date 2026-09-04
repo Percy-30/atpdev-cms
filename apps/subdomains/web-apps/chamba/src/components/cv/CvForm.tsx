@@ -31,15 +31,47 @@ export function CvForm({ data, onChange }: Props) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Limit to 2MB to keep localStorage healthy
-    if (file.size > 2 * 1024 * 1024) {
-      alert('La foto no debe superar los 2MB.');
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor selecciona un archivo de imagen válido (JPG, PNG o WebP).');
       return;
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      updatePersonal('photoUrl', reader.result as string);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_DIM = 600;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_DIM) {
+            height = Math.round((height * MAX_DIM) / width);
+            width = MAX_DIM;
+          }
+        } else {
+          if (height > MAX_DIM) {
+            width = Math.round((width * MAX_DIM) / height);
+            height = MAX_DIM;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          updatePersonal('photoUrl', compressedDataUrl);
+        } else {
+          updatePersonal('photoUrl', event.target?.result as string);
+        }
+      };
+      img.onerror = () => {
+        updatePersonal('photoUrl', event.target?.result as string);
+      };
+      img.src = event.target?.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -322,7 +354,7 @@ export function CvForm({ data, onChange }: Props) {
                 Foto de Perfil (Opcional)
               </label>
               <p className="text-[11px] text-slate-400">
-                Aparece en la plantilla Ejecutiva y Tech. Formatos JPG/PNG (máx 2MB).
+                Visible en las 4 plantillas (en CAS / Estado como Foto Carné oficial, en Ejecutiva, ATS y Tech). Formatos JPG, PNG o WebP.
               </p>
               <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-semibold cursor-pointer border border-white/10 transition-colors">
                 <Upload size={13} />
