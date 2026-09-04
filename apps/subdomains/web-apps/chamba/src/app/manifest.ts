@@ -51,9 +51,9 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [{ src: '/icon.svg', sizes: 'any' }],
       },
       {
-        name: 'Generador CV SERVIR',
+        name: 'Generador de CV Profesional PDF',
         short_name: 'Generador CV',
-        description: 'Crear currículum vitae en formato estándar del Estado',
+        description: 'Crear currículum vitae en formato SERVIR y plantillas privadas con exportación PDF',
         url: '/crear-cv-cas',
         icons: [{ src: '/icon.svg', sizes: 'any' }],
       },
