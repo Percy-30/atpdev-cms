@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" fill="none">
+  <!-- Interbank Official Color Branding -->
+  <g transform="translate(20, 20)">
+    <!-- Symbol: Rounded Vibrant Green Rectangle with Cyan Circle -->
+    <rect x="0" y="0" width="80" height="80" rx="22" fill="#009B3A" />
+    <circle cx="56" cy="24" r="12" fill="#05A8E6" />
+    <path d="M28 24V56M40 38V56" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" />
+  </g>
+  <!-- Wordmark -->
+  <text x="120" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="900" fill="#009B3A" letter-spacing="-1">
+    Interbank
+  </text>
+</svg>

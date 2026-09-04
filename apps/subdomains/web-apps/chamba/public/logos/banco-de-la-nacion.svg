@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 120" fill="none">
+  <!-- Banco de la Nación Official Logo -->
+  <g transform="translate(25, 20)">
+    <rect width="80" height="80" rx="16" fill="#C51B24" />
+    <!-- White Chakana Stepped Motif -->
+    <path d="M28 20 H52 V32 H64 V56 H52 V68 H28 V56 H16 V32 H28 Z" fill="#FFFFFF" />
+    <rect x="34" y="38" width="12" height="12" fill="#C51B24" />
+  </g>
+  <text x="125" y="58" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="900" fill="#C51B24" letter-spacing="-0.5">
+    Banco de la Nación
+  </text>
+  <text x="125" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#4B5563" letter-spacing="0.5">
+    el banco de todos
+  </text>
+</svg>

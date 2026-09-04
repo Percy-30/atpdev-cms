@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 130" fill="none">
+  <!-- Municipalidad de San Martín de Porres Official Emblem & Text -->
+  <g transform="translate(20, 15)">
+    <!-- Municipal Shield -->
+    <path d="M50 5 L85 20 V65 C85 85, 50 100, 50 100 C 50 100, 15 85, 15 65 V20 Z" fill="#059669" stroke="#047857" stroke-width="3" />
+    <path d="M50 12 L78 24 V62 C78 78, 50 90, 50 90 C 50 90, 22 78, 22 62 V24 Z" fill="#FFFFFF" />
+    <!-- Center Broom/Cross of San Martin -->
+    <circle cx="50" cy="45" r="14" fill="#F59E0B" />
+    <path d="M50 35 V75 M38 55 H62" stroke="#DC2626" stroke-width="4" stroke-linecap="round" />
+    <circle cx="50" cy="45" r="5" fill="#FFFFFF" />
+  </g>
+  <!-- Municipal Text -->
+  <text x="125" y="48" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="#047857" letter-spacing="0.5">
+    MUNICIPALIDAD DE
+  </text>
+  <text x="125" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="900" fill="#B91C1C" letter-spacing="-0.5">
+    SAN MARTÍN DE PORRES
+  </text>
+  <text x="125" y="98" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#4B5563" letter-spacing="1">
+    GESTIÓN Y DESARROLLO MUNICIPAL
+  </text>
+</svg>
