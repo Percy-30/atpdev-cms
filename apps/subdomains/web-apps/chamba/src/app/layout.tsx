@@ -126,7 +126,7 @@ export default function RootLayout({
       </head>
       <body className="bg-[#0b0f19] text-slate-100 antialiased selection:bg-emerald-500 selection:text-black">
         {/* Top Announcement Bar */}
-        <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white text-xs font-semibold py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-emerald-500/30">
+        <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white text-xs font-semibold py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-emerald-500/30 print:hidden">
           <ShieldCheck size={15} className="animate-pulse text-amber-300" />
           <span>Agregador Oficial Verificado — Redirección 100% Directa a Fuentes de Gobierno & Empresas RUC Verificadas</span>
         </div>

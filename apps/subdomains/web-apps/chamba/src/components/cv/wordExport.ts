@@ -28,7 +28,7 @@ export function generateWordHtml(data: CvData, templateId: CvTemplateId): string
       </div>
 
       <!-- I. DATOS PERSONALES -->
-      <div style="background-color: #1e293b; color: #ffffff; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
+      <div style="background-color: #ffffff; color: #0f172a; border: 1pt solid #0f172a; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
         I. DATOS PERSONALES DEL POSTULANTE
       </div>
       <table style="width: 100%; border: none; border-collapse: collapse; margin-bottom: 12pt;">
@@ -84,7 +84,7 @@ export function generateWordHtml(data: CvData, templateId: CvTemplateId): string
       </table>
 
       <!-- II. FORMACIÓN ACADÉMICA -->
-      <div style="background-color: #1e293b; color: #ffffff; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
+      <div style="background-color: #ffffff; color: #0f172a; border: 1pt solid #0f172a; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
         II. FORMACIÓN ACADÉMICA (Acreditada según bases de la convocatoria)
       </div>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; border: 1pt solid #cbd5e1; font-size: 9.5pt;">
@@ -112,7 +112,7 @@ export function generateWordHtml(data: CvData, templateId: CvTemplateId): string
       </table>
 
       <!-- III. CAPACITACIONES Y CURSOS -->
-      <div style="background-color: #1e293b; color: #ffffff; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
+      <div style="background-color: #ffffff; color: #0f172a; border: 1pt solid #0f172a; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
         III. CAPACITACIONES, DIPLOMADOS Y CURSOS DE ESPECIALIZACIÓN (Horas lectivas acreditadas)
       </div>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; border: 1pt solid #cbd5e1; font-size: 9.5pt;">
@@ -142,7 +142,7 @@ export function generateWordHtml(data: CvData, templateId: CvTemplateId): string
       </table>
 
       <!-- IV. EXPERIENCIA LABORAL -->
-      <div style="background-color: #1e293b; color: #ffffff; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
+      <div style="background-color: #ffffff; color: #0f172a; border: 1pt solid #0f172a; padding: 4pt 8pt; font-weight: bold; font-size: 9.5pt; text-transform: uppercase; margin-bottom: 4pt;">
         IV. EXPERIENCIA LABORAL (General: ${expGeneral.length} reg. | Específica: ${expEspecifica.length} reg.)
       </div>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; border: 1pt solid #cbd5e1; font-size: 9.5pt;">

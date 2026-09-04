@@ -31,9 +31,9 @@ export function TemplateServirCas({ data }: TemplateProps) {
 
       {/* I. DATOS PERSONALES */}
       <section className="mb-4 cv-avoid-break">
-        <div className="bg-slate-800 text-white px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider mb-1.5 flex justify-between items-center">
+        <div className="bg-white text-slate-950 px-2.5 py-1.5 text-[11px] font-black uppercase tracking-wider mb-1.5 border border-slate-900 flex justify-between items-center">
           <span>I. DATOS PERSONALES DEL POSTULANTE</span>
-          <span className="text-[9px] font-mono text-slate-300">SECCIÓN OFICIAL</span>
+          <span className="text-[9px] font-mono text-slate-600 font-bold">SECCIÓN OFICIAL</span>
         </div>
         <div className="flex gap-2.5 items-stretch">
           <table className="flex-1 border-collapse border border-slate-400 text-[10.5px]">
@@ -101,7 +101,7 @@ export function TemplateServirCas({ data }: TemplateProps) {
 
       {/* II. FORMACIÓN ACADÉMICA */}
       <section className="mb-4 cv-avoid-break">
-        <div className="bg-slate-800 text-white px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider mb-1.5">
+        <div className="bg-white text-slate-950 px-2.5 py-1.5 text-[11px] font-black uppercase tracking-wider mb-1.5 border border-slate-900">
           II. FORMACIÓN ACADÉMICA (Acreditada según bases)
         </div>
         <table className="w-full border-collapse border border-slate-400 text-[10.5px]">
@@ -136,9 +136,9 @@ export function TemplateServirCas({ data }: TemplateProps) {
 
       {/* III. CAPACITACIONES Y ESPECIALIZACIÓN */}
       <section className="mb-4 cv-avoid-break">
-        <div className="bg-slate-800 text-white px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider mb-1.5 flex justify-between items-center">
+        <div className="bg-white text-slate-950 px-2.5 py-1.5 text-[11px] font-black uppercase tracking-wider mb-1.5 border border-slate-900 flex justify-between items-center">
           <span>III. CAPACITACIONES, DIPLOMADOS Y CURSOS DE ESPECIALIZACIÓN</span>
-          <span className="text-[9px] font-normal text-slate-300">Cómputo de horas lectivas mínimas</span>
+          <span className="text-[9px] font-normal text-slate-600 font-mono">Cómputo de horas lectivas mínimas</span>
         </div>
         <table className="w-full border-collapse border border-slate-400 text-[10.5px]">
           <thead>
@@ -176,9 +176,9 @@ export function TemplateServirCas({ data }: TemplateProps) {
 
       {/* IV. EXPERIENCIA LABORAL */}
       <section className="mb-4 cv-avoid-break">
-        <div className="bg-slate-800 text-white px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider mb-1.5 flex justify-between items-center">
+        <div className="bg-white text-slate-950 px-2.5 py-1.5 text-[11px] font-black uppercase tracking-wider mb-1.5 border border-slate-900 flex justify-between items-center">
           <span>IV. EXPERIENCIA LABORAL (General y Específica)</span>
-          <span className="text-[9px] font-mono text-slate-300">
+          <span className="text-[9px] font-mono text-slate-600 font-semibold">
             Total Específica: {expEspecifica.length} reg. | Total General: {expGeneral.length} reg.
           </span>
         </div>
@@ -239,7 +239,7 @@ export function TemplateServirCas({ data }: TemplateProps) {
       </section>
 
       {/* V. DECLARACIÓN JURADA Y FIRMA */}
-      <section className="border border-slate-400 p-3 bg-slate-50 cv-avoid-break mt-4 text-[9.5px] leading-normal text-slate-800">
+      <section className="border border-slate-400 p-3 bg-white cv-avoid-break mt-4 text-[9.5px] leading-normal text-slate-800">
         <div className="font-bold uppercase text-slate-950 mb-1 text-[10px] text-center border-b border-slate-300 pb-1">
           DECLARACIÓN JURADA DE VERACIDAD DE LA INFORMACIÓN (TUO LEY N° 27444)
         </div>
