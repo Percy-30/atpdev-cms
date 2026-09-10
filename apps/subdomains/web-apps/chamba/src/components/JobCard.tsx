@@ -1,18 +1,14 @@
 import Link from "next/link";
 import { JobPosting } from "@atpdev/database";
-import { ShieldCheck, MapPin, ExternalLink, Clock, Users, GraduationCap, ArrowRight } from "lucide-react";
+import { ShieldCheck, MapPin, ExternalLink, Users, GraduationCap, ArrowRight } from "lucide-react";
 import { EntityLogo } from "@/components/EntityLogo";
+import { JobCountdownClock } from "@/components/JobCountdownClock";
 
 interface JobCardProps {
   job: JobPosting;
 }
 
 export function JobCard({ job }: JobCardProps) {
-  // Days remaining calculation
-  const endDate = new Date(job.end_date);
-  const now = new Date();
-  const diffDays = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 3600 * 24));
-  const isEndingSoon = diffDays <= 3 && diffDays >= 0;
 
   return (
     <div className="glass-card glass-card-hover p-5 rounded-3xl flex flex-col justify-between gap-4 relative group overflow-hidden border border-white/10 hover:border-emerald-500/40 transition-all bg-gradient-to-b from-slate-900/90 via-slate-900 to-[#070d14]">
@@ -40,11 +36,6 @@ export function JobCard({ job }: JobCardProps) {
 
           {/* Regime Pill */}
           <div className="flex items-center gap-2">
-            {diffDays <= 2 && diffDays >= 0 && (
-              <span className="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[9px] font-mono font-extrabold animate-pulse">
-                🔥 ¡VENCE PRONTO!
-              </span>
-            )}
             <span className={`text-[10px] font-mono font-extrabold px-2.5 py-0.5 rounded-full border flex-shrink-0 ${
               job.sector_type === 'CAS 1057' 
                 ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' 
@@ -84,15 +75,10 @@ export function JobCard({ job }: JobCardProps) {
         </div>
       </div>
 
-      {/* Footer Row with two clear CTAs */}
+      {/* Footer Row with countdown and two clear CTAs */}
       <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
-        {/* Deadline Status */}
-        <div className="flex items-center gap-1.5 font-mono">
-          <Clock size={14} className={isEndingSoon ? "text-amber-400 animate-pulse" : "text-slate-400"} />
-          <span className={isEndingSoon ? "text-amber-400 font-bold" : "text-slate-400"}>
-            {diffDays > 0 ? `Cierra en ${diffDays} día${diffDays > 1 ? 's' : ''}` : 'Vence Hoy'}
-          </span>
-        </div>
+        {/* Dynamic Countdown Clock (Green, Orange, Red, Blue) */}
+        <JobCountdownClock endDate={job.end_date} size="sm" />
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">

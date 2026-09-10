@@ -571,7 +571,155 @@ async function refreshLiveFeedInBackground(): Promise<void> {
   }
 }
 
-// 4. Orquestador Principal de Ingesta Nivel Dios
+// 4. Live Scraper Engine para ConvocatoriasDeTrabajo.com
+let cachedCdJobs: { data: JobPosting[]; timestamp: number } = {
+  data: [],
+  timestamp: 0
+};
+let isRefreshingCd = false;
+
+export async function scrapeConvocatoriasDeTrabajo(): Promise<JobPosting[]> {
+  if (cachedCdJobs.data.length > 0 && Date.now() - cachedCdJobs.timestamp < 1000 * 60 * 60) {
+    return cachedCdJobs.data;
+  }
+  if (!isRefreshingCd) {
+    isRefreshingCd = true;
+    refreshConvocatoriasDeTrabajoInBackground().catch(() => {}).finally(() => {
+      isRefreshingCd = false;
+    });
+  }
+  return cachedCdJobs.data;
+}
+
+export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPosting[]> {
+  try {
+    console.log("⚡ [ConvocatoriasDeTrabajo Scraper] Extrayendo ofertas en tiempo real de convocatoriasdetrabajo.com...");
+    const res = await fetch('https://www.convocatoriasdetrabajo.com/', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+      signal: AbortSignal.timeout(15000)
+    });
+    if (!res.ok) return cachedCdJobs.data;
+    const html = await res.text();
+    const offerBlocks = html.split(/<article[^>]*class=['"][^'"]*convocatoria[^'"]*['"]/i);
+    if (offerBlocks.length <= 1) return cachedCdJobs.data;
+
+    const jobs: JobPosting[] = [];
+    const today = new Date().toISOString().split('T')[0];
+
+    for (let i = 1; i < offerBlocks.length; i++) {
+      const block = offerBlocks[i];
+      const endArticleIdx = block.indexOf('</article>');
+      const content = endArticleIdx !== -1 ? block.substring(0, endArticleIdx) : block;
+
+      const linkMatch = content.match(/href=['"](https:\/\/www\.convocatoriasdetrabajo\.com\/oferta-de-empleo-[^'"]+\.html)['"]/i);
+      const titleMatch = content.match(/title=['"]([^'"]+)['"]/i);
+      if (!linkMatch || !titleMatch) continue;
+
+      const fuente_url = linkMatch[1];
+      const rawTitle = titleMatch[1].trim();
+
+      const logoMatch = content.match(/<img[^>]+src=['"]\s*([^'"]+\.(?:jpg|png|webp|jpeg))['"]/i);
+      let logo = logoMatch ? logoMatch[1].trim() : undefined;
+      if (logo && !logo.startsWith('http')) {
+        logo = `https://www.convocatoriasdetrabajo.com/${logo.replace(/^\//, '')}`;
+      }
+
+      let entity = '';
+      if (rawTitle.includes(':')) {
+        const parts = rawTitle.split(':');
+        entity = parts[0].trim();
+      } else {
+        const verbMatch = rawTitle.match(/^(.+?)\s+(?:requiere|busca|solicita|convoca)\s+(.+)$/i);
+        if (verbMatch) {
+          entity = verbMatch[1].trim();
+        } else {
+          entity = 'Sector Público';
+        }
+      }
+
+      const dateMatch = content.match(/icon-calendario['"]><\/i>\s*<span>\s*(?:Vigente\s+hasta\s+el\s+)?([^<]+)<\/span>/i);
+      const regionMatch = content.match(/icon-mapa\d?['"]><\/i>\s*<span>\s*([^<]+)<\/span>/i);
+      const salaryMatch = content.match(/icon-moneda['"]><\/i>\s*<span>\s*([^<]+)<\/span>/i);
+
+      const h4Match = content.match(/<h4>[\s\S]*?<\/h4>/i);
+      const h4Text = h4Match ? h4Match[0].replace(/<[^>]+>/g, ' ') : '';
+      const vacMatch = h4Text.match(/(\d[\d,.]*)\s*plazas/i);
+      const vacancies_count = vacMatch ? parseInt(vacMatch[1].replace(/[,.]/g, ''), 10) : 1;
+
+      let sector_type: JobPosting['sector_type'] = 'CAS 1057';
+      if (/728/i.test(h4Text) || /728/i.test(rawTitle)) sector_type = 'D.L. 728';
+      else if (/276/i.test(h4Text) || /276/i.test(rawTitle)) sector_type = 'D.L. 276';
+      else if (/locaci[oó]n/i.test(h4Text) || /FAG/i.test(h4Text)) sector_type = 'Locación / FAG';
+      else if (/pr[aá]ctica/i.test(h4Text) || /pr[aá]ctica/i.test(rawTitle)) sector_type = 'Prácticas';
+      else if (/privad/i.test(h4Text)) sector_type = 'Privado';
+
+      let end_date = '2026-09-30';
+      if (dateMatch) {
+        const dStr = dateMatch[1].trim();
+        const parts = dStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        if (parts) {
+          const day = parts[1].padStart(2, '0');
+          const month = parts[2].padStart(2, '0');
+          const year = parts[3];
+          end_date = `${year}-${month}-${day}`;
+        }
+      }
+
+      const region = regionMatch ? regionMatch[1].trim() : 'Nacional';
+      const salary_text = salaryMatch ? salaryMatch[1].trim() : 'Según plaza convocada';
+
+      const slug = makeSlugFromUrl(fuente_url, `${entity}-${rawTitle}`);
+
+      jobs.push({
+        id: `job-cd-${i}`,
+        title: rawTitle,
+        slug,
+        entity_name: entity,
+        entity_ruc: '20100000000',
+        entity_verified: true,
+        entity_logo: logo,
+        sector_type,
+        region,
+        category: /salud|médic|enferm/i.test(rawTitle) ? 'Salud y Medicina' : /legal|fiscal|abogad/i.test(rawTitle) ? 'Derecho y Asesoría' : /educaci|docent|pedag/i.test(rawTitle) ? 'Educación y Capacitación' : /ingeni|obra|construc/i.test(rawTitle) ? 'Ingeniería y Construcción' : 'Administración y Contabilidad',
+        education_level: rawTitle.includes('Secundaria') ? 'Secundaria' : rawTitle.includes('Técnico') ? 'Técnico' : rawTitle.includes('Bachiller') ? 'Bachiller' : 'Titulado',
+        salary_text,
+        vacancies_count,
+        description: `Convocatoria oficial ${entity}: ${rawTitle}. Cobertura en ${region}. Consulta las bases y perfiles en PDF en Chamba Pro.`,
+        requirements: [
+          'Cumplir con el perfil de formación académica especificado para la plaza.',
+          'Acreditar experiencia laboral general y específica según las bases oficiales.',
+          'Presentar la documentación requerida en el portal oficial del concurso.'
+        ],
+        benefits: [
+          'Contratación según régimen laboral con todos los beneficios de ley.',
+          'Aportes al seguro de salud ESSALUD y régimen previsional.'
+        ],
+        apply_url: fuente_url,
+        bases_pdf_url: fuente_url,
+        fuente_url,
+        official_portal_name: `${entity} - Portal Convocatorias`,
+        start_date: today,
+        end_date,
+        featured: i <= 8,
+        views_count: 1800 + i * 20,
+        clicks_count: 450 + i * 10,
+        status: end_date >= today ? 'Vigente' : 'Finalizado',
+        created_at: new Date().toISOString()
+      });
+    }
+
+    if (jobs.length > 0) {
+      cachedCdJobs = { data: jobs, timestamp: Date.now() };
+      console.log(`✅ [ConvocatoriasDeTrabajo Scraper] ${jobs.length} convocatorias consolidadas en tiempo real.`);
+    }
+    return jobs;
+  } catch (err) {
+    console.error("❌ [ConvocatoriasDeTrabajo Scraper] Error:", err);
+    return cachedCdJobs.data;
+  }
+}
+
+// 5. Orquestador Principal de Ingesta Nivel Dios
 export async function runFullJobScraper(): Promise<ScrapedJobResult> {
   console.log("🚀 [Scraper Engine] Iniciando orquestación de ingestión en tiempo real...");
   const startTime = Date.now();
@@ -587,13 +735,14 @@ export async function runFullJobScraper(): Promise<ScrapedJobResult> {
   }
 
   try {
-    const [sunatJobs, onpeJobs, liveFeedJobs] = await Promise.all([
+    const [sunatJobs, onpeJobs, liveFeedJobs, convocatoriasDeTrabajoJobs] = await Promise.all([
       scrapeSunatJobs(),
       scrapeOnpeJobs(),
-      scrapeLiveConvocatoriasFeed()
+      scrapeLiveConvocatoriasFeed(),
+      scrapeConvocatoriasDeTrabajo()
     ]);
 
-    const liveJobs = [...liveFeedJobs, ...sunatJobs, ...onpeJobs];
+    const liveJobs = [...liveFeedJobs, ...convocatoriasDeTrabajoJobs, ...sunatJobs, ...onpeJobs];
 
     // Fusionar con dataset oficial de alta calidad desduplicando por slug
     const jobsMap = new Map<string, JobPosting>();

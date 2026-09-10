@@ -2259,7 +2259,7 @@ export const INITIAL_JOBS: JobPosting[] = [
   }
 ];
 
-import { scrapeLiveConvocatoriasFeed } from './scraper';
+import { scrapeLiveConvocatoriasFeed, scrapeConvocatoriasDeTrabajo } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
@@ -2281,7 +2281,7 @@ export async function getJobPostings(): Promise<JobPosting[]> {
   // 3. Cargar modificaciones y convocatorias añadidas localmente en memoria
   LOCAL_DYNAMIC_JOBS.forEach(j => jobsMap.set(j.slug, j));
 
-  // 4. Cargar ingesta en vivo del feed oficial
+  // 4. Cargar ingesta en vivo del feed oficial de PortalTrabajos
   try {
     const liveFeed = await scrapeLiveConvocatoriasFeed();
     if (liveFeed && liveFeed.length > 0) {
@@ -2293,6 +2293,20 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     }
   } catch (err) {
     console.warn('Live feed fallback to static catalog:', err);
+  }
+
+  // 5. Cargar ingesta en vivo de ConvocatoriasDeTrabajo.com
+  try {
+    const cdJobs = await scrapeConvocatoriasDeTrabajo();
+    if (cdJobs && cdJobs.length > 0) {
+      cdJobs.forEach(j => {
+        if (!jobsMap.has(j.slug)) {
+          jobsMap.set(j.slug, j);
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('ConvocatoriasDeTrabajo feed fallback:', err);
   }
 
   // 5. Intentar fusionar con Supabase en tiempo real

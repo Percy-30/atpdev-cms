@@ -33,11 +33,18 @@ export default async function EmpleosPage({
   const regimen = params.regimen || "";
   const categoria = params.categoria || "";
   const educacion = params.educacion || "";
+  const sort = params.sort || "ending_soon";
+  const hideExpired = params.hide_expired !== "false"; // Por defecto true para no mostrar ofertas vencidas
 
   const allJobs = await getJobPostings();
+  const todayIso = new Date().toISOString().split("T")[0];
 
-  // Filter logic
+  // 1. Lógica de Filtrado
   const filteredJobs = allJobs.filter((job) => {
+    // Si hideExpired está activo, ocultamos las convocatorias cerradas
+    if (hideExpired && job.end_date && job.end_date < todayIso) {
+      return false;
+    }
     if (q) {
       const matchTitle = job.title.toLowerCase().includes(q.toLowerCase());
       const matchEntity = job.entity_name.toLowerCase().includes(q.toLowerCase());
@@ -59,6 +66,34 @@ export default async function EmpleosPage({
     if (categoria && job.category.toLowerCase() !== categoria.toLowerCase()) return false;
     if (educacion && job.education_level.toLowerCase() !== educacion.toLowerCase()) return false;
     return true;
+  });
+
+  // 2. Lógica de Ordenamiento Inteligente
+  filteredJobs.sort((a, b) => {
+    if (sort === "ending_soon") {
+      // Las que vencen más pronto primero
+      const aExpired = a.end_date < todayIso;
+      const bExpired = b.end_date < todayIso;
+      if (aExpired && !bExpired) return 1;
+      if (!aExpired && bExpired) return -1;
+      return (a.end_date || "9999").localeCompare(b.end_date || "9999");
+    }
+    if (sort === "recent") {
+      const dateA = a.created_at || a.start_date || "";
+      const dateB = b.created_at || b.start_date || "";
+      return dateB.localeCompare(dateA);
+    }
+    if (sort === "vacancies_desc") {
+      return (b.vacancies_count || 1) - (a.vacancies_count || 1);
+    }
+    if (sort === "salary_desc") {
+      const parseSalary = (s: string) => {
+        const num = s.replace(/[,.]/g, "").match(/\d+/g);
+        return num ? Math.max(...num.map(Number)) : 0;
+      };
+      return (b.salary_max || parseSalary(b.salary_text)) - (a.salary_max || parseSalary(a.salary_text));
+    }
+    return 0;
   });
 
   return (
@@ -91,6 +126,8 @@ export default async function EmpleosPage({
               initialRegimen={regimen}
               initialCategoria={categoria}
               initialEducacion={educacion}
+              initialSort={sort}
+              initialHideExpired={hideExpired}
             />
           </div>
 

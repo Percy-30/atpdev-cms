@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Filter, Search, RotateCcw, Building2, MapPin, Award, GraduationCap } from "lucide-react";
+import { Filter, Search, RotateCcw, Building2, MapPin, Award, GraduationCap, ArrowUpDown, EyeOff } from "lucide-react";
 
 interface JobFilterClientProps {
   initialQ: string;
@@ -10,6 +10,8 @@ interface JobFilterClientProps {
   initialRegimen: string;
   initialCategoria: string;
   initialEducacion: string;
+  initialSort?: string;
+  initialHideExpired?: boolean;
 }
 
 export function JobFilterClient({
@@ -18,6 +20,8 @@ export function JobFilterClient({
   initialRegimen,
   initialCategoria,
   initialEducacion,
+  initialSort = "ending_soon",
+  initialHideExpired = true,
 }: JobFilterClientProps) {
   const router = useRouter();
   const [q, setQ] = useState(initialQ);
@@ -25,14 +29,27 @@ export function JobFilterClient({
   const [regimen, setRegimen] = useState(initialRegimen);
   const [categoria, setCategoria] = useState(initialCategoria);
   const [educacion, setEducacion] = useState(initialEducacion);
+  const [sort, setSort] = useState(initialSort);
+  const [hideExpired, setHideExpired] = useState(initialHideExpired);
 
-  const applyFilters = () => {
+  const applyFilters = (customParams?: Record<string, string>) => {
     const params = new URLSearchParams();
-    if (q.trim()) params.set("q", q.trim());
-    if (region) params.set("region", region);
-    if (regimen) params.set("regimen", regimen);
-    if (categoria) params.set("categoria", categoria);
-    if (educacion) params.set("educacion", educacion);
+    const currentQ = customParams?.q !== undefined ? customParams.q : q;
+    const currentRegion = customParams?.region !== undefined ? customParams.region : region;
+    const currentRegimen = customParams?.regimen !== undefined ? customParams.regimen : regimen;
+    const currentCategoria = customParams?.categoria !== undefined ? customParams.categoria : categoria;
+    const currentEducacion = customParams?.educacion !== undefined ? customParams.educacion : educacion;
+    const currentSort = customParams?.sort !== undefined ? customParams.sort : sort;
+    const currentHide = customParams?.hide_expired !== undefined ? customParams.hide_expired : String(hideExpired);
+
+    if (currentQ.trim()) params.set("q", currentQ.trim());
+    if (currentRegion) params.set("region", currentRegion);
+    if (currentRegimen) params.set("regimen", currentRegimen);
+    if (currentCategoria) params.set("categoria", currentCategoria);
+    if (currentEducacion) params.set("educacion", currentEducacion);
+    if (currentSort && currentSort !== "ending_soon") params.set("sort", currentSort);
+    if (currentHide === "false") params.set("hide_expired", "false");
+
     router.push(`/empleos?${params.toString()}`);
   };
 
@@ -42,6 +59,8 @@ export function JobFilterClient({
     setRegimen("");
     setCategoria("");
     setEducacion("");
+    setSort("ending_soon");
+    setHideExpired(true);
     router.push("/empleos");
   };
 
@@ -77,6 +96,51 @@ export function JobFilterClient({
             className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
           />
         </div>
+      </div>
+
+      {/* Ordenar Convocatorias (Urgentes / Recientes / Salario / Vacantes) */}
+      <div className="space-y-1.5">
+        <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1">
+          <ArrowUpDown size={14} className="text-emerald-400" />
+          <span>Ordenar Resultados</span>
+        </label>
+        <select
+          value={sort}
+          onChange={(e) => {
+            const val = e.target.value;
+            setSort(val);
+            applyFilters({ sort: val });
+          }}
+          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none cursor-pointer"
+        >
+          <option value="ending_soon">🕒 Próximas a cerrar (Urgentes)</option>
+          <option value="recent">🚀 Más recientes (Nuevas)</option>
+          <option value="salary_desc">💰 Mayor salario (Sueldo alto)</option>
+          <option value="vacancies_desc">👥 Convocatorias masivas (Más vacantes)</option>
+        </select>
+      </div>
+
+      {/* Toggle Ocultar Convocatorias Finalizadas */}
+      <div className="bg-slate-900/80 p-3 rounded-xl border border-white/10 flex items-center justify-between gap-3">
+        <div className="space-y-0.5">
+          <label htmlFor="hide-expired-chk" className="text-xs font-display font-bold text-slate-200 cursor-pointer block">
+            Ocultar Vencidas
+          </label>
+          <span className="text-[10px] text-slate-400 block font-mono">
+            {hideExpired ? "Solo ofertas activas" : "Mostrando activas y finalizadas"}
+          </span>
+        </div>
+        <input
+          id="hide-expired-chk"
+          type="checkbox"
+          checked={hideExpired}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            setHideExpired(checked);
+            applyFilters({ hide_expired: checked ? "true" : "false" });
+          }}
+          className="w-4 h-4 rounded border-gray-700 bg-slate-800 text-emerald-500 focus:ring-emerald-500/20 cursor-pointer"
+        />
       </div>
 
       {/* Régimen Laboral Filter */}
@@ -221,7 +285,7 @@ export function JobFilterClient({
 
       {/* Apply Trigger Button */}
       <button
-        onClick={applyFilters}
+        onClick={() => applyFilters()}
         className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer"
       >
         Aplicar Filtros

@@ -18,12 +18,17 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const jobs = await getJobPostings();
+  const todayIso = new Date().toISOString().split("T")[0];
+
+  // Solo convocatorias vigentes (no vencidas) en la portada
+  const activeJobs = jobs.filter(j => !j.end_date || j.end_date >= todayIso);
+
   const featuredJobs = [
-    ...jobs.filter(j => j.featured),
-    ...jobs.filter(j => !j.featured && j.status === 'Vigente')
+    ...activeJobs.filter(j => j.featured),
+    ...activeJobs.filter(j => !j.featured && j.status === 'Vigente')
   ].slice(0, 12);
 
-  const totalVacancies = jobs.reduce((acc, curr) => acc + curr.vacancies_count, 0);
+  const totalVacancies = activeJobs.reduce((acc, curr) => acc + curr.vacancies_count, 0);
 
   return (
     <div className="space-y-16 pb-20 relative">

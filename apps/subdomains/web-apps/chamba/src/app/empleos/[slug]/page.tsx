@@ -11,6 +11,7 @@ import { EntityLogo } from "@/components/EntityLogo";
 import { JobCard } from "@/components/JobCard";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { PlazasList } from "@/components/PlazasList";
+import { JobCountdownClock } from "@/components/JobCountdownClock";
 
 export const dynamicParams = true;
 export const revalidate = 60;
@@ -226,6 +227,9 @@ export default async function JobDetailPage({
               <span className="text-emerald-400 font-extrabold block">{job.salary_text}</span>
             </div>
           </div>
+
+          {/* Large Visual Countdown Clock (Semáforo de Cierre) */}
+          <JobCountdownClock endDate={job.end_date} size="lg" />
 
           {/* Social Share & Direct Apply Quick Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
