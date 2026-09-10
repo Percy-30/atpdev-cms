@@ -17,8 +17,34 @@ export function JobCountdownClock({
     if (!endDate) {
       return { totalMs: 0, days: 0, hours: 0, minutes: 0, isExpired: true };
     }
-    const [y, m, d] = endDate.split("-").map(Number);
-    const target = new Date(y, (m || 1) - 1, d || 1, 23, 59, 59).getTime();
+    let target = 0;
+    const cleanDate = endDate.trim();
+    if (cleanDate.includes("-")) {
+      const parts = cleanDate.split("-").map(Number);
+      if (parts.length >= 3) {
+        if (parts[0] > 1000) {
+          target = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1, 23, 59, 59).getTime();
+        } else {
+          target = new Date(parts[2], (parts[1] || 1) - 1, parts[0] || 1, 23, 59, 59).getTime();
+        }
+      }
+    } else if (cleanDate.includes("/")) {
+      const parts = cleanDate.split("/").map(Number);
+      if (parts.length >= 3) {
+        if (parts[0] > 1000) {
+          target = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1, 23, 59, 59).getTime();
+        } else {
+          target = new Date(parts[2], (parts[1] || 1) - 1, parts[0] || 1, 23, 59, 59).getTime();
+        }
+      }
+    }
+    if (!target || isNaN(target)) {
+      target = new Date(cleanDate).getTime();
+    }
+    if (!target || isNaN(target)) {
+      return { totalMs: 0, days: 0, hours: 0, minutes: 0, isExpired: true };
+    }
+
     const now = Date.now();
     const diff = target - now;
 

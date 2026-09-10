@@ -148,7 +148,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [description, setDescription] = useState("");
   const [long_description, setLongDescription] = useState("");
   const [is_featured, setIsFeatured] = useState(false);
-  const [status, setStatus] = useState<string>("Activo");
+  const [status, setStatus] = useState<string>("Privado");
   const [stack, setStack] = useState("");
   const [category, setCategory] = useState("Android");
   const [slug, setSlug] = useState("");
@@ -213,7 +213,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setDescription(editingProject?.description || "");
     setLongDescription(editingProject?.long_description || "");
     setIsFeatured(editingProject?.is_featured || false);
-    setStatus(editingProject ? (editingProject.status === "Privado" ? "Privado" : "Activo") : "Activo");
+    setStatus(editingProject ? (editingProject.status === "Privado" ? "Privado" : "Activo") : "Privado");
     setStack(editingProject?.stack.join(", ") || "");
     setCategory(editingProject?.category || "Android");
     setSlug(editingProject?.slug || "");
@@ -534,6 +534,26 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       formData.set("long_description", compileBlocksToMarkdown());
     }
 
+    formData.set("title", title);
+    formData.set("category", category);
+    formData.set("description", description);
+    formData.set("slug", slug);
+    formData.set("stack", stack);
+    formData.set("status", status);
+    formData.set("demolink", demolink);
+    formData.set("playstore", playstore);
+    formData.set("appstore", appstore);
+    formData.set("is_featured", is_featured ? "true" : "false");
+    formData.set("theme_config", themeConfig || "");
+    formData.set("legal_config", JSON.stringify({
+      has_privacy: hasPrivacy,
+      has_terms: hasTerms,
+      has_credits: hasCredits,
+      has_ai: hasAi,
+      has_admob: hasAdmob,
+      has_source_code: hasSourceCode
+    }));
+
     let result;
     if (editingId) {
       result = await updateProjectAction(editingId, formData);
@@ -555,12 +575,23 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
               category,
               description,
               long_description: (formData.get("long_description") as string) || p.long_description,
-              stack: (formData.get("stack") as string || "").split(',').map(s => s.trim()).filter(Boolean),
-              slug: (formData.get("slug") as string || "").trim() || p.slug,
-              demolink: (formData.get("demolink") as string || "") || p.demolink,
+              stack: stack.split(',').map(s => s.trim()).filter(Boolean),
+              slug: slug.trim() || p.slug,
+              demolink,
+              playstore,
+              appstore,
               image: (formData.get("image") as string || "") || p.image,
-              is_featured: formData.get("is_featured") === "true" || formData.get("is_featured") === "on",
-              status: (formData.get("status") as string) || status || p.status
+              is_featured,
+              status,
+              theme_config: themeConfig || p.theme_config,
+              legal_config: JSON.stringify({
+                has_privacy: hasPrivacy,
+                has_terms: hasTerms,
+                has_credits: hasCredits,
+                has_ai: hasAi,
+                has_admob: hasAdmob,
+                has_source_code: hasSourceCode
+              })
             };
           }
           return p;
@@ -569,7 +600,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       if (!editingId) {
         setTitle(""); setDescription(""); setStack(""); setSlug(""); setRepoInput("");
         setCategory("Android"); setDemolink(""); setImagePreview(""); setLongDescription("");
-        setStatus("Activo");
+        setStatus("Privado");
       }
       setEditingId(null);
       router.refresh();

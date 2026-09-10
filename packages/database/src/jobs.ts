@@ -2369,7 +2369,32 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     console.warn('Falling back to local real job postings dataset:', err);
   }
 
-  return Array.from(jobsMap.values());
+  return Array.from(jobsMap.values()).map(j => {
+    const isCompetitor = (u?: string) => {
+      if (!u) return false;
+      const low = u.toLowerCase();
+      return low.includes('convocatoriasdetrabajo.com') || low.includes('portaltrabajos.pe') || low.includes('portaltrabajo.pe');
+    };
+    const safeTarget = (j.bases_pdf_url && !isCompetitor(j.bases_pdf_url))
+      ? j.bases_pdf_url
+      : ((j.resultados_url && !isCompetitor(j.resultados_url)) ? j.resultados_url : `/empleos/${j.slug}`);
+
+    const cleanApply = sanitizeOfficialUrl(j.apply_url, safeTarget);
+    const cleanBases = j.bases_pdf_url ? sanitizeOfficialUrl(j.bases_pdf_url, undefined) : undefined;
+    const cleanFuente = j.fuente_url && isCompetitor(j.fuente_url) ? (j.resultados_url || undefined) : j.fuente_url;
+    const cleanPlazas = j.plazas ? j.plazas.map(p => ({
+      ...p,
+      bases_url: sanitizeOfficialUrl(p.bases_url, cleanBases || cleanApply)
+    })) : undefined;
+
+    return {
+      ...j,
+      apply_url: cleanApply,
+      bases_pdf_url: cleanBases,
+      fuente_url: cleanFuente,
+      plazas: cleanPlazas
+    };
+  });
 }
 
 export async function getJobPostingBySlug(slug: string): Promise<JobPosting | null> {
