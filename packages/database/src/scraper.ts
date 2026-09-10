@@ -146,7 +146,7 @@ export async function scrapeSunatJobs(): Promise<JobPosting[]> {
       'https://unete.sunat.gob.pe/',
       'Extrae todas las convocatorias CAS activas de la SUNAT con salario, vacantes y requisitos.'
     );
-    
+
     if (fcData?.jobs && fcData.jobs.length > 0) {
       return fcData.jobs.map((j: any, idx: number) => ({
         id: `job-sunat-fc-${idx + 1}`,
@@ -360,7 +360,7 @@ export async function scrapeLiveConvocatoriasFeed(): Promise<JobPosting[]> {
     // Si la cache tiene más de 60 minutos, actualizar en segundo plano sin bloquear la respuesta del servidor
     if (Date.now() - cachedLiveJobs.timestamp > 1000 * 60 * 60 && !isRefreshingFeed) {
       isRefreshingFeed = true;
-      refreshLiveFeedInBackground().catch(() => {}).finally(() => {
+      refreshLiveFeedInBackground().catch(() => { }).finally(() => {
         isRefreshingFeed = false;
       });
     }
@@ -599,6 +599,11 @@ export async function runFullJobScraper(): Promise<ScrapedJobResult> {
     const jobsMap = new Map<string, JobPosting>();
 
     INITIAL_JOBS.forEach(j => jobsMap.set(j.slug, j));
+    PORTAL_JOBS_DATA.forEach(j => {
+      if (!jobsMap.has(j.slug)) {
+        jobsMap.set(j.slug, j);
+      }
+    });
     liveJobs.forEach(j => jobsMap.set(j.slug, j));
 
     const finalJobs = Array.from(jobsMap.values());
@@ -616,10 +621,19 @@ export async function runFullJobScraper(): Promise<ScrapedJobResult> {
     };
   } catch (error: any) {
     console.error("❌ [Scraper Engine] Error fatal en la orquestación:", error);
+    const fallbackMap = new Map<string, JobPosting>();
+    INITIAL_JOBS.forEach(j => fallbackMap.set(j.slug, j));
+    PORTAL_JOBS_DATA.forEach(j => {
+      if (!fallbackMap.has(j.slug)) {
+        fallbackMap.set(j.slug, j);
+      }
+    });
+    const fallbackJobs = Array.from(fallbackMap.values());
+
     return {
       source: "Verified Resilient Feed Fallback",
-      count: INITIAL_JOBS.length,
-      jobs: INITIAL_JOBS,
+      count: fallbackJobs.length,
+      jobs: fallbackJobs,
       scrapedAt: new Date().toISOString(),
       success: false,
       error: error?.message || "Unknown scraping failure",
@@ -627,4 +641,3 @@ export async function runFullJobScraper(): Promise<ScrapedJobResult> {
     };
   }
 }
-

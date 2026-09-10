@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { publishIngestaJobAction } from './actions';
 
 export default function AdminIngestaPage() {
   const [rawText, setRawText] = useState('');
@@ -57,13 +58,19 @@ export default function AdminIngestaPage() {
     setIsPublishing(true);
 
     try {
-      // Simular guardado inmediato en el catálogo de producción
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setPublishSuccess(jobForm.title);
-      setJobForm(null);
-      setRawText('');
-      setApplyUrl('');
-      setPdfUrl('');
+      const res = await publishIngestaJobAction({
+        ...jobForm,
+        featured: true
+      });
+      if (res.success) {
+        setPublishSuccess(jobForm.title);
+        setJobForm(null);
+        setRawText('');
+        setApplyUrl('');
+        setPdfUrl('');
+      } else {
+        alert(res.error || 'Error al guardar la convocatoria');
+      }
     } catch (err) {
       alert('Error al publicar la convocatoria');
     } finally {
