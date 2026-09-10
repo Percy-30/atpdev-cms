@@ -90,16 +90,46 @@ export function JobCard({ job }: JobCardProps) {
             <span>Ver detalles</span>
             <ArrowRight size={13} />
           </Link>
-          <a
-            href={job.apply_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/40 text-emerald-400 hover:text-slate-950 font-semibold font-display transition-all flex items-center justify-center gap-1.5 group/btn"
-            aria-label={`Postular directamente en la web oficial de ${job.entity_name}`}
-          >
-            <span>Oficial</span>
-            <ExternalLink size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
-          </a>
+          {(() => {
+            const isCompetitor = (url?: string) => (
+              !url ||
+              url.includes('convocatoriasdetrabajo.com') ||
+              url.includes('portaltrabajos.pe') ||
+              url.includes('blogspot.com')
+            );
+
+            let targetApplyUrl = `/empleos/${job.slug}`;
+            if (!isCompetitor(job.apply_url)) {
+              targetApplyUrl = job.apply_url!;
+            } else if (!isCompetitor(job.bases_pdf_url)) {
+              targetApplyUrl = job.bases_pdf_url!;
+            } else if (!isCompetitor(job.resultados_url)) {
+              targetApplyUrl = job.resultados_url!;
+            }
+            const isExternal = targetApplyUrl.startsWith('http');
+
+            return isExternal ? (
+              <a
+                href={targetApplyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/40 text-emerald-400 hover:text-slate-950 font-semibold font-display transition-all flex items-center justify-center gap-1.5 group/btn"
+                aria-label={`Postular directamente en la web oficial de ${job.entity_name}`}
+              >
+                <span>Oficial</span>
+                <ExternalLink size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
+              </a>
+            ) : (
+              <Link
+                href={targetApplyUrl}
+                className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/40 text-emerald-400 hover:text-slate-950 font-semibold font-display transition-all flex items-center justify-center gap-1.5 group/btn"
+                aria-label={`Ver convocatoria oficial de ${job.entity_name}`}
+              >
+                <span>Bases</span>
+                <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
+              </Link>
+            );
+          })()}
         </div>
       </div>
     </div>

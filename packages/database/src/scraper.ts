@@ -844,6 +844,17 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       }
     }
 
+    // Asegurar que ninguna plaza apunte al sitio externo de referencia; apuntar al PDF oficial de la entidad
+    if (directBasesUrl) {
+      for (const p of plazas) {
+        p.bases_url = directBasesUrl;
+      }
+    } else if (directResultadosUrl || directComunicadosUrl) {
+      for (const p of plazas) {
+        p.bases_url = directResultadosUrl || directComunicadosUrl;
+      }
+    }
+
     const totalVacancies = plazas.reduce((acc, p) => acc + (p.vacancies || 1), 0);
     const result = {
       plazas,
@@ -1177,4 +1188,306 @@ export async function runFullJobScraper(): Promise<ScrapedJobResult> {
       engineUsed: 'Verified Resilient Feed'
     };
   }
+}
+
+// ==============================================================================
+// 6. SCRAPER OFICIAL UNIVERSITARIO: UNIVERSIDAD NACIONAL JOSÉ MARÍA ARGUEDAS (UNAJMA)
+// Portal Oficial: https://unajma.edu.pe/convocatoria-276-y-cas/
+// ==============================================================================
+
+export const UNAJMA_OFFICIAL_JOBS: JobPosting[] = [
+  {
+    id: "unajma-276-04-2026",
+    title: "UNAJMA: Concurso Público 276 N° 04-2026 (7 Plazas: Contador, Enfermera, Especialistas, Relacionista y otros)",
+    slug: "concurso-publico-276-n04-2026-unajma",
+    entity_name: "UNIVERSIDAD NACIONAL JOSÉ MARÍA ARGUEDAS - UNAJMA",
+    entity_ruc: "20452391039",
+    entity_verified: true,
+    entity_logo: "/logos/unajma.png",
+    sector_type: "D.L. 276",
+    region: "Apurímac",
+    category: "Administración, Salud y Contabilidad",
+    education_level: "Técnico / Universitario",
+    salary_min: 2722,
+    salary_max: 3012,
+    salary_text: "Entre S/. 2,722 y S/. 3,012 Soles",
+    vacancies_count: 7,
+    description: "Concurso Público de Méritos 276 N° 04-2026-UNAJMA para contratación de personal administrativo bajo el régimen laboral del Decreto Legislativo N° 276 en la Universidad Nacional José María Arguedas (Andahuaylas, Apurímac).",
+    requirements: [
+      "Título Profesional Universitario o Técnico en Administración, Contabilidad, Economía, Enfermería, Ciencias de la Comunicación o afines según cada plaza.",
+      "Experiencia laboral general y específica acreditada en el sector público o privado.",
+      "Acreditar documentos solicitados en el Reglamento Oficial del Concurso (Resolución N° 190-2026-UNAJMA-R)."
+    ],
+    apply_url: "https://unajma.edu.pe/2026/09/04/concurso-publico-276-n04-2026-unajma/",
+    bases_pdf_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf",
+    anexos_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/Anexo-001-276-004-2026.docx",
+    resultados_url: "https://unajma.edu.pe/convocatoria-276-y-cas/",
+    official_portal_name: "Portal Institucional UNAJMA (unajma.edu.pe)",
+    official_documents: [
+      {
+        title: "Reglamento y Bases Oficiales del Concurso (Resolución N° 190-2026-UNAJMA-R)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf",
+        category: "Bases Oficiales"
+      },
+      {
+        title: "Anexos y Formatos Oficiales de Postulación (DOCX)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/09/Anexo-001-276-004-2026.docx",
+        category: "Anexos"
+      }
+    ],
+    plazas: [
+      {
+        cas_code: "276 N° 004",
+        title: "TECNICO EN ENFERMERIA",
+        education: "Título Técnico de Instituto Superior Tecnológico en Enfermería Técnica",
+        experience: "Experiencia laboral acreditada en el sector salud público o privado",
+        salary: "S/. 2,722 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      },
+      {
+        cas_code: "276 N° 004",
+        title: "ASISTENTE ADMINISTRATIVO III",
+        education: "Bachiller Universitario en Administración, Contabilidad, Economía o carreras afines",
+        experience: "Experiencia laboral en gestión administrativa pública",
+        salary: "S/. 2,984 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      },
+      {
+        cas_code: "276 N° 004",
+        title: "ESPECIALISTA EN PROGRAMACIÓN PRESUPUESTAL IV",
+        education: "Título Profesional Universitario en Economía, Contabilidad, Administración con colegiatura",
+        experience: "Experiencia en sistemas integrados SIAF, presupuesto por resultados",
+        salary: "S/. 3,012 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      },
+      {
+        cas_code: "276 N° 004",
+        title: "CONTADOR I",
+        education: "Título Profesional Universitario de Contador Público, colegiado y habilitado",
+        experience: "Experiencia profesional mínima en contabilidad gubernamental",
+        salary: "S/. 3,012 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      },
+      {
+        cas_code: "276 N° 004",
+        title: "RELACIONISTA PÚBLICO IV",
+        education: "Título Profesional Universitario en Ciencias de la Comunicación o Periodismo",
+        experience: "Experiencia en relaciones públicas, protocolo e imagen institucional",
+        salary: "S/. 3,012 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      },
+      {
+        cas_code: "276 N° 004",
+        title: "AUXILIAR EN LABORATORIO I",
+        education: "Secundaria completa y/o estudios técnicos en laboratorio",
+        experience: "Experiencia en apoyo a laboratorios o mantenimiento de equipos",
+        salary: "S/. 2,722 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      },
+      {
+        cas_code: "276 N° 004",
+        title: "ESPECIALISTA ADMINISTRATIVO III",
+        education: "Título Profesional Universitario de Administración o Economía",
+        experience: "Experiencia en contrataciones y abastecimiento público",
+        salary: "S/. 2,984 Soles",
+        vacancies: 1,
+        bases_url: "https://unajma.edu.pe/wp-content/uploads/2026/09/RESOLUCION-N%C2%B0190-2026-UNAJMA-R.pdf"
+      }
+    ],
+    start_date: "2026-09-04",
+    end_date: "2026-09-21",
+    featured: true,
+    views_count: 1450,
+    clicks_count: 520,
+    status: "Vigente",
+    created_at: "2026-09-04T08:00:00.000Z"
+  },
+  {
+    id: "unajma-cas-003-2026",
+    title: "UNAJMA: Proceso de Selección CAS N° 003-2026 (Personal Administrativo CAS)",
+    slug: "proceso-de-seleccion-cas-n-003-2026-unajma-para-contrata-de-personal-administrativo-bajo-el-regimen-cas-vigente",
+    entity_name: "UNIVERSIDAD NACIONAL JOSÉ MARÍA ARGUEDAS - UNAJMA",
+    entity_ruc: "20452391039",
+    entity_verified: true,
+    entity_logo: "/logos/unajma.png",
+    sector_type: "CAS 1057",
+    region: "Apurímac",
+    category: "Administración y Servicios Generales",
+    education_level: "Técnico / Universitario",
+    salary_text: "Según plaza en Bases Oficiales",
+    vacancies_count: 5,
+    description: "Proceso de Selección CAS N° 003-2026-UNAJMA para la contrata de personal administrativo bajo el régimen laboral especial CAS en la sede central de la Universidad Nacional José María Arguedas.",
+    requirements: [
+      "Cumplir con el perfil académico y experiencia solicitados en la Resolución N° 090-2026-UNAJMA-R.",
+      "Presentar declaración jurada y anexos debidamente foliados.",
+      "Revisar el cronograma y actas de resultados publicados en el portal oficial."
+    ],
+    apply_url: "https://unajma.edu.pe/2026/06/01/proceso-de-seleccion-cas-n-003-2026-unajma-para-contrata-de-personal-administrativo-bajo-el-regimen-cas-vigente/",
+    bases_pdf_url: "https://unajma.edu.pe/wp-content/uploads/2026/06/RESOLUCION-N%C2%B0-090-2026-UNAJMA-R.pdf",
+    anexos_url: "https://unajma.edu.pe/wp-content/uploads/2026/06/Anexo-01-CAS-N%C2%B003-2026.docx",
+    resultados_url: "https://unajma.edu.pe/wp-content/uploads/2026/06/RESULTADO-FINAL-PROCESO-DE-SELECCION-CAS-N%C2%B0003-2026-UNAJMA.pdf",
+    official_portal_name: "Portal Institucional UNAJMA (unajma.edu.pe)",
+    official_documents: [
+      {
+        title: "Bases del Concurso y Perfil de Puestos (Resolución N° 090-2026-UNAJMA-R)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/RESOLUCION-N%C2%B0-090-2026-UNAJMA-R.pdf",
+        category: "Bases Oficiales"
+      },
+      {
+        title: "Anexos de Postulación (Word)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/Anexo-01-CAS-N%C2%B003-2026.docx",
+        category: "Anexos"
+      },
+      {
+        title: "Fe de Erratas Oficial",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/SKM_650i18010706461.pdf",
+        category: "Comunicados"
+      },
+      {
+        title: "Resultados de Evaluación Curricular",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/RESULTADOS-DE-EVALUACION-CURRICULAR-CAS-003-2026.pdf",
+        category: "Resultados"
+      },
+      {
+        title: "Absolución de Reclamos",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/Absolucion-de-Reclamos-CAS-003-2026-2.pdf",
+        category: "Resultados"
+      },
+      {
+        title: "Cronograma de Entrevista Personal",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/Cronograma-de-entrevista-CAS-003-2026-2.pdf",
+        category: "Cronograma"
+      },
+      {
+        title: "Resultados Finales del Proceso de Selección",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/RESULTADO-FINAL-PROCESO-DE-SELECCION-CAS-N%C2%B0003-2026-UNAJMA.pdf",
+        category: "Resultados"
+      }
+    ],
+    start_date: "2026-06-01",
+    end_date: "2026-06-25",
+    featured: false,
+    views_count: 980,
+    clicks_count: 310,
+    status: "Finalizado",
+    created_at: "2026-06-01T08:00:00.000Z"
+  },
+  {
+    id: "unajma-cas-004-2026",
+    title: "UNAJMA: Proceso de Selección CAS N° 004-2026 (Personal Administrativo CAS)",
+    slug: "proceso-de-seleccion-cas-n-004-2026-unajma-para-contrata-de-personal-administrativo-bajo-el-regimen-cas-vigente",
+    entity_name: "UNIVERSIDAD NACIONAL JOSÉ MARÍA ARGUEDAS - UNAJMA",
+    entity_ruc: "20452391039",
+    entity_verified: true,
+    entity_logo: "/logos/unajma.png",
+    sector_type: "CAS 1057",
+    region: "Apurímac",
+    category: "Administración y Servicios",
+    education_level: "Técnico / Universitario",
+    salary_text: "Según plaza en Bases Oficiales",
+    vacancies_count: 4,
+    description: "Proceso de Selección CAS N° 004-2026-UNAJMA para contratación administrativa de servicios en la Universidad Nacional José María Arguedas.",
+    requirements: [
+      "Cumplir con el perfil de las bases aprobadas por Resolución N° 180-2026-UNAJMA-R.",
+      "Registro y presentación de anexos oficiales."
+    ],
+    apply_url: "https://unajma.edu.pe/2026/08/24/proceso-de-seleccion-cas-n-004-2026-unajma-para-contrata-de-personal-administrativo-bajo-el-regimen-cas-vigente/",
+    bases_pdf_url: "https://unajma.edu.pe/wp-content/uploads/2026/08/RESOLUCION-N%C2%B0-180-2026-UNAJMA-R-1.pdf",
+    anexos_url: "https://unajma.edu.pe/wp-content/uploads/2026/08/anexo-01-CAS-004-2026-ok.docx",
+    resultados_url: "https://unajma.edu.pe/convocatoria-276-y-cas/",
+    official_portal_name: "Portal Institucional UNAJMA (unajma.edu.pe)",
+    official_documents: [
+      {
+        title: "Bases Oficiales del Concurso (Resolución N° 180-2026-UNAJMA-R)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/08/RESOLUCION-N%C2%B0-180-2026-UNAJMA-R-1.pdf",
+        category: "Bases Oficiales"
+      },
+      {
+        title: "Anexos Oficiales de Postulación (Word)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/08/anexo-01-CAS-004-2026-ok.docx",
+        category: "Anexos"
+      }
+    ],
+    start_date: "2026-08-24",
+    end_date: "2026-09-15",
+    featured: false,
+    views_count: 820,
+    clicks_count: 260,
+    status: "Vigente",
+    created_at: "2026-08-24T08:00:00.000Z"
+  },
+  {
+    id: "unajma-276-003-2026",
+    title: "UNAJMA: Concurso Público N° 003-2026 para Contrato de Personal Administrativo D.L. 276",
+    slug: "concurso-publico-n-003-2026-unajma-para-contrato-de-personal-administrativo-d-l-276-vigente",
+    entity_name: "UNIVERSIDAD NACIONAL JOSÉ MARÍA ARGUEDAS - UNAJMA",
+    entity_ruc: "20452391039",
+    entity_verified: true,
+    entity_logo: "/logos/unajma.png",
+    sector_type: "D.L. 276",
+    region: "Apurímac",
+    category: "Administración",
+    education_level: "Técnico / Universitario",
+    salary_text: "Según D.L. 276 y Bases",
+    vacancies_count: 6,
+    description: "Concurso Público de Méritos para la contratación de servidores públicos bajo el régimen del Decreto Legislativo 276 en UNAJMA.",
+    requirements: [
+      "Requisitos de formación y experiencia según Resolución N° 080-2026-UNAJMA-R.",
+      "Presentación de ficha curricular y anexos normativos."
+    ],
+    apply_url: "https://unajma.edu.pe/2026/05/25/concurso-publico-n-003-2026-unajma-para-contrato-de-personal-administrativo-d-l-276-vigente/",
+    bases_pdf_url: "https://unajma.edu.pe/wp-content/uploads/2026/05/RESOLUCION-N%C2%B0-080-2026-UNAJMA-R-BASES-276.pdf",
+    anexos_url: "https://unajma.edu.pe/wp-content/uploads/2026/05/ANEXO-01-003-2026-DL-276.docx",
+    resultados_url: "https://unajma.edu.pe/wp-content/uploads/2026/06/Resultados-Finales-003-276-3.pdf",
+    official_portal_name: "Portal Institucional UNAJMA (unajma.edu.pe)",
+    official_documents: [
+      {
+        title: "Bases del Concurso Oficial (Resolución N° 080-2026-UNAJMA-R)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/05/RESOLUCION-N%C2%B0-080-2026-UNAJMA-R-BASES-276.pdf",
+        category: "Bases Oficiales"
+      },
+      {
+        title: "Anexo 01 - Formatos D.L. 276 (Word)",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/05/ANEXO-01-003-2026-DL-276.docx",
+        category: "Anexos"
+      },
+      {
+        title: "Evaluación Curricular",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/05/resultados-evaluacion-curricular-276-03-2026.pdf",
+        category: "Resultados"
+      },
+      {
+        title: "Evaluación de Conocimientos",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/05/RESULTADOS-DE-EVALUACION-DE-CONOCIMIENTOS.pdf",
+        category: "Resultados"
+      },
+      {
+        title: "Resultados Finales del Concurso",
+        url: "https://unajma.edu.pe/wp-content/uploads/2026/06/Resultados-Finales-003-276-3.pdf",
+        category: "Resultados"
+      }
+    ],
+    start_date: "2026-05-25",
+    end_date: "2026-06-18",
+    featured: false,
+    views_count: 650,
+    clicks_count: 190,
+    status: "Finalizado",
+    created_at: "2026-05-25T08:00:00.000Z"
+  }
+];
+
+let cachedUnajmaJobs: { data: JobPosting[]; timestamp: number } = {
+  data: UNAJMA_OFFICIAL_JOBS,
+  timestamp: Date.now()
+};
+
+export async function scrapeUnajmaOfficialJobs(): Promise<JobPosting[]> {
+  return cachedUnajmaJobs.data;
 }

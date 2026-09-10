@@ -213,7 +213,11 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                         <ExternalLink size={12} />
                       </a>
                     )}
-                    {pdfUrl && pdfUrl !== globalBasesPdfUrl && (
+                    {pdfUrl && 
+                     pdfUrl !== globalBasesPdfUrl && 
+                     !pdfUrl.includes('convocatoriasdetrabajo.com') && 
+                     !pdfUrl.includes('portaltrabajos.pe') && 
+                     !pdfUrl.includes('blogspot.com') && (
                       <a
                         href={pdfUrl}
                         target="_blank"

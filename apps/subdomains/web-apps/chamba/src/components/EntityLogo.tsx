@@ -207,10 +207,16 @@ export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoP
   // Priority 1: Use locally downloaded real logo from /public/logos/
   const localLogo = findLocalLogo(entityName);
   
-  // Priority 2: Use scraped logoUrl from live feed
-  // Priority 3: Fallback to local logo or default emblem
+  // Priority 2: Use scraped logoUrl ONLY if official (never third-party scrapers)
+  const safeScrapedLogo = (
+    logoUrl && 
+    !logoUrl.includes('convocatoriasdetrabajo.com') && 
+    !logoUrl.includes('portaltrabajos.pe') && 
+    !logoUrl.includes('blogspot.com')
+  ) ? logoUrl : null;
+
   const imageSrc = !imgErr
-    ? (localLogo || (logoUrl && (logoUrl.startsWith('http') || logoUrl.startsWith('/')) ? logoUrl : null))
+    ? (localLogo || safeScrapedLogo)
     : null;
 
   const isBanner = size === 'banner';

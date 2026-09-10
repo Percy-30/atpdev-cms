@@ -56,6 +56,7 @@ export type JobPosting = {
   resultados_url?: string;
   fuente_url?: string;
   official_portal_name?: string;
+  official_documents?: { title: string; url: string; category?: string }[];
   odpe_vacancies?: OdpeVacancy[];
   plazas?: JobPlaza[];
   steps_to_apply?: string[];
@@ -2260,8 +2261,27 @@ export const INITIAL_JOBS: JobPosting[] = [
   }
 ];
 
-import { scrapeLiveConvocatoriasFeed, scrapeConvocatoriasDeTrabajo, scrapeServirOfertas, extractPlazasAndBasesFromCdUrl } from './scraper';
+import { 
+  scrapeLiveConvocatoriasFeed, 
+  scrapeConvocatoriasDeTrabajo, 
+  scrapeServirOfertas, 
+  extractPlazasAndBasesFromCdUrl,
+  scrapeUnajmaOfficialJobs,
+  UNAJMA_OFFICIAL_JOBS
+} from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
+
+export function sanitizeOfficialUrl(url?: string, fallback?: string): string {
+  if (!url) return fallback || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+  if (
+    url.includes('convocatoriasdetrabajo.com') ||
+    url.includes('portaltrabajos.pe') ||
+    url.includes('blogspot.com')
+  ) {
+    return fallback || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+  }
+  return url;
+}
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
 const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
@@ -2324,7 +2344,12 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     console.warn('SERVIR feed fallback:', err);
   }
 
-  // 5. Intentar fusionar con Supabase en tiempo real
+  // 7. Cargar convocatorias oficiales universitarias (UNAJMA portal oficial directo)
+  UNAJMA_OFFICIAL_JOBS.forEach(j => {
+    jobsMap.set(j.slug, j);
+  });
+
+  // 8. Intentar fusionar con Supabase en tiempo real
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -2374,10 +2399,45 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
         console.warn('Error enriqueciendo plazas y bases de CD:', err);
       }
     }
+
+    // SANITIZACIÓN ESTRICTA: NUNCA enviar al usuario a convocatoriasdetrabajo.com ni portaltrabajos.pe
+    const safeTarget = job.bases_pdf_url || job.resultados_url || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+    job.apply_url = sanitizeOfficialUrl(job.apply_url, safeTarget);
+    if (job.fuente_url && (job.fuente_url.includes('convocatoriasdetrabajo.com') || job.fuente_url.includes('portaltrabajos.pe'))) {
+      job.fuente_url = job.resultados_url || undefined;
+    }
+    if (job.plazas) {
+      job.plazas.forEach(p => {
+        p.bases_url = sanitizeOfficialUrl(p.bases_url, job.bases_pdf_url || job.apply_url);
+      });
+    }
+
     return job;
   };
 
-  // 1. Búsqueda rápida directa en memoria
+  // 1. Búsqueda prioritaria en catálogo oficial UNAJMA directo
+  const unajmaMatch = UNAJMA_OFFICIAL_JOBS.find(j => 
+    j && (j.slug === normSlug || normSlug.includes(j.slug) || j.slug.includes(normSlug))
+  );
+  if (unajmaMatch) return maybeEnrichJob(unajmaMatch);
+
+  // Alias para la convocatoria 276-04 de UNAJMA
+  if (normSlug.includes('universidad-jose-maria-arguedas') || normSlug.includes('88971') || normSlug.includes('unajma')) {
+    const unajma276 = UNAJMA_OFFICIAL_JOBS.find(j => j.id === 'unajma-276-04-2026');
+    if (unajma276 && (normSlug.includes('88971') || normSlug.includes('contador-enfermera'))) {
+      return maybeEnrichJob(unajma276);
+    }
+    if (normSlug.includes('cas-n-003') || normSlug.includes('cas-003')) {
+      const unajmaCas3 = UNAJMA_OFFICIAL_JOBS.find(j => j.id === 'unajma-cas-003-2026');
+      if (unajmaCas3) return maybeEnrichJob(unajmaCas3);
+    }
+    if (normSlug.includes('cas-n-004') || normSlug.includes('cas-004')) {
+      const unajmaCas4 = UNAJMA_OFFICIAL_JOBS.find(j => j.id === 'unajma-cas-004-2026');
+      if (unajmaCas4) return maybeEnrichJob(unajmaCas4);
+    }
+  }
+
+  // 2. Búsqueda rápida directa en memoria
   const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j && j.slug === normSlug);
   if (localDynamic) return maybeEnrichJob(localDynamic);
 
@@ -2387,12 +2447,12 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
   const initialJob = INITIAL_JOBS.find(j => j && j.slug === normSlug);
   if (initialJob) return maybeEnrichJob(initialJob);
 
-  // 2. Búsqueda completa en catálogo unificado (incluyendo feed live)
+  // 3. Búsqueda completa en catálogo unificado (incluyendo feed live)
   const allJobs = await getJobPostings();
   const found = allJobs.find(j => j && j.slug === normSlug);
   if (found) return maybeEnrichJob(found);
 
-  // 3. Fallback inteligente por coincidencia parcial de slug o URL de fuente original
+  // 4. Fallback inteligente por coincidencia parcial de slug o URL de fuente original
   const fuzzy = allJobs.find(j => j && j.slug && (j.slug.includes(normSlug) || normSlug.includes(j.slug)));
   if (fuzzy) return maybeEnrichJob(fuzzy);
 

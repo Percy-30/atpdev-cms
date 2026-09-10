@@ -144,6 +144,13 @@ export default async function JobDetailPage({
     ],
   };
 
+  const safeApplyUrl = (
+    job.apply_url && 
+    !job.apply_url.includes('convocatoriasdetrabajo.com') && 
+    !job.apply_url.includes('portaltrabajos.pe') && 
+    !job.apply_url.includes('blogspot.com')
+  ) ? job.apply_url : (job.bases_pdf_url || job.resultados_url || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml');
+
   return (
     <>
       {/* Google for Jobs JSON-LD Injection */}
@@ -254,7 +261,7 @@ export default async function JobDetailPage({
             </div>
 
             <a
-              href={job.apply_url}
+              href={safeApplyUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center gap-2 cursor-pointer"
@@ -270,6 +277,72 @@ export default async function JobDetailPage({
           
           {/* Main Details Body */}
           <div className="lg:col-span-2 space-y-8">
+
+            {/* Documentos y Etapas Oficiales del Concurso (UNAJMA / Portal Oficial) */}
+            {job.official_documents && job.official_documents.length > 0 && (
+              <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 to-slate-950">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <FileText className="text-cyan-400" size={22} />
+                      <h2 className="text-xl sm:text-2xl font-bold font-display text-white">
+                        Documentos y Etapas Oficiales del Concurso
+                      </h2>
+                    </div>
+                    <p className="text-xs text-slate-300 mt-1">
+                      Resoluciones oficiales, formatos de postulación, fe de erratas y actas de resultados emitidas por <b className="text-white">{job.entity_name}</b>.
+                    </p>
+                  </div>
+                  <span className="px-3.5 py-1.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 font-mono text-xs font-bold whitespace-nowrap self-start sm:self-auto">
+                    {job.official_documents.length} Archivos Oficiales
+                  </span>
+                </div>
+
+                <div className="divide-y divide-white/5 rounded-2xl bg-slate-950/70 border border-white/10 overflow-hidden">
+                  {job.official_documents.map((doc, dIdx) => {
+                    const isPdf = doc.url.toLowerCase().endsWith('.pdf');
+                    const isDoc = doc.url.toLowerCase().includes('.doc');
+                    return (
+                      <div
+                        key={dIdx}
+                        className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white/[0.02] transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider ${
+                            isPdf ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' :
+                            isDoc ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
+                            'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          }`}>
+                            {isPdf ? 'PDF' : isDoc ? 'DOCX' : (doc.category || 'DOC')}
+                          </span>
+                          <div>
+                            <span className="text-white text-xs sm:text-sm font-semibold block">
+                              {doc.title}
+                            </span>
+                            {doc.category && (
+                              <span className="text-[11px] text-slate-400 font-mono">
+                                Etapa: {doc.category}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <a
+                          href={doc.url}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="self-start sm:self-auto px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-display transition-all flex items-center gap-2 shadow-sm whitespace-nowrap cursor-pointer"
+                        >
+                          <FileText size={14} />
+                          <span>Descargar Archivo</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             
             {/* Plazas y Bases Oficiales Individuales (PortalTrabajos / Gob.pe) */}
             <PlazasList
@@ -409,7 +482,7 @@ export default async function JobDetailPage({
                   
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a
-                      href={job.apply_url}
+                      href={safeApplyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2 cursor-pointer"
@@ -551,14 +624,17 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.fuente_url && (
+                      {job.fuente_url && 
+                       !job.fuente_url.includes('convocatoriasdetrabajo.com') && 
+                       !job.fuente_url.includes('portaltrabajos.pe') && 
+                       !job.fuente_url.includes('blogspot.com') && (
                         <a
                           href={job.fuente_url}
                           target="_blank"
                           rel="nofollow noopener noreferrer"
                           className="w-full py-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-slate-400 hover:text-slate-200 font-mono text-[11px] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
                         >
-                          <span>🔗 Ver Fuente Informativa Oficial</span>
+                          <span>🔗 Ver Portal Institucional Oficial</span>
                           <ExternalLink size={12} />
                         </a>
                       )}
