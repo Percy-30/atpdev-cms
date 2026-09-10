@@ -33,11 +33,17 @@ export default async function EmpleosPage({
   const regimen = params.regimen || "";
   const categoria = params.categoria || "";
   const educacion = params.educacion || "";
+  const sueldo = params.sueldo || "";
   const sort = params.sort || "ending_soon";
   const hideExpired = params.hide_expired !== "false"; // Por defecto true para no mostrar ofertas vencidas
 
   const allJobs = await getJobPostings();
   const todayIso = new Date().toISOString().split("T")[0];
+
+  const parseSalaryNumber = (s: string) => {
+    const num = s.replace(/[,.]/g, "").match(/\d+/g);
+    return num ? Math.max(...num.map(Number)) : 0;
+  };
 
   // 1. Lógica de Filtrado
   const filteredJobs = allJobs.filter((job) => {
@@ -65,6 +71,12 @@ export default async function EmpleosPage({
     }
     if (categoria && job.category.toLowerCase() !== categoria.toLowerCase()) return false;
     if (educacion && job.education_level.toLowerCase() !== educacion.toLowerCase()) return false;
+    if (sueldo) {
+      const val = job.salary_max || parseSalaryNumber(job.salary_text);
+      if (sueldo === "1000-3000" && (val < 1000 || val > 3000)) return false;
+      if (sueldo === "3000-6000" && (val < 3000 || val > 6000)) return false;
+      if (sueldo === "6000-15000" && val < 6000) return false;
+    }
     return true;
   });
 
@@ -87,11 +99,7 @@ export default async function EmpleosPage({
       return (b.vacancies_count || 1) - (a.vacancies_count || 1);
     }
     if (sort === "salary_desc") {
-      const parseSalary = (s: string) => {
-        const num = s.replace(/[,.]/g, "").match(/\d+/g);
-        return num ? Math.max(...num.map(Number)) : 0;
-      };
-      return (b.salary_max || parseSalary(b.salary_text)) - (a.salary_max || parseSalary(a.salary_text));
+      return (b.salary_max || parseSalaryNumber(b.salary_text)) - (a.salary_max || parseSalaryNumber(a.salary_text));
     }
     return 0;
   });
@@ -126,6 +134,7 @@ export default async function EmpleosPage({
               initialRegimen={regimen}
               initialCategoria={categoria}
               initialEducacion={educacion}
+              initialSueldo={sueldo}
               initialSort={sort}
               initialHideExpired={hideExpired}
             />

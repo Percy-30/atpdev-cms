@@ -2259,7 +2259,7 @@ export const INITIAL_JOBS: JobPosting[] = [
   }
 ];
 
-import { scrapeLiveConvocatoriasFeed, scrapeConvocatoriasDeTrabajo } from './scraper';
+import { scrapeLiveConvocatoriasFeed, scrapeConvocatoriasDeTrabajo, scrapeServirOfertas } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
@@ -2307,6 +2307,20 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     }
   } catch (err) {
     console.warn('ConvocatoriasDeTrabajo feed fallback:', err);
+  }
+
+  // 6. Cargar ingesta en vivo oficial del Estado: SERVIR (Talento Perú)
+  try {
+    const servirJobs = await scrapeServirOfertas();
+    if (servirJobs && servirJobs.length > 0) {
+      servirJobs.forEach(j => {
+        if (!jobsMap.has(j.slug)) {
+          jobsMap.set(j.slug, j);
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('SERVIR feed fallback:', err);
   }
 
   // 5. Intentar fusionar con Supabase en tiempo real

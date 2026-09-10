@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Filter, Search, RotateCcw, Building2, MapPin, Award, GraduationCap, ArrowUpDown, EyeOff } from "lucide-react";
+import { useState, useEffect, useRef, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Filter, Search, RotateCcw, Award, MapPin, GraduationCap, ArrowUpDown, CheckCircle2, X } from "lucide-react";
 
 interface JobFilterClientProps {
   initialQ: string;
@@ -10,6 +10,7 @@ interface JobFilterClientProps {
   initialRegimen: string;
   initialCategoria: string;
   initialEducacion: string;
+  initialSueldo?: string;
   initialSort?: string;
   initialHideExpired?: boolean;
 }
@@ -20,17 +21,33 @@ export function JobFilterClient({
   initialRegimen,
   initialCategoria,
   initialEducacion,
+  initialSueldo = "",
   initialSort = "ending_soon",
   initialHideExpired = true,
 }: JobFilterClientProps) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   const [q, setQ] = useState(initialQ);
   const [region, setRegion] = useState(initialRegion);
   const [regimen, setRegimen] = useState(initialRegimen);
   const [categoria, setCategoria] = useState(initialCategoria);
   const [educacion, setEducacion] = useState(initialEducacion);
+  const [sueldo, setSueldo] = useState(initialSueldo);
   const [sort, setSort] = useState(initialSort);
   const [hideExpired, setHideExpired] = useState(initialHideExpired);
+
+  // Synchronize state if props change from URL navigation
+  useEffect(() => {
+    setQ(initialQ);
+    setRegion(initialRegion);
+    setRegimen(initialRegimen);
+    setCategoria(initialCategoria);
+    setEducacion(initialEducacion);
+    setSueldo(initialSueldo);
+    setSort(initialSort);
+    setHideExpired(initialHideExpired);
+  }, [initialQ, initialRegion, initialRegimen, initialCategoria, initialEducacion, initialSueldo, initialSort, initialHideExpired]);
 
   const applyFilters = (customParams?: Record<string, string>) => {
     const params = new URLSearchParams();
@@ -39,6 +56,7 @@ export function JobFilterClient({
     const currentRegimen = customParams?.regimen !== undefined ? customParams.regimen : regimen;
     const currentCategoria = customParams?.categoria !== undefined ? customParams.categoria : categoria;
     const currentEducacion = customParams?.educacion !== undefined ? customParams.educacion : educacion;
+    const currentSueldo = customParams?.sueldo !== undefined ? customParams.sueldo : sueldo;
     const currentSort = customParams?.sort !== undefined ? customParams.sort : sort;
     const currentHide = customParams?.hide_expired !== undefined ? customParams.hide_expired : String(hideExpired);
 
@@ -47,11 +65,29 @@ export function JobFilterClient({
     if (currentRegimen) params.set("regimen", currentRegimen);
     if (currentCategoria) params.set("categoria", currentCategoria);
     if (currentEducacion) params.set("educacion", currentEducacion);
+    if (currentSueldo) params.set("sueldo", currentSueldo);
     if (currentSort && currentSort !== "ending_soon") params.set("sort", currentSort);
     if (currentHide === "false") params.set("hide_expired", "false");
 
-    router.push(`/empleos?${params.toString()}`);
+    startTransition(() => {
+      router.push(`/empleos?${params.toString()}`);
+    });
   };
+
+  // Debounced live search for keyword input
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      if (q !== initialQ) {
+        applyFilters({ q });
+      }
+    }, 450);
+    return () => clearTimeout(timer);
+  }, [q]);
 
   const handleReset = () => {
     setQ("");
@@ -59,10 +95,17 @@ export function JobFilterClient({
     setRegimen("");
     setCategoria("");
     setEducacion("");
+    setSueldo("");
     setSort("ending_soon");
     setHideExpired(true);
-    router.push("/empleos");
+    startTransition(() => {
+      router.push("/empleos");
+    });
   };
+
+  const hasActiveFilters = Boolean(
+    q || region || regimen || categoria || educacion || sueldo || sort !== "ending_soon" || !hideExpired
+  );
 
   return (
     <div className="space-y-5">
@@ -70,11 +113,15 @@ export function JobFilterClient({
         <h3 className="font-display font-bold text-white flex items-center gap-2 text-base">
           <Filter size={18} className="text-emerald-400" />
           <span>Filtros de Búsqueda</span>
+          {isPending && (
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping ml-1 inline-block" />
+          )}
         </h3>
-        {(q || region || regimen || categoria || educacion) && (
+        {hasActiveFilters && (
           <button
             onClick={handleReset}
-            className="text-xs text-amber-400 hover:underline flex items-center gap-1 font-mono cursor-pointer"
+            className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-mono cursor-pointer transition-colors"
+            title="Restablecer todos los filtros"
           >
             <RotateCcw size={12} />
             <span>Limpiar</span>
@@ -82,23 +129,47 @@ export function JobFilterClient({
         )}
       </div>
 
-      {/* Text Query Filter */}
+      {/* Instant Feedback Banner */}
+      <div className="flex items-center justify-between px-3 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[11px] font-mono text-emerald-300">
+        <span className="flex items-center gap-1.5">
+          <CheckCircle2 size={13} className="text-emerald-400" />
+          <span>{isPending ? "Actualizando resultados..." : "Filtrado automático activo"}</span>
+        </span>
+        {isPending && <span className="animate-spin text-xs">⏳</span>}
+      </div>
+
+      {/* Text Query Filter (Debounced) */}
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-semibold text-slate-300">Palabra Clave</label>
-        <div className="flex items-center gap-2 px-3 py-2 bg-slate-900 rounded-xl border border-white/10 text-white">
+        <div className="flex items-center gap-2 px-3 py-2 bg-slate-900 rounded-xl border border-white/10 text-white focus-within:border-emerald-500/50 transition-colors">
           <Search size={16} className="text-slate-400" />
           <input
             type="text"
-            placeholder="Ej. SUNAT, Sistemas..."
+            placeholder="Ej. SUNAT, Sistemas, Salud..."
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                applyFilters({ q });
+              }
+            }}
             className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
           />
+          {q && (
+            <button
+              onClick={() => {
+                setQ("");
+                applyFilters({ q: "" });
+              }}
+              className="text-slate-400 hover:text-white"
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Ordenar Convocatorias (Urgentes / Recientes / Salario / Vacantes) */}
+      {/* Ordenar Convocatorias (Instant Auto-Apply) */}
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1">
           <ArrowUpDown size={14} className="text-emerald-400" />
@@ -111,7 +182,7 @@ export function JobFilterClient({
             setSort(val);
             applyFilters({ sort: val });
           }}
-          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none cursor-pointer"
+          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-emerald-500/50 cursor-pointer transition-colors"
         >
           <option value="ending_soon">🕒 Próximas a cerrar (Urgentes)</option>
           <option value="recent">🚀 Más recientes (Nuevas)</option>
@@ -120,14 +191,14 @@ export function JobFilterClient({
         </select>
       </div>
 
-      {/* Toggle Ocultar Convocatorias Finalizadas */}
+      {/* Toggle Ocultar Convocatorias Finalizadas (Instant Auto-Apply) */}
       <div className="bg-slate-900/80 p-3 rounded-xl border border-white/10 flex items-center justify-between gap-3">
         <div className="space-y-0.5">
           <label htmlFor="hide-expired-chk" className="text-xs font-display font-bold text-slate-200 cursor-pointer block">
             Ocultar Vencidas
           </label>
           <span className="text-[10px] text-slate-400 block font-mono">
-            {hideExpired ? "Solo ofertas activas" : "Mostrando activas y finalizadas"}
+            {hideExpired ? "Solo ofertas activas" : "Mostrando activas y concluidas"}
           </span>
         </div>
         <input
@@ -143,7 +214,7 @@ export function JobFilterClient({
         />
       </div>
 
-      {/* Régimen Laboral Filter */}
+      {/* Régimen Laboral Filter (Instant Auto-Apply) */}
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1">
           <Award size={14} className="text-amber-400" />
@@ -154,15 +225,9 @@ export function JobFilterClient({
           onChange={(e) => {
             const val = e.target.value;
             setRegimen(val);
-            const params = new URLSearchParams();
-            if (q.trim()) params.set("q", q.trim());
-            if (region) params.set("region", region);
-            if (val) params.set("regimen", val);
-            if (categoria) params.set("categoria", categoria);
-            if (educacion) params.set("educacion", educacion);
-            router.push(`/empleos?${params.toString()}`);
+            applyFilters({ regimen: val });
           }}
-          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none cursor-pointer"
+          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-amber-500/50 cursor-pointer transition-colors"
         >
           <option value="">Todos los Regímenes</option>
           <option value="CAS 1057">CAS (D.L. 1057)</option>
@@ -174,7 +239,7 @@ export function JobFilterClient({
         </select>
       </div>
 
-      {/* Región Filter */}
+      {/* Región Filter (Instant Auto-Apply) */}
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1">
           <MapPin size={14} className="text-purple-400" />
@@ -185,15 +250,9 @@ export function JobFilterClient({
           onChange={(e) => {
             const val = e.target.value;
             setRegion(val);
-            const params = new URLSearchParams();
-            if (q.trim()) params.set("q", q.trim());
-            if (val) params.set("region", val);
-            if (regimen) params.set("regimen", regimen);
-            if (categoria) params.set("categoria", categoria);
-            if (educacion) params.set("educacion", educacion);
-            router.push(`/empleos?${params.toString()}`);
+            applyFilters({ region: val });
           }}
-          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none cursor-pointer"
+          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500/50 cursor-pointer transition-colors"
         >
           <option value="">Todas las Regiones (25 Departamentos)</option>
           <option value="Amazonas">Amazonas</option>
@@ -225,7 +284,7 @@ export function JobFilterClient({
         </select>
       </div>
 
-      {/* Nivel Educativo Filter */}
+      {/* Nivel Educativo Filter (Instant Auto-Apply) */}
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1">
           <GraduationCap size={14} className="text-cyan-400" />
@@ -236,15 +295,9 @@ export function JobFilterClient({
           onChange={(e) => {
             const val = e.target.value;
             setEducacion(val);
-            const params = new URLSearchParams();
-            if (q.trim()) params.set("q", q.trim());
-            if (region) params.set("region", region);
-            if (regimen) params.set("regimen", regimen);
-            if (categoria) params.set("categoria", categoria);
-            if (val) params.set("educacion", val);
-            router.push(`/empleos?${params.toString()}`);
+            applyFilters({ educacion: val });
           }}
-          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none cursor-pointer"
+          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-cyan-500/50 cursor-pointer transition-colors"
         >
           <option value="">Todos los Niveles</option>
           <option value="Secundaria">Secundaria</option>
@@ -256,25 +309,20 @@ export function JobFilterClient({
         </select>
       </div>
 
-      {/* Rango de Sueldo Filter */}
+      {/* Rango de Sueldo Filter (Instant Auto-Apply) */}
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1">
           <span className="text-emerald-400 font-bold">S/</span>
           <span>Rango de Remuneración</span>
         </label>
         <select
+          value={sueldo}
           onChange={(e) => {
             const val = e.target.value;
-            const params = new URLSearchParams();
-            if (q.trim()) params.set("q", q.trim());
-            if (region) params.set("region", region);
-            if (regimen) params.set("regimen", regimen);
-            if (categoria) params.set("categoria", categoria);
-            if (educacion) params.set("educacion", educacion);
-            if (val) params.set("sueldo", val);
-            router.push(`/empleos?${params.toString()}`);
+            setSueldo(val);
+            applyFilters({ sueldo: val });
           }}
-          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none cursor-pointer"
+          className="w-full p-2.5 bg-slate-900 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-emerald-500/50 cursor-pointer transition-colors"
         >
           <option value="">Todas las Remuneraciones</option>
           <option value="1000-3000">S/ 1,025 — S/ 3,000 (Técnicos & Asistentes)</option>
@@ -283,13 +331,16 @@ export function JobFilterClient({
         </select>
       </div>
 
-      {/* Apply Trigger Button */}
-      <button
-        onClick={() => applyFilters()}
-        className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer"
-      >
-        Aplicar Filtros
-      </button>
+      {/* Action Footer: Reset or status */}
+      {hasActiveFilters && (
+        <button
+          onClick={handleReset}
+          className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold font-display text-xs transition-all border border-white/10 cursor-pointer flex items-center justify-center gap-2"
+        >
+          <RotateCcw size={13} />
+          <span>Restablecer Filtros</span>
+        </button>
+      )}
     </div>
   );
 }

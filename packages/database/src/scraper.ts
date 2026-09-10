@@ -1,5 +1,6 @@
 import { JobPosting, JobPlaza, INITIAL_JOBS } from './jobs';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
+import { SERVIR_JOBS_DATA } from './servirJobsData';
 
 export type ScrapedJobResult = {
   source: string;
@@ -719,7 +720,251 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
   }
 }
 
-// 5. Orquestador Principal de Ingesta Nivel Dios
+// 5. Scraper Oficial del Estado Peruano: SERVIR (Talento Perú - app.servir.gob.pe)
+let cachedServirJobs: { data: JobPosting[]; timestamp: number } = {
+  data: SERVIR_JOBS_DATA,
+  timestamp: Date.now()
+};
+const SERVIR_CACHE_TTL = 1000 * 60 * 30; // 30 minutos
+const SERVIR_BASE_URL = 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+
+const PERU_DEPARTMENTS = [
+  'Amazonas', 'Áncash', 'Apurímac', 'Arequipa', 'Ayacucho',
+  'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huánuco',
+  'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima',
+  'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura',
+  'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'
+];
+
+function extractServirDepartment(ubicacion: string): string {
+  if (!ubicacion) return 'Lima';
+  const uNorm = ubicacion.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  for (const dep of PERU_DEPARTMENTS) {
+    const depNorm = dep.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    if (uNorm.includes(depNorm)) return dep;
+  }
+  return 'Lima';
+}
+
+function extractServirEntityLogo(entidad: string): string {
+  const eLow = entidad.toLowerCase();
+  if (eLow.includes('educacion') || eLow.includes('minedu') || eLow.includes('ugel') || eLow.includes('drelm')) return '/logos/minedu.svg';
+  if (eLow.includes('sunat')) return '/logos/sunat.svg';
+  if (eLow.includes('mef') || eLow.includes('economia')) return '/logos/mef.svg';
+  if (eLow.includes('osiptel')) return '/logos/osiptel.svg';
+  if (eLow.includes('sedapal')) return '/logos/sedapal.svg';
+  if (eLow.includes('essalud') || eLow.includes('seguro social')) return '/logos/essalud.svg';
+  if (eLow.includes('onpe')) return '/logos/onpe.svg';
+  if (eLow.includes('reniec')) return '/logos/reniec.svg';
+  if (eLow.includes('banco central') || eLow.includes('bcrp')) return '/logos/bcrp.svg';
+  if (eLow.includes('poder judicial') || eLow.includes('corte superior')) return '/logos/poder-judicial.svg';
+  if (eLow.includes('salud') || eLow.includes('minsa') || eLow.includes('hospital') || eLow.includes('red de salud') || eLow.includes('diris')) return '/logos/minsa.svg';
+  if (eLow.includes('proinversion')) return '/logos/proinversion.svg';
+  return '/logos/gob-pe.png';
+}
+
+function parseServirJobsFromHtml(text: string, todayIso: string): JobPosting[] {
+  const jobs: JobPosting[] = [];
+  const sections = text.split(/<div class="col-sm-12 cuadro-vacantes">/i);
+  sections.shift(); // discard header
+
+  for (let i = 0; i < sections.length; i++) {
+    const sec = sections[i];
+    const titleMatch = sec.match(/titulo-vacante[^>]*>[\s\S]*?<label>([\s\S]*?)<\/label>/i);
+    const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+
+    const entidadMatch = sec.match(/nombre-entidad[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/i);
+    const entity_name = entidadMatch ? entidadMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+
+    if (!title || !entity_name) continue;
+
+    const ubicacionMatch = sec.match(/Ubicaci(?:ó|o)n:<\/span>\s*(?:&nbsp;|\s)*<span class="detalle-sp">([\s\S]*?)<\/span>/i);
+    const ubicacion = ubicacionMatch ? ubicacionMatch[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim() : '';
+
+    const convMatch = sec.match(/N(?:ú|u)mero de Convocatoria:<\/span>\s*(?:&nbsp;|\s)*<span class="detalle-sp">([\s\S]*?)<\/span>/i);
+    const convNro = convMatch ? convMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+
+    const vacMatch = sec.match(/Cantidad de Vacantes:<\/span>\s*(?:&nbsp;|\s)*<span class="detalle-sp">([\s\S]*?)<\/span>/i);
+    const vacancies_count = vacMatch ? parseInt(vacMatch[1].trim(), 10) || 1 : 1;
+
+    const remMatch = sec.match(/Remuneraci(?:ó|o)n:<\/span>\s*(?:&nbsp;|\s)*<span class="detalle-sp">([\s\S]*?)<\/span>/i);
+    const remRaw = remMatch ? remMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+    const numMatch = remRaw.replace(/[,]/g, '').match(/\d+(?:\.\d+)?/);
+    const salaryNum = numMatch ? Math.round(parseFloat(numMatch[0])) : 0;
+    const salary_text = salaryNum > 0 ? `S/. ${salaryNum.toLocaleString('es-PE')} Soles mensual` : 'Según bases convocadas';
+
+    const fIniMatch = sec.match(/Fecha Inicio de\s*Publicaci(?:ó|o)n:<\/span>\s*(?:&nbsp;|\s)*<span class="detalle-sp">([\s\S]*?)<\/span>/i);
+    const fechaInicio = fIniMatch ? fIniMatch[1].trim() : '';
+
+    const fFinMatch = sec.match(/Fecha Fin de Publicaci(?:ó|o)n:<\/span>\s*(?:&nbsp;|\s)*<span class="detalle-sp">([\s\S]*?)<\/span>/i);
+    const fechaFin = fFinMatch ? fFinMatch[1].trim() : '';
+
+    const parseDateToIso = (dStr: string) => {
+      if (!dStr) return todayIso;
+      const parts = dStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (!parts) return todayIso;
+      return `${parts[3]}-${parts[2].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+    };
+
+    const start_date = parseDateToIso(fechaInicio);
+    const end_date = parseDateToIso(fechaFin);
+
+    let sector_type: JobPosting['sector_type'] = 'CAS 1057';
+    const convLow = convNro.toLowerCase();
+    const titleLow = title.toLowerCase();
+    if (convLow.includes('728') || titleLow.includes('728')) sector_type = 'D.L. 728';
+    else if (convLow.includes('276') || titleLow.includes('276')) sector_type = 'D.L. 276';
+    else if (convLow.includes('locac') || convLow.includes('fag')) sector_type = 'Locación / FAG';
+    else if (convLow.includes('practic') || titleLow.includes('practic')) sector_type = 'Prácticas';
+
+    let education_level: JobPosting['education_level'] = 'Titulado';
+    if (/secundaria|chofer|auxiliar|conserje|vigilante|limpieza/i.test(titleLow)) education_level = 'Secundaria';
+    else if (/t[eé]cnico|asistente administrativo/i.test(titleLow)) education_level = 'Técnico';
+    else if (/bachiller|egresado/i.test(titleLow)) education_level = 'Bachiller';
+    else if (/maestr|doctor|magister/i.test(titleLow)) education_level = 'Maestría / Doctorado';
+
+    let category = 'Administración y Contabilidad';
+    if (/salud|m[eé]dic|enferm|quir[uú]rg|farmac|laborator/i.test(titleLow)) category = 'Salud y Medicina';
+    else if (/legal|abogad|fiscal|jur[ií]dic|penal/i.test(titleLow)) category = 'Derecho y Asesoría';
+    else if (/docent|profesor|pedag|educac|enseñanza/i.test(titleLow)) category = 'Educación y Capacitación';
+    else if (/sistem|software|desarroll|inform[aá]tic|redes|programad/i.test(titleLow)) category = 'Tecnología e Informática';
+    else if (/ingenier|civil|arquitect|obras|mantenimiento/i.test(titleLow)) category = 'Ingeniería y Construcción';
+
+    const region = extractServirDepartment(ubicacion);
+    const slug = `servir-${makeSlug(entity_name).slice(0, 30)}-${makeSlug(title).slice(0, 40)}-${i}`;
+
+    jobs.push({
+      id: `job-servir-live-${i}`,
+      title,
+      slug,
+      entity_name,
+      entity_ruc: '20131370645',
+      entity_verified: true,
+      entity_logo: extractServirEntityLogo(entity_name),
+      sector_type,
+      region,
+      category,
+      education_level,
+      salary_min: salaryNum > 0 ? salaryNum : undefined,
+      salary_max: salaryNum > 0 ? salaryNum : undefined,
+      salary_text,
+      vacancies_count,
+      description: `Convocatoria oficial ${entity_name}: ${title}. Ubicación: ${region}. Régimen: ${sector_type}, con remuneración de ${salary_text}. Bases y postulaciones oficiales registradas en el Sistema de Difusión de Ofertas Laborales de SERVIR (Talento Perú).`,
+      requirements: [
+        `Cumplir con el grado de formación académica (${education_level}) requerido en las bases.`,
+        `Acreditar experiencia laboral general y específica según los términos de referencia de la entidad.`,
+        `Presentación de hoja de vida documentada y declaraciones juradas conforme al cronograma oficial.`
+      ],
+      benefits: [
+        'Contrato formal según régimen del Estado con cobertura de salud ESSALUD.',
+        'Aportes al sistema previsional (ONP / AFP) y beneficios de ley.'
+      ],
+      apply_url: SERVIR_BASE_URL,
+      bases_pdf_url: SERVIR_BASE_URL,
+      fuente_url: SERVIR_BASE_URL,
+      official_portal_name: 'SERVIR - Talento Perú Oficial',
+      start_date,
+      end_date,
+      featured: i < 6,
+      views_count: 1600 + i * 15,
+      clicks_count: 350 + i * 8,
+      status: end_date >= todayIso ? 'Vigente' : 'Finalizado',
+      created_at: new Date().toISOString()
+    });
+  }
+  return jobs;
+}
+
+export async function refreshServirInBackground(maxPages = 15): Promise<void> {
+  try {
+    const todayIso = new Date().toISOString().split('T')[0];
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'es-PE,es;q=0.9,en;q=0.8',
+    };
+
+    const res1 = await fetch(SERVIR_BASE_URL, { headers, next: { revalidate: 1800 } } as any);
+    const rawCookies = res1.headers.get('set-cookie') || '';
+    const cookieMap: Record<string, string> = {};
+    rawCookies.split(/,(?=[^;]+;)/).forEach(c => {
+      const part = c.trim().split(';')[0];
+      const [k, v] = part.split('=');
+      if (k && v) cookieMap[k.trim()] = v.trim();
+    });
+    const cookieStr = Object.entries(cookieMap).map(([k, v]) => `${k}=${v}`).join('; ');
+
+    const html1 = await res1.text();
+    const vsMatch = html1.match(/name="javax\.faces\.ViewState"\s+value="([^"]+)"/i) || html1.match(/id="javax\.faces\.ViewState[^"]*"\s+value="([^"]+)"/i);
+    if (!vsMatch) return;
+
+    let currentViewState = vsMatch[1];
+    const allJobs = [...parseServirJobsFromHtml(html1, todayIso)];
+
+    for (let p = 2; p <= maxPages; p++) {
+      const body = new URLSearchParams();
+      body.append('javax.faces.partial.ajax', 'true');
+      body.append('javax.faces.source', 'frmLstOfertsLabo:j_idt82');
+      body.append('javax.faces.partial.execute', '@all');
+      body.append('javax.faces.partial.render', 'frmLstOfertsLabo:mensaje frmLstOfertsLabo');
+      body.append('frmLstOfertsLabo:j_idt82', 'frmLstOfertsLabo:j_idt82');
+      body.append('frmLstOfertsLabo', 'frmLstOfertsLabo');
+      body.append('frmLstOfertsLabo:modalidadAcceso', '03');
+      body.append('frmLstOfertsLabo:txtPerfil', '');
+      body.append('frmLstOfertsLabo:cboDep', '00');
+      body.append('frmLstOfertsLabo:txtPuesto', '');
+      body.append('frmLstOfertsLabo:autocompletar_input', '');
+      body.append('frmLstOfertsLabo:autocompletar_hinput', '');
+      body.append('frmLstOfertsLabo:txtNroConv', '');
+      body.append('javax.faces.ViewState', currentViewState);
+
+      try {
+        const postRes = await fetch(SERVIR_BASE_URL, {
+          method: 'POST',
+          headers: {
+            ...headers,
+            'Accept': 'application/xml, text/xml, */*; q=0.01',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Faces-Request': 'partial/ajax',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Cookie': cookieStr,
+            'Origin': 'https://app.servir.gob.pe',
+            'Referer': SERVIR_BASE_URL,
+          },
+          body: body.toString()
+        });
+
+        const xml = await postRes.text();
+        const newVs = xml.match(/<update\s+id="[^"]*javax\.faces\.ViewState[^"]*"><!\[CDATA\[([\s\S]*?)\]\]><\/update>/i);
+        if (newVs) currentViewState = newVs[1];
+
+        const pageJobs = parseServirJobsFromHtml(xml, todayIso);
+        if (pageJobs.length === 0) break;
+        allJobs.push(...pageJobs);
+      } catch (err) {
+        break;
+      }
+    }
+
+    if (allJobs.length > 0) {
+      cachedServirJobs = { data: allJobs, timestamp: Date.now() };
+      console.log(`✅ [SERVIR Live Scraper] ${allJobs.length} ofertas consolidadas en memoria.`);
+    }
+  } catch (e) {
+    console.warn('Error en refreshServirInBackground:', e);
+  }
+}
+
+export async function scrapeServirOfertas(maxPages = 15): Promise<JobPosting[]> {
+  const now = Date.now();
+  if (cachedServirJobs.data.length > 0 && now - cachedServirJobs.timestamp < SERVIR_CACHE_TTL) {
+    return cachedServirJobs.data;
+  }
+  refreshServirInBackground(maxPages).catch(e => console.warn('Background SERVIR refresh:', e));
+  return cachedServirJobs.data;
+}
+
+// 6. Orquestador Principal de Ingesta Nivel Dios
 export async function runFullJobScraper(): Promise<ScrapedJobResult> {
   console.log("🚀 [Scraper Engine] Iniciando orquestación de ingestión en tiempo real...");
   const startTime = Date.now();
@@ -735,14 +980,15 @@ export async function runFullJobScraper(): Promise<ScrapedJobResult> {
   }
 
   try {
-    const [sunatJobs, onpeJobs, liveFeedJobs, convocatoriasDeTrabajoJobs] = await Promise.all([
+    const [sunatJobs, onpeJobs, liveFeedJobs, convocatoriasDeTrabajoJobs, servirJobs] = await Promise.all([
       scrapeSunatJobs(),
       scrapeOnpeJobs(),
       scrapeLiveConvocatoriasFeed(),
-      scrapeConvocatoriasDeTrabajo()
+      scrapeConvocatoriasDeTrabajo(),
+      scrapeServirOfertas()
     ]);
 
-    const liveJobs = [...liveFeedJobs, ...convocatoriasDeTrabajoJobs, ...sunatJobs, ...onpeJobs];
+    const liveJobs = [...liveFeedJobs, ...convocatoriasDeTrabajoJobs, ...servirJobs, ...sunatJobs, ...onpeJobs];
 
     // Fusionar con dataset oficial de alta calidad desduplicando por slug
     const jobsMap = new Map<string, JobPosting>();
