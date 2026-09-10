@@ -160,15 +160,26 @@ function normalize(str: string): string {
     .trim();
 }
 
+function matchKeyword(upper: string, tokens: string[], k: string): boolean {
+  const normK = normalize(k);
+  if (!normK) return false;
+
+  if (upper === normK) return true;
+
+  if (normK.includes(' ')) {
+    return upper.includes(normK);
+  }
+
+  return tokens.includes(normK);
+}
+
 function findLocalLogo(entityName: string): string | null {
   const upper = normalize(entityName);
+  const tokens = upper.split(' ');
 
   // 1. Direct and curated logos from LOCAL_LOGO_MAP (Universities, Forestry, Regulators, Ministries)
   for (const entry of LOCAL_LOGO_MAP) {
-    if (entry.keywords.some(k => {
-      const normK = normalize(k);
-      return upper === normK || upper.startsWith(normK + ' ') || upper.endsWith(' ' + normK) || upper.includes(' ' + normK + ' ') || upper.includes(normK);
-    })) {
+    if (entry.keywords.some(k => matchKeyword(upper, tokens, k))) {
       return entry.file;
     }
   }
@@ -180,34 +191,31 @@ function findLocalLogo(entityName: string): string | null {
       return org.file;
     }
 
-    if (org.keywords && org.keywords.some((k: string) => {
-      const normK = normalize(k);
-      return upper === normK || upper.includes(normK);
-    })) {
+    if (org.keywords && org.keywords.some((k: string) => matchKeyword(upper, tokens, k))) {
       return org.file;
     }
 
     // Match distinctive entity name tokens (excluding generic administrative words)
     const words = orgNorm.split(' ').filter(w => w.length >= 4 && !['MUNICIPALIDAD', 'DISTRITAL', 'PROVINCIAL', 'GOBIERNO', 'REGIONAL', 'UNIVERSIDAD', 'NACIONAL', 'PARA', 'LIMA', 'PERU', 'SEDE'].includes(w));
-    if (words.length >= 2 && words.every(w => upper.includes(w))) {
+    if (words.length >= 2 && words.every(w => tokens.includes(w) || upper.includes(w))) {
       return org.file;
     }
   }
 
   // 3. Sector matching for regional directorates and public networks
-  if (upper.includes('HOSPITAL') || upper.includes('DIRESA') || upper.includes('DIRIS')) {
+  if (tokens.includes('HOSPITAL') || tokens.includes('DIRESA') || tokens.includes('DIRIS')) {
     return '/logos/minsa.jpg';
   }
-  if (upper.includes('UGEL') || upper.includes('DRE') || upper.includes('INSTITUTO PEDAGOGICO')) {
+  if (tokens.includes('UGEL') || tokens.includes('DRE') || upper.includes('INSTITUTO PEDAGOGICO')) {
     return '/logos/minedu.jpg';
   }
-  if (upper.includes('MINISTERIO PUBLICO') || upper.includes('FISCALIA')) {
+  if (upper.includes('MINISTERIO PUBLICO') || tokens.includes('FISCALIA')) {
     return '/logos/ministerio-publico.jpg';
   }
-  if (upper.includes('PODER JUDICIAL') || upper.includes('CORTE SUPERIOR') || upper.includes('JUZGADO')) {
+  if (upper.includes('PODER JUDICIAL') || upper.includes('CORTE SUPERIOR') || tokens.includes('JUZGADO')) {
     return '/logos/poder-judicial.jpg';
   }
-  if (upper.includes('POLICIA NACIONAL') || upper.includes('MIGRACIONES')) {
+  if (upper.includes('POLICIA NACIONAL') || tokens.includes('MIGRACIONES')) {
     return '/logos/mininter.jpg';
   }
 
