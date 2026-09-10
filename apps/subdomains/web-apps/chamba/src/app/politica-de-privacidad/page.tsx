@@ -4,9 +4,15 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidad & Protección de Datos — Chamba Pro',
-  description: 'Política de privacidad de Chamba Pro en cumplimiento de la Ley N° 29733 de Protección de Datos Personales de Perú y las políticas de Google AdSense sobre cookies de terceros.',
+  description: 'Política de privacidad de Chamba Pro conforme a la Ley 29733 de Protección de Datos Personales y políticas de cookies de terceros de Google AdSense.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/politica-de-privacidad',
+  },
+  openGraph: {
+    title: 'Política de Privacidad & Protección de Datos — Chamba Pro',
+    description: 'Política de privacidad y cookies de Chamba Pro conforme a la Ley 29733.',
+    url: 'https://empleos.atpdev.dev/politica-de-privacidad',
+    type: 'website',
   },
 };
 

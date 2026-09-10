@@ -21,14 +21,14 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
   ].filter(Boolean);
 
   return (
-    <div className="bg-white text-slate-900 font-serif text-[11px] leading-normal p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none space-y-4">
+    <div className="bg-white text-slate-900 font-serif text-[11px] leading-normal p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-10 print:sm:p-12 print:m-0 print:max-w-none print:w-full print:bg-white space-y-4">
       {/* Encabezado Clásico Estilo Harvard (con soporte opcional de Foto) */}
-      <header className="border-b border-slate-900 pb-3 cv-avoid-break">
+      <div role="banner" className="cv-header border-b border-slate-900 pb-3 cv-avoid-break">
         <div className={`flex items-center gap-4 ${personal.photoUrl ? 'justify-between text-left' : 'justify-center text-center'}`}>
           <div className="space-y-1 flex-1">
-            <h1 className="text-2xl font-bold uppercase tracking-wide text-slate-950 font-serif">
+            <h2 className="text-2xl font-bold uppercase tracking-wide text-slate-950 font-serif">
               {personal.fullName || 'NOMBRES Y APELLIDOS'}
-            </h1>
+            </h2>
             {personal.headline && (
               <p className="text-xs font-sans font-semibold text-slate-700 uppercase tracking-wider">
                 {personal.headline}
@@ -60,7 +60,7 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
             </div>
           )}
         </div>
-      </header>
+      </div>
 
       {/* Resumen Profesional */}
       {profileSummary && (
@@ -84,7 +84,8 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
             <div key={exp.id || idx} className="space-y-0.5 cv-avoid-break">
               <div className="flex justify-between items-baseline font-sans">
                 <span className="font-bold text-slate-950 text-[11px]">
-                  {exp.role} — <span className="font-semibold text-slate-800">{exp.entity}</span>
+                  {exp.role || (exp.entity ? '' : '(Nuevo empleo en edición)')}{' '}
+                  {exp.entity && <span className="font-semibold text-slate-800">— {exp.entity}</span>}
                 </span>
                 <span className="text-[10px] font-mono text-slate-600 shrink-0">
                   {exp.period}
@@ -95,11 +96,13 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
                   Modalidad: Experiencia {exp.type}
                 </div>
               )}
-              {exp.functions && exp.functions.length > 0 && (
+              {exp.functions && exp.functions.filter((fn) => fn.trim().length > 0).length > 0 && (
                 <ul className="list-disc list-outside ml-4 space-y-0.5 text-[10px] text-slate-800 pt-0.5">
-                  {exp.functions.map((fn, fIdx) => (
-                    <li key={fIdx} className="leading-snug">{fn}</li>
-                  ))}
+                  {exp.functions
+                    .filter((fn) => fn.trim().length > 0)
+                    .map((fn, fIdx) => (
+                      <li key={fIdx} className="leading-snug">{fn}</li>
+                    ))}
                 </ul>
               )}
             </div>
@@ -117,15 +120,19 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
             <div key={edu.id || idx} className="flex justify-between items-baseline font-sans cv-avoid-break">
               <div>
                 <span className="font-bold text-slate-950 text-[10.5px]">
-                  {edu.degree}: {edu.carrera}
+                  {edu.carrera ? `${edu.degree}: ${edu.carrera}` : edu.degree || '(Nuevo grado en edición)'}
                 </span>
-                <span className="block text-[10px] text-slate-700">
-                  {edu.institution} {edu.status && `(${edu.status})`}
-                </span>
+                {(edu.institution || edu.status) && (
+                  <span className="block text-[10px] text-slate-700">
+                    {edu.institution} {edu.status && `(${edu.status})`}
+                  </span>
+                )}
               </div>
-              <span className="text-[10px] font-mono text-slate-600 shrink-0">
-                {edu.year}
-              </span>
+              {edu.year && (
+                <span className="text-[10px] font-mono text-slate-600 shrink-0">
+                  {edu.year}
+                </span>
+              )}
             </div>
           ))}
         </div>
@@ -141,8 +148,8 @@ export function TemplateMinimalAts({ data }: TemplateProps) {
             {courses.map((course, idx) => (
               <div key={course.id || idx} className="flex justify-between items-baseline text-[10px] font-sans cv-avoid-break">
                 <div>
-                  <span className="font-semibold text-slate-900">{course.title}</span>
-                  <span className="text-slate-600"> — {course.inst}</span>
+                  <span className="font-semibold text-slate-900">{course.title || '(Nuevo curso en edición)'}</span>
+                  {course.inst && <span className="text-slate-600"> — {course.inst}</span>}
                 </div>
                 <div className="text-right shrink-0 font-mono text-slate-700 text-[9.5px]">
                   <span>{course.hours}</span>

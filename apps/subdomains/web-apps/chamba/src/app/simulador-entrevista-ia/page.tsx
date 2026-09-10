@@ -4,8 +4,17 @@ import { ChevronRight, Bot, Sparkles } from 'lucide-react';
 import { AiInterviewSimulator } from '@/components/AiInterviewSimulator';
 
 export const metadata: Metadata = {
-  title: 'Simulador de Entrevista de Trabajo con IA en Vivo Perú 2026 | chamba pro',
+  title: 'Simulador de Entrevista de Trabajo con IA Perú 2026 | chamba pro',
   description: 'Entrena tu entrevista personal y evaluación técnica CAS con Inteligencia Artificial para SUNAT, MINEDU, BCRP, EsSalud y el Poder Judicial.',
+  alternates: {
+    canonical: 'https://empleos.atpdev.dev/simulador-entrevista-ia',
+  },
+  openGraph: {
+    title: 'Simulador de Entrevista de Trabajo con IA Perú 2026 | chamba pro',
+    description: 'Entrena tu entrevista personal y evaluación técnica CAS con Inteligencia Artificial.',
+    url: 'https://empleos.atpdev.dev/simulador-entrevista-ia',
+    type: 'website',
+  },
   keywords: [
     'simulador entrevista cas ia',
     'entrevista personal cas preguntas y respuestas',

@@ -18,8 +18,16 @@ export function JobCard({ job }: JobCardProps) {
     <div className="glass-card glass-card-hover p-5 rounded-3xl flex flex-col justify-between gap-4 relative group overflow-hidden border border-white/10 hover:border-emerald-500/40 transition-all bg-gradient-to-b from-slate-900/90 via-slate-900 to-[#070d14]">
       
       {/* Top Banner Cover Logo */}
-      <Link href={`/empleos/${job.slug}`} className="block group">
+      <Link
+        href={`/empleos/${job.slug}`}
+        className="block group"
+        aria-label={`Convocatoria de empleo ${job.title} en ${job.entity_name}`}
+        title={`Convocatoria de empleo ${job.title} en ${job.entity_name}`}
+      >
         <EntityLogo entityName={job.entity_name} logoUrl={job.entity_logo} size="banner" />
+        <span className="block text-center text-xs font-display font-bold text-slate-200 group-hover:text-emerald-400 transition-colors mt-2 truncate px-1">
+          {job.entity_name}
+        </span>
       </Link>
 
       <div className="space-y-3">
@@ -50,7 +58,11 @@ export function JobCard({ job }: JobCardProps) {
         </div>
 
         {/* Position Title Link */}
-        <Link href={`/empleos/${job.slug}`} className="block group-hover:text-emerald-400 transition-colors">
+        <Link
+          href={`/empleos/${job.slug}`}
+          className="block group-hover:text-emerald-400 transition-colors"
+          aria-label={`Ver convocatoria para ${job.title}`}
+        >
           <h3 className="font-display font-bold text-base text-white leading-snug line-clamp-2">
             {job.title}
           </h3>
@@ -87,6 +99,7 @@ export function JobCard({ job }: JobCardProps) {
           <Link
             href={`/empleos/${job.slug}`}
             className="flex-1 sm:flex-initial px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold font-display transition-all flex items-center justify-center gap-1.5 border border-white/10"
+            aria-label={`Ver detalles y requisitos de ${job.title}`}
           >
             <span>Ver detalles</span>
             <ArrowRight size={13} />
@@ -96,6 +109,7 @@ export function JobCard({ job }: JobCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/40 text-emerald-400 hover:text-slate-950 font-semibold font-display transition-all flex items-center justify-center gap-1.5 group/btn"
+            aria-label={`Postular directamente en la web oficial de ${job.entity_name}`}
           >
             <span>Oficial</span>
             <ExternalLink size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />

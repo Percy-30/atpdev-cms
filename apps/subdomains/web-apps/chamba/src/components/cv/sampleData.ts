@@ -1,4 +1,5 @@
 import { CvData, CvTemplateMeta } from './types';
+import { SAMPLE_AVATAR_BASE64 } from './sampleAvatarBase64';
 
 export const SAMPLE_CV_DATA: CvData = {
   personal: {
@@ -13,7 +14,7 @@ export const SAMPLE_CV_DATA: CvData = {
     colegiatoria: 'CIP N° 245890 (Colegiado y Habilitado)',
     linkedin: 'linkedin.com/in/juanperez-ti',
     website: 'github.com/juanperez-dev',
-    photoUrl: '',
+    photoUrl: SAMPLE_AVATAR_BASE64,
   },
   profileSummary:
     'Ingeniero de Sistemas colegiado con más de 7 años de experiencia liderando proyectos de modernización tecnológica e interoperabilidad en el sector público y privado. Especializado en gestión de contrataciones del Estado (Ley N° 30225), administración de plataformas SEACE/SIAF, desarrollo de sistemas cloud y optimización de procesos bajo directivas de SERVIR y la Secretaría de Gobierno y Transformación Digital (SGTD). Capacidad demostrada para dirigir equipos multidisciplinarios orientados a resultados y servicio al ciudadano.',

@@ -26,7 +26,24 @@ export function CvCasGenerator() {
   const [zoomLevel, setZoomLevel] = useState<number>(85); // % zoom for preview
   const [showPrintTips, setShowPrintTips] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isPrinting, setIsPrinting] = useState(false);
+  const [mobileTab, setMobileTab] = useState<'editor' | 'preview'>('editor');
+  const [showClearModal, setShowClearModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Remove zoom scale during print events
+  useEffect(() => {
+    const handleBeforePrint = () => setIsPrinting(true);
+    const handleAfterPrint = () => setIsPrinting(false);
+
+    window.addEventListener('beforeprint', handleBeforePrint);
+    window.addEventListener('afterprint', handleAfterPrint);
+
+    return () => {
+      window.removeEventListener('beforeprint', handleBeforePrint);
+      window.removeEventListener('afterprint', handleAfterPrint);
+    };
+  }, []);
 
   // Load saved state from localStorage on client mount
   useEffect(() => {
@@ -77,42 +94,54 @@ export function CvCasGenerator() {
   };
 
   const handlePrint = () => {
-    window.print();
+    setIsPrinting(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrinting(false);
+    }, 60);
   };
 
-  const handleResetExample = () => {
-    if (confirm('¿Deseas restaurar los datos del modelo de ejemplo? Se sobrescribirá el borrador actual.')) {
+  const handleLoadFilledExample = () => {
+    const isMostlyEmpty =
+      !data.personal.fullName || (data.experiences.length === 0 && data.education.length === 0);
+    if (
+      isMostlyEmpty ||
+      confirm(
+        '¿Deseas cargar la plantilla con los datos del modelo de ejemplo? Podrás ver cómo luce el diseño 100% completo con foto, experiencia y formación.'
+      )
+    ) {
       handleDataChange(SAMPLE_CV_DATA);
     }
   };
 
+  const handleResetExample = handleLoadFilledExample;
+
   const handleClearAll = () => {
-    if (confirm('¿Seguro que deseas limpiar todos los campos? Esta acción iniciará un CV vacío.')) {
-      const emptyData: CvData = {
-        personal: {
-          fullName: '',
-          headline: '',
-          dni: '',
-          ruc: '',
-          phone: '',
-          email: '',
-          address: '',
-          city: '',
-          colegiatoria: '',
-          linkedin: '',
-          website: '',
-          photoUrl: '',
-        },
-        profileSummary: '',
-        education: [],
-        courses: [],
-        experiences: [],
-        skills: [],
-        languages: [],
-        swornStatementAccepted: true,
-      };
-      handleDataChange(emptyData);
-    }
+    const emptyData: CvData = {
+      personal: {
+        fullName: '',
+        headline: '',
+        dni: '',
+        ruc: '',
+        phone: '',
+        email: '',
+        address: '',
+        city: '',
+        colegiatoria: '',
+        linkedin: '',
+        website: '',
+        photoUrl: '',
+      },
+      profileSummary: '',
+      education: [],
+      courses: [],
+      experiences: [],
+      skills: [],
+      languages: [],
+      swornStatementAccepted: true,
+    };
+    handleDataChange(emptyData);
+    setShowClearModal(false);
   };
 
   const handleExportJson = () => {
@@ -174,108 +203,311 @@ export function CvCasGenerator() {
         className="hidden"
       />
 
-      {/* Action Header Bar (Print hidden) */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5 rounded-3xl bg-slate-900/90 border border-white/10 shadow-xl print:hidden">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-mono text-[11px] font-bold">
-              100% Calibrado A4
-            </span>
-            <span className="text-xs text-slate-400 font-mono">
-              Auto-guardado continuo en tu navegador
-            </span>
+      {/* Executive Command Header Bar (Print hidden) */}
+      <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl print:hidden space-y-4">
+        {/* Top Row: Title, live status & primary action hub */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25 shrink-0">
+              <Sparkles size={20} className="stroke-[2.5]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-base sm:text-lg font-black font-display text-white tracking-tight">
+                  Editor de CV Profesional
+                </h2>
+                <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-[10.5px] font-bold">
+                  ⚡ Calibrado A4
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
+                <span className="inline-flex items-center gap-1 text-emerald-400 font-mono text-[11px]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Auto-guardado activo
+                </span>
+                <span className="text-slate-600 hidden sm:inline">•</span>
+                <span className="text-slate-400 font-mono text-[11px] truncate max-w-[280px] hidden sm:inline">
+                  {data.personal.fullName || 'Nuevo CV'}
+                </span>
+              </p>
+            </div>
           </div>
-          <h2 className="text-lg font-bold font-display text-white flex items-center gap-2">
-            <span>Editor & Exportador de CV Profesional</span>
-          </h2>
+             {/* Primary Action Buttons Hub */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            {/* Ver Plantilla Llenada */}
+            <button
+              type="button"
+              onClick={handleLoadFilledExample}
+              className="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-emerald-300 font-bold text-xs transition-all border border-emerald-500/40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+              title="Cargar modelo de ejemplo con datos completos para ver el diseño terminado"
+            >
+              <Sparkles size={14} className="text-emerald-400 animate-pulse" />
+              <span>Ver Ejemplo Llenado</span>
+            </button>
+
+            {/* Limpiar Formulario con modal seguro */}
+            <button
+              type="button"
+              onClick={() => setShowClearModal(true)}
+              className="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-rose-950/40 text-rose-300 hover:text-rose-200 font-bold text-xs transition-all border border-rose-500/30 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+              title="Limpiar todos los campos del CV de manera segura con confirmación"
+            >
+              <RotateCcw size={14} className="text-rose-400" />
+              <span>Limpiar Formulario</span>
+            </button>
+
+            {/* Descargar en Word (.DOC) */}
+            <button
+              type="button"
+              onClick={handleDownloadWord}
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs transition-all shadow-[0_4px_16px_rgba(37,99,235,0.4)] flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-98 border border-blue-400/40"
+              title="Descargar en formato Word (.doc) 100% editable con tablas y membrete"
+            >
+              <FileText size={15} />
+              <span>Descargar Word (.DOC)</span>
+            </button>
+
+            {/* Guardar / Imprimir PDF (Flagship Primary Action) */}
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="px-4.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs transition-all shadow-[0_4px_20px_rgba(16,185,129,0.45)] ring-2 ring-emerald-400/40 flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-98 border border-emerald-300/60"
+              title="Abre el diálogo para guardar como PDF o imprimir en papel A4"
+            >
+              <Printer size={16} className="stroke-[2.5]" />
+              <span>Guardar / Imprimir PDF</span>
+            </button>
+
+            {/* Segmented Utility Pill Group */}
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-800/90 border border-white/10">
+              <button
+                type="button"
+                onClick={handleCopyText}
+                className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Copiar texto plano para mesas de partes virtuales"
+              >
+                {copied ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleExportJson}
+                className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Exportar respaldo de datos en archivo JSON"
+              >
+                <Download size={15} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Importar respaldo desde archivo JSON"
+              >
+                <Upload size={15} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowPrintTips(!showPrintTips)}
+                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                  showPrintTips ? 'bg-amber-500/20 text-amber-300' : 'hover:bg-slate-700 text-slate-400 hover:text-amber-300'
+                }`}
+                title="Instrucciones para exportar en PDF perfecto sin esperas"
+              >
+                <Info size={15} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Main Download Word (.DOC) Button */}
-          <button
-            type="button"
-            onClick={handleDownloadWord}
-            className="px-4 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold font-display text-xs transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center gap-2 cursor-pointer hover:scale-[1.02]"
-            title="Descargar tu CV en formato Word (.doc) 100% editable con tablas y membrete oficial"
-          >
-            <FileText size={16} />
-            <span>Descargar en Word (.DOC)</span>
-          </button>
-
-          {/* Main Print / Save PDF Button */}
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="px-4 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center gap-2 cursor-pointer hover:scale-[1.02]"
-            title="Abre el diálogo para guardar como PDF o imprimir en papel A4"
-          >
-            <Printer size={16} />
-            <span>Guardar / Imprimir PDF</span>
-          </button>
-
-          {/* Copy Plain Text Resume */}
-          <button
-            type="button"
-            onClick={handleCopyText}
-            className="px-3.5 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold font-mono text-xs transition-all border border-white/10 flex items-center gap-1.5 cursor-pointer"
-            title="Copia la Ficha Resumen en texto plano para mesas de partes virtuales"
-          >
-            {copied ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
-            <span>{copied ? '¡Copiado!' : 'Copiar Texto'}</span>
-          </button>
-
-          {/* Help Tips Tooltip Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowPrintTips(!showPrintTips)}
-            className="p-2.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors border border-white/10 cursor-pointer"
-            title="¿Problemas con la impresora? Ver ayuda de exportación"
-          >
-            <Info size={16} className="text-amber-400" />
-          </button>
-
-          {/* Export JSON */}
-          <button
-            type="button"
-            onClick={handleExportJson}
-            className="p-2.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors border border-white/10 cursor-pointer"
-            title="Exportar respaldo de datos en archivo JSON"
-          >
-            <Download size={15} />
-          </button>
-
-          {/* Import JSON */}
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="p-2.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors border border-white/10 cursor-pointer"
-            title="Importar un respaldo de CV en JSON"
-          >
-            <Upload size={15} />
-          </button>
-
-          {/* Reset sample */}
-          <button
-            type="button"
-            onClick={handleResetExample}
-            className="p-2.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors border border-white/10 cursor-pointer"
-            title="Cargar datos de ejemplo"
-          >
-            <RotateCcw size={15} />
-          </button>
-
-          {/* Clear */}
-          <button
-            type="button"
-            onClick={handleClearAll}
-            className="p-2.5 rounded-2xl bg-slate-800/80 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 transition-colors border border-white/10 cursor-pointer"
-            title="Limpiar formulario"
-          >
-            <Trash2 size={15} />
-          </button>
+        {/* Template Selector Section */}
+        <div className="pt-2 border-t border-white/10">
+          <CvTemplateSelector selectedId={templateId} onSelect={handleTemplateChange} />
         </div>
       </div>
+
+      {/* Selector de Modo Móvil (Para smartphones y tablets) */}
+      <div className="lg:hidden flex items-center p-1 bg-slate-900/95 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg text-xs font-bold font-display print:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileTab('editor')}
+          className={`flex-1 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            mobileTab === 'editor'
+              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <FileText size={15} />
+          <span>1. Formulario de Datos</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setMobileTab('preview');
+            if (typeof window !== 'undefined' && window.innerWidth < 640 && zoomLevel > 50) {
+              setZoomLevel(45);
+            }
+          }}
+          className={`flex-1 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            mobileTab === 'preview'
+              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Eye size={15} />
+          <span>2. Vista Previa Hoja A4</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        </button>
+      </div>
+
+      {/* Main Grid: Left Editor + Right Live Preview */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Form Editor (Col 5) */}
+        <div className={`lg:col-span-5 print:hidden ${mobileTab === 'editor' ? 'block' : 'hidden lg:block'}`}>
+          <CvForm
+            data={data}
+            onChange={handleDataChange}
+          />
+        </div>
+
+        {/* Right Preview Column (Col 7 - Sticky pro workstation) */}
+        <div className={`lg:col-span-7 space-y-3 lg:sticky lg:top-4 self-start ${mobileTab === 'preview' ? 'block' : 'hidden lg:block'}`}>
+          {/* Mobile Back Button to Editor */}
+          <button
+            type="button"
+            onClick={() => setMobileTab('editor')}
+            className="lg:hidden w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-emerald-400 font-bold text-xs flex items-center justify-center gap-2 border border-emerald-500/30 shadow-md cursor-pointer print:hidden"
+          >
+            <FileText size={14} />
+            <span>← Volver al Formulario de Datos para seguir editando</span>
+          </button>
+
+          {/* Zoom and Preview Controls Header */}
+          <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 sm:p-3 rounded-2xl bg-slate-900/90 border border-white/10 print:hidden text-xs shadow-lg backdrop-blur-md">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <Eye size={15} className="text-emerald-400 shrink-0" />
+              <span className="font-bold font-display text-white truncate">Vista Previa Hoja A4</span>
+              <span className="px-2 py-0.5 rounded-md bg-slate-800 border border-white/10 text-[10px] font-mono text-slate-300 truncate hidden xl:inline">
+                {templateId === 'servir-cas'
+                  ? 'Ficha Resumen SERVIR'
+                  : templateId === 'modern-executive'
+                  ? 'Moderno Ejecutivo'
+                  : templateId === 'minimal-ats'
+                  ? 'Harvard ATS-Friendly'
+                  : 'Tech & Contemporáneo'}
+              </span>
+            </div>
+
+            {/* Quick Zoom Bar */}
+            <div className="flex items-center gap-1 font-mono text-[11px]">
+              <button
+                type="button"
+                onClick={() => setZoomLevel(Math.max(40, zoomLevel - 10))}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                title="Alejar vista"
+              >
+                <ZoomOut size={13} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setZoomLevel(typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 75)}
+                className={`px-1.5 py-0.5 rounded text-[10px] transition-colors cursor-pointer ${
+                  (zoomLevel === 75 || zoomLevel === 45) ? 'bg-emerald-500/20 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-400 hover:text-white'
+                }`}
+              >
+                {typeof window !== 'undefined' && window.innerWidth < 640 ? '45%' : '75%'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setZoomLevel(85)}
+                className={`px-1.5 py-0.5 rounded text-[10px] transition-colors cursor-pointer ${
+                  zoomLevel === 85 ? 'bg-emerald-500/20 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-400 hover:text-white'
+                }`}
+              >
+                85%
+              </button>
+              <button
+                type="button"
+                onClick={() => setZoomLevel(100)}
+                className={`px-1.5 py-0.5 rounded text-[10px] transition-colors cursor-pointer ${
+                  zoomLevel === 100 ? 'bg-emerald-500/20 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-400 hover:text-white'
+                }`}
+              >
+                100%
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setZoomLevel(Math.min(120, zoomLevel + 10))}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                title="Acercar vista"
+              >
+                <ZoomIn size={13} />
+              </button>
+
+              <div className="h-4 w-px bg-white/10 mx-0.5 hidden sm:block" />
+
+              <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
+                A4: 210×297mm
+              </span>
+            </div>
+          </div>
+
+          {/* Printable Container with Pro Studio Desk Mat */}
+          <div className="w-full overflow-x-auto p-2 sm:p-5 rounded-3xl bg-slate-950/95 border border-white/10 shadow-2xl flex flex-col items-center print:border-none print:bg-transparent print:p-0 print:m-0 print:overflow-visible bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px]">
+            <div
+              id="cv-print-area"
+              style={{
+                transform: isPrinting ? 'none' : `scale(${zoomLevel / 100})`,
+                transformOrigin: 'top center',
+                transition: isPrinting ? 'none' : 'transform 0.15s ease-out',
+              }}
+              className="w-full max-w-[820px] print:max-w-none print:w-full print:transform-none shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] border border-slate-700/30 rounded-sm"
+            >
+              {renderTemplate()}
+            </div>
+
+            {/* Bottom Status Mat Info */}
+            <div className="mt-4 pt-3 border-t border-white/5 w-full flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400 print:hidden px-2">
+              <span className="flex items-center gap-1.5 text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                Hoja A4 Calibrada (210mm × 297mm)
+              </span>
+              <span className="text-slate-500 hidden sm:inline">
+                Exportación 100% nativa para Convocatorias CAS y Empleo
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Empty State Banner (visible when education and experience are empty) */}
+      {data.experiences.length === 0 && data.education.length === 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5 p-4 rounded-2xl bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-900 border border-emerald-500/30 text-xs text-slate-200 print:hidden shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-white text-sm">¿Tu formulario está en blanco?</p>
+              <p className="text-slate-400 text-[11.5px] mt-0.5">
+                Haz clic en <strong>&quot;Ver Ejemplo Llenado&quot;</strong> para cargar un modelo completo con foto, experiencia CAS/Privada y capacitaciones, y ver cómo luce en los 4 diseños.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleLoadFilledExample}
+            className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-emerald-500/25 hover:scale-105"
+          >
+            <Sparkles size={15} />
+            <span>Ver Ejemplo Llenado</span>
+          </button>
+        </div>
+      )}
 
       {/* PDF Export Tips Banner (Collapsible) */}
       {showPrintTips && (
@@ -298,7 +530,7 @@ export function CvCasGenerator() {
           </p>
           <ul className="list-disc list-inside space-y-1.5 text-slate-300 text-[11px] leading-relaxed">
             <li>
-              👉 <strong>Opción 1 (Más rápida):</strong> Pulsa el botón azul <strong className="text-blue-400 font-bold">&quot;Descargar en Word (.DOC)&quot;</strong> arriba. Se descargará el archivo de inmediato, 100% editable en Microsoft Word o Google Docs, y puedes guardarlo como PDF cuando quieras.
+              👉 <strong>Opción 1 (Más rápida):</strong> Pulsa el botón azul <strong className="text-blue-400 font-bold">&quot;Descargar Word (.DOC)&quot;</strong> arriba. Se descargará el archivo de inmediato, 100% editable en Microsoft Word o Google Docs, y puedes guardarlo como PDF cuando quieras.
             </li>
             <li>
               👉 <strong>Opción 2 (PDF directo sin impresora física):</strong> En la ventana de impresión de Windows, cambia la impresora a <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Microsoft Print to PDF</strong> o <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Guardar como PDF</strong>. De esa manera Windows no busca ninguna máquina física y genera el PDF al instante.
@@ -313,81 +545,97 @@ export function CvCasGenerator() {
         </div>
       )}
 
-      {/* Template Selector Bar (Print hidden) */}
-      <div className="print:hidden">
-        <CvTemplateSelector
-          selectedId={templateId}
-          onSelect={handleTemplateChange}
-        />
-      </div>
+      {/* Modal de Confirmación para Limpiar Formulario */}
+      {showClearModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm print:hidden animate-in fade-in duration-200">
+          <div className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-white/15 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
+                <Trash2 size={24} />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white font-display">
+                  ¿Deseas limpiar todo el formulario?
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Esta acción iniciará un CV 100% en blanco.
+                </p>
+              </div>
+            </div>
 
-      {/* Main Grid: Left Editor + Right Live Preview */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Form Editor (Col 5) */}
-        <div className="lg:col-span-5 print:hidden">
-          <CvForm
-            data={data}
-            onChange={handleDataChange}
-          />
+            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-200 leading-relaxed">
+              ⚠️ <strong>Atención:</strong> Se vaciarán todos los datos personales, resumen, grados académicos, experiencia laboral y habilidades que hayas redactado.
+            </div>
+
+            <p className="text-xs text-slate-300">
+              💡 <em>Consejo:</em> Si deseas conservar tu información actual, puedes presionar <strong>&quot;Guardar JSON&quot;</strong> antes de vaciar el formulario.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handleExportJson}
+                className="w-full sm:w-auto px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 border border-white/10 cursor-pointer"
+                title="Descargar copia de seguridad en JSON"
+              >
+                <Download size={14} />
+                <span>Guardar JSON</span>
+              </button>
+              <div className="flex-1" />
+              <button
+                type="button"
+                onClick={() => setShowClearModal(false)}
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleClearAll}
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-black shadow-lg shadow-rose-950/50 flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Trash2 size={14} />
+                <span>Sí, Vaciar Todo</span>
+              </button>
+            </div>
+          </div>
         </div>
+      )}
 
-        {/* Right Preview Column (Col 7) */}
-        <div className="lg:col-span-7 space-y-3">
-          {/* Zoom and Preview Controls Header */}
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-900/80 border border-white/10 print:hidden text-xs">
-            <div className="flex items-center gap-2">
-              <Eye size={15} className="text-emerald-400" />
-              <span className="font-bold font-display text-white">Vista Previa Hoja A4</span>
-              <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
-                (Visualización en tiempo real)
-              </span>
-            </div>
+      {/* Barra Flotante Inferior en Móviles */}
+      <div className="lg:hidden fixed bottom-3 left-3 right-3 z-40 bg-slate-900/95 backdrop-blur-xl border border-white/15 p-2 rounded-2xl shadow-2xl flex items-center justify-between gap-2 print:hidden">
+        <button
+          type="button"
+          onClick={() => {
+            const next = mobileTab === 'editor' ? 'preview' : 'editor';
+            setMobileTab(next);
+            if (next === 'preview' && typeof window !== 'undefined' && window.innerWidth < 640 && zoomLevel > 50) {
+              setZoomLevel(45);
+            }
+          }}
+          className="px-3 py-2 rounded-xl bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-white/10 cursor-pointer"
+        >
+          {mobileTab === 'editor' ? <Eye size={14} className="text-emerald-400" /> : <FileText size={14} className="text-blue-400" />}
+          <span>{mobileTab === 'editor' ? 'Ver A4' : 'Editar'}</span>
+        </button>
 
-            <div className="flex items-center gap-1.5 font-mono text-[11px]">
-              <button
-                type="button"
-                onClick={() => setZoomLevel(Math.max(50, zoomLevel - 10))}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
-                title="Alejar vista"
-              >
-                <ZoomOut size={13} />
-              </button>
-              <span className="px-2 py-0.5 rounded bg-slate-950 text-emerald-400 font-bold">
-                {zoomLevel}%
-              </span>
-              <button
-                type="button"
-                onClick={() => setZoomLevel(Math.min(120, zoomLevel + 10))}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
-                title="Acercar vista"
-              >
-                <ZoomIn size={13} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setZoomLevel(100)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors ml-1"
-                title="Ajustar al 100%"
-              >
-                <Maximize2 size={13} />
-              </button>
-            </div>
-          </div>
-
-          {/* Printable Container */}
-          <div className="w-full overflow-x-auto p-2 sm:p-4 rounded-3xl bg-slate-950/90 border border-white/10 flex justify-center print:border-none print:bg-white print:p-0 print:m-0 print:overflow-visible">
-            <div
-              id="cv-print-area"
-              style={{
-                transform: `scale(${zoomLevel / 100})`,
-                transformOrigin: 'top center',
-                transition: 'transform 0.15s ease-out',
-              }}
-              className="w-full max-w-[820px] print:max-w-none print:w-full print:transform-none"
-            >
-              {renderTemplate()}
-            </div>
-          </div>
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={handleDownloadWord}
+            className="px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black flex items-center gap-1 cursor-pointer"
+          >
+            <FileText size={14} />
+            <span>Word</span>
+          </button>
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-black flex items-center gap-1 shadow-md shadow-emerald-500/30 cursor-pointer"
+          >
+            <Printer size={14} />
+            <span>PDF A4</span>
+          </button>
         </div>
       </div>
     </div>

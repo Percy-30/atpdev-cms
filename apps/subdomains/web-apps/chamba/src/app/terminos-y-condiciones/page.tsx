@@ -4,9 +4,15 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Términos y Condiciones de Uso — Chamba Pro',
-  description: 'Términos y condiciones de uso de la plataforma Chamba Pro. Descargo de responsabilidad, naturaleza informativa no gubernamental y política de uso gratuito sin cobros.',
+  description: 'Términos y condiciones de uso de Chamba Pro. Descargo de responsabilidad, naturaleza informativa no gubernamental y política de uso 100% gratuito.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/terminos-y-condiciones',
+  },
+  openGraph: {
+    title: 'Términos y Condiciones de Uso — Chamba Pro',
+    description: 'Términos y condiciones de uso de la plataforma Chamba Pro.',
+    url: 'https://empleos.atpdev.dev/terminos-y-condiciones',
+    type: 'website',
   },
 };
 

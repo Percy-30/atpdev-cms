@@ -6,6 +6,27 @@ export type OdpeVacancy = {
   deadline: string;
 };
 
+export type JobPlaza = {
+  cas_code?: string;
+  title: string;
+  education?: string;
+  experience?: string;
+  salary?: string;
+  bases_url?: string;
+};
+
+export type EducationLevel = 
+  | 'Secundaria' 
+  | 'Técnico' 
+  | 'Egresado' 
+  | 'Bachiller' 
+  | 'Titulado' 
+  | 'Maestría / Doctorado'
+  | 'Universitarios'
+  | 'Técnico / Universitario'
+  | 'Secundaria, Técnicos, Universitarios'
+  | (string & {});
+
 export type JobPosting = {
   id: string;
   title: string;
@@ -17,7 +38,7 @@ export type JobPosting = {
   sector_type: 'CAS 1057' | 'D.L. 728' | 'D.L. 276' | 'Locación / FAG' | 'Privado' | 'Prácticas';
   region: string;
   category: string;
-  education_level: 'Secundaria' | 'Técnico' | 'Egresado' | 'Bachiller' | 'Titulado' | 'Maestría / Doctorado';
+  education_level: EducationLevel;
   salary_min?: number;
   salary_max?: number;
   salary_text: string;
@@ -27,8 +48,15 @@ export type JobPosting = {
   benefits?: string[];
   apply_url: string;
   bases_pdf_url?: string;
+  cuadro_plazas_url?: string;
+  cronograma_url?: string;
+  anexos_url?: string;
+  guia_postulante_url?: string;
+  resultados_url?: string;
+  fuente_url?: string;
   official_portal_name?: string;
   odpe_vacancies?: OdpeVacancy[];
+  plazas?: JobPlaza[];
   steps_to_apply?: string[];
   start_date: string;
   end_date: string;
@@ -69,7 +97,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Asignación por movilidad para labores de campo y acondicionamiento de mesas."
     ],
     apply_url: "https://reclutamiento.onpe.gob.pe/convocatorias",
-    bases_pdf_url: "https://reclutamiento.onpe.gob.pe/convocatorias",
+    bases_pdf_url: "https://drive.google.com/file/d/1Jvtj7QBNaiPxcRQ5Dyywp5TmbPwcRn_Z/view?usp=drive_link",
     official_portal_name: "ONPE SIGLOC Portal Oficial",
     steps_to_apply: [
       "1ro. Ingresar al portal oficial ONPE SIGLOC en: https://reclutamiento.onpe.gob.pe/convocatorias",
@@ -132,26 +160,26 @@ export const INITIAL_JOBS: JobPosting[] = [
     status: "Vigente",
     created_at: "2026-08-29T08:00:00Z"
   },
-  {
+    {
     id: "job-pais-02",
     title: "Programa PAIS: (19) Gestores Institucionales & Monitores Regionales",
     slug: "programa-pais-gestores-institucionales-monitor-regional",
-    entity_name: "PROGRAMA NACIONAL PAIS - MIDIS",
+    entity_name: "PROGRAMA NACIONAL PLATAFORMAS DE ACCIÓN PARA LA INCLUSIÓN SOCIAL - PAÍS",
     entity_ruc: "20602324976",
     entity_verified: true,
-    entity_logo: "/logos/midis.jpg",
+    entity_logo: "/logos/programa-pais.jpg",
     sector_type: "CAS 1057",
-    region: "Cusco",
+    region: "Ayacucho, Cajamarca, Cusco, Huánuco, Junín, Loreto, Pasco, Puno",
     category: "Ciencias Sociales y Humanidades",
-    education_level: "Titulado",
-    salary_min: 3500,
-    salary_max: 4500,
-    salary_text: "S/. 4,000 Soles mensual",
+    education_level: "Universitarios",
+    salary_min: 3000,
+    salary_max: 6000,
+    salary_text: "Entre S/. 3,000.00 y 6,000.00 Soles",
     vacancies_count: 19,
     description: "Gestión, coordinación e implementación de servicios sociales del Estado en los Tambos y plataformas itinerantes del Programa PAIS en Ayacucho, Cajamarca, Cusco, Huánuco, Junín, Loreto, Pasco y Puno.",
     requirements: [
-      "Formación: Título Profesional Universitario en Sociología, Trabajo Social, Educación o Ciencia Política.",
-      "Experiencia: Experiencia mínima de 2 años en gestión de programas sociales o desarrollo comunitario.",
+      "Formación: Título o Bachiller Profesional Universitario según cada código CAS.",
+      "Experiencia: Experiencia mínima de 2 a 4 años en gestión pública, programas sociales o desarrollo comunitario.",
       "Idioma: Dominio de lengua originaria (Quechua / Aymara) deseable según región de intervención."
     ],
     benefits: [
@@ -159,54 +187,886 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Seguro Médico de Salud ESSALUD / EPS.",
       "Asignación de viáticos por desplazamiento en plataformas itinerantes."
     ],
-    apply_url: "https://www.gob.pe/institucion/pais/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/pais/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo Programa PAÍS",
+    apply_url: "http://convocatorias.pais.gob.pe/convocatorias/externo/portal/ConvocatoriasPortal.aspx",
+    bases_pdf_url: "https://drive.google.com/file/d/1oh6J5FzNKlGf7aPM8I-zP9uusBVyYvBN/view?usp=drive_link",
+    official_portal_name: "Convocatorias Programa PAÍS Portal Oficial",
     start_date: "2026-08-28",
     end_date: "2026-09-09",
     featured: true,
     views_count: 2190,
     clicks_count: 670,
     status: "Vigente",
-    created_at: "2026-08-28T10:00:00Z"
+    created_at: "2026-08-28T10:00:00Z",
+    plazas: [
+      {
+            "cas_code": "CAS Nº 065",
+            "title": "(1) GESTOR/A INSTITUCIONAL AYACUCHO - AUCARA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1oh6J5FzNKlGf7aPM8I-zP9uusBVyYvBN/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 066",
+            "title": "(1) GESTOR/A INSTITUCIONAL AYACUCHO - PARARCA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1waXbCeY7qQ9LEH92u9bEonGMDAFAn88y/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 067",
+            "title": "(1) GESTOR/A INSTITUCIONAL AYACUCHO - MARCABAMBA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1QFgVfJ0nbAEns88J-pcI77SD7ywmnEVC/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 068",
+            "title": "(1) GESTOR/A INSTITUCIONAL AYACUCHO - SAMUGARI",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1pjG-gssr2uuF4fbjqqQUiJ41kBg_Aoao/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 069",
+            "title": "(1) MONITOR/ REGIONAL DE PLATAFORMAS CAJAMARCA - CAJAMARCA",
+            "education": "título profesional universitario en Antropología, Sociología, Economía, Agronomía, Zootecnia, Ingeniería Agropecuaria, ciencias de la salud o afines por la formación.",
+            "experience": "(04) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 6000",
+            "bases_url": "https://drive.google.com/file/d/1A0-2IJTr2t4kKTGuwzAOFaufaxVgaysc/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 070",
+            "title": "(1) GESTOR/A INSTITUCIONAL CUSCO - HUANOQUITE",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/174xv7Dc_qyhLvmCGFjCe0GH8kmrEipOt/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 071",
+            "title": "(1) GESTOR/A INSTITUCIONAL CUSCO - OMACHA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1s1mTn9RzwEugDlzHm6RTqrP36d_ljmgW/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 072",
+            "title": "(1) GESTOR/A INSTITUCIONAL CUSCO - PAUCARTAMBO",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1x5zYqihq8myz9swH6rVOn0PZ2IE2R_t3/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 073",
+            "title": "(1) GESTOR/A INSTITUCIONAL CUSCO - QUELLOUNO",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/15js57iWEa75h5X-qcCTd4HTnl4hsUnkk/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 074",
+            "title": "(1) GESTOR/A INSTITUCIONAL HUÁNUCO - CHAGLLA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1wHl3HtyIZFeVblp5Z0y4iIAApANtPe3z/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 075",
+            "title": "(1) GESTOR/A INSTITUCIONAL HUÁNUCO - MONZON",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1TBJAWwORr3L2Lg1w5xydoVOb28G8rfWF/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 076",
+            "title": "(1) GESTOR/A INSTITUCIONAL HUÁNUCO - CAYNA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1yfb-P-xrflwocmbi29kZX2Z7TGWRj5tr/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 077",
+            "title": "(1) GESTOR/A INSTITUCIONAL JUNÍN - PANGOA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1sAJLb8RcHn_LLJoszTfUNwGpv_mifIW_/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 078",
+            "title": "(1) GESTOR/A INSTITUCIONAL JUNÍN - SANTO DOMINGO DE\n          ACOBAMBA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1yRc_XfVfm-YZhbKjkDeDG0qCTmoVQ_aq/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 079",
+            "title": "(1) GESTOR/A INSTITUCIONAL LORETO - PEBAS",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1nP9yYgZsmojfchXuXkEerj6u_px_Gs2s/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 080",
+            "title": "(1) GESTOR/A INSTITUCIONAL PASCO - YANAHUANCA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1ORFPff99b4ENWYtpkepe850WGKOiutG9/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 081",
+            "title": "(1) GESTOR/A INSTITUCIONAL PUNO - AYAVIRI",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1pKM0LGxF2_IdWkV_UgGhXPIVC338pyoS/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 082",
+            "title": "(1) GESTOR/A INSTITUCIONAL PUNO - OCUVIRI",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1FxSzPkpMdpbx_rYDO9ygNkfcAhleksn_/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 083",
+            "title": "(1) GESTOR/A INSTITUCIONAL PUNO - PUTINA",
+            "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
+            "experience": "(02) años de Experiencia General en el sector público o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1m4FU_-vo8YgMkFuqJ8wu8NelKh-ayjiU/view?usp=drive_link"
+      }
+]
   },
   {
+    id: "job-juntos-01",
+    title: "Programa Juntos: (04) Gestores Locales, Comunicadores",
+    slug: "programa-juntos-gestores-locales-comunicadores",
+    entity_name: "PROGRAMA NACIONAL DE APOYO DIRECTO A LOS MAS POBRES - JUNTOS",
+    entity_ruc: "20100000000",
+    entity_verified: true,
+    entity_logo: "/logos/programa-juntos.jpg",
+    sector_type: "CAS 1057",
+    region: "Lima, Piura",
+    category: "Administración y Contabilidad",
+    education_level: "Técnico / Universitario",
+    salary_min: 2500,
+    salary_max: 6000,
+    salary_text: "Entre S/. 2,500.00 y 6,000.00 Soles",
+    vacancies_count: 4,
+    description: "Convocatoria oficial PROGRAMA NACIONAL DE APOYO DIRECTO A LOS MAS POBRES (JUNTOS): Gestores Locales de Desarrollo Social y Especialistas en Comunicación para Piura y Lima.",
+    requirements: [
+      "Cumplir con el perfil de formación académica especificado para cada código CAS (técnico, bachiller o titulado).",
+      "Acreditar experiencia general y específica según el puesto convocado (2 a 5 años).",
+      "Presentar la documentación requerida en las bases oficiales del concurso."
+    ],
+    benefits: [
+      "Contrato laboral bajo régimen CAS 1057 con todos los beneficios de ley.",
+      "Aportes al seguro de salud ESSALUD y régimen previsional (ONP/AFP)."
+    ],
+    apply_url: "https://www.gob.pe/institucion/juntos/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://drive.google.com/file/d/1cemIyOm3MeY9CPcvJ92v5pELZCksXDUK/view?usp=drive_link",
+    official_portal_name: "Portal de Convocatorias Programa JUNTOS",
+    start_date: "2026-08-28",
+    end_date: "2026-09-08",
+    featured: true,
+    views_count: 5820,
+    clicks_count: 2080,
+    status: "Vigente",
+    created_at: "2026-08-28T12:00:00Z",
+    plazas: [
+      {
+        cas_code: "CAS Nº 157",
+        title: "(1) GESTOR LOCAL DE DESARROLLO SOCIAL PIURA - FRIAS",
+        education: "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+        experience: "(03) años en el sector público y/o privado.",
+        salary: "S/. 3000",
+        bases_url: "https://drive.google.com/file/d/1cemIyOm3MeY9CPcvJ92v5pELZCksXDUK/view?usp=drive_link"
+      },
+      {
+        cas_code: "CAS Nº 158",
+        title: "(1) GESTOR LOCAL - ZONA ALEJADA PIURA - EL CARMEN DE LA FRONTERA",
+        education: "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+        experience: "(02) años en el sector público y/o privado.",
+        salary: "S/. 3000",
+        bases_url: "https://drive.google.com/file/d/1zVxymaUCX6FCyCSp9m-iPaTxeW1Il3bP/view?usp=drive_link"
+      },
+      {
+        cas_code: "CAS Nº 159",
+        title: "(1) COMUNICADOR/A PIURA - PIURA",
+        education: "bachiller universitario en Ciencias de la Comunicación, Comunicación Social, Periodismo, o afines por la formación.",
+        experience: "(03) años en el sector público y/o privado.",
+        salary: "S/. 2500",
+        bases_url: "https://drive.google.com/file/d/1toZXTsUZzDBInRwPF2-AwmLg-oGbl9GP/view?usp=drive_link"
+      },
+      {
+        cas_code: "CAS Nº 160",
+        title: "(1) ESPECIALISTA EN COMUNICACIÓN LIMA - MIRAFLORES",
+        education: "título profesional universitario en Ciencias de la Comunicación o Publicidad o Periodismo o Relaciones Públicas o afines por la formación.",
+        experience: "(05) años en el sector público y/o privado.",
+        salary: "S/. 6000",
+        bases_url: "https://drive.google.com/file/d/1zbwGCzgZ-znf9jPJWvqABswlHStH3Bea/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    id: "job-juntos-02",
+    title: "Programa Juntos: (34) Gestores Locales, Asistente, Comunicador, Administrador, Otros",
+    slug: "programa-juntos-gestores-locales-asistente",
+    entity_name: "PROGRAMA NACIONAL DE APOYO DIRECTO A LOS MAS POBRES - JUNTOS",
+    entity_ruc: "20100000000",
+    entity_verified: true,
+    entity_logo: "/logos/programa-juntos.jpg",
+    sector_type: "CAS 1057",
+    region: "Nacional (Cajamarca, Lima, Piura, Ayacucho, otros)",
+    category: "Administración y Contabilidad",
+    education_level: "Técnico / Universitario",
+    salary_min: 2000,
+    salary_max: 6000,
+    salary_text: "Entre S/. 2,000.00 y 6,000.00 Soles",
+    vacancies_count: 34,
+    description: "Convocatoria nacional Programa JUNTOS: (34) vacantes para gestores locales, asistentes administrativos, comunicadores y coordinadores con bases oficiales en PDF.",
+    requirements: [
+      "Cumplir con el perfil de formación académica especificado para cada código CAS.",
+      "Acreditar experiencia laboral general y específica según las bases oficiales del concurso.",
+      "Presentar anexos y formatos oficiales requeridos en el portal institucional."
+    ],
+    benefits: [
+      "Contrato laboral bajo régimen CAS 1057 con todos los beneficios de ley.",
+      "Aportes al seguro de salud ESSALUD y régimen previsional (ONP/AFP)."
+    ],
+    apply_url: "https://www.gob.pe/institucion/juntos/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://drive.google.com/file/d/1NQ-rjwgfNJcJD1MZeQ33iKg9PziapuV3/view?usp=drive_link",
+    official_portal_name: "Portal de Convocatorias Programa JUNTOS",
+    start_date: "2026-08-25",
+    end_date: "2026-09-08",
+    featured: true,
+    views_count: 4890,
+    clicks_count: 1780,
+    status: "Vigente",
+    created_at: "2026-08-25T12:00:00Z",
+    plazas: [
+      {
+            "cas_code": "CAS Nº 123",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL CAJAMARCA -\n          CAJAMARCA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1NQ-rjwgfNJcJD1MZeQ33iKg9PziapuV3/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 124",
+            "title": "(1) GESTOR LOCAL - ZONA ALEJADA PARA LA UNIDAD TERRITORIAL\n          CAJAMARCA - JAEN",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1t96SWSrwzGKaVzUDDbcK08peR3zLpGhb/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 127",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LIMA - LIMA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1Er8ekPhCv49MHrArcdJQO68V2cZNPEXR/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 128",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LIMA - LIMA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1qX-h6jXBjSbhvxr3YdfSmZvkuUdVC3v9/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 129",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LIMA - LIMA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1cugPbaWM5dz-U6CfrSAdtCo1A0uxrbFj/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 130",
+            "title": "(2) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LIMA - LIMA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1ukDuegN36Iw82Vr0f3BJoojNY1pwXL53/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 131",
+            "title": "(1) ASISTENTE DE ARCHIVO PARA LA UNIDAD TERRITORIAL LIMA -\n          LIMA",
+            "education": "Egresado técnico básico y/o egresado técnico superior en las carreras de Administración, Secretariado, Archivística, Computación, Gestión Documental, Historia, Bibliotecología o afines por la formación. O egresado universitario en las",
+            "experience": "de (01) año en el sector público y/o privado.",
+            "salary": "S/. 1700",
+            "bases_url": "https://drive.google.com/file/d/1dany0SdsKRSKP1p_DZviJJalWJ_nIlzF/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 132",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          LIRCAY",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1hrRzH-Y8NUIGSIENqL8o7MCsu6Nw0UMQ/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 133",
+            "title": "(2) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          CHURCAMPA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1Y5uF5H2CNV-I8rHIHzsD0SItV4bhalM9/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 134",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          HUANCAVELICA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1djgqg1vaqeUaHBQazNYZhe53ww_D4a4p/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 135",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          HUANCAVELICA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1wFiKIiIWpSSlXLS90ySYXoyIytPh8XKT/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 137",
+            "title": "(1) TÉCNICO DE ORIENTACIÓN Y ATENCIÓN AL USUARIO&nbsp;\n          PARA LA UNIDAD TERRITORIAL AMAZONAS CONDORCANQUI - NIEVA",
+            "education": "Titulado Técnico Superior en Administración, Secretariado Ejecutivo o Computación e Informática, Egresado universitario en Administración, Derecho o Ciencias de la Comunicación.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 1700",
+            "bases_url": "https://drive.google.com/file/d/1XjdcWFHACBW-u5XgsMDC3Q3YAgoyFOdh/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 138",
+            "title": "(2) GESTORES LOCALES PARA LA UNIDAD TERRITORIAL AMAZONAS\n          BAGUA&nbsp;",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1a1zMgXXVHVgPmMJ3JpZsgRp1Y7ugLk9E/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 139",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL APURÍMAC\n          APURÍMAC - CHINCHEROS",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1ql8nSjSLtamAVUE0Dau0xwokgup-_0Hm/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 140",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL APURÍMAC -\n          CHALHUANCA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1gaStkAaVctAQegRnmbqOFdPRumUFePWg/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 141",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL CUSCO -\n          KIMBIRI",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1c-N1NpvaIgkh7knb5K2zO-fl4MNfHyc3/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 142",
+            "title": "(1) COMUNICADOR PARA LA UNIDAD TERRITORIAL CUSCO - CUSCO",
+            "education": "Bachiller universitario en Ciencias de la Comunicación, Comunicación Social, Periodismo, o afines por la formación.",
+            "experience": "Experiencia General de tres (03) años en el Sector Público y/o Privado.",
+            "salary": "S/. 2500",
+            "bases_url": "https://drive.google.com/file/d/1h4WuXwCtmEYM_Y27NQ8CCVyZkO5_QCAr/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 143",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL ÁNCASH -\n          POMABAMBA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1d3WnDchNJFvrgyibBoT0r6U3a94JXTbR/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 144",
+            "title": "(1) GESTOR DE DESARROLLO SOCIAL PARA LA UNIDAD TERRITORIAL\n          AYACUCHO - HUANTA",
+            "education": "Título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (03) años en el sector público y/o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1s_NP3Hew23zZU8KQbWUfZqO2h_2nIYYQ/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 145",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LORETO -\n          REQUENA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1CEK9FZJLq0WYq1YXNqrQ9J7OUIesDSyK/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 146",
+            "title": "(1) ADMINISTRADOR PARA LA UNIDAD TERRITORIAL LORETO -\n          IQUITOS",
+            "education": "Título universitario en Ciencias Administrativas o Ciencias Económicas o Ciencias Contables o Ingeniería Industrial o afines por la formación.",
+            "experience": "de (05) años en el sector público y/o privado.",
+            "salary": "S/. 4000",
+            "bases_url": "https://drive.google.com/file/d/1xwYS_LxnKBVsPAuvkMZEpRukVDVPgOIA/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 147",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LORETO\n          YURIMAGUAS LORETO - YURIMAGUAS",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1lBbHQZTtnTqfauB2x9Km8Lxt1GLRsrOi/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 148",
+            "title": "(1) ADMINISTRADOR PARA LA UNIDAD TERRITORIAL MADRE DE DIOS\n          MADRE DE DIOS - TAMBOPATA",
+            "education": "Título universitario en Ciencias Administrativas o Ciencias Económicas o Ciencias Contables o Ingeniería Industrial o afines por la formación.",
+            "experience": "de (05) años en el sector público y/o privado.",
+            "salary": "S/. 4000",
+            "bases_url": "https://drive.google.com/file/d/1sWEfwwu-BkwhARdeKBcYeddLWC3XrX0g/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 149",
+            "title": "(1) COORDINADOR/A TÉCNICO ZONAL PARA LA UNIDAD TERRITORIAL\n          TACNA TACNA - TACNA",
+            "education": "Título profesional universitario en Ciencias Sociales, Ciencias Económicas y Administrativas, Ciencias de la Salud, Educación, Ciencias Agropecuarias, Ingeniería e Informática o afines por la formación.",
+            "experience": "de (06) años en el sector público y/o privado.",
+            "salary": "S/. 3500",
+            "bases_url": "https://drive.google.com/file/d/1Mfbsemb2NqjO5AiSJPdyAvjSZZcVdSNx/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 150",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUÁNUCO\n          HUÁNUCO - LLATA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1I3_Xygl3pIF-W3jqxJv6n8vlt3TcMPxw/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 151",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUÁNUCO\n          HUÁNUCO - RUPA-RUPA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1xpIMXfOxttIbGrm9-7pTFPp41gHlJHt3/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 152",
+            "title": "(1) GESTOR LOCAL - ZONA ALEJADA PARA LA UNIDAD TERRITORIAL\n          SAN MARTÍN SAN MARTÍN - HUICUNGO",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 3000",
+            "bases_url": "https://drive.google.com/file/d/1vcgOrKskYd-Pn0plMZtqSHaQmH4faHzl/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 153",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN\n          MARTÍN - RIOJA",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1mqT3qJZPxxqrKlUaASMvtspYXlHVWN-U/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 154",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN\n          MARTÍN - TOCACHE",
+            "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+            "experience": "de (02) años en el sector público y/o privado.",
+            "salary": "S/. 2000",
+            "bases_url": "https://drive.google.com/file/d/1_QU6ARv61upHtsBkECG1nwER_ALcCgGS/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 155",
+            "title": "(1) ESPECIALISTA LIMA - MIRAFLORES",
+            "education": "Título universitario en Ingeniería de Sistemas, Informática, de Software, de Computación e Informática.",
+            "experience": "de (03) años en el sector público y/o privado.",
+            "salary": "S/. 7000",
+            "bases_url": "https://drive.google.com/file/d/1s14hSAXxA6wAehujJxmby8C3M0nk-j5f/view?usp=drive_link"
+      },
+      {
+            "cas_code": "CAS Nº 156",
+            "title": "(1) RESPONSABLE EN EJECUCIÓN CONTRACTUAL LIMA - MIRAFLORES",
+            "education": "Título universitario en Derecho.",
+            "experience": "de (07) años en el sector público y/o privado.",
+            "salary": "S/. 9000",
+            "bases_url": "https://drive.google.com/file/d/134MLmR3Ap4i1IVIv5enz_2qlKm_32MUl/view?usp=drive_link"
+      }
+]
+  },
+    {
     id: "job-red-salud-03",
-    title: "Red de Salud Valle del Mantaro: (26) Personal de Salud Asistencial y Administrativo",
+    title: "Red de Salud Valle del Mantaro 2026: (26) Personal de la Salud, Asistencial y Administrativo",
     slug: "red-salud-valle-mantaro-personal-salud-asistencial-administrativo",
     entity_name: "RED DE SALUD VALLE DEL MANTARO - GORE JUNÍN",
     entity_ruc: "20486082490",
     entity_verified: true,
     entity_logo: "/logos/red-salud-mantaro.jpg",
-    sector_type: "CAS 1057",
-    region: "Junín",
+    sector_type: "D.L. 276",
+    region: "Junín (Huancayo, Concepción)",
     category: "Salud y Medicina",
-    education_level: "Titulado",
-    salary_min: 2800,
-    salary_max: 5200,
-    salary_text: "S/. 3,800 Soles mensual",
+    education_level: "Secundaria, Técnicos, Universitarios",
+    salary_min: 1444,
+    salary_max: 6624,
+    salary_text: "Entre S/. 1,444.00 y 6,624.00 Soles",
     vacancies_count: 26,
-    description: "Convocatoria pública CAS para la contratación de Médicos, Enfermeros, Obstetras, Cirujanos Dentistas, Químicos Farmacéuticos y Asistentes Administrativos para Centros de Salud en la provincia de Huancayo y Valle del Mantaro.",
+    description: "Convocatoria pública D.L. 276 para contratación indeterminada de personal de salud asistencial y administrativo en centros de salud de Huancayo y Concepción.",
     requirements: [
-      "Formación: Título Profesional en Medicina, Enfermería, Obstetricia o Administración (Colegiado y Habilitado).",
-      "Experiencia: Experiencia mínima de 1 año en establecimientos de salud del sector público.",
-      "Otros: Constancia de SERUMS concluido emitido por el MINSA."
+      "Formación académica acreditada según cada código de plaza (médicos, enfermeros, obstetras, técnicos y auxiliares).",
+      "Experiencia laboral de 1 a 3 años según corresponda en establecimientos del sector público o privado.",
+      "Presentación de documentos en Mesa de Partes RSVM (Av. Giráldez N.º 886 - Huancayo) el 08 de Setiembre de 2026."
     ],
     benefits: [
-      "Contrato CAS Regular D.L. 1057.",
-      "Guardias hospitalarias según programación.",
-      "Bonificación por zona rural / urbano marginal."
+      "Nombramiento y contratación bajo régimen D.L. 276 a plazo indeterminado.",
+      "Beneficios de ley, seguro social de salud ESSALUD y régimen de pensiones."
     ],
-    apply_url: "https://www.diresajunin.gob.pe/",
-    bases_pdf_url: "https://www.diresajunin.gob.pe/archivos/",
-    official_portal_name: "Portal Oficial DIRESA Junín / Red de Salud Valle del Mantaro",
+    apply_url: "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf",
+    bases_pdf_url: "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf",
+    official_portal_name: "Red de Salud Valle del Mantaro - Portal Oficial",
     start_date: "2026-08-27",
     end_date: "2026-09-08",
     featured: true,
-    views_count: 1850,
-    clicks_count: 510,
+    views_count: 3850,
+    clicks_count: 1420,
     status: "Vigente",
-    created_at: "2026-08-27T12:00:00Z"
+    created_at: "2026-08-27T12:00:00Z",
+    plazas: [
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ABOGADO JUNÍN - HUANCAYO",
+            "education": "titulado en la carrera universitaria de Abogado",
+            "experience": "03 años de experiencia",
+            "salary": "S/. 1444",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) AUXILIAR ASISTENCIAL JUNÍN - CONCEPCION",
+            "education": "secundaria completa",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2697",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) AUXILIAR ASISTENCIAL JUNÍN - CONCEPCION",
+            "education": "secundaria completa",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2697",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ENFERMERA/O JUNÍN - CHILCA",
+            "education": "titulado en la carrera de Enfermería, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ENFERMERA/O JUNÍN - CHILCA",
+            "education": "titulado en la carrera de Enfermería, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ENFERMERA/O JUNÍN - CONCEPCION",
+            "education": "titulado en la carrera de Enfermería, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ENFERMERA/O JUNÍN - EL TAMBO",
+            "education": "titulado en la carrera de Enfermería, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ENFERMERA/O JUNÍN - ORCOTUNA",
+            "education": "titulado en la carrera de Enfermería, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ENFERMERA/O JUNÍN - ORCOTUNA",
+            "education": "titulado en la carrera de Enfermería, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO I JUNÍN - HUANCAYO",
+            "education": "titulado en las carreras universitarias de Ciencias Administrativas, economicas, contables o carreras afines al organo y cargo. - Colegiado y habilitado",
+            "experience": "03 años de experiencia",
+            "salary": "S/. 1444",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) MÉDICO JUNÍN - CONCEPCION",
+            "education": "titulado en la carrera de Medicina Humana, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 6624",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) MÉDICO JUNÍN - EL TAMBO",
+            "education": "titulado en la carrera de Medicina Humana, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 6624",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) MÉDICO JUNÍN - EL TAMBO",
+            "education": "titulado en la carrera de Medicina Humana, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 6624",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ODONTOLOGO JUNÍN - HUANCAYO",
+            "education": "titulado en la carrera de odontologia o estomatologia, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) ODONTOLOGO JUNÍN - SICAYA",
+            "education": "titulado en la carrera de odontologia o estomatologia, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) QUIMICO FARMACEÚTICO JUNÍN - CHILCA",
+            "education": "titulado en la carrera universitaria de Farmacia y bioquimica, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TÉCNICO ASISTENCIAL JUNÍN - HUANCAYO",
+            "education": "titulado en carreras tècnicas en salud",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2775",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TÉCNICO EN ENFERMERÍA I JUNÍN - CHILCA",
+            "education": "titulado en la carrera técnica de Enfermería",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2775",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TÉCNICO EN ENFERMERÍA I JUNÍN - EL TAMBO",
+            "education": "titulado en la carrera técnica de Enfermería",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2775",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TÉCNICO EN ENFERMERÍA I JUNÍN - HUANCAYO",
+            "education": "titulado en la carreras tècnica de Enfermería",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2775",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TÉCNICO EN ENFERMERÍA I JUNÍN - HUANCAYO",
+            "education": "titulado en la carrera técnica de Enfermería",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2775",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TÉCNICO EN SALUD PÚBLICA JUNÍN - HUANCAYO",
+            "education": "titulao en carreras técnicas en Salud Pública o afines, o estudios universitarios en carreras de ciencias de la salud, no menor a seis semestres académicos",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 2775",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TECNÓLOGO MÉDICO JUNÍN - SAPALLANGA",
+            "education": "titulado en la carrera de tecnología medica en laboratoria clínico y anatomía patológica, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TRABAJADORA SOCIAL JUNÍN - HUAYUCACHI",
+            "education": "titulado en la carrera de Trabajo Social, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TRABAJADORA SOCIAL JUNÍN - NUEVE DE JULIO",
+            "education": "titulado en la carrera de Trabajo Social, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      },
+      {
+            "cas_code": "276 Nº 02",
+            "title": "(1) TRABAJADORA SOCIAL JUNÍN - ORCOTUNA",
+            "education": "titulado en la carrera de Trabajo Social, colegiado, habilitado y resoluciòn de termino de serums",
+            "experience": "01 año de experiencia",
+            "salary": "S/. 5300 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Red de Salud Valle del Mantaro",
+            "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
+      }
+]
+  },
+  {
+    id: "job-sat-sullana-01",
+    title: "SAT Sullana: (12) Orientadores, Cajeros, Auxiliares Administrativos, Especialistas",
+    slug: "sat-sullana-orientadores-cajeros-auxiliares-especialistas",
+    entity_name: "SERVICIO DE ADMINISTRACIÓN TRIBUTARIA DE SULLANA - SAT SULLANA",
+    entity_ruc: "20484196144",
+    entity_verified: true,
+    entity_logo: "/logos/orgs/th-imagen-SERVICIO-DE-ADMINISTRACION-TRIBUTARIA-DE-SULLANA.jpg",
+    sector_type: "CAS 1057",
+    region: "Piura",
+    category: "Administración y Gestión",
+    education_level: "Técnico",
+    salary_min: 1500,
+    salary_max: 3000,
+    salary_text: "Entre S/. 1,500 y S/. 3,000 Soles",
+    vacancies_count: 12,
+    description: "Convocatoria CAS Nº 003-2026 para la contratación de personal en el Servicio de Administración Tributaria de Sullana (SAT Sullana).",
+    requirements: [
+      "Formación: Secundaria completa, técnicos o bachilleres según el puesto convocado.",
+      "Experiencia: Experiencia general y específica de 1 a 2 años en sector público o privado.",
+      "Conocimientos en recaudación tributaria, atención al contribuyente o caja."
+    ],
+    benefits: [
+      "Contrato CAS Régimen 1057 con todos los beneficios de ley.",
+      "Seguro social de salud ESSALUD y aportes de ley."
+    ],
+    apply_url: "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759",
+    bases_pdf_url: "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759",
+    official_portal_name: "Gob.pe / SAT Sullana",
+    start_date: "2026-08-28",
+    end_date: "2026-09-09",
+    featured: true,
+    views_count: 2800,
+    clicks_count: 940,
+    status: "Vigente",
+    created_at: "2026-08-28T10:00:00Z",
+    plazas: [
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(3) ORIENTADOR/A REGISTRADOR/A PIURA - SULLANA",
+            "education": "bachiller y/o título profesional",
+            "experience": "(02) años de experiencia laboral en el sector público o privado. - (01) año en puesto o cargos en el sector público o privado. - Especialización: Administración, Economía, Contabilidad, Derecho o afines por la formación",
+            "salary": "S/. 1800",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(2) CAJERO/A PIURA - SULLANA",
+            "education": "técnica básica",
+            "experience": "(01) año de experiencia laboral en el sector público o privado. - (06) meses en puesto o cargos en el sector público o privado. - Especialización: Administración, Economía, Contabilidad o afines por la formación",
+            "salary": "S/. 2000",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) ESPECIALISTA EN GESTIÓN DEL TALENTO HUMANO PIURA -\n          SULLANA",
+            "education": "bachiller y/o título profesional",
+            "experience": "(02) años de experiencia laboral en el sector público o privado (01) año en puesto o cargos en el sector público o privado. - Especialización: Derecho, Psicología, Ingeniería Industrial, Administración, Economía o afines por la formación",
+            "salary": "S/. 4500",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) ESPECIALISTA DE TESORERÍA PIURA - SULLANA",
+            "education": "bachiller y/o título profesional",
+            "experience": "(02) años de experiencia laboral en el sector público o privado (01) año en puesto o cargos en el sector público o privado. - Especialización: Economía, Contabilidad, Derecho o afines por la formación",
+            "salary": "S/. 4500",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) AUXILIAR ADMINISTRATIVO PIURA - SULLANA",
+            "education": "Secundaria Completa",
+            "experience": "(01) años de experiencia laboral en el sector público o privado",
+            "salary": "S/. 1500",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) AUXILIAR ADMINISTRATIVO PIURA - SULLANA",
+            "education": "Estudiante en las carreras de administración, economía, contabilidad, derecho o afines por la formación",
+            "experience": "(01) año de experiencia laboral en el sector público o privado",
+            "salary": "S/. 2000",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) ESPECIALISTA DE PRESUPUESTO PIURA - SULLANA",
+            "education": "bachiller y/o título",
+            "experience": "(02) años de experiencia laboral en el sector público o privado. - (01) año en puesto o cargos en el sector público o privado. - Especialización: Administración, Economía, Contabilidad o afines por la formación",
+            "salary": "S/. 4500",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) ESPECIALISTA DE CONTABILIDAD PIURA - SULLANA",
+            "education": "bachiller y/o título profesional",
+            "experience": "(02) años de experiencia laboral en el sector público o privado (01) año en puesto o cargos en el sector público o privado. - Especialización: carrera de Contabilidad",
+            "salary": "S/. 4500",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      },
+      {
+            "cas_code": "CAS Nº 3",
+            "title": "(1) RESPONSABLE DE ARCHIVO PIURA - SULLANA",
+            "education": "bachiller y/o título profesional",
+            "experience": "(02) años de experiencia laboral en el sector público o privado. - (01) año en puesto o cargos en el sector público o privado. - Especialización: Administración, Economía, Contabilidad, Derecho o afines por la formación",
+            "salary": "S/. 3000 « 1 2 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: SAT Sullana",
+            "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
+      }
+]
   },
   {
     id: "job-mpfn-04",
@@ -217,34 +1077,471 @@ export const INITIAL_JOBS: JobPosting[] = [
     entity_verified: true,
     entity_logo: "/logos/ministerio-publico.jpg",
     sector_type: "CAS 1057",
-    region: "Lima",
+    region: "Lima, Cobertura Nacional",
     category: "Derecho y Asesoría",
     education_level: "Bachiller",
-    salary_min: 3200,
-    salary_max: 6800,
-    salary_text: "S/. 4,500 Soles mensual",
+    salary_min: 2364,
+    salary_max: 8864,
+    salary_text: "Entre S/. 2,364.19 y 8,864.19 Soles",
     vacancies_count: 71,
-    description: "Proceso de selección para el fortalecimiento de las Fiscalías Especializadas en Delitos de Corrupción de Funcionarios, Lavado de Activos y Despachos Fiscales Penales a nivel nacional.",
+    description: "Proceso de selección oficial del Ministerio Público - Fiscalía de la Nación para cubrir 71 plazas en despachos fiscales y unidades especializadas a nivel nacional.",
     requirements: [
-      "Formación: Bachiller o Título Profesional en Derecho, Ciencias Políticas, Psicología o Contabilidad.",
-      "Experiencia: Experiencia mínima de 2 años en despacho judicial o fiscal.",
-      "Conocimientos: Código Procesal Penal y gestión de carpetas fiscales."
+      "Formación: Bachiller o Título Profesional en Derecho, Ciencias Políticas, Psicología o Contabilidad según la plaza.",
+      "Experiencia: Experiencia mínima general y específica acreditada de acuerdo al perfil del cargo.",
+      "Conocimientos: Código Procesal Penal, gestión de carpetas fiscales y ofimática."
     ],
     benefits: [
       "Contrato CAS Régimen 1057 con estabilidad institucional.",
       "Capacitación continua en la Escuela del Ministerio Público.",
       "Seguro Vida Ley y ESSALUD."
     ],
-    apply_url: "https://www.gob.pe/institucion/mpfn/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/mpfn/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo Ministerio Público",
+    apply_url: "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159",
+    bases_pdf_url: "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159",
+    cuadro_plazas_url: "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29160",
+    cronograma_url: "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29157",
+    anexos_url: "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29161",
+    official_portal_name: "Ministerio Público - Sistema de Convocatorias CAS",
     start_date: "2026-08-27",
     end_date: "2026-09-08",
     featured: true,
     views_count: 4120,
     clicks_count: 1480,
     status: "Vigente",
-    created_at: "2026-08-27T14:00:00Z"
+    created_at: "2026-08-27T14:00:00Z",
+    plazas: [
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(7) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "bachiller universitario en Derecho",
+            "experience": "General",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(5) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "grado de bachiller universitario en Derecho",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(3) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 4100",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(2) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(2) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(2) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "bachiller universitario en las carreras de Derecho",
+            "experience": "2 años de experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(2) PERITO",
+            "education": "titulado universitario en las carreras de Contabilidad. - Colegiatura y habilitación vigente",
+            "experience": "6 años de experiencia laboral general",
+            "salary": "S/. 8250",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(2) PROFESOR LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Educación Inicial. - Titulado pedagogico en las carreras de Educación Inicial",
+            "experience": "2 años de experiencia laboral general",
+            "salary": "S/. 3400.6",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ABOGADO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Derecho. - Colegiatura y habilitación vigente",
+            "experience": "2 años de experiencia laboral general",
+            "salary": "S/. 6364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ABOGADO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Derecho. - Colegiatura y habilitación vigente",
+            "experience": "4 años de experiencia laboral general",
+            "salary": "S/. 6100",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ABOGADO LIMA - LIMA",
+            "education": "titulado universitario en la carrera de Derecho",
+            "experience": "General",
+            "salary": "S/. 6364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ANALISTA LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Ingeniería Electrónica o Ingeniería de Sistemas o Informática",
+            "experience": "3 años experiencia laboral general",
+            "salary": "S/. 6250",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ANALISTA LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Estadística, ingeniería, Economía, matemática, ciencia de datos o ciencia de la Computación egresado maestría en las carreras de Informática, ciencia de datos, Estadística, analítica de datos, Economía, minería de datos,matemática o inteligencia artificial",
+            "experience": "8 años experiencia laboral general",
+            "salary": "S/. 8364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ANALISTA LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Administración o Derecho",
+            "experience": "2 años experiencia laboral general",
+            "salary": "S/. 4364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ANALISTA LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Derecho",
+            "experience": "General",
+            "salary": "S/. 4364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ANALISTA LIMA - LIMA",
+            "education": "titulado universitario en las carreras de lingüística o Física o Ingeniería Electrónica o Ingeniería de Telecomunicaciones",
+            "experience": "2 años de experiencia laboral general",
+            "salary": "S/. 4364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ANALISTA LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Ciencias de la Comunicación",
+            "experience": "2 años experiencia laboral general",
+            "salary": "S/. 4364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de linguistica o literatura",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de de Derecho o Administración de Empresas o Contabilidad o Economía",
+            "experience": "01 año de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE ADMINISTRATIVO (CONDUCTOR) LIMA - LIMA",
+            "education": "secundaria completa",
+            "experience": "2 años de experiencia laboral general",
+            "salary": "S/. 2364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE ADMINISTRATIVO (NOTIFICADOR) LIMA - LIMA",
+            "education": "secundaria completa",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 2364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "grado de bachiller universitario en Derecho",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "grado de bachiller universitario en Derecho",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "grado de bachiller universitario en Derecho",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "grado de bachiller universitario en Derecho",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 4871",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "constancia de bachiller universitario en Derecho",
+            "experience": "General",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "bachiller universitario en Derecho",
+            "experience": "General",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "bachiller universitario en Derecho",
+            "experience": "General",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "bachiller universitario en las carreras de Derecho",
+            "experience": "2 años experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "bachiller universitario en las carreras de Derecho",
+            "experience": "2 años de experiencia laboral general",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE EN FUNCIÓN FISCAL LIMA - LIMA",
+            "education": "grado de bachiller universitario en Derecho",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ASISTENTE!ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4to año (8vo ciclo) en la carrera profesional de Ingeniería de Sistemas o Ingeniería Informática",
+            "experience": "General",
+            "salary": "S/. 3164.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) AUXILIAR ADMINISTRATIVO LIMA - LIMA",
+            "education": "secundaria completa",
+            "experience": "General",
+            "salary": "S/. 2801.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO II LIMA - LIMA",
+            "education": "grado de bachiller universitario en las carreras de Ingeniería de Sistemas o Ingeniería de Software o Ingeniería Informática o ingeniería de Computación",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 5364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO LIMA - LIMA",
+            "education": "título profesional universitario de Abogado. - Colegiatura y habilitación profesional vigente",
+            "experience": "02 años de experiencia laboral general",
+            "salary": "S/. 5364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO LIMA - LIMA",
+            "education": "título profesional universitario de Abogado",
+            "experience": "04 años de experiencia laboral general",
+            "salary": "S/. 6100",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO LIMA - LIMA",
+            "education": "título profesional universitario de Arquitectura o Ingeniería Civil",
+            "experience": "04 años de experiencia laboral general",
+            "salary": "S/. 6100",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Administración, Ingeniería Industrial, Contabilidad, Economía o Derecho",
+            "experience": "4 años experiencia laboral general",
+            "salary": "S/. 6100",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) ESPECIALISTA ADMINISTRATIVO LIMA - LIMA",
+            "education": "bachiller universitario en la carrera de Ingeniería Estadística o Ingeniería de Sistemas o Ingeniería Informática o Ingeniería Industrial o Economía",
+            "experience": "General",
+            "salary": "S/. 3564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) INGENIERO CIVIL ESPECIALISTA EN ESTRUCTURAS LIMA -\n          LIMA",
+            "education": "título profesional universitario en la carrera de Ingeniería Civil. - Colegiatura y habilitación profesional vigente",
+            "experience": "06 años experiencia laboral general",
+            "salary": "S/. 8864.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) MÉDICO OCUPACIONAL LIMA - LIMA",
+            "education": "título profesional universitario de médico cirujano. - Colegiatura y habilitación vigente. - Egresado de maestría en las carreras de salud ocupacional y ambiental o maestría en salud ocupacional o maestría en Medicina ocupacional y del ambiente o afines. - Contar con resolución emitida por el ministerio de salud, que acredite haber realizado serums",
+            "experience": "06 años de experiencia laboral general",
+            "salary": "S/. 8364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) OPERADOR ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 4° año (8° ciclo) en la carrera profesional de Ingeniería de Sistemas o Ingeniería Informática. - Estudios técnicos concluidos (03 años) en la carrera de Computación e Informática",
+            "experience": "General",
+            "salary": "S/. 2564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) OPERADOR ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 3° año (6 ciclo) en las carreras de Ingeniería de Sistemas o Ingeniería Informática o Ingeniería de Sistemas e Informática o Administración; o técnico concluido (3) años en las carreras de Computación e Informática o Secretariado o Administración",
+            "experience": "01 año de experiencia laboral general",
+            "salary": "S/. 3364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) OPERADOR ADMINISTRATIVO LIMA - LIMA",
+            "education": "estudiante universitario a partir del 3° año (6 ciclo) en las carreras de Ingeniería de Sistemas o Ingeniería Informática o Ingeniería de Sistemas e Informática. - Técnico concluido (3) años en las carreras de redes o Comunicaciones o en Computación e Informática",
+            "experience": "1 año de experiencia laboral general",
+            "salary": "S/. 2564.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO CONTABLE LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Contabilidad. - Colegiatura y habilitación vigente",
+            "experience": "4 años de experiencia laboral general",
+            "salary": "S/. 6300",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "título profesional universitario en la carrera de Ingeniería Electrónica o Ingeniería de Sistemas o Ingeniería Informática",
+            "experience": "General",
+            "salary": "S/. 8250",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "título profesional universitario de Ingeniería Civil. - Colegiatura y habilitación vigente",
+            "experience": "06 años experiencia laboral general",
+            "salary": "S/. 8250",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "título profesional universitario de Contabilidad. - Colegiatura y habilitación profesional vigente",
+            "experience": "04 años de experiencia laboral general",
+            "salary": "S/. 6364.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Ingeniería Geográfica",
+            "experience": "4 años experiencia laboral general",
+            "salary": "S/. 6300",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Ingeniería Electrónica o Ingeniería de Sistemas o Ingeniería Informática",
+            "experience": "2 años experiencia laboral general",
+            "salary": "S/. 6300",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Economía o Ingeniería Económica. - Colegiatura y habilitación vigente",
+            "experience": "6 años de experiencia laboral general",
+            "salary": "S/. 7864.19",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      },
+      {
+            "cas_code": "CAS Nº 103",
+            "title": "(1) PERITO LIMA - LIMA",
+            "education": "titulado universitario en las carreras de Contabilidad",
+            "experience": "4 años experiencia laboral general",
+            "salary": "S/. 6300 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
+            "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
+      }
+]
   },
   {
     id: "job-reniec-05",
@@ -273,9 +1570,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Uniforme institucional y EPPs.",
       "Capacitaciones en biometría registral."
     ],
-    apply_url: "https://www.reniec.gob.pe/portal/convocatoria.ui",
-    bases_pdf_url: "https://www.reniec.gob.pe/portal/convocatoria.ui",
-    official_portal_name: "RENIEC Convocatorias UI",
+    apply_url: "https://www.gob.pe/institucion/reniec/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://www.gob.pe/institucion/reniec/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    official_portal_name: "Gob.pe Convocatorias RENIEC",
     start_date: "2026-08-27",
     end_date: "2026-09-01",
     featured: false,
@@ -463,9 +1760,12 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Pago de honorarios por locación de servicios al finalizar la jornada.",
       "Incorporación a la base de datos nacional de personal operativo INEI."
     ],
-    apply_url: "https://convocatorias.inei.gob.pe/",
-    bases_pdf_url: "https://convocatorias.inei.gob.pe/",
-    official_portal_name: "INEI Convocatorias de Personal",
+    apply_url: "https://uneteservicios.inei.gob.pe/public/cnv-curriculum/login/101",
+    bases_pdf_url: "https://uneteservicios.inei.gob.pe/public/detalle/101",
+    anexos_url: "https://drive.google.com/file/d/1S-dhcwGMv0L31C2nqsrTNEWNl82lS0CY/view?usp=drive_link",
+    guia_postulante_url: "https://drive.google.com/file/d/1cCKfj7YAgRru9GvUZK2k2rx_2lTj7_T_/view?usp=drive_link",
+    fuente_url: "https://www.portaltrabajos.pe/2026/08/inei-eda-2026-operadores-tecnologicos.html",
+    official_portal_name: "INEI Únete Servicios - Portal Oficial",
     start_date: "2026-08-23",
     end_date: "2026-09-13",
     featured: true,
@@ -501,9 +1801,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Capacitación continua en derecho fiscalizador electoral.",
       "Certificación institucional."
     ],
-    apply_url: "https://www.jne.gob.pe/convocatorias",
-    bases_pdf_url: "https://www.jne.gob.pe/convocatorias",
-    official_portal_name: "JNE Sistema de Convocatorias",
+    apply_url: "https://www.gob.pe/institucion/jne/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://www.gob.pe/institucion/jne/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    official_portal_name: "Gob.pe Convocatorias JNE",
     start_date: "2026-08-24",
     end_date: "2026-08-31",
     featured: true,
@@ -539,9 +1839,54 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Uniforme completo, chaleco balístico y equipos de radiocomunicación.",
       "Seguro contra accidentes de trabajo SCTR."
     ],
-    apply_url: "https://www.mdsmp.gob.pe/convocatorias_cas.php",
-    bases_pdf_url: "https://www.mdsmp.gob.pe/convocatorias_cas.php",
-    official_portal_name: "MDSMP Portal de Convocatorias CAS",
+    apply_url: "https://webapp.mdsmp.gob.pe/convocatorias/convocatoriacas",
+    bases_pdf_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf",
+    official_portal_name: "MDSMP Convocatorias CAS",
+    anexos_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/ficha_convocatoria_cas.pdf",
+    resultados_url: "https://webapp.mdsmp.gob.pe/convocatorias/convocatoriacas",
+    fuente_url: "https://www.portaltrabajos.pe/2025/04/municipalidad-de-san-martin-de-porres-convocatoria-2025-serenos-operadores.html",
+    plazas: [
+      {
+        cas_code: "CAS Nº 007-1",
+        title: "(50) SERENOS A PIE - SEGURIDAD CIUDADANA",
+        education: "Secundaria completa debidamente acreditada.",
+        experience: "Experiencia mínima de seis (06) meses en labores de serenazgo, seguridad o vigilancia en sector público o privado.",
+        salary: "S/. 2,300 Soles",
+        bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
+      },
+      {
+        cas_code: "CAS Nº 007-2",
+        title: "(40) SERENOS CHOFERES DE PATRULLA Y MOTORIZADOS",
+        education: "Secundaria completa. Licencia de conducir A-I o A-IIb vigente.",
+        experience: "Experiencia mínima de 1 año como conductor o chofer de patrulla.",
+        salary: "S/. 2,600 Soles",
+        bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
+      },
+      {
+        cas_code: "CAS Nº 007-3",
+        title: "(30) OPERADORES DE CÁMARA Y VIDEOVIGILANCIA",
+        education: "Técnico en computación, informática, telecomunicaciones o afines (egresado o titulado).",
+        experience: "Experiencia de 1 año en monitoreo de centrales de cámaras o videovigilancia.",
+        salary: "S/. 2,800 Soles",
+        bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
+      },
+      {
+        cas_code: "CAS Nº 007-4",
+        title: "(15) SUPERVISORES DE SEGURIDAD CIUDADANA",
+        education: "Estudios universitarios o técnicos concluidos en Administración, Derecho o afines.",
+        experience: "Experiencia de 2 años en supervisión operativa de personal de seguridad.",
+        salary: "S/. 3,500 Soles",
+        bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
+      },
+      {
+        cas_code: "CAS Nº 007-5",
+        title: "(7) COORDINADORES DE OPERACIONES Y GESTIÓN DE RIESGO",
+        education: "Bachiller o Titulado universitario en Ingeniería, Administración o Derecho.",
+        experience: "Experiencia general de 3 años y 1 año en coordinación de seguridad ciudadana.",
+        salary: "S/. 4,000 Soles",
+        bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
+      }
+    ],
     start_date: "2026-08-08",
     end_date: "2026-08-19",
     featured: true,
@@ -684,9 +2029,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS especial de alta calificación.",
       "Capacitación en normativa de finanzas públicas del MEF."
     ],
-    apply_url: "https://www.mef.gob.pe/es/convocatorias-de-trabajo",
-    bases_pdf_url: "https://www.mef.gob.pe/es/convocatorias-de-trabajo",
-    official_portal_name: "MEF Portal Convocatorias de Trabajo",
+    apply_url: "https://www.gob.pe/institucion/mef/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://www.gob.pe/institucion/mef/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    official_portal_name: "Gob.pe Convocatorias de Trabajo MEF",
     start_date: "2026-08-25",
     end_date: "2026-09-10",
     featured: true,
@@ -793,9 +2138,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contrato CAS con beneficios de ley.",
       "Capacitación en regulación de servicios públicos de telecomunicaciones."
     ],
-    apply_url: "https://www.osiptel.gob.pe/portal-del-usuario/convocatorias-de-trabajo/",
-    bases_pdf_url: "https://www.osiptel.gob.pe/portal-del-usuario/convocatorias-de-trabajo/",
-    official_portal_name: "OSIPTEL Portal Convocatorias de Trabajo",
+    apply_url: "https://www.gob.pe/institucion/osiptel/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://www.gob.pe/institucion/osiptel/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    official_portal_name: "Gob.pe Convocatorias de Trabajo OSIPTEL",
     start_date: "2026-08-26",
     end_date: "2026-09-10",
     featured: false,
@@ -865,9 +2210,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Planilla D.L. 728 con todos los beneficios de ley + utilidades destacadas del sector industrial.",
       "Seguro EPS 100% y descuentos en productos del portafolio Alicorp."
     ],
-    apply_url: "https://alicorp.evaluar.com/",
-    bases_pdf_url: "https://alicorp.evaluar.com/",
-    official_portal_name: "Alicorp Trabaja con Nosotros",
+    apply_url: "https://pe.computrabajo.com/empresas/ofertas-de-trabajo-de-alicorp-53909CA8F142D305",
+    bases_pdf_url: "https://pe.computrabajo.com/empresas/ofertas-de-trabajo-de-alicorp-53909CA8F142D305",
+    official_portal_name: "Alicorp Ofertas de Empleo",
     start_date: "2026-08-23",
     end_date: "2026-09-12",
     featured: true,
@@ -901,9 +2246,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS regional.",
       "Seguro SCTR y movilidad a obra."
     ],
-    apply_url: "https://www.regionarequipa.gob.pe/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.regionarequipa.gob.pe/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "GRA Arequipa Convocatorias de Trabajo",
+    apply_url: "https://www.gob.pe/institucion/regionarequipa/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    bases_pdf_url: "https://www.gob.pe/institucion/regionarequipa/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    official_portal_name: "Gobierno Regional de Arequipa Convocatorias",
     start_date: "2026-08-25",
     end_date: "2026-09-08",
     featured: false,
@@ -915,6 +2260,7 @@ export const INITIAL_JOBS: JobPosting[] = [
 ];
 
 import { scrapeLiveConvocatoriasFeed } from './scraper';
+import { PORTAL_JOBS_DATA } from './portalJobsData';
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
 const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
@@ -922,23 +2268,34 @@ const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
 export async function getJobPostings(): Promise<JobPosting[]> {
   const jobsMap = new Map<string, JobPosting>();
 
-  // 1. Cargar catálogo verificado de respaldo
+  // 1. Cargar catálogo verificado de respaldo y convocatorias prioritarias (Juntos, PAIS, ONPE, SUNAT...)
   INITIAL_JOBS.forEach(j => jobsMap.set(j.slug, j));
 
-  // 2. Cargar modificaciones y convocatorias añadidas localmente en memoria
+  // 2. Cargar convocatorias ricas en plazas oficiales de PortalTrabajos (100 convocatorias con 692 plazas!)
+  PORTAL_JOBS_DATA.forEach(j => {
+    if (!jobsMap.has(j.slug)) {
+      jobsMap.set(j.slug, j);
+    }
+  });
+
+  // 3. Cargar modificaciones y convocatorias añadidas localmente en memoria
   LOCAL_DYNAMIC_JOBS.forEach(j => jobsMap.set(j.slug, j));
 
-  // 3. Cargar ingesta en vivo del feed oficial (convocatoriasdetrabajo.com & portaltrabajos.pe)
+  // 4. Cargar ingesta en vivo del feed oficial
   try {
     const liveFeed = await scrapeLiveConvocatoriasFeed();
     if (liveFeed && liveFeed.length > 0) {
-      liveFeed.forEach(j => jobsMap.set(j.slug, j));
+      liveFeed.forEach(j => {
+        if (!jobsMap.has(j.slug)) {
+          jobsMap.set(j.slug, j);
+        }
+      });
     }
   } catch (err) {
     console.warn('Live feed fallback to static catalog:', err);
   }
 
-  // 4. Intentar fusionar con Supabase en tiempo real
+  // 5. Intentar fusionar con Supabase en tiempo real
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -962,31 +2319,48 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 }
 
 export async function getJobPostingBySlug(slug: string): Promise<JobPosting | null> {
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const normSlug = slug.toLowerCase().trim();
 
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      const { data, error } = await supabase
-        .from('job_postings')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-
-      if (!error && data) {
-        return data as JobPosting;
-      }
-    }
-  } catch (err) {
-    console.warn('Falling back to local lookup for slug:', slug);
-  }
-
-  const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j.slug === slug);
+  // 1. Búsqueda rápida directa en memoria
+  const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j && j.slug === normSlug);
   if (localDynamic) return localDynamic;
 
-  const job = INITIAL_JOBS.find(j => j.slug === slug);
-  return job || null;
+  const portalJob = PORTAL_JOBS_DATA.find(j => j && j.slug === normSlug);
+  if (portalJob) return portalJob;
+
+  const initialJob = INITIAL_JOBS.find(j => j && j.slug === normSlug);
+  if (initialJob) return initialJob;
+
+  // 2. Búsqueda completa en catálogo unificado (incluyendo feed live)
+  const allJobs = await getJobPostings();
+  const found = allJobs.find(j => j && j.slug === normSlug);
+  if (found) return found;
+
+  // 3. Fallback inteligente por coincidencia parcial de slug o URL de fuente original
+  const fuzzy = allJobs.find(j => j && j.slug && (j.slug.includes(normSlug) || normSlug.includes(j.slug)));
+  if (fuzzy) return fuzzy;
+
+  const byFuente = allJobs.find(j => j && j.fuente_url && j.fuente_url.toLowerCase().includes(normSlug));
+  if (byFuente) return byFuente;
+
+  // 4. Fallback semántico por tokens y palabras clave (p.ej. slugs cortos de PortalTrabajos)
+  const searchWords = normSlug.split('-').filter(w => w.length >= 4 && !/^\d+$/.test(w));
+  if (searchWords.length > 0) {
+    let bestMatch: JobPosting | null = null;
+    let maxMatches = 0;
+    for (const j of allJobs) {
+      if (!j || !j.slug) continue;
+      const jWords = new Set(j.slug.split('-'));
+      const matches = searchWords.filter(w => jWords.has(w)).length;
+      if (matches >= Math.min(2, searchWords.length) && matches > maxMatches) {
+        maxMatches = matches;
+        bestMatch = j;
+      }
+    }
+    if (bestMatch) return bestMatch;
+  }
+
+  return null;
 }
 
 export async function saveJobPosting(

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getJobPostings } from "@atpdev/database";
 import { JobSearchHero } from "@/components/JobSearchHero";
@@ -5,18 +6,30 @@ import { JobCard } from "@/components/JobCard";
 import { RegionesGrid } from "@/components/RegionesGrid";
 import WhatsAppSubscribeWidget from "@/components/WhatsAppSubscribeWidget";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
+import { AdLateralRail } from "@/components/AdLateralRail";
 import { ShieldCheck, Sparkles, Building2, MapPin, ArrowRight, CheckCircle2, Calculator, HelpCircle, FileText, Bot, FileSpreadsheet, Scale } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "chamba pro — Agregador de Convocatorias de Trabajo y Empleos Perú 2026",
+  description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
+};
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const jobs = await getJobPostings();
-  const featuredJobs = jobs.filter(j => j.featured || j.status === 'Vigente').slice(0, 12);
+  const featuredJobs = [
+    ...jobs.filter(j => j.featured),
+    ...jobs.filter(j => !j.featured && j.status === 'Vigente')
+  ].slice(0, 12);
 
   const totalVacancies = jobs.reduce((acc, curr) => acc + curr.vacancies_count, 0);
 
   return (
-    <div className="space-y-16 pb-20">
+    <div className="space-y-16 pb-20 relative">
+      {/* Lateral Skyscraper Ads (Visible on widescreen displays >= 1540px without affecting reading flow) */}
+      <AdLateralRail />
+
       {/* Hero Section */}
       <JobSearchHero totalJobs={jobs.length} totalVacancies={totalVacancies} />
 
@@ -25,12 +38,20 @@ export default async function HomePage() {
         
         {/* Quick Filter Categories */}
         <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl sm:text-2xl font-bold font-display text-white flex items-center gap-2.5">
-              <Sparkles className="text-amber-400" size={22} />
-              <span>Explorar por Régimen Laboral & Sector</span>
-            </h2>
-            <Link href="/empleos" className="text-xs sm:text-sm text-emerald-400 hover:underline flex items-center gap-1 font-mono">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-4">
+            <div className="space-y-1">
+              <span className="text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles size={13} />
+                <span>Clasificación Oficial de Convocatorias</span>
+              </span>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-white tracking-tight">
+                Explorar por Régimen Laboral y Sector
+              </h2>
+            </div>
+            <Link 
+              href="/empleos" 
+              className="text-xs sm:text-sm text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1.5 font-mono font-semibold self-start sm:self-auto"
+            >
               <span>Ver todas las vacantes</span>
               <ArrowRight size={14} />
             </Link>
@@ -91,7 +112,7 @@ export default async function HomePage() {
               </div>
               <div>
                 <h3 className="font-display font-bold text-slate-100 group-hover:text-purple-400 transition-colors">
-                  Lima & Callao
+                  Lima y Callao
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">Sede central de convocatorias</p>
               </div>
@@ -99,26 +120,34 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Google Ad / Sponsor Slot 1: Top Leaderboard */}
-        <AdBannerSlot type="leaderboard" />
-
         {/* Featured Job Listings Grid */}
         <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold font-display text-white flex items-center gap-2.5">
-                <ShieldCheck className="text-emerald-400" size={24} />
-                <span>Vacantes Destacadas & Convocatorias Vigentes</span>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-5">
+            <div className="space-y-2.5">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold tracking-wide shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                </span>
+                <span>Actualizado hoy • Convocatorias 100% verificadas</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black font-display tracking-tight text-white flex flex-wrap items-center gap-2">
+                <span>Vacantes Destacadas</span>
+                <span className="text-emerald-400 font-extrabold">y Convocatorias Vigentes</span>
               </h2>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Todas las ofertas son verificadas periódicamente con derivación directa al portal institucional oficial.
+              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                Todas las oportunidades laborales son validadas con RUC activo y derivación directa a los portales oficiales de SERVIR, Gob.pe y empresas verificadas del Perú.
               </p>
             </div>
             <Link
               href="/empleos"
-              className="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 hover:border-emerald-500/40 text-slate-200 transition-all font-mono self-start sm:self-auto"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white/5 hover:bg-emerald-500/15 border border-white/10 hover:border-emerald-500/40 text-slate-100 hover:text-emerald-300 text-xs font-bold font-display shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] self-start sm:self-auto shrink-0"
             >
-              Ver {jobs.length} ofertas disponibles →
+              <span>Explorar todas las vacantes</span>
+              <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 font-mono text-[11px] font-bold">
+                {jobs.length}
+              </span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform text-slate-400 group-hover:text-emerald-400" />
             </Link>
           </div>
 

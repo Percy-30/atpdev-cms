@@ -33,11 +33,11 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
         <div className="flex flex-wrap items-center justify-center gap-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>Plataforma Oficial Agregadora — chamba.atpdev.dev</span>
+            <span>Plataforma Oficial Agregadora — empleos.atpdev.dev</span>
           </div>
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold">
-            <span>✨ Sincronizado Automáticamente — Convocatorias Reales & Verificadas</span>
+            <span>✨ Sincronizado Automáticamente — Convocatorias Reales y Verificadas</span>
           </div>
         </div>
 

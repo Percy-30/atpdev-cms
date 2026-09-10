@@ -22,16 +22,16 @@ export function TemplateTechCreative({ data }: TemplateProps) {
   const { personal, profileSummary, education, courses, experiences, skills, languages } = data;
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-[11px] leading-relaxed p-8 sm:p-10 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none space-y-5 print:space-y-3.5">
+    <div className="bg-white text-slate-900 font-sans text-[11px] leading-relaxed p-8 sm:p-10 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-10 print:sm:p-12 print:m-0 print:max-w-none print:w-full print:bg-white space-y-5 print:space-y-3.5">
       {/* Top Banner Accent */}
-      <div className="h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full print:bg-emerald-600 -mt-2 mb-2" />
+      <div className="h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full print:bg-emerald-600 -mt-2 mb-2 print:mt-0 print:mb-2.5" />
 
       {/* Header */}
-      <header className="flex flex-col sm:flex-row print:flex-row justify-between items-start gap-4 pb-4 border-b border-slate-200 cv-avoid-break">
+      <div role="banner" className="cv-header flex flex-col sm:flex-row print:flex-row justify-between items-start gap-4 pb-4 border-b border-slate-200 cv-avoid-break">
         <div className="space-y-1 flex-1">
-          <h1 className="text-2xl font-black tracking-tight text-slate-950 font-display">
+          <h2 className="text-2xl font-black tracking-tight text-slate-950 font-display">
             {personal.fullName || 'NOMBRES Y APELLIDOS'}
-          </h1>
+          </h2>
           <p className="text-xs font-bold text-emerald-600 tracking-wide font-mono">
             {personal.headline || 'PROFESIONAL TECNOLÓGICO & DIGITAL'}
           </p>
@@ -84,7 +84,7 @@ export function TemplateTechCreative({ data }: TemplateProps) {
             {personal.ruc && <div>RUC: {personal.ruc}</div>}
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Profile summary */}
       {profileSummary && (
@@ -100,7 +100,7 @@ export function TemplateTechCreative({ data }: TemplateProps) {
       )}
 
       {/* Experiencia Laboral */}
-      <section className="space-y-3 print:space-y-2 cv-avoid-break">
+      <section className="space-y-3 print:space-y-2">
         <div className="flex items-center gap-1.5 text-xs font-bold font-display uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
           <Briefcase size={14} className="text-emerald-500" />
           <span>Trayectoria & Experiencia Profesional</span>
@@ -111,11 +111,13 @@ export function TemplateTechCreative({ data }: TemplateProps) {
               <div className="flex justify-between items-baseline gap-2">
                 <div>
                   <h3 className="font-bold text-slate-950 text-[11px]">
-                    {exp.role}
+                    {exp.role || (exp.entity ? '' : '(Nuevo empleo en edición)')}
                   </h3>
-                  <span className="text-[10px] font-semibold text-emerald-700">
-                    {exp.entity}
-                  </span>
+                  {exp.entity && (
+                    <span className="text-[10px] font-semibold text-emerald-700">
+                      {exp.entity}
+                    </span>
+                  )}
                 </div>
                 <div className="text-right shrink-0">
                   <span className="font-mono text-[9.5px] font-medium text-slate-500 block">
@@ -128,11 +130,13 @@ export function TemplateTechCreative({ data }: TemplateProps) {
                   )}
                 </div>
               </div>
-              {exp.functions && exp.functions.length > 0 && (
+              {exp.functions && exp.functions.filter((fn) => fn.trim().length > 0).length > 0 && (
                 <ul className="list-disc list-inside space-y-0.5 text-[10px] text-slate-700 pl-1">
-                  {exp.functions.map((fn, fIdx) => (
-                    <li key={fIdx} className="leading-snug">{fn}</li>
-                  ))}
+                  {exp.functions
+                    .filter((fn) => fn.trim().length > 0)
+                    .map((fn, fIdx) => (
+                      <li key={fIdx} className="leading-snug">{fn}</li>
+                    ))}
                 </ul>
               )}
             </div>

@@ -15,15 +15,15 @@ export function TemplateServirCas({ data }: TemplateProps) {
   const expGeneral = experiences.filter((e) => e.type === 'General');
 
   return (
-    <div className="bg-white text-slate-900 font-sans text-[11px] leading-tight p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none print:w-full">
+    <div className="bg-white text-slate-900 font-sans text-[11px] leading-tight p-8 sm:p-12 max-w-[820px] mx-auto shadow-sm border border-slate-200 print:border-none print:shadow-none print:p-10 print:sm:p-12 print:m-0 print:max-w-none print:w-full print:bg-white">
       {/* Header Institucional SERVIR */}
-      <div className="text-center border-b-2 border-slate-900 pb-3 mb-4 space-y-1">
+      <div role="banner" className="cv-header text-center border-b-2 border-slate-900 pb-3 mb-4 space-y-1 cv-avoid-break">
         <div className="text-[10px] font-bold uppercase tracking-widest text-slate-700">
           REPÚBLICA DEL PERÚ — SISTEMA ADMINISTRATIVO DE GESTIÓN DE RECURSOS HUMANOS
         </div>
-        <h1 className="text-base font-black uppercase text-slate-950 tracking-tight font-serif">
+        <h2 className="text-base font-black uppercase text-slate-950 tracking-tight font-serif">
           ANEXO: FICHA RESUMEN DE HOJA DE VIDA DEL POSTULANTE
-        </h1>
+        </h2>
         <p className="text-[10px] text-slate-600 font-serif italic">
           Convocatorias para Contratación Administrativa de Servicios (Decreto Legislativo N° 1057 / Leyes N° 31131, 276 y 728)
         </p>
@@ -175,7 +175,7 @@ export function TemplateServirCas({ data }: TemplateProps) {
       </section>
 
       {/* IV. EXPERIENCIA LABORAL */}
-      <section className="mb-4 cv-avoid-break">
+      <section className="mb-4">
         <div className="bg-white text-slate-950 px-2.5 py-1.5 text-[11px] font-black uppercase tracking-wider mb-1.5 border border-slate-900 flex justify-between items-center">
           <span>IV. EXPERIENCIA LABORAL (General y Específica)</span>
           <span className="text-[9px] font-mono text-slate-600 font-semibold">
@@ -202,7 +202,7 @@ export function TemplateServirCas({ data }: TemplateProps) {
               </tr>
             ) : (
               experiences.map((exp, idx) => (
-                <tr key={exp.id || idx} className="border-b border-slate-300 align-top">
+                <tr key={exp.id || idx} className="border-b border-slate-300 align-top cv-avoid-break">
                   <td className="p-1.5 text-center font-mono border-r border-slate-300">{idx + 1}</td>
                   <td className="p-1.5 font-bold text-slate-900 border-r border-slate-300">{exp.entity}</td>
                   <td className="p-1.5 font-medium border-r border-slate-300">{exp.role}</td>

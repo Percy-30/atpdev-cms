@@ -35,10 +35,10 @@ export default function ContactoPage() {
         <div className="space-y-4 border-b border-white/10 pb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-semibold">
             <Mail size={14} />
-            <span>Atención al Usuario & Transparencia</span>
+            <span>Atención al Usuario y Transparencia</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
-            Canal de Contacto, Soporte & Alianzas
+            Canal de Contacto, Soporte y Alianzas
           </h1>
           <p className="text-sm text-slate-400 leading-relaxed max-w-2xl">
             ¿Tienes dudas sobre una convocatoria, detectaste una alerta de fraude o representas a una institución que desea publicar sus vacantes verificadas? Nuestro equipo editorial te responderá a la brevedad.

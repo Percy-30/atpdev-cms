@@ -39,8 +39,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://empleos.atpdev.dev"),
-  title: "chamba pro — Agregador de Convocatorias de Trabajo & Empleos Perú 2026",
-  description: "Buscador profesional de convocatorias de trabajo CAS 1057, 728, 276 y Sector Privado en Perú. Ofertas 100% verificadas con derivación directa a la fuente oficial del Estado.",
+  title: "chamba pro — Agregador de Convocatorias de Trabajo y Empleos Perú 2026",
+  description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
   keywords: [
     "chamba peru",
     "busco chamba",
@@ -77,16 +77,25 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "chamba pro — Agregador de Convocatorias y Empleos Perú",
-    description: "Buscador profesional de convocatorias de trabajo CAS 1057, 728, 276 y Sector Privado en Perú. Con derivación 100% oficial y transparencia.",
+    description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
     url: "https://empleos.atpdev.dev",
     siteName: "chamba pro",
     locale: "es_PE",
     type: "website",
+    images: [
+      {
+        url: "https://empleos.atpdev.dev/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "chamba pro — Convocatorias de Trabajo y Empleos Perú",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "chamba pro — Buscador de Ofertas Laborales en Perú",
-    description: "Convocatorias CAS, 728 y Privado verificadas. Redirección oficial y transparente.",
+    description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
+    images: ["https://empleos.atpdev.dev/opengraph-image"],
   },
   robots: {
     index: true,
@@ -124,11 +133,11 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className="bg-[#0b0f19] text-slate-100 antialiased selection:bg-emerald-500 selection:text-black">
+      <body className="bg-[#0b0f19] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-500 selection:text-black">
         {/* Top Announcement Bar */}
         <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white text-xs font-semibold py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-emerald-500/30 print:hidden">
           <ShieldCheck size={15} className="animate-pulse text-amber-300" />
-          <span>Agregador Oficial Verificado — Redirección 100% Directa a Fuentes de Gobierno & Empresas RUC Verificadas</span>
+          <span>Agregador Oficial Verificado — Redirección 100% Directa a Fuentes de Gobierno y Empresas Verificadas</span>
         </div>
 
         {/* Global Navigation Header */}
@@ -179,13 +188,6 @@ export default function RootLayout({
 
             {/* Actions */}
             <div className="flex items-center gap-3">
-              <Link
-                href="/admin/ingesta"
-                className="hidden sm:flex px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition-all items-center gap-1.5"
-              >
-                <PlusCircle size={15} />
-                <span>Ingesta IA</span>
-              </Link>
               <Link
                 href="/empleos"
                 className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 font-display"
@@ -271,7 +273,7 @@ export default function RootLayout({
               {/* Col 3: Legal & Cumplimiento Google AdSense */}
               <div className="space-y-3">
                 <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider font-mono">
-                  Legal & Transparencia
+                  Marco Legal y Transparencia
                 </h4>
                 <ul className="space-y-2 text-slate-400">
                   <li>
@@ -289,28 +291,23 @@ export default function RootLayout({
                   <li>
                     <Link href="/contacto" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
                       <Mail size={12} className="text-emerald-400" />
-                      <span>Contacto & Soporte</span>
+                      <span>Contacto y Soporte</span>
                     </Link>
                   </li>
                   <li>
                     <Link href="/quienes-somos" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
                       <ShieldCheck size={12} className="text-emerald-400" />
-                      <span>Quiénes Somos & Manifiesto</span>
+                      <span>Quiénes Somos y Manifiesto</span>
                     </Link>
                   </li>
                   <li>
-                    <a href="/ads.txt" target="_blank" className="hover:text-emerald-400 transition-colors font-mono">
-                      Archivo ads.txt
-                    </a>
+                    <Link href="/empleos?regimen=CAS" className="hover:text-emerald-400 transition-colors">
+                      Convocatorias del Estado (CAS)
+                    </Link>
                   </li>
                   <li>
                     <a href="/rss.xml" target="_blank" className="hover:text-emerald-400 transition-colors font-mono flex items-center gap-1.5">
-                      <span>📡 Feed RSS Oficial</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/llms.txt" target="_blank" className="hover:text-emerald-400 transition-colors font-mono">
-                      🤖 Manifiesto AI (llms.txt)
+                      <span>📡 Feed RSS Convocatorias</span>
                     </a>
                   </li>
                 </ul>

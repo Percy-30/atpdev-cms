@@ -16,11 +16,15 @@
     font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 
 .font-display {
   font-family: var(--font-space), var(--font-inter), sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .font-mono-num {
@@ -69,16 +73,30 @@
    ========================================================================== */
 @page {
   size: A4 portrait;
-  margin: 6mm 8mm;
+  margin: 0;
+}
+
+#cv-print-area,
+#cv-print-area * {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 
 @media print {
+  :root {
+    --bg-main: #ffffff !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
   /* 1. Global Reset: Clean white sheet with zero margins */
   html,
-  body {
+  body,
+  body[class] {
     width: 100% !important;
     height: auto !important;
-    min-height: 0 !important;
+    min-height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
@@ -90,20 +108,27 @@
     print-color-adjust: exact !important;
   }
 
-  /* 2. Color fidelity: Preserve colors, gradients, and backgrounds */
-  *,
-  *::before,
-  *::after {
+  /* 2. Strip backgrounds from ANY container or wrapper outside the CV document */
+  body *:not(#cv-print-area):not(#cv-print-area *) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* 3. Color fidelity specifically inside the CV print sheet */
+  #cv-print-area,
+  #cv-print-area * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  /* 3. Hide all non-printable chrome with display: none (ZERO DOM layout footprint) */
-  header,
-  footer,
-  nav,
-  aside,
+  /* 4. Hide all non-printable application chrome (ZERO DOM layout footprint) */
+  body > header,
+  header:not(#cv-print-area header):not(#cv-print-area *),
+  footer:not(#cv-print-area footer):not(#cv-print-area *),
+  nav:not(#cv-print-area nav):not(#cv-print-area *),
+  aside:not(#cv-print-area aside):not(#cv-print-area *),
   .print\:hidden,
   #cookie-banner {
     display: none !important;
@@ -114,16 +139,47 @@
     overflow: hidden !important;
   }
 
-  /* 4. Reset Next.js layout wrappers so CV sheet takes 100% width cleanly */
-  main,
-  main > div,
+  /* 4.1 Ensure headers, sidebars, and photos inside the CV sheet are ALWAYS fully visible */
+  #cv-print-area header,
+  #cv-print-area .cv-header {
+    display: block !important;
+    height: auto !important;
+    width: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+  }
+
+  #cv-print-area header.flex,
+  #cv-print-area .cv-header.flex,
+  #cv-print-area [class*="print:flex"] {
+    display: flex !important;
+  }
+
+  #cv-print-area aside {
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+
+  #cv-print-area img {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: 100% !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 5. Reset Next.js layout wrappers outside the CV document */
+  body > main,
+  body > div > main,
   .max-w-7xl,
-  .space-y-8,
-  .space-y-6,
-  .space-y-3,
-  .grid,
-  .lg\:grid-cols-12,
-  .lg\:col-span-7 {
+  .grid.lg\:grid-cols-12,
+  .grid.lg\:grid-cols-12 > .lg\:col-span-7 {
     display: block !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -133,6 +189,14 @@
     border: none !important;
     background: transparent !important;
     box-shadow: none !important;
+  }
+
+  /* 6. Preserve internal Grid and Flex columns inside CV templates */
+  #cv-print-area .grid {
+    display: grid !important;
+  }
+  #cv-print-area .flex {
+    display: flex !important;
   }
 
   /* 5. Printable Container & CV Sheet */
@@ -150,7 +214,13 @@
     color: #0f172a !important;
   }
 
-  /* 6. Avoid breaking inside sections or items */
+  /* 6. Clean Table & Element Pagination */
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr,
+  img,
   .cv-avoid-break {
     break-inside: avoid !important;
     page-break-inside: avoid !important;

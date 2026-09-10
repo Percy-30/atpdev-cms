@@ -4,8 +4,17 @@ import { ChevronRight, Scale, Sparkles } from 'lucide-react';
 import { ComparadorRegimenes } from '@/components/ComparadorRegimenes';
 
 export const metadata: Metadata = {
-  title: 'Comparador de Regímenes Laborales Perú (CAS vs 728 vs 276 vs Locación) | chamba pro',
-  description: 'Compara tus derechos laborales, gratificaciones, CTS, vacaciones y estabilidad entre los regímenes CAS 1057, Decreto Legislativo 728, D.L. 276 y Locación de Servicios (RHO).',
+  title: 'Comparador de Regímenes Laborales Perú 2026 | chamba pro',
+  description: 'Compara derechos laborales, gratificaciones, CTS y vacaciones entre regímenes CAS 1057, D.L. 728, D.L. 276 y Locación de Servicios (RHO) en Perú.',
+  alternates: {
+    canonical: 'https://empleos.atpdev.dev/comparador-regimenes',
+  },
+  openGraph: {
+    title: 'Comparador de Regímenes Laborales Perú 2026 | chamba pro',
+    description: 'Compara derechos laborales, gratificaciones, CTS y vacaciones entre regímenes CAS 1057, D.L. 728 y 276.',
+    url: 'https://empleos.atpdev.dev/comparador-regimenes',
+    type: 'website',
+  },
   keywords: [
     'diferencia cas 1057 y 728',
     'comparador regimenes laborales peru',

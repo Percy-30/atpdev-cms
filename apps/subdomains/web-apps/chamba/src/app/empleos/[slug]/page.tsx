@@ -10,6 +10,7 @@ import { CvMatcherTool } from "@/components/CvMatcherTool";
 import { EntityLogo } from "@/components/EntityLogo";
 import { JobCard } from "@/components/JobCard";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
+import { PlazasList } from "@/components/PlazasList";
 
 export const dynamicParams = true;
 export const revalidate = 60;
@@ -25,20 +26,32 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const job = await getJobPostingBySlug(slug);
+  const decodedSlug = decodeURIComponent(slug);
+  const job = await getJobPostingBySlug(decodedSlug) || await getJobPostingBySlug(slug);
   if (!job) return {};
 
   const pageUrl = `https://empleos.atpdev.dev/empleos/${slug}`;
 
+  const rawTitle = `${job.title} — ${job.entity_name}`;
+  const title = rawTitle.length > 56
+    ? `${rawTitle.slice(0, 53).trim()}... | chamba pro`
+    : `${rawTitle} | chamba pro`;
+
+  const fallbackDesc = `Convocatoria de ${job.title} en ${job.entity_name}. Consulta bases oficiales, requisitos y remuneración en Chamba Pro.`;
+  const rawDesc = job.description?.replace(/[\r\n\t]+/g, ' ').trim() || fallbackDesc;
+  const description = rawDesc.length > 155
+    ? `${rawDesc.slice(0, 152).trim()}...`
+    : rawDesc;
+
   return {
-    title: `${job.title} — ${job.entity_name} | chamba pro`,
-    description: job.description,
+    title,
+    description,
     alternates: {
       canonical: pageUrl,
     },
     openGraph: {
-      title: `${job.title} - ${job.entity_name}`,
-      description: job.description,
+      title,
+      description,
       url: pageUrl,
       type: "article",
     },
@@ -51,7 +64,8 @@ export default async function JobDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const job = await getJobPostingBySlug(slug);
+  const decodedSlug = decodeURIComponent(slug);
+  const job = await getJobPostingBySlug(decodedSlug) || await getJobPostingBySlug(slug);
   const allJobs = await getJobPostings();
 
   if (!job) {
@@ -253,6 +267,26 @@ export default async function JobDetailPage({
           {/* Main Details Body */}
           <div className="lg:col-span-2 space-y-8">
             
+            {/* Plazas y Bases Oficiales Individuales (PortalTrabajos / Gob.pe) */}
+            <PlazasList
+              plazas={
+                job.plazas && job.plazas.length > 0
+                  ? job.plazas
+                  : [
+                      {
+                        cas_code: job.title.match(/CAS\s*N[ºo°]?\s*\d+/i)?.[0] || 'CAS Nº 01',
+                        title: job.title,
+                        education: job.requirements.find(r => /formaci[oó]n|t[ií]tulo|bachiller|egresad|estudios|secundaria|t[eé]cnico/i.test(r)) || `Nivel académico requerido: ${job.education_level}`,
+                        experience: job.requirements.find(r => /experiencia/i.test(r)) || 'Experiencia laboral acreditada en el sector público o privado.',
+                        salary: job.salary_text,
+                        bases_url: job.bases_pdf_url || job.apply_url
+                      }
+                    ]
+              }
+              entityName={job.entity_name}
+              defaultApplyUrl={job.apply_url}
+            />
+
             {/* Technical Job Profile Table */}
             <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
               <h2 className="text-xl font-bold font-display text-white flex items-center gap-2 border-b border-white/10 pb-4">
@@ -400,24 +434,131 @@ export default async function JobDetailPage({
               </p>
               
               <div className="space-y-2 pt-1">
-                <a
-                  href={`https://docs.google.com/viewer?url=${encodeURIComponent(job.bases_pdf_url || job.apply_url)}&embedded=true`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
-                >
-                  <span>👁️ Ver Bases PDF en Vivo (Google Drive Viewer)</span>
-                </a>
+                {(() => {
+                  const pdfTargetUrl = (job.plazas && job.plazas[0]?.bases_url) || job.bases_pdf_url || job.apply_url;
+                  const isDoc = (
+                    pdfTargetUrl.includes('.pdf') ||
+                    pdfTargetUrl.includes('drive.google.com') ||
+                    pdfTargetUrl.includes('docs.google.com') ||
+                    pdfTargetUrl.includes('archivos.mpfn.gob.pe') ||
+                    pdfTargetUrl.includes('/anexo-archivo/') ||
+                    pdfTargetUrl.includes('Descargar_Tdr') ||
+                    pdfTargetUrl.includes('.docx') ||
+                    pdfTargetUrl.includes('.xlsx')
+                  );
 
-                <a
-                  href={job.bases_pdf_url || job.apply_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-400 hover:text-slate-950 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <span>Descargar Archivo Directo (PDF)</span>
-                  <ExternalLink size={14} />
-                </a>
+                  return (
+                    <>
+                      {isDoc ? (
+                        <>
+                          <a
+                            href={pdfTargetUrl}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
+                          >
+                            <FileText size={16} />
+                            <span>[ ABRIR BASES OFICIALES EN PDF ]</span>
+                            <ExternalLink size={14} />
+                          </a>
+
+                          <a
+                            href={pdfTargetUrl}
+                            target="_blank"
+                            download
+                            rel="nofollow noopener noreferrer"
+                            className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                          >
+                            <span>📥 Descargar Archivo Directo</span>
+                          </a>
+                        </>
+                      ) : (
+                        <a
+                          href={pdfTargetUrl}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
+                        >
+                          <ExternalLink size={16} />
+                          <span>[ VER BASES EN PORTAL OFICIAL ]</span>
+                        </a>
+                      )}
+
+                      {/* Documentos complementarios oficiales emitidos por la institución */}
+                      {job.cuadro_plazas_url && (
+                        <a
+                          href={job.cuadro_plazas_url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <span>📊 Cuadro de Distribución de Plazas</span>
+                          <ExternalLink size={13} />
+                        </a>
+                      )}
+
+                      {job.cronograma_url && (
+                        <a
+                          href={job.cronograma_url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <span>📅 Cronograma Oficial del Concurso</span>
+                          <ExternalLink size={13} />
+                        </a>
+                      )}
+
+                      {job.anexos_url && (
+                        <a
+                          href={job.anexos_url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-2.5 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-purple-300 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <span>📝 Anexos y Formatos de Postulación</span>
+                          <ExternalLink size={13} />
+                        </a>
+                      )}
+
+                      {job.guia_postulante_url && (
+                        <a
+                          href={job.guia_postulante_url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-2.5 rounded-xl bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/40 text-blue-300 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <span>📘 Guía del Postulante / Instructivo</span>
+                          <ExternalLink size={13} />
+                        </a>
+                      )}
+
+                      {job.resultados_url && (
+                        <a
+                          href={job.resultados_url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-2.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-rose-300 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <span>📋 Ver Resultados Oficiales</span>
+                          <ExternalLink size={13} />
+                        </a>
+                      )}
+
+                      {job.fuente_url && (
+                        <a
+                          href={job.fuente_url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="w-full py-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-slate-400 hover:text-slate-200 font-mono text-[11px] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
+                        >
+                          <span>🔗 Ver Fuente Informativa Oficial</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </div>
 

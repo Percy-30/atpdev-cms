@@ -1,4 +1,5 @@
-import { JobPosting, INITIAL_JOBS } from './jobs';
+import { JobPosting, JobPlaza, INITIAL_JOBS } from './jobs';
+import { PORTAL_JOBS_DATA } from './portalJobsData';
 
 export type ScrapedJobResult = {
   source: string;
@@ -280,139 +281,293 @@ export async function scrapeOnpeJobs(): Promise<JobPosting[]> {
   }
 }
 
-// 3. Live Feed Scraper Engine para convocatoriasdetrabajo.com & portaltrabajos.pe
-let cachedLiveJobs: { data: JobPosting[]; timestamp: number } | null = null;
+// Helper para extraer la URL exacta del botón [ VER MÁS DETALLES ] o enlaces oficiales directos
+function extractVerDetallesUrl(content?: string): string | null {
+  if (!content) return null;
+  const marker = content.match(/(?:id=['"]verdetalles['"]|\[\s*VER M[ÁA]S DETALLES\s*\])/i);
+  if (!marker) {
+    const fallback = content.match(/<a[\s\S]*?href=['"](https?:\/\/[^'"]*(?:drive\.google\.com|cdn\.www\.gob\.pe|\.pdf)[^'"]*)['"][\s\S]*?<\/a\s*>/i);
+    return fallback ? fallback[1].trim() : null;
+  }
+  const markerIdx = marker.index ?? 0;
+  const aIdx = content.lastIndexOf('<a', markerIdx);
+  if (aIdx === -1) return null;
+  const tagOpen = content.substring(aIdx, markerIdx);
+  const hrefMatch = tagOpen.match(/href=['"]([^'"]+)['"]/i);
+  return hrefMatch ? hrefMatch[1].trim() : null;
+}
+
+// Helper para extraer plazas individuales y enlaces directos a bases oficiales (PDF / Google Drive)
+function parsePlazasFromHtml(html: string): { plazas: JobPlaza[]; globalBasesUrl: string | null } {
+  const globalBasesUrl = extractVerDetallesUrl(html);
+  const sections = html.split(/<h2[^>]*>/i);
+  const plazas: JobPlaza[] = [];
+
+  for (let i = 1; i < sections.length; i++) {
+    const sec = sections[i];
+    const headerEnd = sec.indexOf('</h2>');
+    if (headerEnd === -1) continue;
+    const header = sec.substring(0, headerEnd).replace(/<[^>]+>/g, '').trim();
+    if (!/CAS|PUESTO|PLAZA|276|728|N[ºo°]/i.test(header)) continue;
+
+    const body = sec.substring(headerEnd + 5);
+    const headerParts = header.split(/(?:&#9658;|►)/);
+    const cas_code = headerParts[0].trim();
+    const title = (headerParts[1] || headerParts[0]).trim();
+
+    const text = body
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/?[^>]+(>|$)/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const eduMatch = text.match(/(?:Formaci[oó]n(?:\s+Acad[eé]mica)?|Estudios|Grado)[\s:]+([\s\S]*?)(?=\s*-\s*Experiencia|\s*Experiencia|\s*Exp\.|\s*-\s*Remuneraci|\s*Remuneraci|\s*Sueldo|$)/i);
+    const education = eduMatch ? eduMatch[1].trim().replace(/^[-–—]\s*/, '').replace(/[\s\.\-]+$/, '') : undefined;
+
+    const expMatch = text.match(/(?:Experiencia(?:\s+General|\s+Laboral|\s+Espec[ií]fica)?|Exp\.)[\s:]+([\s\S]*?)(?=\s*-\s*Remuneraci|\s*Remuneraci|\s*Sueldo|\s*Honorarios|\s*Salario|$)/i);
+    const experience = expMatch ? expMatch[1].trim().replace(/^[-–—]\s*/, '').replace(/[\s\.\-]+$/, '') : undefined;
+
+    const salMatch = text.match(/(?:Remuneraci[oó]n|Sueldo|Honorarios|Salario|Compensaci[oó]n)[\s:]+([\s\S]*?)(?=\s*\[|\s*VER M[ÁA]S|\s*Ver detalles|$)/i);
+    const salary = salMatch ? salMatch[1].trim().replace(/^[-–—]\s*/, '').replace(/[\s\.\-]+$/, '') : undefined;
+
+    const localLink = extractVerDetallesUrl(body);
+    const bases_url = localLink || globalBasesUrl || undefined;
+
+    plazas.push({
+      cas_code,
+      title,
+      education,
+      experience,
+      salary,
+      bases_url
+    });
+  }
+
+  return { plazas, globalBasesUrl };
+}
+
+// 3. Live Feed Scraper Engine para PortalTrabajos (Blogger API Oficial con Stale-While-Revalidate)
+let cachedLiveJobs: { data: JobPosting[]; timestamp: number } = {
+  data: PORTAL_JOBS_DATA,
+  timestamp: Date.now()
+};
+let isRefreshingFeed = false;
 
 export async function scrapeLiveConvocatoriasFeed(): Promise<JobPosting[]> {
-  // Usar cache en memoria de 30 minutos
-  if (cachedLiveJobs && Date.now() - cachedLiveJobs.timestamp < 1000 * 60 * 30) {
+  // Retorno instantáneo desde memoria (0ms, previene TimeoutError en SSR / refresh de Next.js)
+  if (cachedLiveJobs && cachedLiveJobs.data && cachedLiveJobs.data.length > 0) {
+    // Si la cache tiene más de 60 minutos, actualizar en segundo plano sin bloquear la respuesta del servidor
+    if (Date.now() - cachedLiveJobs.timestamp > 1000 * 60 * 60 && !isRefreshingFeed) {
+      isRefreshingFeed = true;
+      refreshLiveFeedInBackground().catch(() => {}).finally(() => {
+        isRefreshingFeed = false;
+      });
+    }
     return cachedLiveJobs.data;
   }
 
-  try {
-    console.log("⚡ [Live Feed Scraper] Obteniendo convocatorias en tiempo real...");
-    const res = await fetch('https://www.convocatoriasdetrabajo.com/', {
-      headers: { 
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-      },
-      signal: AbortSignal.timeout(4000),
-      next: { revalidate: 1800 }
-    });
+  return PORTAL_JOBS_DATA;
+}
 
-    if (!res.ok) {
-      console.warn("⚠️ [Live Feed Scraper] HTTP status no OK:", res.status);
-      return cachedLiveJobs ? cachedLiveJobs.data : [];
+function makeSlugFromUrl(url: string, fallbackText: string): string {
+  if (url) {
+    const match = url.match(/\/([^/]+)\.html/);
+    if (match && match[1]) {
+      return match[1].toLowerCase().trim();
+    }
+  }
+  return makeSlug(fallbackText);
+}
+
+async function refreshLiveFeedInBackground(): Promise<void> {
+  try {
+    console.log("⚡ [Live Feed Scraper Background] Verificando convocatorias actualizadas en PortalTrabajos...");
+    const categoryUrls = [
+      'https://www.portaltrabajos.pe/feeds/posts/default?alt=json&max-results=150',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/INEI?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/ONPE?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/JNE?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/SUNAT?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/ESSALUD?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/Poder%20Judicial?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/Ministerio%20Publico?alt=json&max-results=50',
+      'https://www.portaltrabajos.pe/feeds/posts/default/-/Destacados?alt=json&max-results=50'
+    ];
+
+    const allEntriesMap = new Map<string, any>();
+
+    for (const feedUrl of categoryUrls) {
+      try {
+        const res = await fetch(feedUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': 'application/json'
+          },
+          signal: AbortSignal.timeout(10000)
+        });
+        if (!res.ok) continue;
+        const data = await res.json();
+        const entries = data.feed?.entry || [];
+        for (const entry of entries) {
+          const link = entry.link?.find((l: any) => l.rel === 'alternate')?.href;
+          if (link && !allEntriesMap.has(link)) {
+            allEntriesMap.set(link, entry);
+          }
+        }
+      } catch {
+        // Ignorar fallos de red por timeout individual
+      }
     }
 
-    const html = await res.text();
-    const blocks = html.split('oferta-de-empleo-');
+    if (allEntriesMap.size === 0) return;
+
     const jobs: JobPosting[] = [];
+    let idx = 0;
 
-    for (let i = 1; i < blocks.length && jobs.length < 50; i++) {
-      const block = blocks[i];
-      const linkMatch = block.match(/^([^\"]+\.html)/);
-      const titleMatch = block.match(/title=\"([^\"]+)\"/);
-      const dateMatch = block.match(/Vigente hasta el ([^\s<]+)/);
-      const mapMatch = block.match(/icon-mapa\"[^>]*><\/i>\s*<span>\s*([^<]+)\s*<\/span>/);
-      const salaryMatch = block.match(/icon-moneda\"[^>]*><\/i>\s*<span>\s*([^<]+)\s*<\/span>/);
-      const imgMatch = block.match(/<img[^>]+(?:src|data-src)=\"([^\"]+\.(?:png|jpg|jpeg|webp|svg))/i);
+    for (const [fuente_url, entry] of allEntriesMap.entries()) {
+      idx++;
+      const fullTitle = (entry.title?.$t || '').trim();
+      const contentHtml = entry.content?.$t || '';
 
-      if (linkMatch && titleMatch) {
-        const fullTitle = titleMatch[1].trim();
-        let entityName = '';
-        let jobTitle = fullTitle;
-
-        // 1. Separación por dos puntos: "ENTIDAD: PUESTO"
-        if (fullTitle.includes(':')) {
-          const parts = fullTitle.split(':');
-          entityName = parts[0].trim();
-          jobTitle = parts.slice(1).join(':').trim();
-        } 
-        // 2. Separación por verbos comunes de convocatorias: "requiere", "busca", "solicita", "convoca"
-        else {
-          const verbMatch = fullTitle.match(/^(.+?)\s+(?:requiere|busca|solicita|convoca)\s+(.+)$/i);
-          if (verbMatch) {
-            entityName = verbMatch[1].trim();
-            jobTitle = verbMatch[2].trim();
-          }
+      // 1. Extraer botones de acción oficiales
+      const linkMap: { [key: string]: string } = {};
+      const linkRegex = /<a\s+[^>]*href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi;
+      let m;
+      while ((m = linkRegex.exec(contentHtml)) !== null) {
+        const rawText = m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        const href = m[1].trim();
+        if (!href || href.startsWith('#') || href.includes('blogger.com') || href.includes('whatsapp.com') || href.includes('facebook.com') || href.includes('twitter.com')) {
+          continue;
         }
-
-        // 3. Extracción por prefijos institucionales reconocidos si aún no se detectó
-        if (!entityName) {
-          const entityPattern = /^(MUNICIPALIDAD\s+(?:DISTRITAL\s+|PROVINCIAL\s+)?(?:DE\s+|DEL\s+)?[A-ZÁÉÍÓÚÑ\s-]+|GOBIERNO\s+REGIONAL\s+(?:DE\s+|DEL\s+)?[A-ZÁÉÍÓÚÑ\s-]+|HOSPITAL\s+[A-ZÁÉÍÓÚÑ\s-]+|RED\s+DE\s+SALUD\s+[A-ZÁÉÍÓÚÑ\s-]+|UNIVERSIDAD\s+(?:NACIONAL\s+)?[A-ZÁÉÍÓÚÑ\s-]+|UGEL\s*[0-9A-ZÁÉÍÓÚÑ\s-]+|MINISTERIO\s+[A-ZÁÉÍÓÚÑ\s-]+|INSTITUTO\s+[A-ZÁÉÍÓÚÑ\s-]+|DIRECCI[OÓ]N\s+REGIONAL\s+[A-ZÁÉÍÓÚÑ\s-]+|GERENCIA\s+[A-ZÁÉÍÓÚÑ\s-]+)/i;
-          const match = fullTitle.match(entityPattern);
-          if (match) {
-            entityName = match[1].trim();
-            jobTitle = fullTitle.replace(match[1], '').replace(/^[\s:-]+/, '').trim();
-          } else {
-            entityName = "ENTIDAD PÚBLICA DE PERÚ";
-          }
-        }
-
-        const vacMatch = fullTitle.match(/(\d[\d,]*)\s+(?:vacantes|plazas|puestos|personas)/i);
-        const vacanciesCount = vacMatch ? parseInt(vacMatch[1].replace(/,/g, ''), 10) : 1;
-        const slug = makeSlug(`live-${entityName}-${jobTitle}`);
-        const applyUrl = 'https://www.convocatoriasdetrabajo.com/oferta-de-empleo-' + linkMatch[1];
-        const region = mapMatch ? mapMatch[1].trim() : 'Nacional';
-        const salaryText = salaryMatch ? salaryMatch[1].trim() : 'S/. 2,500 Soles';
-
-        let entityLogo: string | undefined = undefined;
-        if (imgMatch && imgMatch[1]) {
-          const rawSrc = imgMatch[1].trim();
-          entityLogo = rawSrc.startsWith('http') ? rawSrc : `https://www.convocatoriasdetrabajo.com/${rawSrc.replace(/^\//, '')}`;
-          console.log(`🔎 [Scraper Log] Job: "${fullTitle.slice(0, 40)}..." | Logo extracted: ${entityLogo}`);
-        } else {
-          console.log(`🔎 [Scraper Log] Job: "${fullTitle.slice(0, 40)}..." | Logo extracted: NONE (will use Vector Emblem)`);
-        }
-
-        jobs.push({
-          id: `job-live-${i}-${Date.now()}`,
-          title: jobTitle || fullTitle,
-          slug,
-          entity_name: entityName,
-          entity_logo: entityLogo,
-          entity_ruc: "20100000000",
-          entity_verified: true,
-          sector_type: fullTitle.includes('728') ? 'D.L. 728' : fullTitle.includes('276') ? 'D.L. 276' : fullTitle.includes('Prácticas') ? 'Prácticas' : 'CAS 1057',
-          region,
-          category: fullTitle.includes('Médico') || fullTitle.includes('Enfermer') || fullTitle.includes('Salud') ? 'Salud y Medicina' : fullTitle.includes('Docente') || fullTitle.includes('Educac') ? 'Educación y Capacitación' : fullTitle.includes('Ingenier') || fullTitle.includes('Obras') ? 'Ingeniería y Construcción' : 'Administración y Contabilidad',
-          education_level: fullTitle.includes('Secundaria') ? 'Secundaria' : fullTitle.includes('Técnico') ? 'Técnico' : fullTitle.includes('Bachiller') ? 'Bachiller' : 'Titulado',
-          salary_text: salaryText,
-          vacancies_count: vacanciesCount,
-          description: `Convocatoria laboral oficial publicada por ${entityName}: ${fullTitle}. Cobertura en la región de ${region}.`,
-          requirements: [
-            `Formación universitaria o técnica requerida por ${entityName}.`,
-            "Experiencia laboral acreditada en el sector público o privado.",
-            "Cumplimiento de las bases oficiales de postulación."
-          ],
-          benefits: [
-            "Contratación directa según régimen laboral oficial.",
-            "Beneficios de ley y aportes a ESSALUD/AFP según contrato."
-          ],
-          apply_url: applyUrl,
-          bases_pdf_url: applyUrl,
-          official_portal_name: `${entityName} Convocatorias Oficiales`,
-          start_date: new Date().toISOString().split('T')[0],
-          end_date: dateMatch ? dateMatch[1].trim() : new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
-          featured: i <= 6,
-          views_count: 1500 + i * 80,
-          clicks_count: 400 + i * 30,
-          status: "Vigente",
-          created_at: new Date().toISOString()
-        });
+        if (/VER M[ÁA]S DETALLES/i.test(rawText)) linkMap['ver_detalles'] = href;
+        else if (/POSTULAR/i.test(rawText)) linkMap['postular'] = href;
+        else if (/REGISTR/i.test(rawText)) linkMap['registro'] = href;
+        else if (/CREAR CUENTA/i.test(rawText)) linkMap['crear_cuenta'] = href;
+        else if (/CUADRO DE DISTRIBUCI[OÓ]N/i.test(rawText) || /CUADRO DE PLAZAS/i.test(rawText)) linkMap['cuadro_plazas'] = href;
+        else if (/VER BASES/i.test(rawText) || /BASES Y CRONOGRAMA/i.test(rawText)) linkMap['bases'] = href;
+        else if (/CRONOGRAMA/i.test(rawText)) linkMap['cronograma'] = href;
+        else if (/ANEXOS/i.test(rawText) || /DESCARGAR DJ/i.test(rawText) || /ROTULO/i.test(rawText)) linkMap['anexos'] = href;
+        else if (/GU[IÍ]A|INSTRUCTIVO/i.test(rawText)) linkMap['guia'] = href;
+        else if (/RESULTADOS/i.test(rawText)) linkMap['resultados'] = href;
       }
+
+      // 2. Extraer Institución
+      let entity_name = '';
+      const entityMatch = contentHtml.match(/Instituci[oó]n:\s*<\/strong>[\s\S]*?(?:<br\s*\/?>)?\s*([^<]+)/i)
+        || contentHtml.match(/Instituci[oó]n:[\s\S]*?<[^>]+>([^<]+)<\//i);
+      if (entityMatch) {
+        entity_name = entityMatch[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+      } else {
+        const parts = fullTitle.split(':');
+        entity_name = parts[0].trim();
+      }
+
+      // 3. Extraer Vacantes con soporte para comas (ej. 1,925 / 17,238)
+      let vacancies_count = 1;
+      const vacMatch = contentHtml.match(/Vacantes:[\s\S]*?<\/strong>[\s\S]*?(?:<br\s*\/?>)?\s*([\d,.]+)/i)
+        || fullTitle.match(/\(([\d,.]+)\)/);
+      if (vacMatch) {
+        const numClean = vacMatch[1].replace(/[,.]/g, '');
+        const parsed = parseInt(numClean, 10);
+        if (!isNaN(parsed)) vacancies_count = parsed;
+      }
+
+      const locMatch = contentHtml.match(/Ubicaci[oó]n:[\s\S]*?<\/strong>[\s\S]*?(?:<br\s*\/?>)?\s*([^<]+)/i);
+      const region = locMatch ? locMatch[1].replace(/<[^>]+>/g, '').trim() : 'Nacional';
+
+      const salMatch = contentHtml.match(/Salario:[\s\S]*?<\/strong>[\s\S]*?(?:<br\s*\/?>)?\s*([^<]+)/i);
+      const salary_text = salMatch ? salMatch[1].replace(/<[^>]+>/g, '').trim() : 'Según plaza convocada';
+
+      const pubMatch = contentHtml.match(/Fecha de Publicaci[oó]n:[\s\S]*?<\/strong>[\s\S]*?(?:<br\s*\/?>)?\s*([^<]+)/i);
+      const vigMatch = contentHtml.match(/Vigente:[\s\S]*?<\/strong>[\s\S]*?Hasta el\s*([^<]+)/i);
+
+      const imgMatch = contentHtml.match(/<img[^>]+src=['"]([^'"]+\.(?:webp|png|jpg|jpeg))['"]/i)
+        || entry.media$thumbnail?.url;
+      const logo = imgMatch ? (typeof imgMatch === 'string' ? imgMatch : imgMatch[1]) : undefined;
+
+      const { plazas, globalBasesUrl } = parsePlazasFromHtml(contentHtml);
+      const bases_pdf_url = linkMap['bases'] || linkMap['ver_detalles'] || globalBasesUrl || (plazas.length > 0 && plazas[0].bases_url) || linkMap['postular'] || fuente_url;
+      const apply_url = linkMap['postular'] || linkMap['registro'] || linkMap['crear_cuenta'] || linkMap['ver_detalles'] || bases_pdf_url;
+
+      // Extraer sedes / ODPE descentralizadas (como en INEI y ONPE)
+      const odpe_vacancies = [];
+      const sedeRegex = /(?:<li>\s*|-)\s*([A-ZÁÉÍÓÚÑ\s]+(?:-[A-ZÁÉÍÓÚÑ\s]+)?):\s*(\d+)/g;
+      let sm;
+      while ((sm = sedeRegex.exec(contentHtml)) !== null) {
+        const sedeName = sm[1].trim();
+        const count = parseInt(sm[2], 10);
+        if (sedeName.length > 2 && count > 0 && !sedeName.includes('VIGENTE') && !sedeName.includes('PUBLICACIÓN')) {
+          odpe_vacancies.push({
+            odpe: sedeName,
+            count,
+            deadline: vigMatch ? vigMatch[1].replace(/<[^>]+>/g, '').trim() : 'Hasta fin de convocatoria'
+          });
+        }
+      }
+
+      const formatIsoDate = (dStr?: string, defaultDate = '2026-09-01') => {
+        if (!dStr) return defaultDate;
+        const parts = dStr.trim().split('/');
+        if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        return defaultDate;
+      };
+
+      const cleanEntity = entity_name.replace(/\s+/g, ' ').trim();
+      const slug = makeSlugFromUrl(fuente_url, `${cleanEntity}-${fullTitle}`);
+
+      jobs.push({
+        id: `job-pt-${idx}`,
+        title: fullTitle,
+        slug,
+        entity_name: cleanEntity,
+        entity_ruc: '20100000000',
+        entity_verified: true,
+        entity_logo: logo,
+        sector_type: fullTitle.includes('728') ? 'D.L. 728' : fullTitle.includes('276') ? 'D.L. 276' : fullTitle.includes('Prácticas') ? 'Prácticas' : 'CAS 1057',
+        region,
+        category: /salud|médic|enferm/i.test(fullTitle) ? 'Salud y Medicina' : /legal|fiscal|abogad/i.test(fullTitle) ? 'Derecho y Asesoría' : /educaci|docent|pedag/i.test(fullTitle) ? 'Educación y Capacitación' : /ingeni|obra|construc/i.test(fullTitle) ? 'Ingeniería y Construcción' : 'Administración y Contabilidad',
+        education_level: fullTitle.includes('Secundaria') ? 'Secundaria' : fullTitle.includes('Técnico') ? 'Técnico' : fullTitle.includes('Bachiller') ? 'Bachiller' : 'Titulado',
+        salary_text,
+        vacancies_count,
+        description: `Convocatoria oficial ${cleanEntity}: ${fullTitle}. Cobertura en ${region}. Consulta las bases y perfiles en PDF en Chamba Pro.`,
+        requirements: [
+          'Cumplir con el perfil de formación académica especificado para cada código CAS.',
+          'Acreditar experiencia laboral general y específica según las bases oficiales.',
+          'Presentar la documentación requerida en el portal oficial del concurso.'
+        ],
+        benefits: [
+          'Contratación según régimen laboral con todos los beneficios de ley.',
+          'Aportes al seguro de salud ESSALUD y régimen previsional.'
+        ],
+        apply_url,
+        bases_pdf_url,
+        cuadro_plazas_url: linkMap['cuadro_plazas'],
+        cronograma_url: linkMap['cronograma'],
+        anexos_url: linkMap['anexos'],
+        guia_postulante_url: linkMap['guia'],
+        resultados_url: linkMap['resultados'],
+        fuente_url,
+        official_portal_name: `${cleanEntity} - Portal Oficial`,
+        start_date: formatIsoDate(pubMatch ? pubMatch[1].trim() : '', '2026-08-25'),
+        end_date: formatIsoDate(vigMatch ? vigMatch[1].trim() : '', '2026-09-18'),
+        featured: idx <= 12,
+        views_count: 2200 + idx * 40,
+        clicks_count: 600 + idx * 15,
+        status: 'Vigente',
+        created_at: new Date().toISOString(),
+        plazas: plazas.length > 0 ? plazas : undefined,
+        odpe_vacancies: odpe_vacancies.length > 0 ? odpe_vacancies : undefined
+      });
     }
 
     if (jobs.length > 0) {
       cachedLiveJobs = { data: jobs, timestamp: Date.now() };
     }
 
-    console.log(`✅ [Live Feed Scraper] ${jobs.length} ofertas extraídas e integradas exitosamente.`);
-    return jobs;
+    console.log(`✅ [Live Feed Scraper] ${jobs.length} convocatorias consolidadas en tiempo real.`);
   } catch (err) {
     console.error("❌ [Live Feed Scraper] Error scraping live feed:", err);
-    return cachedLiveJobs ? cachedLiveJobs.data : [];
   }
 }
 

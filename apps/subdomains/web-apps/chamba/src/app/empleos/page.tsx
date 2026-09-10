@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getJobPostings } from "@atpdev/database";
 import { JobCard } from "@/components/JobCard";
 import { JobFilterClient } from "@/components/JobFilterClient";
@@ -6,6 +7,20 @@ import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { Search, Filter, Briefcase } from "lucide-react";
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Buscador de Convocatorias de Trabajo Perú 2026 | chamba pro",
+  description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en ministerios, municipalidades y entidades públicas.",
+  alternates: {
+    canonical: "https://empleos.atpdev.dev/empleos",
+  },
+  openGraph: {
+    title: "Buscador de Convocatorias de Trabajo Perú 2026 | chamba pro",
+    description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en el Estado.",
+    url: "https://empleos.atpdev.dev/empleos",
+    type: "website",
+  },
+};
 
 export default async function EmpleosPage({
   searchParams,
@@ -52,10 +67,10 @@ export default async function EmpleosPage({
       <div className="space-y-2 border-b border-white/10 pb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
           <Briefcase size={14} />
-          <span>Buscador FTS & Filtros Persistentes</span>
+          <span>Búsqueda Inteligente • Actualización Oficial 2026</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black font-display text-white">
-          Buscador de Ofertas & Convocatorias en Perú
+          Buscador de Ofertas y Convocatorias en Perú
         </h1>
         <p className="text-sm text-slate-400 max-w-2xl">
           Filtra por institución, régimen laboral (CAS 1057, 728, 276), región, nivel educativo y rango salarial.

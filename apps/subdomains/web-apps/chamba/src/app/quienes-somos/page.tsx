@@ -2,9 +2,20 @@ import Link from 'next/link';
 import WhatsAppSubscribeWidget from '@/components/WhatsAppSubscribeWidget';
 import { ShieldCheck, CheckCircle2, Award, ExternalLink, Zap, Users, Lock } from 'lucide-react';
 
-export const metadata = {
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
   title: 'Quiénes Somos & Garantía de Transparencia — Chamba Pro',
-  description: 'Conoce la misión de Chamba Pro: el agregador nacional de empleo público y privado en Perú con enlace directo a fuentes oficiales del Estado, 0 cobros y transparencia total.',
+  description: 'Misión de Chamba Pro: agregador nacional de empleo en Perú con enlace directo a fuentes oficiales del Estado, sin cobros y con total transparencia.',
+  alternates: {
+    canonical: 'https://empleos.atpdev.dev/quienes-somos',
+  },
+  openGraph: {
+    title: 'Quiénes Somos & Garantía de Transparencia — Chamba Pro',
+    description: 'Conoce la misión y valores de transparencia de Chamba Pro.',
+    url: 'https://empleos.atpdev.dev/quienes-somos',
+    type: 'website',
+  },
 };
 
 export default function QuienesSomosPage() {
@@ -16,7 +27,7 @@ export default function QuienesSomosPage() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold font-mono">
             <ShieldCheck size={16} />
-            <span>Manifiesto de Transparencia & Meritocracia</span>
+            <span>Manifiesto de Transparencia y Meritocracia</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black font-display tracking-tight text-white">
             Reduciendo la Brecha entre el Talentoso Postulante y el <span className="text-emerald-400">Estado Peruano</span>
@@ -87,10 +98,10 @@ export default function QuienesSomosPage() {
               Explorar Convocatorias Vigentes →
             </Link>
             <Link
-              href="/admin/ingesta"
+              href="/crear-cv-cas"
               className="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition"
             >
-              ✨ Ingesta Asistida por IA
+              📄 Generar CV Profesional (PDF/Word)
             </Link>
           </div>
         </div>

@@ -12,7 +12,7 @@
     "build:portal": "npm run build --workspace=apps/core/portal",
     "build:admin": "npm run build --workspace=apps/core/admin",
     "build:chamba": "npm run build --workspace=apps/subdomains/web-apps/chamba",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --continue=always",
     "dev:portal": "npm run dev --workspace=apps/core/portal -- -p 3000",
     "dev:admin": "npm run dev --workspace=apps/core/admin -- -p 3001",
     "dev:chamba": "npm run dev --workspace=apps/subdomains/web-apps/chamba -- -p 3005",
