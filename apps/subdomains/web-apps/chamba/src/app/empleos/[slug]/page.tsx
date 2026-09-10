@@ -289,6 +289,8 @@ export default async function JobDetailPage({
               }
               entityName={job.entity_name}
               defaultApplyUrl={job.apply_url}
+              globalBasesPdfUrl={job.bases_pdf_url}
+              anexosUrl={job.anexos_url}
             />
 
             {/* Technical Job Profile Table */}
@@ -439,7 +441,7 @@ export default async function JobDetailPage({
               
               <div className="space-y-2 pt-1">
                 {(() => {
-                  const pdfTargetUrl = (job.plazas && job.plazas[0]?.bases_url) || job.bases_pdf_url || job.apply_url;
+                  const pdfTargetUrl = job.bases_pdf_url || (job.plazas && job.plazas[0]?.bases_url) || job.apply_url;
                   const isDoc = (
                     pdfTargetUrl.includes('.pdf') ||
                     pdfTargetUrl.includes('drive.google.com') ||

@@ -13,6 +13,7 @@ export type JobPlaza = {
   experience?: string;
   salary?: string;
   bases_url?: string;
+  vacancies?: number;
 };
 
 export type EducationLevel = 
@@ -2259,7 +2260,7 @@ export const INITIAL_JOBS: JobPosting[] = [
   }
 ];
 
-import { scrapeLiveConvocatoriasFeed, scrapeConvocatoriasDeTrabajo, scrapeServirOfertas } from './scraper';
+import { scrapeLiveConvocatoriasFeed, scrapeConvocatoriasDeTrabajo, scrapeServirOfertas, extractPlazasAndBasesFromCdUrl } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
@@ -2349,27 +2350,54 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 export async function getJobPostingBySlug(slug: string): Promise<JobPosting | null> {
   const normSlug = slug.toLowerCase().trim();
 
+  const maybeEnrichJob = async (job: JobPosting | null): Promise<JobPosting | null> => {
+    if (!job) return null;
+    if (job.fuente_url && job.fuente_url.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && (!job.plazas || job.plazas.length <= 1)) {
+      try {
+        const enriched = await extractPlazasAndBasesFromCdUrl(job.fuente_url);
+        if (enriched.plazas && enriched.plazas.length > 0) {
+          job.plazas = enriched.plazas;
+        }
+        if (enriched.directBasesUrl) {
+          job.bases_pdf_url = enriched.directBasesUrl;
+        }
+        if (enriched.directAnexosUrl) {
+          job.anexos_url = enriched.directAnexosUrl;
+        }
+        if (enriched.directResultadosUrl) {
+          job.resultados_url = enriched.directResultadosUrl;
+        }
+        if (enriched.vacancies_count) {
+          job.vacancies_count = enriched.vacancies_count;
+        }
+      } catch (err) {
+        console.warn('Error enriqueciendo plazas y bases de CD:', err);
+      }
+    }
+    return job;
+  };
+
   // 1. Búsqueda rápida directa en memoria
   const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j && j.slug === normSlug);
-  if (localDynamic) return localDynamic;
+  if (localDynamic) return maybeEnrichJob(localDynamic);
 
   const portalJob = PORTAL_JOBS_DATA.find(j => j && j.slug === normSlug);
-  if (portalJob) return portalJob;
+  if (portalJob) return maybeEnrichJob(portalJob);
 
   const initialJob = INITIAL_JOBS.find(j => j && j.slug === normSlug);
-  if (initialJob) return initialJob;
+  if (initialJob) return maybeEnrichJob(initialJob);
 
   // 2. Búsqueda completa en catálogo unificado (incluyendo feed live)
   const allJobs = await getJobPostings();
   const found = allJobs.find(j => j && j.slug === normSlug);
-  if (found) return found;
+  if (found) return maybeEnrichJob(found);
 
   // 3. Fallback inteligente por coincidencia parcial de slug o URL de fuente original
   const fuzzy = allJobs.find(j => j && j.slug && (j.slug.includes(normSlug) || normSlug.includes(j.slug)));
-  if (fuzzy) return fuzzy;
+  if (fuzzy) return maybeEnrichJob(fuzzy);
 
   const byFuente = allJobs.find(j => j && j.fuente_url && j.fuente_url.toLowerCase().includes(normSlug));
-  if (byFuente) return byFuente;
+  if (byFuente) return maybeEnrichJob(byFuente);
 
   // 4. Fallback semántico por tokens y palabras clave (p.ej. slugs cortos de PortalTrabajos)
   const searchWords = normSlug.split('-').filter(w => w.length >= 4 && !/^\d+$/.test(w));
@@ -2385,7 +2413,7 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
         bestMatch = j;
       }
     }
-    if (bestMatch) return bestMatch;
+    if (bestMatch) return maybeEnrichJob(bestMatch);
   }
 
   return null;

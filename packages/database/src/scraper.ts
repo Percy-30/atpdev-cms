@@ -583,6 +583,9 @@ export async function scrapeConvocatoriasDeTrabajo(): Promise<JobPosting[]> {
   if (cachedCdJobs.data.length > 0 && Date.now() - cachedCdJobs.timestamp < 1000 * 60 * 60) {
     return cachedCdJobs.data;
   }
+  if (cachedCdJobs.data.length === 0) {
+    return await refreshConvocatoriasDeTrabajoInBackground();
+  }
   if (!isRefreshingCd) {
     isRefreshingCd = true;
     refreshConvocatoriasDeTrabajoInBackground().catch(() => {}).finally(() => {
@@ -717,6 +720,145 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
   } catch (err) {
     console.error("❌ [ConvocatoriasDeTrabajo Scraper] Error:", err);
     return cachedCdJobs.data;
+  }
+}
+
+// 4.1 Enriquecedor de Plazas y Bases Oficiales Individuales para ConvocatoriasDeTrabajo
+const CD_ENRICHED_CACHE = new Map<string, {
+  plazas: JobPlaza[];
+  directBasesUrl?: string;
+  directAnexosUrl?: string;
+  directResultadosUrl?: string;
+  directComunicadosUrl?: string;
+  vacancies_count?: number;
+}>();
+
+export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise<{
+  plazas: JobPlaza[];
+  directBasesUrl?: string;
+  directAnexosUrl?: string;
+  directResultadosUrl?: string;
+  directComunicadosUrl?: string;
+  vacancies_count?: number;
+}> {
+  if (!fuenteUrl) return { plazas: [] };
+  if (CD_ENRICHED_CACHE.has(fuenteUrl)) {
+    return CD_ENRICHED_CACHE.get(fuenteUrl)!;
+  }
+
+  try {
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    };
+
+    const res = await fetch(fuenteUrl, { headers, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return { plazas: [] };
+    const html = await res.text();
+
+    const plazas: JobPlaza[] = [];
+    const articles = html.split(/<article\s+class=['"]oferta['"]>/i);
+    articles.shift();
+
+    for (const art of articles) {
+      const endArtIdx = art.indexOf('</article>');
+      const content = endArtIdx !== -1 ? art.substring(0, endArtIdx) : art;
+      if (content.includes('adsbygoogle') || !content.includes('<h')) continue;
+
+      const titleMatch = content.match(/<h[34][^>]*>\s*<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/i);
+      if (!titleMatch) continue;
+
+      let opUrl = titleMatch[1].trim();
+      if (!opUrl.startsWith('http')) {
+        opUrl = `https://www.convocatoriasdetrabajo.com/${opUrl.replace(/^\//, '')}`;
+      }
+      const rawTitle = titleMatch[2].replace(/<[^>]+>/g, '').trim();
+
+      let cas_code = '';
+      let title = rawTitle;
+      if (rawTitle.includes(':')) {
+        const parts = rawTitle.split(':');
+        cas_code = parts[0].trim();
+        title = parts.slice(1).join(':').trim();
+      }
+
+      const vacMatch = content.match(/<span>\s*N[°º]\s*de\s*vacantes:\s*<\/span>\s*(\d+)/i);
+      const vacancies = vacMatch ? parseInt(vacMatch[1], 10) : 1;
+
+      const reqMatch = content.match(/<span>\s*Se\s*requiere:\s*<\/span>\s*([^<]+)/i);
+      const education = reqMatch ? reqMatch[1].trim() : 'Cumplir con los requisitos establecidos en las bases oficiales.';
+
+      const remMatch = content.match(/<span>\s*Remuneraci[oó]n:\s*<\/span>\s*([^<]+)/i);
+      const salary = remMatch ? `S/. ${remMatch[1].trim()}` : '';
+
+      plazas.push({
+        cas_code: cas_code || `Plaza ${plazas.length + 1}`,
+        title: title || rawTitle,
+        education,
+        experience: `Acreditar experiencia laboral requerida según bases de ${title}.`,
+        salary,
+        vacancies,
+        bases_url: opUrl,
+      });
+    }
+
+    let directBasesUrl: string | undefined;
+    let directAnexosUrl: string | undefined;
+    let directResultadosUrl: string | undefined;
+    let directComunicadosUrl: string | undefined;
+
+    // Si encontramos plazas, consultamos la primera oportunidad laboral para extraer el PDF real y anexos
+    if (plazas.length > 0 && plazas[0].bases_url) {
+      try {
+        const opRes = await fetch(plazas[0].bases_url, { headers, signal: AbortSignal.timeout(6000) });
+        if (opRes.ok) {
+          const opHtml = await opRes.text();
+          const basesDivMatch = opHtml.match(/<div class="bases">([\s\S]*?)<\/div>/i);
+          if (basesDivMatch) {
+            const linkMatches = [...basesDivMatch[1].matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
+            for (const lm of linkMatches) {
+              const lUrl = lm[1].trim();
+              const lText = lm[2].toLowerCase();
+              if (lText.includes('base') || lUrl.endsWith('.pdf')) {
+                directBasesUrl = lUrl;
+              } else if (lText.includes('anexo') || lUrl.endsWith('.docx') || lUrl.endsWith('.doc')) {
+                directAnexosUrl = lUrl;
+              }
+            }
+          }
+
+          // Extraer enlaces a comunicados y resultados
+          const allLinks = [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
+          for (const al of allLinks) {
+            const lUrl = al[1].trim();
+            const lText = al[2].toLowerCase();
+            if (lText.includes('resultado') && !lUrl.startsWith('#') && !directResultadosUrl) {
+              directResultadosUrl = lUrl;
+            } else if (lText.includes('comunicado') && !lUrl.startsWith('#') && !directComunicadosUrl) {
+              directComunicadosUrl = lUrl;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Error resolviendo bases directas en CD:', e);
+      }
+    }
+
+    const totalVacancies = plazas.reduce((acc, p) => acc + (p.vacancies || 1), 0);
+    const result = {
+      plazas,
+      directBasesUrl,
+      directAnexosUrl,
+      directResultadosUrl,
+      directComunicadosUrl,
+      vacancies_count: totalVacancies > 0 ? totalVacancies : undefined
+    };
+
+    CD_ENRICHED_CACHE.set(fuenteUrl, result);
+    return result;
+  } catch (err) {
+    console.warn('Error en extractPlazasAndBasesFromCdUrl:', err);
+    return { plazas: [] };
   }
 }
 

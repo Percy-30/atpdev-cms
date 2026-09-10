@@ -8,9 +8,11 @@ interface PlazasListProps {
   plazas: JobPlaza[];
   entityName: string;
   defaultApplyUrl: string;
+  globalBasesPdfUrl?: string;
+  anexosUrl?: string;
 }
 
-export function PlazasList({ plazas, entityName, defaultApplyUrl }: PlazasListProps) {
+export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdfUrl, anexosUrl }: PlazasListProps) {
   const [filter, setFilter] = useState('');
 
   const filteredPlazas = useMemo(() => {
@@ -50,6 +52,43 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl }: PlazasListPr
           </span>
         </div>
       </div>
+
+      {/* Quick Access Official Document Banner */}
+      {(globalBasesPdfUrl || anexosUrl) && (
+        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+            <span className="text-slate-200 font-medium">
+              Documentos oficiales publicados por <b className="text-white">{entityName}</b>:
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {globalBasesPdfUrl && (
+              <a
+                href={globalBasesPdfUrl}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all shadow-[0_0_10px_rgba(16,185,129,0.3)] cursor-pointer"
+              >
+                <FileText size={13} />
+                <span>Bases Oficiales (PDF Directo)</span>
+                <ExternalLink size={11} />
+              </a>
+            )}
+            {anexosUrl && (
+              <a
+                href={anexosUrl}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 font-bold transition-colors cursor-pointer"
+              >
+                <span>📝 Descargar Anexos (Word)</span>
+                <ExternalLink size={11} />
+              </a>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Filter Input if more than 3 plazas */}
       {plazas.length > 3 && (
@@ -111,13 +150,20 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl }: PlazasListPr
                     </div>
                   </div>
 
-                  {/* Remuneración Tag */}
-                  {plaza.salary && (
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold whitespace-nowrap">
-                      <Banknote size={14} />
-                      <span>{plaza.salary}</span>
-                    </div>
-                  )}
+                  {/* Remuneración & Vacantes Tags */}
+                  <div className="flex items-center gap-2">
+                    {plaza.vacancies && plaza.vacancies > 1 && (
+                      <span className="px-2.5 py-1 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-mono text-xs font-bold whitespace-nowrap">
+                        👥 {plaza.vacancies} vacantes
+                      </span>
+                    )}
+                    {plaza.salary && (
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold whitespace-nowrap">
+                        <Banknote size={14} />
+                        <span>{plaza.salary}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Requirements details */}
@@ -154,18 +200,30 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl }: PlazasListPr
                     <span>Bases Oficiales emitidas por {entityName}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {/* Direct PDF / Drive Action */}
-                    <a
-                      href={pdfUrl}
-                      target="_blank"
-                      rel="nofollow noopener noreferrer"
-                      className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center gap-2 cursor-pointer"
-                    >
-                      <FileText size={14} />
-                      <b id="verdetalles">[ VER MÁS DETALLES ]</b>
-                      <ExternalLink size={13} />
-                    </a>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {globalBasesPdfUrl && (
+                      <a
+                        href={globalBasesPdfUrl}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_12px_rgba(16,185,129,0.3)] flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <FileText size={14} />
+                        <span>[ BASES OFICIALES (PDF) ]</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
+                    {pdfUrl && pdfUrl !== globalBasesPdfUrl && (
+                      <a
+                        href={pdfUrl}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-white/10 text-slate-200 text-xs font-bold font-display transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <b id="verdetalles">[ VER DETALLES DE PLAZA ]</b>
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
