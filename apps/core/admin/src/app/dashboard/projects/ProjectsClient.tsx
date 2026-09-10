@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Fragment } from "react";
+import { useRouter } from "next/navigation";
 import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette } from "lucide-react";
 import { Project, GithubRepoSummary, slugify } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
@@ -114,9 +115,32 @@ function parseMarkdownToBlocks(markdown: string): UIBlock[] {
 }
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
+  const router = useRouter();
+  const [projectList, setProjectList] = useState<Project[]>(projects);
   const [editingId, setEditingId] = useState<number | null>(null);
 
-  const editingProject = projects.find(p => p.id === editingId) || null;
+  useEffect(() => {
+    setProjectList(projects);
+  }, [projects]);
+
+  const editingProject = projectList.find(p => p.id === editingId) || null;
+
+  const handleToggleStatus = async (id: number, currentStatus: string) => {
+    const newStatus = (currentStatus === 'Activo' || currentStatus === 'Público') ? 'Privado' : 'Activo';
+    setProjectList(prev => prev.map(p => p.id === id ? { ...p, status: newStatus } : p));
+    if (editingId === id) {
+      setStatus(newStatus);
+    }
+    await updateStatus(id, newStatus);
+    router.refresh();
+  };
+
+  const handleDeleteProject = async (id: number, projTitle: string) => {
+    if (!window.confirm(`¿Estás seguro de que quieres eliminar el proyecto "${projTitle}"? Esta acción no se puede deshacer.`)) return;
+    setProjectList(prev => prev.filter(p => p.id !== id));
+    await deleteProject(id);
+    router.refresh();
+  };
 
   // Campos controlados para poder llenarlos con "Autocompletar desde GitHub"
   const [repoInput, setRepoInput] = useState("");
@@ -124,6 +148,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [description, setDescription] = useState("");
   const [long_description, setLongDescription] = useState("");
   const [is_featured, setIsFeatured] = useState(false);
+  const [status, setStatus] = useState<string>("Activo");
   const [stack, setStack] = useState("");
   const [category, setCategory] = useState("Android");
   const [slug, setSlug] = useState("");
@@ -188,6 +213,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setDescription(editingProject?.description || "");
     setLongDescription(editingProject?.long_description || "");
     setIsFeatured(editingProject?.is_featured || false);
+    setStatus(editingProject ? (editingProject.status === "Privado" ? "Privado" : "Activo") : "Activo");
     setStack(editingProject?.stack.join(", ") || "");
     setCategory(editingProject?.category || "Android");
     setSlug(editingProject?.slug || "");
@@ -520,11 +546,33 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
       setSubmitError(result.error);
     } else {
       setSubmitState("idle");
+      if (editingId) {
+        setProjectList(prev => prev.map(p => {
+          if (p.id === editingId) {
+            return {
+              ...p,
+              title,
+              category,
+              description,
+              long_description: (formData.get("long_description") as string) || p.long_description,
+              stack: (formData.get("stack") as string || "").split(',').map(s => s.trim()).filter(Boolean),
+              slug: (formData.get("slug") as string || "").trim() || p.slug,
+              demolink: (formData.get("demolink") as string || "") || p.demolink,
+              image: (formData.get("image") as string || "") || p.image,
+              is_featured: formData.get("is_featured") === "true" || formData.get("is_featured") === "on",
+              status: (formData.get("status") as string) || status || p.status
+            };
+          }
+          return p;
+        }));
+      }
       if (!editingId) {
         setTitle(""); setDescription(""); setStack(""); setSlug(""); setRepoInput("");
         setCategory("Android"); setDemolink(""); setImagePreview(""); setLongDescription("");
+        setStatus("Activo");
       }
       setEditingId(null);
+      router.refresh();
     }
   };
 
@@ -542,14 +590,14 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {projects.length === 0 ? (
+              {projectList.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="p-8 text-center text-gray-500">
                     No hay proyectos. Añade uno.
                   </td>
                 </tr>
               ) : (
-                projects.map(proj => (
+                projectList.map(proj => (
                   <tr key={proj.id} className="hover:bg-white/5 transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
@@ -567,16 +615,16 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className={`text-xs font-bold px-2.5 py-1.5 rounded-lg border ${proj.status === 'Activo' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                          'bg-gray-500/10 text-gray-400 border-gray-500/20'
-                        }`}>
-                        {proj.status}
+                      <span className={`text-xs font-bold px-2.5 py-1.5 rounded-lg border ${
+                        (proj.status === 'Activo' || proj.status === 'Público')
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                      }`}>
+                        {(proj.status === 'Activo' || proj.status === 'Público') ? 'Activo' : 'Privado'}
                       </span>
                     </td>
                     <td className="p-4">
-                      <form className="flex gap-2">
-                        <input type="hidden" name="id" value={proj.id} />
-
+                      <div className="flex gap-2">
                         <button
                           type="button"
                           onClick={() => {
@@ -601,36 +649,34 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                           </a>
                         )}
 
-                        {proj.status === 'Activo' ? (
+                        {(proj.status === 'Activo' || proj.status === 'Público') ? (
                           <button
-                            formAction={async () => { await updateStatus(proj.id, 'Privado'); }}
-                            className="p-2 bg-gray-500/10 hover:bg-gray-500/20 text-gray-400 rounded-lg transition-colors"
-                            title="Ocultar del portal"
-                          >
-                            <EyeOff size={16} />
-                          </button>
-                        ) : (
-                          <button
-                            formAction={async () => { await updateStatus(proj.id, 'Activo'); }}
-                            className="p-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition-colors"
-                            title="Mostrar en el portal"
+                            type="button"
+                            onClick={() => handleToggleStatus(proj.id, proj.status)}
+                            className="p-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-lg transition-colors"
+                            title="Visible en el portal — Clic para ocultar (hacer Privado)"
                           >
                             <Eye size={16} />
                           </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleToggleStatus(proj.id, proj.status)}
+                            className="p-2 bg-gray-500/10 hover:bg-gray-500/20 text-gray-400 rounded-lg transition-colors"
+                            title="Oculto del portal — Clic para publicar (hacer Activo)"
+                          >
+                            <EyeOff size={16} />
+                          </button>
                         )}
                         <button
-                          formAction={async () => { await deleteProject(proj.id); }}
-                          onClick={(e) => {
-                            if (!window.confirm(`¿Estás seguro de que quieres eliminar el proyecto "${proj.title}"? Esta acción no se puede deshacer.`)) {
-                              e.preventDefault();
-                            }
-                          }}
+                          type="button"
+                          onClick={() => handleDeleteProject(proj.id, proj.title)}
                           className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-lg transition-colors"
                           title="Eliminar permanentemente"
                         >
                           <Trash2 size={16} />
                         </button>
-                      </form>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -1253,7 +1299,43 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <span className="text-sm font-semibold text-gray-300">Destacar proyecto (Mostrar primero en inicio)</span>
           </label>
 
-          <input type="hidden" name="status" value={editingProject ? editingProject.status : "Borrador"} />
+          {/* Selector de Estado / Visibilidad */}
+          <div className="flex flex-col gap-1.5 bg-[#151515] p-3 rounded-xl border border-gray-800/80 mt-1">
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center justify-between">
+              <span>Visibilidad en el Portal</span>
+              <span className={status === "Activo" ? "text-emerald-400 font-bold text-xs" : "text-amber-400 font-bold text-xs"}>
+                {status === "Activo" ? "● Activo (Público)" : "● Privado (Oculto)"}
+              </span>
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setStatus("Activo")}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
+                  status === "Activo"
+                    ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                    : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                <Eye size={14} />
+                Activo (Visible)
+              </button>
+              <button
+                type="button"
+                onClick={() => setStatus("Privado")}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
+                  status === "Privado"
+                    ? "bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.2)]"
+                    : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                <EyeOff size={14} />
+                Privado (Oculto)
+              </button>
+            </div>
+            <input type="hidden" name="status" value={status} />
+          </div>
+
           <input type="hidden" name="theme_config" value={themeConfig} />
 
           {submitError && (

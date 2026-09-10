@@ -190,15 +190,17 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
+  if (!error && data) {
+    return data as Project;
+  }
   if (slug === 'chamba-pro' || slug === 'empleos-pro' || slug === 'chamba') {
     return STATIC_CHAMBA_PROJECT;
   }
-  const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
-  if (error) {
+  if (error && error.code !== 'PGRST116') {
     console.error('Error fetching project by slug:', error);
-    return null;
   }
-  return data as Project;
+  return null;
 }
 
 const STATIC_CHAMBA_PROJECT: Project = {
@@ -245,7 +247,7 @@ Cada oferta laboral o convocatoria publicada es verificada previamente y redirig
   stack: ["Next.js 16", "TypeScript", "Tailwind CSS", "PostgreSQL", "Google for Jobs JSON-LD", "Glassmorphism UI"],
   image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80",
   demolink: "https://empleos.atpdev.dev",
-  status: "Público",
+  status: "Activo",
   created_at: new Date().toISOString()
 };
 
@@ -812,7 +814,12 @@ export async function syncProjectGithubData(
 }
 
 export async function deleteProject(id: number): Promise<boolean> {
-  const { error } = await adminSupabase.from('projects').delete().eq('id', id);
+  let targetId = id;
+  if (targetId === 9991) {
+    const { data: realProj } = await adminSupabase.from('projects').select('id').eq('slug', 'chamba-pro').single();
+    if (realProj) targetId = realProj.id;
+  }
+  const { error } = await adminSupabase.from('projects').delete().eq('id', targetId);
   if (error) {
     console.error('Error deleting project:', error);
     return false;
@@ -821,7 +828,12 @@ export async function deleteProject(id: number): Promise<boolean> {
 }
 
 export async function updateProjectStatus(id: number, status: string): Promise<boolean> {
-  const { error } = await adminSupabase.from('projects').update({ status }).eq('id', id);
+  let targetId = id;
+  if (targetId === 9991) {
+    const { data: realProj } = await adminSupabase.from('projects').select('id').eq('slug', 'chamba-pro').single();
+    if (realProj) targetId = realProj.id;
+  }
+  const { error } = await adminSupabase.from('projects').update({ status }).eq('id', targetId);
   if (error) {
     console.error('Error updating project status:', error);
     return false;
@@ -830,10 +842,18 @@ export async function updateProjectStatus(id: number, status: string): Promise<b
 }
 
 export async function updateProject(id: number, project: Partial<Omit<Project, 'id' | 'created_at'>>): Promise<{ success: boolean, error?: string }> {
+  let targetId = id;
+  if (targetId === 9991 || project.slug === 'chamba-pro') {
+    const { data: realProj } = await adminSupabase.from('projects').select('id').eq('slug', project.slug || 'chamba-pro').single();
+    if (realProj) {
+      targetId = realProj.id;
+    }
+  }
+
   let payload: Record<string, any> = { ...project };
   let attempts = 0;
   while (attempts < 5) {
-    const { error } = await adminSupabase.from('projects').update(payload).eq('id', id);
+    const { error } = await adminSupabase.from('projects').update(payload).eq('id', targetId);
     if (!error) return { success: true };
 
     console.error('Error updating project attempt', attempts, error);
