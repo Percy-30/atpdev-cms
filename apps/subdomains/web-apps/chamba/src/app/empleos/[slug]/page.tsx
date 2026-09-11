@@ -1,4 +1,4 @@
-import { getJobPostingBySlug, getJobPostings } from "@atpdev/database";
+import { getJobPostingBySlug, getJobPostings, isCompetitorUrl, sanitizeOfficialUrl } from "@atpdev/database";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
@@ -144,12 +144,12 @@ export default async function JobDetailPage({
     ],
   };
 
-  const safeApplyUrl = (
-    job.apply_url && 
-    !job.apply_url.includes('convocatoriasdetrabajo.com') && 
-    !job.apply_url.includes('portaltrabajos.pe') && 
-    !job.apply_url.includes('blogspot.com')
-  ) ? job.apply_url : (job.bases_pdf_url || job.resultados_url || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml');
+  const safeApplyUrl = sanitizeOfficialUrl(
+    job.apply_url,
+    job.bases_pdf_url || job.resultados_url,
+    job.entity_name,
+    job.sector_type
+  );
 
   return (
     <>
@@ -514,7 +514,13 @@ export default async function JobDetailPage({
               
               <div className="space-y-2 pt-1">
                 {(() => {
-                  const pdfTargetUrl = job.bases_pdf_url || (job.plazas && job.plazas[0]?.bases_url) || job.apply_url;
+                  const rawPdfUrl = job.bases_pdf_url || (job.plazas && job.plazas[0]?.bases_url) || job.apply_url;
+                  const pdfTargetUrl = sanitizeOfficialUrl(
+                    rawPdfUrl,
+                    safeApplyUrl,
+                    job.entity_name,
+                    job.sector_type
+                  );
                   const isDoc = (
                     pdfTargetUrl.includes('.pdf') ||
                     pdfTargetUrl.includes('drive.google.com') ||
@@ -564,7 +570,7 @@ export default async function JobDetailPage({
                       )}
 
                       {/* Documentos complementarios oficiales emitidos por la institución */}
-                      {job.cuadro_plazas_url && (
+                      {job.cuadro_plazas_url && !isCompetitorUrl(job.cuadro_plazas_url) && (
                         <a
                           href={job.cuadro_plazas_url}
                           target="_blank"
@@ -576,7 +582,7 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.cronograma_url && (
+                      {job.cronograma_url && !isCompetitorUrl(job.cronograma_url) && (
                         <a
                           href={job.cronograma_url}
                           target="_blank"
@@ -588,7 +594,7 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.anexos_url && (
+                      {job.anexos_url && !isCompetitorUrl(job.anexos_url) && (
                         <a
                           href={job.anexos_url}
                           target="_blank"
@@ -600,7 +606,7 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.guia_postulante_url && (
+                      {job.guia_postulante_url && !isCompetitorUrl(job.guia_postulante_url) && (
                         <a
                           href={job.guia_postulante_url}
                           target="_blank"
@@ -612,7 +618,7 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.resultados_url && (
+                      {job.resultados_url && !isCompetitorUrl(job.resultados_url) && (
                         <a
                           href={job.resultados_url}
                           target="_blank"
@@ -624,10 +630,7 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.fuente_url && 
-                       !job.fuente_url.includes('convocatoriasdetrabajo.com') && 
-                       !job.fuente_url.includes('portaltrabajos.pe') && 
-                       !job.fuente_url.includes('blogspot.com') && (
+                      {job.fuente_url && !isCompetitorUrl(job.fuente_url) && (
                         <a
                           href={job.fuente_url}
                           target="_blank"

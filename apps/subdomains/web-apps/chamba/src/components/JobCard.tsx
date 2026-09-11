@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { JobPosting } from "@atpdev/database";
+import { JobPosting, isCompetitorUrl, sanitizeOfficialUrl } from "@atpdev/database";
 import { ShieldCheck, MapPin, ExternalLink, Users, GraduationCap, ArrowRight } from "lucide-react";
 import { EntityLogo } from "@/components/EntityLogo";
 import { JobCountdownClock } from "@/components/JobCountdownClock";
@@ -103,21 +103,12 @@ export function JobCard({ job }: JobCardProps) {
             <ArrowRight size={13} />
           </Link>
           {(() => {
-            const isCompetitor = (url?: string) => (
-              !url ||
-              url.includes('convocatoriasdetrabajo.com') ||
-              url.includes('portaltrabajos.pe') ||
-              url.includes('blogspot.com')
+            const targetApplyUrl = sanitizeOfficialUrl(
+              job.apply_url,
+              job.bases_pdf_url || job.resultados_url,
+              job.entity_name,
+              job.sector_type
             );
-
-            let targetApplyUrl = `/empleos/${job.slug}`;
-            if (!isCompetitor(job.apply_url)) {
-              targetApplyUrl = job.apply_url!;
-            } else if (!isCompetitor(job.bases_pdf_url)) {
-              targetApplyUrl = job.bases_pdf_url!;
-            } else if (!isCompetitor(job.resultados_url)) {
-              targetApplyUrl = job.resultados_url!;
-            }
             const isExternal = targetApplyUrl.startsWith('http');
 
             return isExternal ? (

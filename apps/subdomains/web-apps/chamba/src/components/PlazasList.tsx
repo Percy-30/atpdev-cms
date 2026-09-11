@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { JobPlaza } from '@atpdev/database';
+import { JobPlaza, isCompetitorUrl } from '@atpdev/database';
 import { FileText, ExternalLink, Search, GraduationCap, Briefcase, Banknote, ShieldCheck, Eye } from 'lucide-react';
 
 interface PlazasListProps {
@@ -215,9 +215,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                     )}
                     {pdfUrl && 
                      pdfUrl !== globalBasesPdfUrl && 
-                     !pdfUrl.includes('convocatoriasdetrabajo.com') && 
-                     !pdfUrl.includes('portaltrabajos.pe') && 
-                     !pdfUrl.includes('blogspot.com') && (
+                     !isCompetitorUrl(pdfUrl) && (
                       <a
                         href={pdfUrl}
                         target="_blank"

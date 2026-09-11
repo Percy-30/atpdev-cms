@@ -2212,9 +2212,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Planilla D.L. 728 con todos los beneficios de ley + utilidades destacadas del sector industrial.",
       "Seguro EPS 100% y descuentos en productos del portafolio Alicorp."
     ],
-    apply_url: "https://pe.computrabajo.com/empresas/ofertas-de-trabajo-de-alicorp-53909CA8F142D305",
-    bases_pdf_url: "https://pe.computrabajo.com/empresas/ofertas-de-trabajo-de-alicorp-53909CA8F142D305",
-    official_portal_name: "Alicorp Ofertas de Empleo",
+    apply_url: "https://www.alicorp.com.pe/es/unete-a-nuestro-equipo/",
+    bases_pdf_url: "https://www.alicorp.com.pe/es/unete-a-nuestro-equipo/",
+    official_portal_name: "Portal Oficial Únete a Alicorp",
     start_date: "2026-08-23",
     end_date: "2026-09-12",
     featured: true,
@@ -2271,16 +2271,121 @@ import {
 } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
-export function sanitizeOfficialUrl(url?: string, fallback?: string): string {
-  if (!url) return fallback || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
-  if (
-    url.includes('convocatoriasdetrabajo.com') ||
-    url.includes('portaltrabajos.pe') ||
-    url.includes('blogspot.com')
-  ) {
-    return fallback || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+export const AGGREGATOR_AND_COMPETITOR_DOMAINS = [
+  'computrabajo',
+  'bumeran',
+  'indeed',
+  'aptitus',
+  'trabajosdiarios',
+  'opcionempleo',
+  'jooble',
+  'convocatoriasdetrabajo',
+  'portaltrabajos',
+  'portaltrabajo',
+  'blogspot',
+  'trabajaen',
+  'buscojobs',
+  'trovit',
+  'mitula',
+  'chambita',
+  'chambasperu',
+  'laborum'
+];
+
+export function isCompetitorUrl(url?: string): boolean {
+  if (!url) return false;
+  const low = url.toLowerCase().trim();
+  return AGGREGATOR_AND_COMPETITOR_DOMAINS.some(domain => low.includes(domain));
+}
+
+export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: string): string {
+  if (!entityName) return 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+  const norm = entityName.toUpperCase();
+
+  // Sector Privado / Empresas Reconocidas
+  if (norm.includes('ALICORP')) return 'https://www.alicorp.com.pe/es/unete-a-nuestro-equipo/';
+  if (norm.includes('INTERBANK')) return 'https://interbank.pe/trabaja-con-nosotros';
+  if (norm.includes('BCP') || norm.includes('BANCO DE CREDITO') || norm.includes('BANCO DE CRÉDITO')) return 'https://www.viabcp.com/unete';
+  if (norm.includes('BBVA')) return 'https://www.bbva.com/es/pe/unete-a-bbva/';
+  if (norm.includes('SCOTIABANK')) return 'https://www.scotiabank.com.pe/Acerca-de/unete-a-nuestro-equipo';
+  if (norm.includes('GLORIA')) return 'https://gloria.evaluar.com/';
+  if (norm.includes('BACKUS')) return 'https://www.backus.pe/trabaja-con-nosotros';
+  if (norm.includes('FERREYROS')) return 'https://www.ferreyros.com.pe/trabaja-con-nosotros';
+  if (norm.includes('ANTAMINA')) return 'https://www.antamina.com/trabaja-con-nosotros/';
+  if (norm.includes('CERRO VERDE')) return 'https://cerroverde.pe/unete-a-nuestro-equipo/';
+  if (norm.includes('SOUTHERN')) return 'https://southernperu.com/';
+  if (norm.includes('FALABELLA') || norm.includes('SAGA FALABELLA')) return 'https://uneteafalabella.pe/';
+  if (norm.includes('RIPLEY')) return 'https://trabajaenripley.pe/';
+  if (norm.includes('TOTTUS')) return 'https://trabajaentottus.pe/';
+  if (norm.includes('PLAZA VEA') || norm.includes('SUPERMERCADOS PERUANOS')) return 'https://www.supermercadosperuanos.com.pe/trabaja-con-nosotros/';
+  if (norm.includes('INRETAIL')) return 'https://inretail.pe/oportunidad-laboral/';
+  if (norm.includes('ENTEL')) return 'https://entel.pe/trabaja-con-nosotros/';
+  if (norm.includes('CLARO') || norm.includes('AMERICA MOVIL') || norm.includes('AMÉRICA MÓVIL')) return 'https://claro.pe/personas/trabaja-con-nosotros/';
+  if (norm.includes('TELEFONICA') || norm.includes('TELEFÓNICA') || norm.includes('MOVISTAR')) return 'https://telefonica.com.pe/trabaja-con-nosotros/';
+
+  // Sector Público / Estado Peruano
+  if (norm.includes('ONPE')) return 'https://www.onpe.gob.pe/convocatorias/';
+  if (norm.includes('RENIEC')) return 'https://www.reniec.gob.pe/portal/convocatoria.htm';
+  if (norm.includes('JNE')) return 'https://portal.jne.gob.pe/portal/convocatorias';
+  if (norm.includes('SUNAT')) return 'https://unete.sunat.gob.pe/';
+  if (norm.includes('ESSALUD') || norm.includes('ES SALUD')) return 'https://ww1.essalud.gob.pe/convocatorias/';
+  if (norm.includes('BCRP') || norm.includes('BANCO CENTRAL DE RESERVA')) return 'https://www.bcrp.gob.pe/concursos-de-trabajo.html';
+  if (norm.includes('BANCO DE LA NACION') || norm.includes('BANCO DE LA NACIÓN')) return 'https://www.bn.com.pe/oportunidad-laboral/';
+  if (norm.includes('PODER JUDICIAL') || norm.includes('CORTE SUPERIOR')) return 'https://aplicativo.pj.gob.pe/psep/';
+  if (norm.includes('MINISTERIO PUBLICO') || norm.includes('MINISTERIO PÚBLICO') || norm.includes('FISCALIA') || norm.includes('FISCALÍA') || norm.includes('MPFN')) return 'https://portal.mpfn.gob.pe/convocatorias';
+  if (norm.includes('CONTRALORIA') || norm.includes('CONTRALORÍA')) return 'https://www.gob.pe/contraloria';
+  if (norm.includes('INEI')) return 'https://proyectos.inei.gob.pe/convocatorias/2026/';
+  if (norm.includes('DEFENSORIA') || norm.includes('DEFENSORÍA')) return 'https://www.defensoria.gob.pe/convocatorias-cas/';
+  if (norm.includes('SUNAFIL')) return 'https://www.gob.pe/sunafil';
+  if (norm.includes('INDECOPI')) return 'https://www.gob.pe/indecopi';
+  if (norm.includes('OSINERGMIN')) return 'https://www.osinergmin.gob.pe/seccion/institucional/oportunidades-laborales';
+  if (norm.includes('SUNASS')) return 'https://www.sunass.gob.pe/trabaja-con-nosotros/';
+  if (norm.includes('OSIPTEL')) return 'https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/';
+  if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
+  if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
+  if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
+  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://www.gob.pe/minedu';
+  if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
+  if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/midis';
+  if (norm.includes('MIMP') || norm.includes('MUJER') || norm.includes('AURORA')) return 'https://www.gob.pe/mimp';
+  if (norm.includes('MININTER') || norm.includes('POLICIA') || norm.includes('POLICÍA') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
+  if (norm.includes('MINDEF') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
+  if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/mef';
+  if (norm.includes('MINEM') || norm.includes('ENERGIA') || norm.includes('ENERGÍA')) return 'https://www.gob.pe/minem';
+  if (norm.includes('PRODUCE') || norm.includes('PRODUCCION') || norm.includes('PRODUCCIÓN') || norm.includes('SANIPES') || norm.includes('ITP')) return 'https://www.gob.pe/produce';
+  if (norm.includes('MIDAGRI') || norm.includes('MINAGRI') || norm.includes('AGRICULTURA') || norm.includes('SERFOR') || norm.includes('SENASA') || norm.includes('ANA')) return 'https://www.gob.pe/midagri';
+  if (norm.includes('MINAM') || norm.includes('AMBIENTE') || norm.includes('OEFA') || norm.includes('SERNANP') || norm.includes('SENAMHI')) return 'https://www.gob.pe/minam';
+  if (norm.includes('MINCETUR') || norm.includes('PROMPERU') || norm.includes('PROMPERÚ')) return 'https://www.gob.pe/mincetur';
+  if (norm.includes('CULTURA')) return 'https://www.gob.pe/cultura';
+  if (norm.includes('MTPE') || norm.includes('TRABAJO')) return 'https://www.gob.pe/mtpe';
+  if (norm.includes('MINJUSDH') || norm.includes('JUSTICIA') || norm.includes('INPE') || norm.includes('SUNARP')) return 'https://www.gob.pe/minjus';
+  if (norm.includes('UNAJMA') || norm.includes('JOSE MARIA ARGUEDAS') || norm.includes('JOSÉ MARÍA ARGUEDAS')) return 'https://www.unajma.edu.pe/convocatorias';
+  if (norm.includes('SAN MARCOS') || norm.includes('UNMSM')) return 'https://unmsm.edu.pe/';
+  if (norm.includes('UNI') || norm.includes('INGENIERIA') || norm.includes('INGENIERÍA')) return 'https://www.uni.edu.pe/';
+  if (norm.includes('AGRARIA') || norm.includes('UNALM')) return 'https://www.lamolina.edu.pe/';
+
+  // Sector Privado genérico
+  if (sectorType === 'Privado') {
+    return 'https://empleos.atpdev.dev/empleos';
   }
-  return url;
+
+  // Portal oficial del Estado peruano (SERVIR - Talento Perú)
+  return 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+}
+
+export function sanitizeOfficialUrl(
+  url?: string, 
+  fallback?: string, 
+  entityName?: string, 
+  sectorType?: string
+): string {
+  if (url && !isCompetitorUrl(url)) {
+    return url;
+  }
+  if (fallback && !isCompetitorUrl(fallback)) {
+    return fallback;
+  }
+  return getOfficialEntityPortalUrl(entityName, sectorType);
 }
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
@@ -2384,21 +2489,18 @@ export async function getJobPostings(): Promise<JobPosting[]> {
   }
 
   const results = Array.from(jobsMap.values()).map(j => {
-    const isCompetitor = (u?: string) => {
-      if (!u) return false;
-      const low = u.toLowerCase();
-      return low.includes('convocatoriasdetrabajo.com') || low.includes('portaltrabajos.pe') || low.includes('portaltrabajo.pe');
-    };
-    const safeTarget = (j.bases_pdf_url && !isCompetitor(j.bases_pdf_url))
-      ? j.bases_pdf_url
-      : ((j.resultados_url && !isCompetitor(j.resultados_url)) ? j.resultados_url : `/empleos/${j.slug}`);
+    const fallbackPortal = getOfficialEntityPortalUrl(j.entity_name, j.sector_type);
 
-    const cleanApply = sanitizeOfficialUrl(j.apply_url, safeTarget);
-    const cleanBases = j.bases_pdf_url ? sanitizeOfficialUrl(j.bases_pdf_url, undefined) : undefined;
-    const cleanFuente = j.fuente_url && isCompetitor(j.fuente_url) ? (j.resultados_url || undefined) : j.fuente_url;
+    const safeTarget = (j.bases_pdf_url && !isCompetitorUrl(j.bases_pdf_url))
+      ? j.bases_pdf_url
+      : ((j.resultados_url && !isCompetitorUrl(j.resultados_url)) ? j.resultados_url : fallbackPortal);
+
+    const cleanApply = sanitizeOfficialUrl(j.apply_url, safeTarget, j.entity_name, j.sector_type);
+    const cleanBases = j.bases_pdf_url ? sanitizeOfficialUrl(j.bases_pdf_url, cleanApply, j.entity_name, j.sector_type) : undefined;
+    const cleanFuente = (j.fuente_url && isCompetitorUrl(j.fuente_url)) ? (j.resultados_url || cleanBases || cleanApply) : j.fuente_url;
     const cleanPlazas = j.plazas ? j.plazas.map(p => ({
       ...p,
-      bases_url: sanitizeOfficialUrl(p.bases_url, cleanBases || cleanApply)
+      bases_url: sanitizeOfficialUrl(p.bases_url, cleanBases || cleanApply, j.entity_name, j.sector_type)
     })) : undefined;
 
     return {
@@ -2443,15 +2545,28 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
       }
     }
 
-    // SANITIZACIÓN ESTRICTA: NUNCA enviar al usuario a convocatoriasdetrabajo.com ni portaltrabajos.pe
-    const safeTarget = job.bases_pdf_url || job.resultados_url || 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
-    job.apply_url = sanitizeOfficialUrl(job.apply_url, safeTarget);
-    if (job.fuente_url && (job.fuente_url.includes('convocatoriasdetrabajo.com') || job.fuente_url.includes('portaltrabajos.pe'))) {
-      job.fuente_url = job.resultados_url || undefined;
+    // SANITIZACIÓN ESTRICTA: NUNCA enviar al usuario a computrabajo, convocatoriasdetrabajo, portaltrabajos, bumeran, etc.
+    const fallbackPortal = getOfficialEntityPortalUrl(job.entity_name, job.sector_type);
+    const safeTarget = (!isCompetitorUrl(job.bases_pdf_url) && job.bases_pdf_url) || 
+                       (!isCompetitorUrl(job.resultados_url) && job.resultados_url) || 
+                       fallbackPortal;
+
+    job.apply_url = sanitizeOfficialUrl(job.apply_url, safeTarget, job.entity_name, job.sector_type);
+    if (job.bases_pdf_url && isCompetitorUrl(job.bases_pdf_url)) {
+      job.bases_pdf_url = safeTarget;
     }
+    if (job.fuente_url && isCompetitorUrl(job.fuente_url)) {
+      job.fuente_url = job.resultados_url || job.bases_pdf_url || job.apply_url;
+    }
+    if (job.cuadro_plazas_url && isCompetitorUrl(job.cuadro_plazas_url)) job.cuadro_plazas_url = undefined;
+    if (job.cronograma_url && isCompetitorUrl(job.cronograma_url)) job.cronograma_url = undefined;
+    if (job.anexos_url && isCompetitorUrl(job.anexos_url)) job.anexos_url = undefined;
+    if (job.guia_postulante_url && isCompetitorUrl(job.guia_postulante_url)) job.guia_postulante_url = undefined;
+    if (job.resultados_url && isCompetitorUrl(job.resultados_url)) job.resultados_url = undefined;
+
     if (job.plazas) {
       job.plazas.forEach(p => {
-        p.bases_url = sanitizeOfficialUrl(p.bases_url, job.bases_pdf_url || job.apply_url);
+        p.bases_url = sanitizeOfficialUrl(p.bases_url, job.bases_pdf_url || job.apply_url, job.entity_name, job.sector_type);
       });
     }
 

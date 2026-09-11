@@ -27,7 +27,25 @@ async function verifyJobs() {
     console.log(`   Sedes / ODPE: ${ineiOp.odpe_vacancies?.length || 0} sedes`);
   }
 
-  // Muestra representativa de convocatorias de diversos organismos públicos y privados
+  // Test directo del caso solicitado por el usuario: ALICORP
+  console.log('\n🎯 Verificando caso solicitado: ALICORP Logística...');
+  const alicorpJob = await getJobPostingBySlug('alicorp-analistas-logistica-cadena-suministro');
+  if (!alicorpJob) {
+    console.error('❌ ERROR: alicorp-analistas-logistica-cadena-suministro no encontrado!');
+    errors++;
+  } else {
+    console.log('✔ [OK] alicorp-analistas-logistica-cadena-suministro resuelto con éxito:');
+    console.log(`   Título: ${alicorpJob.title}`);
+    console.log(`   Empresa: ${alicorpJob.entity_name}`);
+    console.log(`   Postular (apply_url): ${alicorpJob.apply_url}`);
+    console.log(`   Bases (bases_pdf_url): ${alicorpJob.bases_pdf_url}`);
+    console.log(`   Portal Oficial: ${alicorpJob.official_portal_name}`);
+    
+    if (alicorpJob.apply_url.includes('computrabajo') || alicorpJob.apply_url.includes('convocatoriasdetrabajo')) {
+      console.error('❌ ERROR: apply_url de Alicorp sigue conteniendo competidor/computrabajo!');
+      errors++;
+    }
+  }
   const sampleIndices = [
     0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 140, 200, 250, 300, 350, 400
   ].filter(idx => idx < jobs.length);
