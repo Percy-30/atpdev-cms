@@ -17,7 +17,7 @@
     "dev:admin": "npm run dev --workspace=apps/core/admin -- -p 3001",
     "dev:chamba": "npm run dev --workspace=apps/subdomains/web-apps/chamba -- -p 3005",
     "test": "npm test --workspace=packages/database",
-    "lint": "npm run lint --workspace=apps/core/portal && npm run lint --workspace=apps/core/admin",
+    "lint": "npm run lint --workspace=apps/core/portal && npm run lint --workspace=apps/core/admin && npm run lint --workspace=apps/subdomains/web-apps/chamba",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
