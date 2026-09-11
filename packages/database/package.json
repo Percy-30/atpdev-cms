@@ -11,5 +11,9 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
     "@vitalets/google-translate-api": "^9.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.19",
+    "typescript": "^5"
   }
 }

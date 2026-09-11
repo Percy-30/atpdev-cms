@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, JobPosting } from './jobs';
 
 async function verifyAllJobs() {
