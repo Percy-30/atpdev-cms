@@ -1,147 +1,141 @@
-import { getJobPostings, getJobPostingBySlug } from './jobs';
+import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, JobPosting } from './jobs';
 
-async function verifyJobs() {
-  console.log('🔍 Iniciando verificación exhaustiva de convocatorias...');
+async function verifyAllJobs() {
+  console.log('🔍 Iniciando AUDITORÍA 100% EXHAUSTIVA DE TODAS LAS CONVOCATORIAS...');
   const jobs = await getJobPostings();
-  console.log(`Total convocatorias detectadas: ${jobs.length}`);
+  const totalJobs = jobs.length;
+  console.log(`📊 Total de convocatorias registradas en el sistema: ${totalJobs}`);
 
-  let errors = 0;
-  let pdfButtons = 0;
-  let portalButtons = 0;
+  let errorsCount = 0;
+  let competitorLinksFound = 0;
+  let directPdfCount = 0;
+  let officialPortalCount = 0;
   let structuredPlazasCount = 0;
   let fallbackPlazasCount = 0;
+  const slugsSeen = new Set<string>();
 
-  // Test directo del caso solicitado por el usuario: INEI Operadores Tecnológicos
-  console.log('\n🎯 Verificando caso solicitado: INEI Operadores Tecnológicos...');
-  const ineiOp = await getJobPostingBySlug('inei-eda-2026-operadores-tecnologicos');
-  if (!ineiOp) {
-    console.error('❌ ERROR: inei-eda-2026-operadores-tecnologicos no encontrado!');
-    errors++;
+  // Verificación caso especial: Alicorp
+  console.log('\n🎯 Verificando caso crítico: ALICORP Logística...');
+  const alicorp = await getJobPostingBySlug('alicorp-analistas-logistica-cadena-suministro');
+  if (!alicorp) {
+    console.error('❌ ERROR: Alicorp no encontrado!');
+    errorsCount++;
   } else {
-    console.log('✔ [OK] inei-eda-2026-operadores-tecnologicos resuelto con éxito:');
-    console.log(`   Título: ${ineiOp.title}`);
-    console.log(`   Postular (apply_url): ${ineiOp.apply_url}`);
-    console.log(`   Bases (bases_pdf_url): ${ineiOp.bases_pdf_url}`);
-    console.log(`   Guía (guia_postulante_url): ${ineiOp.guia_postulante_url}`);
-    console.log(`   Anexos (anexos_url): ${ineiOp.anexos_url}`);
-    console.log(`   Sedes / ODPE: ${ineiOp.odpe_vacancies?.length || 0} sedes`);
-  }
-
-  // Test directo del caso solicitado por el usuario: ALICORP
-  console.log('\n🎯 Verificando caso solicitado: ALICORP Logística...');
-  const alicorpJob = await getJobPostingBySlug('alicorp-analistas-logistica-cadena-suministro');
-  if (!alicorpJob) {
-    console.error('❌ ERROR: alicorp-analistas-logistica-cadena-suministro no encontrado!');
-    errors++;
-  } else {
-    console.log('✔ [OK] alicorp-analistas-logistica-cadena-suministro resuelto con éxito:');
-    console.log(`   Título: ${alicorpJob.title}`);
-    console.log(`   Empresa: ${alicorpJob.entity_name}`);
-    console.log(`   Postular (apply_url): ${alicorpJob.apply_url}`);
-    console.log(`   Bases (bases_pdf_url): ${alicorpJob.bases_pdf_url}`);
-    console.log(`   Portal Oficial: ${alicorpJob.official_portal_name}`);
-    
-    if (alicorpJob.apply_url.includes('computrabajo') || alicorpJob.apply_url.includes('convocatoriasdetrabajo')) {
-      console.error('❌ ERROR: apply_url de Alicorp sigue conteniendo competidor/computrabajo!');
-      errors++;
+    if (isCompetitorUrl(alicorp.apply_url) || isCompetitorUrl(alicorp.bases_pdf_url)) {
+      console.error('❌ ERROR: Alicorp aún tiene URLs de competidores/agregadores!');
+      errorsCount++;
+    } else {
+      console.log(`✔ [OK] Alicorp apply_url: ${alicorp.apply_url}`);
+      console.log(`✔ [OK] Alicorp bases_pdf_url: ${alicorp.bases_pdf_url}`);
     }
   }
-  const sampleIndices = [
-    0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 140, 200, 250, 300, 350, 400
-  ].filter(idx => idx < jobs.length);
 
-  const testJobs = sampleIndices.map(idx => jobs[idx]);
+  // Verificación caso especial: INEI Operadores Tecnológicos
+  console.log('\n🎯 Verificando caso crítico: INEI Operadores Tecnológicos...');
+  const inei = await getJobPostingBySlug('inei-eda-2026-operadores-tecnologicos');
+  if (!inei) {
+    console.error('❌ ERROR: INEI no encontrado!');
+    errorsCount++;
+  } else {
+    console.log(`✔ [OK] INEI apply_url: ${inei.apply_url}`);
+    console.log(`✔ [OK] INEI sedes: ${inei.odpe_vacancies?.length || 0}`);
+  }
 
-  console.log(`\nProbando ${testJobs.length} convocatorias diversas en vivo:\n`);
+  console.log(`\n🚀 Auditando una por una las ${totalJobs} convocatorias en vivo al 100%...\n`);
 
-  for (const job of testJobs) {
-    // 1. Verificar resolución por slug o slug corto
+  for (let i = 0; i < totalJobs; i++) {
+    const job = jobs[i];
+    const prefix = `[${i + 1}/${totalJobs}]`;
+
+    // 1. Verificar unicidad de slug
+    if (slugsSeen.has(job.slug)) {
+      console.error(`❌ ${prefix} ERROR: Slug duplicado detectado: "${job.slug}"`);
+      errorsCount++;
+    }
+    slugsSeen.add(job.slug);
+
+    // 2. Verificar resolución por getJobPostingBySlug
     const resolved = await getJobPostingBySlug(job.slug);
     if (!resolved) {
-      console.error(`❌ ERROR: No se pudo resolver por slug: ${job.slug}`);
-      errors++;
+      console.error(`❌ ${prefix} ERROR: No se pudo resolver por slug: "${job.slug}"`);
+      errorsCount++;
       continue;
     }
 
-    // 2. Verificar datos mínimos para renderizar la página
-    if (!resolved.title || !resolved.entity_name || !resolved.sector_type) {
-      console.error(`❌ ERROR: Campos obligatorios faltantes en ${job.slug}`);
-      errors++;
-      continue;
+    // 3. Campos obligatorios
+    if (!resolved.title || !resolved.entity_name || !resolved.sector_type || !resolved.region) {
+      console.error(`❌ ${prefix} ERROR: Faltan campos esenciales en "${job.slug}"`);
+      errorsCount++;
     }
 
-    // 3. Evaluar lógica del botón de bases del sidebar
-    const pdfTargetUrl = (resolved.plazas && resolved.plazas[0]?.bases_url) || resolved.bases_pdf_url || resolved.apply_url;
-    if (!pdfTargetUrl) {
-      console.error(`❌ ERROR: Sin URL de bases ni postulación: ${job.slug}`);
-      errors++;
-      continue;
-    }
+    // 4. Verificación estricta de CERO competidores (computrabajo, bumeran, indeed, convocatoriasdetrabajo, etc.)
+    const checkField = (fieldVal: string | undefined, fieldName: string) => {
+      if (!fieldVal) return;
+      if (isCompetitorUrl(fieldVal)) {
+        console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene competidor en ${fieldName}: ${fieldVal}`);
+        errorsCount++;
+        competitorLinksFound++;
+      }
+    };
 
-    const isDoc = (
-      pdfTargetUrl.includes('.pdf') ||
-      pdfTargetUrl.includes('drive.google.com') ||
-      pdfTargetUrl.includes('docs.google.com') ||
-      pdfTargetUrl.includes('archivos.mpfn.gob.pe') ||
-      pdfTargetUrl.includes('/anexo-archivo/') ||
-      pdfTargetUrl.includes('Descargar_Tdr') ||
-      pdfTargetUrl.includes('.docx') ||
-      pdfTargetUrl.includes('.xlsx')
-    );
+    checkField(resolved.apply_url, 'apply_url');
+    checkField(resolved.bases_pdf_url, 'bases_pdf_url');
+    checkField(resolved.fuente_url, 'fuente_url');
+    checkField(resolved.cuadro_plazas_url, 'cuadro_plazas_url');
+    checkField(resolved.cronograma_url, 'cronograma_url');
+    checkField(resolved.anexos_url, 'anexos_url');
+    checkField(resolved.guia_postulante_url, 'guia_postulante_url');
+    checkField(resolved.resultados_url, 'resultados_url');
 
-    if (isDoc) {
-      pdfButtons++;
-    } else {
-      portalButtons++;
-    }
-
-    // 4. Evaluar lógica del componente PlazasList
-    const effectivePlazas = (resolved.plazas && resolved.plazas.length > 0)
-      ? resolved.plazas
-      : [
-          {
-            cas_code: resolved.title.match(/CAS\s*N[ºo°]?\s*\d+/i)?.[0] || 'CAS Nº 01',
-            title: resolved.title,
-            education: resolved.requirements?.find(r => /formaci[oó]n|t[ií]tulo|bachiller|egresad|estudios|secundaria|t[eé]cnico/i.test(r)) || `Nivel: ${resolved.education_level}`,
-            experience: resolved.requirements?.find(r => /experiencia/i.test(r)) || 'Experiencia laboral acreditada',
-            salary: resolved.salary_text,
-            bases_url: resolved.bases_pdf_url || resolved.apply_url
-          }
-        ];
-
+    // 5. Validar plazas
     if (resolved.plazas && resolved.plazas.length > 0) {
       structuredPlazasCount++;
+      resolved.plazas.forEach((p, pIdx) => {
+        checkField(p.bases_url, `plazas[${pIdx}].bases_url`);
+      });
     } else {
       fallbackPlazasCount++;
     }
 
-    // 5. Verificar que cada plaza tenga su enlace y título válido
-    for (const plaza of effectivePlazas) {
-      if (!plaza.title || !plaza.bases_url) {
-        console.error(`❌ ERROR: Plaza inválida en ${job.slug}:`, plaza);
-        errors++;
-      }
+    // 6. Validar enlace de postulación o bases
+    const target = resolved.bases_pdf_url || resolved.apply_url;
+    if (!target || !target.startsWith('http')) {
+      console.error(`❌ ${prefix} ERROR: Sin enlace válido en "${job.slug}"`);
+      errorsCount++;
+    } else if (
+      target.includes('.pdf') ||
+      target.includes('drive.google.com') ||
+      target.includes('docs.google.com') ||
+      target.includes('archivos.mpfn.gob.pe')
+    ) {
+      directPdfCount++;
+    } else {
+      officialPortalCount++;
     }
-
-    console.log(`✔ [OK] [${isDoc ? 'PDF/Doc' : 'Portal Oficial'}] [${effectivePlazas.length} plazas] ${resolved.title.slice(0, 50)}...`);
   }
 
-  console.log('\n--- RESUMEN DE LA VERIFICACIÓN ---');
-  console.log(`Convocatorias probadas: ${testJobs.length}`);
-  console.log(`Errores encontrados: ${errors}`);
-  console.log(`Botones PDF/Documento Directo: ${pdfButtons}`);
-  console.log(`Botones Enlace a Portal Oficial: ${portalButtons}`);
-  console.log(`Convocatorias con plazas estructuradas individuales: ${structuredPlazasCount}`);
-  console.log(`Convocatorias con plaza sintetizada fallback: ${fallbackPlazasCount}`);
+  console.log('\n===================================================');
+  console.log('📊 REPORTE DE AUDITORÍA TOTAL AL 1000%');
+  console.log('===================================================');
+  console.log(`Total de convocatorias auditadas: ${totalJobs}`);
+  console.log(`Enlaces a competidores/agregadores encontrados: ${competitorLinksFound}`);
+  console.log(`Errores técnicos detectados: ${errorsCount}`);
+  console.log(`Convocatorias con bases PDF / Drive directo: ${directPdfCount}`);
+  console.log(`Convocatorias con enlace a Portal Oficial directo: ${officialPortalCount}`);
+  console.log(`Convocatorias con plazas individuales estructuradas: ${structuredPlazasCount}`);
+  console.log(`Convocatorias con plaza sintetizada: ${fallbackPlazasCount}`);
+  console.log('===================================================');
 
-  if (errors > 0) {
-    throw new Error(`Se encontraron ${errors} errores en las convocatorias.`);
+  if (errorsCount > 0) {
+    console.error(`\n❌ FALLARON ${errorsCount} CHEQUEOS. SE REQUIERE CORRECCIÓN.`);
+    process.exit(1);
   } else {
-    console.log('🎉 VERIFICACIÓN 100% EXITOSA SIN ERRORES');
+    console.log('\n🎉 ¡AUDITORÍA 100% EXITOSA! 0 ERRORES, 0 ENLACES A TERCEROS.');
+    console.log('Todas las convocatorias funcionan al 1000% con enlaces directos oficiales o PDF.');
   }
 }
 
-verifyJobs().catch((err) => {
-  console.error(err);
+verifyAllJobs().catch((err) => {
+  console.error('Error fatal en verificación:', err);
   process.exit(1);
 });
