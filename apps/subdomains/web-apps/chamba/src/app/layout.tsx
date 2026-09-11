@@ -133,55 +133,63 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className="bg-[#0b0f19] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-500 selection:text-black">
+      <body className="bg-[#070a12] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-400 selection:text-slate-950">
         {/* Top Announcement Bar */}
-        <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white text-xs font-semibold py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-emerald-500/30 print:hidden">
-          <ShieldCheck size={15} className="animate-pulse text-amber-300" />
-          <span>Agregador Oficial Verificado — Redirección 100% Directa a Fuentes de Gobierno y Empresas Verificadas</span>
+        <div className="relative overflow-hidden bg-gradient-to-r from-slate-950 via-emerald-950/60 to-slate-950 text-white text-xs font-semibold py-2 px-4 text-center flex items-center justify-center gap-2.5 border-b border-emerald-500/20 print:hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.15),_transparent_70%)] pointer-events-none" />
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="font-mono text-[11px] text-emerald-300 font-bold uppercase tracking-wider">Servicio Verificado 2026:</span>
+          <span className="text-slate-300 font-medium">Postulación 100% directa a bases oficiales de SERVIR, Ministerios y Empresas líderes</span>
         </div>
 
-        {/* Global Navigation Header */}
-        <header className="sticky top-0 z-40 bg-[#0b0f19]/80 backdrop-blur-xl border-b border-white/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+        {/* Global Navigation Header with Ultra-Refined Glassmorphism */}
+        <header className="sticky top-0 z-40 bg-[#070a12]/85 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover:scale-105 transition-transform">
-                <Briefcase className="text-slate-950 font-bold" size={22} />
+            <Link href="/" className="flex items-center gap-3.5 group">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-2xl blur-sm opacity-50 group-hover:opacity-100 transition duration-500 group-hover:duration-200" />
+                <div className="relative w-11 h-11 rounded-xl bg-slate-950 border border-white/15 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                  <Briefcase className="text-emerald-400 font-bold" size={22} />
+                </div>
               </div>
               <div>
-                <span className="font-display font-black text-xl tracking-tight text-white flex items-center gap-1.5">
-                  chamba <span className="text-emerald-400 font-mono text-sm px-1.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/30">pro</span>
+                <span className="font-display font-black text-2xl tracking-tight text-white flex items-center gap-1.5">
+                  chamba <span className="text-emerald-400 font-mono text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.3)]">pro</span>
                 </span>
-                <span className="text-[10px] text-slate-400 font-mono block -mt-1 tracking-wider uppercase">
+                <span className="text-[10px] text-slate-400 font-mono block -mt-1 tracking-widest uppercase">
                   Perú • Convocatorias Oficiales
                 </span>
               </div>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-slate-300">
-              <Link href="/empleos" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                <Search size={15} className="text-emerald-400" />
+            <nav className="hidden lg:flex items-center gap-1 text-xs font-semibold text-slate-300">
+              <Link href="/empleos" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <Search size={14} className="text-emerald-400" />
                 <span>Buscador</span>
               </Link>
-              <Link href="/calculadora-sueldo" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                <Calculator size={15} className="text-emerald-400" />
+              <Link href="/calculadora-sueldo" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <Calculator size={14} className="text-emerald-400" />
                 <span>Calculadora Sueldo</span>
               </Link>
-              <Link href="/comparador-regimenes" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                <Scale size={15} className="text-emerald-400" />
+              <Link href="/comparador-regimenes" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <Scale size={14} className="text-emerald-400" />
                 <span>Comparador CAS</span>
               </Link>
-              <Link href="/simulador-entrevista-ia" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                <Bot size={15} className="text-emerald-400" />
+              <Link href="/simulador-entrevista-ia" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <Bot size={14} className="text-emerald-400" />
                 <span>Entrevista IA</span>
               </Link>
-              <Link href="/crear-cv-cas" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                <FileSpreadsheet size={15} className="text-emerald-400" />
+              <Link href="/crear-cv-cas" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <FileSpreadsheet size={14} className="text-emerald-400" />
                 <span>Generar CV</span>
               </Link>
-              <Link href="/quienes-somos" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                <ShieldCheck size={15} />
+              <Link href="/quienes-somos" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <ShieldCheck size={14} className="text-slate-400" />
                 <span>Quiénes Somos</span>
               </Link>
             </nav>
@@ -190,7 +198,7 @@ export default function RootLayout({
             <div className="flex items-center gap-3">
               <Link
                 href="/empleos"
-                className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 font-display"
+                className="relative group overflow-hidden px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-950 font-display transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>Explorar Vacantes</span>
               </Link>

@@ -243,18 +243,18 @@ export default async function JobDetailPage({
             <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
               <span>Compartir:</span>
               <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro: https://chamba.atpdev.dev/empleos/${job.slug}`)}`}
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro: https://empleos.atpdev.dev/empleos/${job.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-colors"
+                className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all font-semibold hover:scale-105"
               >
                 WhatsApp
               </a>
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://chamba.atpdev.dev/empleos/${job.slug}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://empleos.atpdev.dev/empleos/${job.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-2.5 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 transition-colors"
+                className="px-3 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 transition-all font-semibold hover:scale-105"
               >
                 Facebook
               </a>
@@ -264,10 +264,10 @@ export default async function JobDetailPage({
               href={safeApplyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center gap-2 cursor-pointer"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold font-display text-sm transition-all shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:shadow-[0_0_35px_rgba(16,185,129,0.55)] flex items-center gap-2 cursor-pointer group"
             >
               <span>Ver Oferta Oficial y Postular</span>
-              <ExternalLink size={16} />
+              <ExternalLink size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
         </div>

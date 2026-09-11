@@ -65,61 +65,81 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Link
               href="/empleos?regimen=CAS"
-              className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between gap-3 group border-amber-500/20"
+              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-amber-500/20 hover:border-amber-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.25)] relative overflow-hidden"
             >
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
-                CAS
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black font-mono text-xs sm:text-sm shadow-[0_0_15px_rgba(245,158,11,0.2)] group-hover:scale-110 transition-transform">
+                  CAS
+                </div>
+                <span className="text-[9px] sm:text-[10px] font-mono text-amber-400 font-bold px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+                  Sector Público
+                </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-slate-100 group-hover:text-amber-400 transition-colors">
+                <h3 className="font-display font-bold text-sm sm:text-base text-slate-100 group-hover:text-amber-300 transition-colors">
                   D.L. 1057 (CAS)
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Convocatorias del Sector Público</p>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">Convocatorias del Estado y Gobiernos Regionales</p>
               </div>
             </Link>
 
             <Link
               href="/empleos?regimen=728"
-              className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between gap-3 group border-emerald-500/20"
+              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-emerald-500/20 hover:border-emerald-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(16,185,129,0.25)] relative overflow-hidden"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
-                728
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black font-mono text-xs sm:text-sm shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform">
+                  728
+                </div>
+                <span className="text-[9px] sm:text-[10px] font-mono text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                  Planilla
+                </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-slate-100 group-hover:text-emerald-400 transition-colors">
+                <h3 className="font-display font-bold text-sm sm:text-base text-slate-100 group-hover:text-emerald-300 transition-colors">
                   D.L. 728 (Planilla)
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Estabilidad laboral privada y pública</p>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">Estabilidad laboral y beneficios completos de ley</p>
               </div>
             </Link>
 
             <Link
               href="/empleos?regimen=Privado"
-              className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between gap-3 group border-cyan-500/20"
+              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-cyan-500/20 hover:border-cyan-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(6,182,212,0.25)] relative overflow-hidden"
             >
-              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">
-                PRIV
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-black font-mono text-xs sm:text-sm shadow-[0_0_15px_rgba(6,182,212,0.2)] group-hover:scale-110 transition-transform">
+                  PRIV
+                </div>
+                <span className="text-[9px] sm:text-[10px] font-mono text-cyan-400 font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">
+                  Corporativo
+                </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
+                <h3 className="font-display font-bold text-sm sm:text-base text-slate-100 group-hover:text-cyan-300 transition-colors">
                   Sector Privado
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Empresas e industrias verificadas</p>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">Banca, telecomunicaciones e industrias verificadas</p>
               </div>
             </Link>
 
             <Link
               href="/empleos?region=Lima"
-              className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between gap-3 group border-purple-500/20"
+              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-purple-500/20 hover:border-purple-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(168,85,247,0.25)] relative overflow-hidden"
             >
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
-                <MapPin size={20} />
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.2)] group-hover:scale-110 transition-transform">
+                  <MapPin size={20} />
+                </div>
+                <span className="text-[9px] sm:text-[10px] font-mono text-purple-400 font-bold px-2 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20">
+                  Sede Central
+                </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-slate-100 group-hover:text-purple-400 transition-colors">
-                  Lima y Callao
+                <h3 className="font-display font-bold text-sm sm:text-base text-slate-100 group-hover:text-purple-300 transition-colors">
+                  Lima & Callao
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Sede central de convocatorias</p>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">Mayor concentración de vacantes ministeriales</p>
               </div>
             </Link>
           </div>

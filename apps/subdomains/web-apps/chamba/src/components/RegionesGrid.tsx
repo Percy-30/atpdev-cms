@@ -19,33 +19,35 @@ const REGIONES = [
 
 export function RegionesGrid() {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold font-display text-white flex items-center gap-2">
-          <MapPin size={22} className="text-emerald-400" />
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
+        <h2 className="text-xl sm:text-2xl font-black font-display text-white flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
+            <MapPin size={18} className="text-emerald-400" />
+          </div>
           <span>Explorar Convocatorias por Región del Perú</span>
         </h2>
         <Link
           href="/empleos"
-          className="text-xs font-mono text-emerald-400 hover:underline flex items-center gap-1"
+          className="text-xs font-mono text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1.5 self-start sm:self-auto font-bold"
         >
-          <span>Ver las 25 Regiones</span>
+          <span>Ver las 25 Regiones Oficiales</span>
           <ChevronRight size={14} />
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
         {REGIONES.map((reg) => (
           <Link
             key={reg.name}
             href={`/empleos?region=${encodeURIComponent(reg.name)}`}
-            className={`p-4 rounded-2xl bg-gradient-to-br ${reg.color} border ${reg.border} hover:scale-[1.03] transition-all group relative overflow-hidden`}
+            className={`p-4 rounded-2xl bg-gradient-to-br ${reg.color} border ${reg.border} hover:scale-[1.04] transition-all duration-300 group relative overflow-hidden backdrop-blur-md shadow-lg hover:shadow-[0_10px_25px_rgba(0,0,0,0.5)]`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-slate-300 font-bold block truncate">{reg.label}</span>
-              <ChevronRight size={14} className="text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-xs font-mono text-slate-200 font-bold block truncate group-hover:text-white transition-colors">{reg.label}</span>
+              <ChevronRight size={14} className="text-slate-400 group-hover:text-emerald-300 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </div>
-            <span className="text-[11px] font-mono text-emerald-400 font-bold block mt-1">
+            <span className="inline-block text-[11px] font-mono text-emerald-300 font-extrabold mt-2 px-2 py-0.5 rounded-md bg-black/40 border border-white/5">
               {reg.count}
             </span>
           </Link>
