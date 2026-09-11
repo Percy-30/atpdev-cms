@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { JobPosting, isCompetitorUrl, sanitizeOfficialUrl } from "@atpdev/database";
-import { ShieldCheck, MapPin, ExternalLink, Users, GraduationCap, ArrowRight } from "lucide-react";
+import { ShieldCheck, MapPin, ExternalLink, Users, GraduationCap, ArrowRight, FileText } from "lucide-react";
 import { EntityLogo } from "@/components/EntityLogo";
 import { JobCountdownClock } from "@/components/JobCountdownClock";
 
@@ -103,24 +103,39 @@ export function JobCard({ job }: JobCardProps) {
             <ArrowRight size={13} />
           </Link>
           {(() => {
+            const candidateUrl = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url))
+              ? job.bases_pdf_url
+              : (job.apply_url || job.resultados_url);
+
             const targetApplyUrl = sanitizeOfficialUrl(
-              job.apply_url,
-              job.bases_pdf_url || job.resultados_url,
+              candidateUrl,
+              job.apply_url || job.bases_pdf_url,
               job.entity_name,
               job.sector_type
             );
             const isExternal = targetApplyUrl.startsWith('http');
+            const lowTarget = targetApplyUrl.toLowerCase();
+            const isDoc = (
+              lowTarget.includes('.pdf') ||
+              lowTarget.includes('drive.google.com') ||
+              lowTarget.includes('docs.google.com') ||
+              lowTarget.includes('archivos.mpfn.gob.pe')
+            );
 
             return isExternal ? (
               <a
                 href={targetApplyUrl}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="nofollow noopener noreferrer"
                 className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold font-display transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] group/btn"
-                aria-label={`Postular directamente en la web oficial de ${job.entity_name}`}
+                aria-label={isDoc ? `Abrir bases oficiales en PDF de ${job.entity_name}` : `Postular directamente en la web oficial de ${job.entity_name}`}
               >
-                <span>Bases Oficiales</span>
-                <ExternalLink size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                <span>{isDoc ? 'Bases (PDF)' : 'Postular'}</span>
+                {isDoc ? (
+                  <FileText size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                ) : (
+                  <ExternalLink size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                )}
               </a>
             ) : (
               <Link

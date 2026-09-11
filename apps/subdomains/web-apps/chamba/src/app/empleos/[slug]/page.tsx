@@ -300,8 +300,9 @@ export default async function JobDetailPage({
 
                 <div className="divide-y divide-white/5 rounded-2xl bg-slate-950/70 border border-white/10 overflow-hidden">
                   {job.official_documents.map((doc, dIdx) => {
-                    const isPdf = doc.url.toLowerCase().endsWith('.pdf');
-                    const isDoc = doc.url.toLowerCase().includes('.doc');
+                    const lowDocUrl = doc.url.toLowerCase();
+                    const isPdf = lowDocUrl.includes('.pdf') || lowDocUrl.includes('drive.google.com') || lowDocUrl.includes('docs.google.com');
+                    const isDoc = lowDocUrl.includes('.doc');
                     return (
                       <div
                         key={dIdx}
@@ -575,7 +576,11 @@ export default async function JobDetailPage({
                           </a>
 
                           <a
-                            href={pdfTargetUrl}
+                            href={
+                              pdfTargetUrl.includes('drive.google.com/file/d/')
+                                ? pdfTargetUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/uc?export=download&id=$1')
+                                : pdfTargetUrl
+                            }
                             target="_blank"
                             download
                             rel="nofollow noopener noreferrer"
@@ -583,6 +588,29 @@ export default async function JobDetailPage({
                           >
                             <span>📥 Descargar Archivo Directo</span>
                           </a>
+
+                          {/* Visor interactivo incrustado de bases */}
+                          <details className="group/preview pt-1">
+                            <summary className="cursor-pointer text-xs font-mono text-emerald-400 hover:text-emerald-300 py-2.5 px-3 rounded-xl bg-slate-900/90 border border-emerald-500/20 flex items-center justify-between transition-colors list-none select-none">
+                              <span className="flex items-center gap-2">
+                                <FileText size={14} className="text-emerald-400" />
+                                <span>Visualizar documento aquí</span>
+                              </span>
+                              <span className="text-[10px] text-slate-400 group-open/preview:rotate-180 transition-transform">▼</span>
+                            </summary>
+                            <div className="mt-2 rounded-2xl overflow-hidden border border-white/10 h-80 bg-slate-950/90">
+                              <iframe
+                                src={
+                                  pdfTargetUrl.includes('drive.google.com/file/d/')
+                                    ? pdfTargetUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                                    : pdfTargetUrl
+                                }
+                                className="w-full h-full border-0"
+                                title="Visor de Bases Oficiales"
+                                loading="lazy"
+                              />
+                            </div>
+                          </details>
                         </>
                       ) : (
                         <a
