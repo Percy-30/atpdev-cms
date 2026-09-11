@@ -1922,9 +1922,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Ingreso a planilla CAS.",
       "Beneficios según Ley D.L. 1057."
     ],
-    apply_url: "https://www.cusco.gob.pe/convocatorias-cas/",
-    bases_pdf_url: "https://www.cusco.gob.pe/convocatorias-cas/",
-    official_portal_name: "Municipalidad del Cusco Portal CAS",
+    apply_url: "https://web.cusco.gob.pe/category/convocatorias/",
+    bases_pdf_url: "https://web.cusco.gob.pe/category/convocatorias/",
+    official_portal_name: "Municipalidad del Cusco - Convocatorias CAS y 728 Oficial",
     start_date: "2026-08-28",
     end_date: "2026-09-11",
     featured: false,
@@ -2212,9 +2212,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Planilla D.L. 728 con todos los beneficios de ley + utilidades destacadas del sector industrial.",
       "Seguro EPS 100% y descuentos en productos del portafolio Alicorp."
     ],
-    apply_url: "https://www.alicorp.com.pe/es/unete-a-nuestro-equipo/",
-    bases_pdf_url: "https://www.alicorp.com.pe/es/unete-a-nuestro-equipo/",
-    official_portal_name: "Portal Oficial Únete a Alicorp",
+    apply_url: "https://oportunidadesalicorp.com/",
+    bases_pdf_url: "https://oportunidadesalicorp.com/",
+    official_portal_name: "Portal Oficial Oportunidades Alicorp",
     start_date: "2026-08-23",
     end_date: "2026-09-12",
     featured: true,
@@ -2303,7 +2303,7 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   const norm = entityName.toUpperCase();
 
   // Sector Privado / Empresas Reconocidas
-  if (norm.includes('ALICORP')) return 'https://www.alicorp.com.pe/es/unete-a-nuestro-equipo/';
+  if (norm.includes('ALICORP')) return 'https://oportunidadesalicorp.com/';
   if (norm.includes('INTERBANK')) return 'https://interbank.pe/trabaja-con-nosotros';
   if (norm.includes('BCP') || norm.includes('BANCO DE CREDITO') || norm.includes('BANCO DE CRÉDITO')) return 'https://www.viabcp.com/unete';
   if (norm.includes('BBVA')) return 'https://www.bbva.com/es/pe/unete-a-bbva/';
@@ -2360,6 +2360,7 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('MTPE') || norm.includes('TRABAJO')) return 'https://www.gob.pe/mtpe';
   if (norm.includes('MINJUSDH') || norm.includes('JUSTICIA') || norm.includes('INPE') || norm.includes('SUNARP')) return 'https://www.gob.pe/minjus';
   if (norm.includes('UNAJMA') || norm.includes('JOSE MARIA ARGUEDAS') || norm.includes('JOSÉ MARÍA ARGUEDAS')) return 'https://www.unajma.edu.pe/convocatorias';
+  if (norm.includes('CUSCO') || norm.includes('MUNICIPALIDAD DEL CUSCO') || norm.includes('MUNICIPALIDAD PROVINCIAL DEL CUSCO')) return 'https://web.cusco.gob.pe/category/convocatorias/';
   if (norm.includes('SAN MARCOS') || norm.includes('UNMSM')) return 'https://unmsm.edu.pe/';
   if (norm.includes('UNI') || norm.includes('INGENIERIA') || norm.includes('INGENIERÍA')) return 'https://www.uni.edu.pe/';
   if (norm.includes('AGRARIA') || norm.includes('UNALM')) return 'https://www.lamolina.edu.pe/';
@@ -2379,10 +2380,26 @@ export function sanitizeOfficialUrl(
   entityName?: string, 
   sectorType?: string
 ): string {
-  if (url && !isCompetitorUrl(url)) {
-    return url;
+  if (url) {
+    const low = url.toLowerCase().trim();
+    if (low.includes('cusco.gob.pe/convocatorias-cas') || low.includes('cusco.gob.pe/convocatoria')) {
+      return 'https://web.cusco.gob.pe/category/convocatorias/';
+    }
+    if (low.includes('alicorp.com.pe/es/unete-a-nuestro-equipo')) {
+      return 'https://oportunidadesalicorp.com/';
+    }
+    if (!isCompetitorUrl(url)) {
+      return url;
+    }
   }
   if (fallback && !isCompetitorUrl(fallback)) {
+    const lowFallback = fallback.toLowerCase().trim();
+    if (lowFallback.includes('cusco.gob.pe/convocatorias-cas') || lowFallback.includes('cusco.gob.pe/convocatoria')) {
+      return 'https://web.cusco.gob.pe/category/convocatorias/';
+    }
+    if (lowFallback.includes('alicorp.com.pe/es/unete-a-nuestro-equipo')) {
+      return 'https://oportunidadesalicorp.com/';
+    }
     return fallback;
   }
   return getOfficialEntityPortalUrl(entityName, sectorType);
