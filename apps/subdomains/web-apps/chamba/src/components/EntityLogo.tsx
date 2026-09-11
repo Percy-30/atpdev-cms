@@ -245,7 +245,7 @@ export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoP
     sm: 'w-10 h-10 rounded-lg p-1 shrink-0',
     md: 'w-16 h-16 rounded-xl p-1.5 shrink-0',
     lg: 'w-24 h-24 sm:w-28 sm:h-28 rounded-2xl p-2.5 shrink-0',
-    banner: 'w-full h-36 rounded-2xl p-4',
+    banner: 'w-full h-28 sm:h-32 rounded-xl p-3 sm:p-4',
   }[size];
 
   if (imageSrc) {
@@ -255,7 +255,7 @@ export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoP
         <img
           src={imageSrc}
           alt={entityName}
-          className={`${isBanner ? 'max-h-28 max-w-[90%]' : 'w-full h-full'} object-contain drop-shadow`}
+          className={`${isBanner ? 'max-h-20 sm:max-h-24 max-w-[88%]' : 'w-full h-full'} object-contain drop-shadow`}
           onError={() => setImgErr(true)}
         />
       </div>
@@ -282,15 +282,15 @@ export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoP
   }
 
   return (
-    <div className="w-full h-36 rounded-2xl bg-gradient-to-b from-white via-slate-50 to-slate-100 p-4 flex items-center justify-center shadow-md border border-slate-200 relative overflow-hidden group-hover:border-emerald-500 transition-all">
-      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-white to-red-600 shadow-sm" />
-      <div className="absolute top-2 left-3 bg-red-700 text-white font-extrabold font-mono text-[9px] px-2.5 py-0.5 rounded shadow">
+    <div className="w-full h-28 sm:h-32 rounded-xl bg-gradient-to-b from-white via-slate-50 to-slate-100 p-3 sm:p-4 flex items-center justify-center shadow-md border border-slate-200 relative overflow-hidden group-hover:border-emerald-500 transition-all">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-white to-red-600 shadow-sm" />
+      <div className="absolute top-2 left-3 bg-red-700 text-white font-extrabold font-mono text-[9px] px-2 py-0.5 rounded shadow">
         {entityBadge}
       </div>
       
-      <div className="flex items-center gap-3.5 max-w-full px-2 mt-2">
+      <div className="flex items-center gap-3 max-w-full px-1 mt-1.5">
         {/* Escudo Nacional del Perú Oficial en Alta Definición */}
-        <div className="w-16 h-16 shrink-0 rounded-2xl bg-white border border-slate-200/90 p-1.5 shadow-sm flex items-center justify-center">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl bg-white border border-slate-200/90 p-1 shadow-sm flex items-center justify-center">
           <img
             src="/logos/escudo-nacional-peru.svg"
             alt="Escudo Nacional del Perú"
