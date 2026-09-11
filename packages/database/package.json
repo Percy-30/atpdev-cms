@@ -5,7 +5,8 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "test": "npx tsx src/test-runner.ts"
+    "test": "npx tsx src/test-runner.ts",
+    "test:verify": "npx tsx src/test-verify-all-jobs.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

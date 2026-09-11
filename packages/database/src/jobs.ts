@@ -55,6 +55,7 @@ export type JobPosting = {
   guia_postulante_url?: string;
   resultados_url?: string;
   fuente_url?: string;
+  scrape_source_url?: string;
   official_portal_name?: string;
   official_documents?: { title: string; url: string; category?: string }[];
   odpe_vacancies?: OdpeVacancy[];
@@ -2267,7 +2268,8 @@ import {
   scrapeServirOfertas, 
   extractPlazasAndBasesFromCdUrl,
   scrapeUnajmaOfficialJobs,
-  UNAJMA_OFFICIAL_JOBS
+  UNAJMA_OFFICIAL_JOBS,
+  registerJobsUpdatedCallback
 } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
@@ -2418,6 +2420,8 @@ export function invalidateJobsCache(): void {
   GLOBAL_JOBS_TIMESTAMP = 0;
 }
 
+registerJobsUpdatedCallback(() => invalidateJobsCache());
+
 export async function getJobPostings(): Promise<JobPosting[]> {
   if (GLOBAL_JOBS_CACHE && (Date.now() - GLOBAL_JOBS_TIMESTAMP < GLOBAL_CACHE_TTL)) {
     return GLOBAL_JOBS_CACHE;
@@ -2508,12 +2512,21 @@ export async function getJobPostings(): Promise<JobPosting[]> {
   const results = Array.from(jobsMap.values()).map(j => {
     const fallbackPortal = getOfficialEntityPortalUrl(j.entity_name, j.sector_type);
 
-    const safeTarget = (j.bases_pdf_url && !isCompetitorUrl(j.bases_pdf_url))
+    // Si tiene plazas con PDF / Drive directo, priorizarlo como bases_pdf_url
+    const plazaPdf = j.plazas?.find(p => p.bases_url && (
+      p.bases_url.toLowerCase().includes('.pdf') ||
+      p.bases_url.toLowerCase().includes('drive.google.com') ||
+      p.bases_url.toLowerCase().includes('docs.google.com')
+    ));
+
+    const candidateBases = (j.bases_pdf_url && !isCompetitorUrl(j.bases_pdf_url))
       ? j.bases_pdf_url
-      : ((j.resultados_url && !isCompetitorUrl(j.resultados_url)) ? j.resultados_url : fallbackPortal);
+      : (plazaPdf?.bases_url && !isCompetitorUrl(plazaPdf.bases_url) ? plazaPdf.bases_url : undefined);
+
+    const safeTarget = candidateBases || ((j.resultados_url && !isCompetitorUrl(j.resultados_url)) ? j.resultados_url : fallbackPortal);
 
     const cleanApply = sanitizeOfficialUrl(j.apply_url, safeTarget, j.entity_name, j.sector_type);
-    const cleanBases = j.bases_pdf_url ? sanitizeOfficialUrl(j.bases_pdf_url, cleanApply, j.entity_name, j.sector_type) : undefined;
+    const cleanBases = candidateBases ? sanitizeOfficialUrl(candidateBases, cleanApply, j.entity_name, j.sector_type) : undefined;
     const cleanFuente = (j.fuente_url && isCompetitorUrl(j.fuente_url)) ? (j.resultados_url || cleanBases || cleanApply) : j.fuente_url;
     const cleanPlazas = j.plazas ? j.plazas.map(p => ({
       ...p,
@@ -2522,6 +2535,7 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 
     return {
       ...j,
+      scrape_source_url: j.scrape_source_url || (j.fuente_url && isCompetitorUrl(j.fuente_url) ? j.fuente_url : undefined),
       apply_url: cleanApply,
       bases_pdf_url: cleanBases,
       fuente_url: cleanFuente,
@@ -2539,9 +2553,10 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
 
   const maybeEnrichJob = async (job: JobPosting | null): Promise<JobPosting | null> => {
     if (!job) return null;
-    if (job.fuente_url && job.fuente_url.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && (!job.plazas || job.plazas.length <= 1)) {
+    const cdUrl = job.scrape_source_url || (job.fuente_url && job.fuente_url.includes('convocatoriasdetrabajo.com') ? job.fuente_url : undefined);
+    if (cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && (!job.plazas || job.plazas.length <= 1)) {
       try {
-        const enriched = await extractPlazasAndBasesFromCdUrl(job.fuente_url);
+        const enriched = await extractPlazasAndBasesFromCdUrl(cdUrl);
         if (enriched.plazas && enriched.plazas.length > 0) {
           job.plazas = enriched.plazas;
         }
@@ -2559,6 +2574,14 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
         }
       } catch (err) {
         console.warn('Error enriqueciendo plazas y bases de CD:', err);
+      }
+    }
+
+    // Si aún no tiene PDF directo en bases pero alguna plaza sí lo tiene:
+    if (job.plazas && (!job.bases_pdf_url || (!job.bases_pdf_url.toLowerCase().includes('.pdf') && !job.bases_pdf_url.toLowerCase().includes('drive.google.com')))) {
+      const plazaPdf = job.plazas.find(p => p.bases_url && (p.bases_url.toLowerCase().includes('.pdf') || p.bases_url.toLowerCase().includes('drive.google.com')));
+      if (plazaPdf?.bases_url) {
+        job.bases_pdf_url = plazaPdf.bases_url;
       }
     }
 

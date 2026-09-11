@@ -573,6 +573,11 @@ async function refreshLiveFeedInBackground(): Promise<void> {
 }
 
 // 4. Live Scraper Engine para ConvocatoriasDeTrabajo.com
+let onJobsUpdatedCallback: (() => void) | null = null;
+export function registerJobsUpdatedCallback(cb: () => void) {
+  onJobsUpdatedCallback = cb;
+}
+
 let cachedCdJobs: { data: JobPosting[]; timestamp: number } = {
   data: [],
   timestamp: 0
@@ -699,6 +704,7 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
         apply_url: fuente_url,
         bases_pdf_url: fuente_url,
         fuente_url,
+        scrape_source_url: fuente_url,
         official_portal_name: `${entity} - Portal Convocatorias`,
         start_date: today,
         end_date,
@@ -713,6 +719,7 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
     if (jobs.length > 0) {
       cachedCdJobs = { data: jobs, timestamp: Date.now() };
       console.log(`✅ [ConvocatoriasDeTrabajo Scraper] ${jobs.length} convocatorias consolidadas en tiempo real.`);
+      onJobsUpdatedCallback?.();
     }
     return jobs;
   } catch (err) {
@@ -812,29 +819,35 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         if (opRes.ok) {
           const opHtml = await opRes.text();
           const basesDivMatch = opHtml.match(/<div class="bases">([\s\S]*?)<\/div>/i);
-          if (basesDivMatch) {
-            const linkMatches = [...basesDivMatch[1].matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
-            for (const lm of linkMatches) {
-              const lUrl = lm[1].trim();
-              const lText = lm[2].toLowerCase();
-              if (lText.includes('base') || lUrl.endsWith('.pdf')) {
-                directBasesUrl = lUrl;
-              } else if (lText.includes('anexo') || lUrl.endsWith('.docx') || lUrl.endsWith('.doc')) {
-                directAnexosUrl = lUrl;
-              }
+          const linkMatches = basesDivMatch
+            ? [...basesDivMatch[1].matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)]
+            : [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
+
+          for (const lm of linkMatches) {
+            const lUrl = lm[1].trim();
+            const lText = lm[2].replace(/<[^>]+>/g, '').toLowerCase();
+            const lowUrl = lUrl.toLowerCase();
+            if (lowUrl.includes('convocatoriasdetrabajo.com') || lUrl.startsWith('#') || lUrl.startsWith('javascript:')) continue;
+
+            const isPdf = lowUrl.includes('.pdf');
+            const isDrive = lowUrl.includes('drive.google.com') || lowUrl.includes('docs.google.com');
+            const isDoc = isPdf || isDrive || lowUrl.includes('archivos.mpfn.gob.pe') || lowUrl.includes('descargar_tdr');
+
+            if (lText.includes('base') || (isDoc && !directBasesUrl)) {
+              directBasesUrl = lUrl;
+            } else if (lText.includes('anexo') || lowUrl.endsWith('.docx') || lowUrl.endsWith('.doc')) {
+              directAnexosUrl = lUrl;
+            } else if (lText.includes('resultado') && !directResultadosUrl) {
+              directResultadosUrl = lUrl;
+            } else if (lText.includes('comunicado') && !directComunicadosUrl) {
+              directComunicadosUrl = lUrl;
             }
           }
 
-          // Extraer enlaces a comunicados y resultados
-          const allLinks = [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
-          for (const al of allLinks) {
-            const lUrl = al[1].trim();
-            const lText = al[2].toLowerCase();
-            if (lText.includes('resultado') && !lUrl.startsWith('#') && !directResultadosUrl) {
-              directResultadosUrl = lUrl;
-            } else if (lText.includes('comunicado') && !lUrl.startsWith('#') && !directComunicadosUrl) {
-              directComunicadosUrl = lUrl;
-            }
+          // Si hay enlace específico para perfil o tdr de la primera plaza
+          const perfilMatch = opHtml.match(/<a[^>]+href=['"]([^'"]+)['"][^>]*>[\s\S]*?(?:perfil|tdr)[\s\S]*?<\/a>/i);
+          if (perfilMatch && !perfilMatch[1].toLowerCase().includes('convocatoriasdetrabajo.com')) {
+            plazas[0].bases_url = perfilMatch[1].trim();
           }
         }
       } catch (e) {

@@ -362,7 +362,19 @@ export default async function JobDetailPage({
               }
               entityName={job.entity_name}
               defaultApplyUrl={job.apply_url}
-              globalBasesPdfUrl={job.bases_pdf_url}
+              globalBasesPdfUrl={
+                (job.bases_pdf_url && (
+                  job.bases_pdf_url.toLowerCase().includes('.pdf') ||
+                  job.bases_pdf_url.toLowerCase().includes('drive.google.com') ||
+                  job.bases_pdf_url.toLowerCase().includes('docs.google.com')
+                )) ? job.bases_pdf_url : (
+                  job.plazas?.find(p => p.bases_url && (
+                    p.bases_url.toLowerCase().includes('.pdf') ||
+                    p.bases_url.toLowerCase().includes('drive.google.com') ||
+                    p.bases_url.toLowerCase().includes('docs.google.com')
+                  ))?.bases_url || job.bases_pdf_url
+                )
+              }
               anexosUrl={job.anexos_url}
             />
 
@@ -514,22 +526,37 @@ export default async function JobDetailPage({
               
               <div className="space-y-2 pt-1">
                 {(() => {
-                  const rawPdfUrl = job.bases_pdf_url || (job.plazas && job.plazas[0]?.bases_url) || job.apply_url;
+                  const plazaDirectDoc = job.plazas?.find(p => p.bases_url && (
+                    p.bases_url.toLowerCase().includes('.pdf') ||
+                    p.bases_url.toLowerCase().includes('drive.google.com') ||
+                    p.bases_url.toLowerCase().includes('docs.google.com')
+                  ));
+
+                  const rawPdfUrl = 
+                    (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url))
+                      ? job.bases_pdf_url
+                      : (plazaDirectDoc?.bases_url || (job.plazas && job.plazas[0]?.bases_url) || job.apply_url);
+
                   const pdfTargetUrl = sanitizeOfficialUrl(
                     rawPdfUrl,
                     safeApplyUrl,
                     job.entity_name,
                     job.sector_type
                   );
+
+                  const lowUrl = (pdfTargetUrl || '').toLowerCase();
                   const isDoc = (
-                    pdfTargetUrl.includes('.pdf') ||
-                    pdfTargetUrl.includes('drive.google.com') ||
-                    pdfTargetUrl.includes('docs.google.com') ||
-                    pdfTargetUrl.includes('archivos.mpfn.gob.pe') ||
-                    pdfTargetUrl.includes('/anexo-archivo/') ||
-                    pdfTargetUrl.includes('Descargar_Tdr') ||
-                    pdfTargetUrl.includes('.docx') ||
-                    pdfTargetUrl.includes('.xlsx')
+                    lowUrl.includes('.pdf') ||
+                    lowUrl.includes('drive.google.com') ||
+                    lowUrl.includes('docs.google.com') ||
+                    lowUrl.includes('archivos.mpfn.gob.pe') ||
+                    lowUrl.includes('/anexo-archivo/') ||
+                    lowUrl.includes('descargar_tdr') ||
+                    lowUrl.includes('download') ||
+                    lowUrl.includes('.docx') ||
+                    lowUrl.includes('.doc') ||
+                    lowUrl.includes('.xlsx') ||
+                    lowUrl.includes('.xls')
                   );
 
                   return (

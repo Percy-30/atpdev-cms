@@ -47,70 +47,75 @@ async function verifyAllJobs() {
     const job = jobs[i];
     const prefix = `[${i + 1}/${totalJobs}]`;
 
-    // 1. Verificar unicidad de slug
-    if (slugsSeen.has(job.slug)) {
-      console.error(`❌ ${prefix} ERROR: Slug duplicado detectado: "${job.slug}"`);
-      errorsCount++;
-    }
-    slugsSeen.add(job.slug);
-
-    // 2. Verificar resolución por getJobPostingBySlug
-    const resolved = await getJobPostingBySlug(job.slug);
-    if (!resolved) {
-      console.error(`❌ ${prefix} ERROR: No se pudo resolver por slug: "${job.slug}"`);
-      errorsCount++;
-      continue;
-    }
-
-    // 3. Campos obligatorios
-    if (!resolved.title || !resolved.entity_name || !resolved.sector_type || !resolved.region) {
-      console.error(`❌ ${prefix} ERROR: Faltan campos esenciales en "${job.slug}"`);
-      errorsCount++;
-    }
-
-    // 4. Verificación estricta de CERO competidores (computrabajo, bumeran, indeed, convocatoriasdetrabajo, etc.)
-    const checkField = (fieldVal: string | undefined, fieldName: string) => {
-      if (!fieldVal) return;
-      if (isCompetitorUrl(fieldVal)) {
-        console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene competidor en ${fieldName}: ${fieldVal}`);
+    try {
+      // 1. Verificar unicidad de slug
+      if (slugsSeen.has(job.slug)) {
+        console.error(`❌ ${prefix} ERROR: Slug duplicado detectado: "${job.slug}"`);
         errorsCount++;
-        competitorLinksFound++;
       }
-    };
+      slugsSeen.add(job.slug);
 
-    checkField(resolved.apply_url, 'apply_url');
-    checkField(resolved.bases_pdf_url, 'bases_pdf_url');
-    checkField(resolved.fuente_url, 'fuente_url');
-    checkField(resolved.cuadro_plazas_url, 'cuadro_plazas_url');
-    checkField(resolved.cronograma_url, 'cronograma_url');
-    checkField(resolved.anexos_url, 'anexos_url');
-    checkField(resolved.guia_postulante_url, 'guia_postulante_url');
-    checkField(resolved.resultados_url, 'resultados_url');
+      // 2. Verificar resolución por getJobPostingBySlug
+      const resolved = await getJobPostingBySlug(job.slug);
+      if (!resolved) {
+        console.error(`❌ ${prefix} ERROR: No se pudo resolver por slug: "${job.slug}"`);
+        errorsCount++;
+        continue;
+      }
 
-    // 5. Validar plazas
-    if (resolved.plazas && resolved.plazas.length > 0) {
-      structuredPlazasCount++;
-      resolved.plazas.forEach((p, pIdx) => {
-        checkField(p.bases_url, `plazas[${pIdx}].bases_url`);
-      });
-    } else {
-      fallbackPlazasCount++;
-    }
+      // 3. Campos obligatorios
+      if (!resolved.title || !resolved.entity_name || !resolved.sector_type || !resolved.region) {
+        console.error(`❌ ${prefix} ERROR: Faltan campos esenciales en "${job.slug}"`);
+        errorsCount++;
+      }
 
-    // 6. Validar enlace de postulación o bases
-    const target = resolved.bases_pdf_url || resolved.apply_url;
-    if (!target || !target.startsWith('http')) {
-      console.error(`❌ ${prefix} ERROR: Sin enlace válido en "${job.slug}"`);
+      // 4. Verificación estricta de CERO competidores (computrabajo, bumeran, indeed, convocatoriasdetrabajo, etc.)
+      const checkField = (fieldVal: string | undefined, fieldName: string) => {
+        if (!fieldVal) return;
+        if (isCompetitorUrl(fieldVal)) {
+          console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene competidor en ${fieldName}: ${fieldVal}`);
+          errorsCount++;
+          competitorLinksFound++;
+        }
+      };
+
+      checkField(resolved.apply_url, 'apply_url');
+      checkField(resolved.bases_pdf_url, 'bases_pdf_url');
+      checkField(resolved.fuente_url, 'fuente_url');
+      checkField(resolved.cuadro_plazas_url, 'cuadro_plazas_url');
+      checkField(resolved.cronograma_url, 'cronograma_url');
+      checkField(resolved.anexos_url, 'anexos_url');
+      checkField(resolved.guia_postulante_url, 'guia_postulante_url');
+      checkField(resolved.resultados_url, 'resultados_url');
+
+      // 5. Validar plazas
+      if (resolved.plazas && resolved.plazas.length > 0) {
+        structuredPlazasCount++;
+        resolved.plazas.forEach((p, pIdx) => {
+          checkField(p.bases_url, `plazas[${pIdx}].bases_url`);
+        });
+      } else {
+        fallbackPlazasCount++;
+      }
+
+      // 6. Validar enlace de postulación o bases
+      const target = resolved.bases_pdf_url || resolved.apply_url;
+      if (!target || !target.startsWith('http')) {
+        console.error(`❌ ${prefix} ERROR: Sin enlace válido en "${job.slug}"`);
+        errorsCount++;
+      } else if (
+        target.includes('.pdf') ||
+        target.includes('drive.google.com') ||
+        target.includes('docs.google.com') ||
+        target.includes('archivos.mpfn.gob.pe')
+      ) {
+        directPdfCount++;
+      } else {
+        officialPortalCount++;
+      }
+    } catch (loopErr: any) {
+      console.error(`❌ ${prefix} EXCEPCIÓN en "${job.slug}":`, loopErr?.message || loopErr);
       errorsCount++;
-    } else if (
-      target.includes('.pdf') ||
-      target.includes('drive.google.com') ||
-      target.includes('docs.google.com') ||
-      target.includes('archivos.mpfn.gob.pe')
-    ) {
-      directPdfCount++;
-    } else {
-      officialPortalCount++;
     }
   }
 
@@ -136,6 +141,6 @@ async function verifyAllJobs() {
 }
 
 verifyAllJobs().catch((err) => {
-  console.error('Error fatal en verificación:', err);
+  console.error('Error fatal en verificación:', err?.stack || err);
   process.exit(1);
 });

@@ -121,13 +121,17 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
         ) : (
           filteredPlazas.map((plaza, idx) => {
             const pdfUrl = plaza.bases_url || defaultApplyUrl;
-            const isDoc = (
-              pdfUrl.includes('.pdf') ||
-              pdfUrl.includes('drive.google.com') ||
-              pdfUrl.includes('docs.google.com') ||
-              pdfUrl.includes('archivos.mpfn.gob.pe') ||
-              pdfUrl.includes('/anexo-archivo/') ||
-              pdfUrl.includes('Descargar_Tdr')
+            const lowPlazaUrl = (pdfUrl || '').toLowerCase();
+            const isPlazaDoc = (
+              lowPlazaUrl.includes('.pdf') ||
+              lowPlazaUrl.includes('drive.google.com') ||
+              lowPlazaUrl.includes('docs.google.com') ||
+              lowPlazaUrl.includes('archivos.mpfn.gob.pe') ||
+              lowPlazaUrl.includes('/anexo-archivo/') ||
+              lowPlazaUrl.includes('descargar_tdr') ||
+              lowPlazaUrl.includes('download') ||
+              lowPlazaUrl.includes('.docx') ||
+              lowPlazaUrl.includes('.doc')
             );
 
             return (
@@ -201,28 +205,30 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    {globalBasesPdfUrl && (
-                      <a
-                        href={globalBasesPdfUrl}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_12px_rgba(16,185,129,0.3)] flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <FileText size={14} />
-                        <span>[ BASES OFICIALES (PDF) ]</span>
-                        <ExternalLink size={12} />
-                      </a>
-                    )}
-                    {pdfUrl && 
-                     pdfUrl !== globalBasesPdfUrl && 
-                     !isCompetitorUrl(pdfUrl) && (
+                    {/* Botón principal de la plaza (Bases / Perfil específico) */}
+                    {pdfUrl && !isCompetitorUrl(pdfUrl) && (
                       <a
                         href={pdfUrl}
                         target="_blank"
                         rel="nofollow noopener noreferrer"
+                        className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_12px_rgba(16,185,129,0.3)] flex items-center gap-1.5 cursor-pointer"
+                      >
+                        {isPlazaDoc ? <FileText size={14} /> : <ExternalLink size={14} />}
+                        <span>{isPlazaDoc ? '[ BASES OFICIALES (PDF) ]' : '[ VER EN PORTAL OFICIAL ]'}</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
+
+                    {/* Si existen Bases Generales globales y son diferentes del link de la plaza */}
+                    {globalBasesPdfUrl && globalBasesPdfUrl !== pdfUrl && !isCompetitorUrl(globalBasesPdfUrl) && (
+                      <a
+                        href={globalBasesPdfUrl}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
                         className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-white/10 text-slate-200 text-xs font-bold font-display transition-all flex items-center gap-1.5 cursor-pointer"
                       >
-                        <b id="verdetalles">[ VER DETALLES DE PLAZA ]</b>
+                        <FileText size={12} className="text-emerald-400" />
+                        <span>[ BASES GENERALES (PDF) ]</span>
                         <ExternalLink size={12} />
                       </a>
                     )}
