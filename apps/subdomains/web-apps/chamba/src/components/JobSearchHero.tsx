@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Building2, Briefcase, Award, TrendingUp } from "lucide-react";
 
@@ -13,13 +13,16 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("");
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (region) params.set("region", region);
-    router.push(`/empleos?${params.toString()}`);
+    startTransition(() => {
+      router.push(`/empleos?${params.toString()}`);
+    });
   };
 
   return (
@@ -108,10 +111,20 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
 
           <button
             type="submit"
-            className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black font-display text-sm transition-all shadow-[0_0_25px_rgba(16,185,129,0.45)] hover:shadow-[0_0_35px_rgba(16,185,129,0.65)] hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer flex-shrink-0"
+            disabled={isPending}
+            className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black font-display text-sm transition-all shadow-[0_0_25px_rgba(16,185,129,0.45)] hover:shadow-[0_0_35px_rgba(16,185,129,0.65)] hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer flex-shrink-0 disabled:opacity-75 disabled:cursor-wait"
           >
-            <Search size={18} />
-            <span>Buscar Ofertas</span>
+            {isPending ? (
+              <>
+                <span className="w-4 h-4 rounded-full border-2 border-slate-950 border-t-transparent animate-spin" />
+                <span>Buscando convocatorias...</span>
+              </>
+            ) : (
+              <>
+                <Search size={18} />
+                <span>Buscar Ofertas</span>
+              </>
+            )}
           </button>
         </form>
 

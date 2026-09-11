@@ -2286,7 +2286,21 @@ export function sanitizeOfficialUrl(url?: string, fallback?: string): string {
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
 const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
 
+// In-Memory Global Cache para búsquedas ultra-rápidas e instantáneas (0ms)
+let GLOBAL_JOBS_CACHE: JobPosting[] | null = null;
+let GLOBAL_JOBS_TIMESTAMP = 0;
+const GLOBAL_CACHE_TTL = 1000 * 60 * 5; // 5 minutos de caché en memoria
+
+export function invalidateJobsCache(): void {
+  GLOBAL_JOBS_CACHE = null;
+  GLOBAL_JOBS_TIMESTAMP = 0;
+}
+
 export async function getJobPostings(): Promise<JobPosting[]> {
+  if (GLOBAL_JOBS_CACHE && (Date.now() - GLOBAL_JOBS_TIMESTAMP < GLOBAL_CACHE_TTL)) {
+    return GLOBAL_JOBS_CACHE;
+  }
+
   const jobsMap = new Map<string, JobPosting>();
 
   // 1. Cargar catálogo verificado de respaldo y convocatorias prioritarias (Juntos, PAIS, ONPE, SUNAT...)
@@ -2369,7 +2383,7 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     console.warn('Falling back to local real job postings dataset:', err);
   }
 
-  return Array.from(jobsMap.values()).map(j => {
+  const results = Array.from(jobsMap.values()).map(j => {
     const isCompetitor = (u?: string) => {
       if (!u) return false;
       const low = u.toLowerCase();
@@ -2395,6 +2409,10 @@ export async function getJobPostings(): Promise<JobPosting[]> {
       plazas: cleanPlazas
     };
   });
+
+  GLOBAL_JOBS_CACHE = results;
+  GLOBAL_JOBS_TIMESTAMP = Date.now();
+  return results;
 }
 
 export async function getJobPostingBySlug(slug: string): Promise<JobPosting | null> {
@@ -2556,6 +2574,7 @@ export async function saveJobPosting(
     };
 
     LOCAL_DYNAMIC_JOBS.set(newJob.id, newJob);
+    invalidateJobsCache();
 
     // Intentar persistir en Supabase si están disponibles las claves
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -2579,6 +2598,7 @@ export async function toggleJobFeatured(id: string, featured: boolean): Promise<
   const localJob = LOCAL_DYNAMIC_JOBS.get(id) || INITIAL_JOBS.find(j => j.id === id);
   if (localJob) {
     localJob.featured = featured;
+    invalidateJobsCache();
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -2597,6 +2617,7 @@ export async function updateJobStatus(id: string, status: 'Vigente' | 'Finalizad
   const localJob = LOCAL_DYNAMIC_JOBS.get(id) || INITIAL_JOBS.find(j => j.id === id);
   if (localJob) {
     localJob.status = status;
+    invalidateJobsCache();
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -2617,6 +2638,7 @@ export async function deleteJobPosting(id: string): Promise<boolean> {
   if (index !== -1) {
     INITIAL_JOBS.splice(index, 1);
   }
+  invalidateJobsCache();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

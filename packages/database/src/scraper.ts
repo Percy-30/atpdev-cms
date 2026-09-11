@@ -583,9 +583,7 @@ export async function scrapeConvocatoriasDeTrabajo(): Promise<JobPosting[]> {
   if (cachedCdJobs.data.length > 0 && Date.now() - cachedCdJobs.timestamp < 1000 * 60 * 60) {
     return cachedCdJobs.data;
   }
-  if (cachedCdJobs.data.length === 0) {
-    return await refreshConvocatoriasDeTrabajoInBackground();
-  }
+  // Disparar actualización en segundo plano sin bloquear la respuesta del servidor (0ms)
   if (!isRefreshingCd) {
     isRefreshingCd = true;
     refreshConvocatoriasDeTrabajoInBackground().catch(() => {}).finally(() => {
