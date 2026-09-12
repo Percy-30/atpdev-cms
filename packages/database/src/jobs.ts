@@ -395,7 +395,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       {
         cas_code: "CAS Nº 157",
         title: "(1) GESTOR LOCAL DE DESARROLLO SOCIAL PIURA - FRIAS",
-        education: "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+        education: "Título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
         experience: "(03) años en el sector público y/o privado.",
         salary: "S/. 3000",
         bases_url: "https://drive.google.com/file/d/1cemIyOm3MeY9CPcvJ92v5pELZCksXDUK/view?usp=drive_link"
@@ -403,7 +403,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       {
         cas_code: "CAS Nº 158",
         title: "(1) GESTOR LOCAL - ZONA ALEJADA PIURA - EL CARMEN DE LA FRONTERA",
-        education: "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
+        education: "Título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
         experience: "(02) años en el sector público y/o privado.",
         salary: "S/. 3000",
         bases_url: "https://drive.google.com/file/d/1zVxymaUCX6FCyCSp9m-iPaTxeW1Il3bP/view?usp=drive_link"
@@ -411,7 +411,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       {
         cas_code: "CAS Nº 159",
         title: "(1) COMUNICADOR/A PIURA - PIURA",
-        education: "bachiller universitario en Ciencias de la Comunicación, Comunicación Social, Periodismo, o afines por la formación.",
+        education: "Bachiller universitario en Ciencias de la Comunicación, Comunicación Social, Periodismo, o afines por la formación.",
         experience: "(03) años en el sector público y/o privado.",
         salary: "S/. 2500",
         bases_url: "https://drive.google.com/file/d/1toZXTsUZzDBInRwPF2-AwmLg-oGbl9GP/view?usp=drive_link"
@@ -419,7 +419,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       {
         cas_code: "CAS Nº 160",
         title: "(1) ESPECIALISTA EN COMUNICACIÓN LIMA - MIRAFLORES",
-        education: "título profesional universitario en Ciencias de la Comunicación o Publicidad o Periodismo o Relaciones Públicas o afines por la formación.",
+        education: "Título profesional universitario en Ciencias de la Comunicación o Publicidad o Periodismo o Relaciones Públicas o afines por la formación.",
         experience: "(05) años en el sector público y/o privado.",
         salary: "S/. 6000",
         bases_url: "https://drive.google.com/file/d/1zbwGCzgZ-znf9jPJWvqABswlHStH3Bea/view?usp=drive_link"
@@ -1854,7 +1854,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "(50) SERENOS A PIE - SEGURIDAD CIUDADANA",
         education: "Secundaria completa debidamente acreditada.",
         experience: "Experiencia mínima de seis (06) meses en labores de serenazgo, seguridad o vigilancia en sector público o privado.",
-        salary: "S/. 2,300 Soles",
+        salary: "S/. 2,300",
         bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
       },
       {
@@ -1862,7 +1862,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "(40) SERENOS CHOFERES DE PATRULLA Y MOTORIZADOS",
         education: "Secundaria completa. Licencia de conducir A-I o A-IIb vigente.",
         experience: "Experiencia mínima de 1 año como conductor o chofer de patrulla.",
-        salary: "S/. 2,600 Soles",
+        salary: "S/. 2,600",
         bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
       },
       {
@@ -1870,7 +1870,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "(30) OPERADORES DE CÁMARA Y VIDEOVIGILANCIA",
         education: "Técnico en computación, informática, telecomunicaciones o afines (egresado o titulado).",
         experience: "Experiencia de 1 año en monitoreo de centrales de cámaras o videovigilancia.",
-        salary: "S/. 2,800 Soles",
+        salary: "S/. 2,800",
         bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
       },
       {
@@ -1878,7 +1878,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "(15) SUPERVISORES DE SEGURIDAD CIUDADANA",
         education: "Estudios universitarios o técnicos concluidos en Administración, Derecho o afines.",
         experience: "Experiencia de 2 años en supervisión operativa de personal de seguridad.",
-        salary: "S/. 3,500 Soles",
+        salary: "S/. 3,500",
         bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
       },
       {
@@ -1886,7 +1886,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "(7) COORDINADORES DE OPERACIONES Y GESTIÓN DE RIESGO",
         education: "Bachiller o Titulado universitario en Ingeniería, Administración o Derecho.",
         experience: "Experiencia general de 3 años y 1 año en coordinación de seguridad ciudadana.",
-        salary: "S/. 4,000 Soles",
+        salary: "S/. 4,000",
         bases_url: "https://webapp.mdsmp.gob.pe/convocatoriabackend/public/convocatoria/CAS%20N%C2%B007-2025.pdf"
       }
     ],
@@ -2012,7 +2012,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Monitor Local de Nutrición y Gestión Pedagógica (DEBEDSAR)",
         education: "Título Profesional Universitario en Nutrición, Educación, Psicología o Ciencias Sociales.",
         experience: "Experiencia mínima de 3 años en gestión educativa o programas del sector educación.",
-        salary: "S/. 5,000 Soles",
+        salary: "S/. 5,000",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29695"
       },
@@ -2021,7 +2021,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Director/a General para Colegio de Alto Rendimiento (COAR) La Libertad",
         education: "Título Profesional Universitario en Educación, Administración o carreras afines.",
         experience: "Experiencia directiva mínima de 3 años en gestión institucional o pedagógica.",
-        salary: "S/. 7,500 Soles",
+        salary: "S/. 7,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29690"
       },
@@ -2030,7 +2030,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Docente de Historia y Geografía para Colegio de Alto Rendimiento (COAR) Piura",
         education: "Licenciado en Educación con especialidad en Ciencias Sociales / Historia.",
         experience: "Experiencia docente mínima de 2 años en nivel secundario o bachillerato.",
-        salary: "S/. 4,500 Soles",
+        salary: "S/. 4,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29694"
       },
@@ -2039,7 +2039,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Docente de Matemática y Física para Colegio de Alto Rendimiento (COAR) Puno",
         education: "Licenciado en Educación con especialidad en Matemática o Física.",
         experience: "Experiencia docente mínima de 2 años en educación secundaria.",
-        salary: "S/. 4,500 Soles",
+        salary: "S/. 4,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29691"
       },
@@ -2048,7 +2048,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Auxiliar de Laboratorio para Colegio de Alto Rendimiento (COAR) Áncash",
         education: "Titulado de Carrera Técnica en Laboratorio, Biología, Química o afines.",
         experience: "Experiencia mínima de 2 años en soporte técnico de laboratorio escolar.",
-        salary: "S/. 2,500 Soles",
+        salary: "S/. 2,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29696"
       },
@@ -2057,7 +2057,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Docente de Ciencias del Deporte, el Ejercicio y la Salud para COAR La Libertad",
         education: "Licenciado en Educación Física, Ciencias del Deporte o carreras afines.",
         experience: "Experiencia docente mínima de 2 años en el nivel secundario.",
-        salary: "S/. 4,500 Soles",
+        salary: "S/. 4,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29689"
       },
@@ -2066,7 +2066,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Docente para Coordinación de Investigación y Monografía COAR Puno",
         education: "Licenciado en Educación, Humanidades, Ciencias o Filosofía.",
         experience: "Experiencia mínima de 2 años en asesoría de monografías o metodología de investigación.",
-        salary: "S/. 4,500 Soles",
+        salary: "S/. 4,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29692"
       },
@@ -2075,7 +2075,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Docente de Aprendizaje Servicio y Valores para COAR Madre de Dios",
         education: "Licenciado en Educación con especialidad en Ciencias Sociales o Humanidades.",
         experience: "Experiencia docente mínima de 2 años en programas de formación de valores o tutoría.",
-        salary: "S/. 4,500 Soles",
+        salary: "S/. 4,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29693"
       },
@@ -2084,7 +2084,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Profesional Director de Bienestar y Desarrollo Estudiantil COAR Tumbes",
         education: "Título Profesional Universitario en Psicología, Trabajo Social o Educación.",
         experience: "Experiencia mínima de 3 años en programas de bienestar estudiantil o acompañamiento psicosocial.",
-        salary: "S/. 5,000 Soles",
+        salary: "S/. 5,000",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29688"
       },
@@ -2093,7 +2093,7 @@ export const INITIAL_JOBS: JobPosting[] = [
         title: "Docente de Ciencias Sociales, Historia y Desarrollo Personal COAR Ica",
         education: "Licenciado en Educación con especialidad en Ciencias Sociales o Historia y Geografía.",
         experience: "Experiencia docente mínima de 2 años en educación básica regular.",
-        salary: "S/. 4,500 Soles",
+        salary: "S/. 4,500",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29687"
       }
@@ -2533,6 +2533,36 @@ export function fixDeadDomainUrl(url?: string, entityName?: string, sectorType?:
   return url;
 }
 
+export function cleanPlazaSalary(salary?: string): string | undefined {
+  if (!salary) return undefined;
+  let cleaned = salary.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const match = cleaned.match(/^(S\/\.?\s*[\d,]+(?:\.\s*\d+)?)/i);
+  if (match) {
+    let numPart = match[1].replace(/\s+/g, '');
+    return numPart.replace(/S\/\.?/i, 'S/. ');
+  }
+  cleaned = cleaned.replace(/\s*[«<\[].*$/i, '');
+  cleaned = cleaned.replace(/\s*DETALLES DE POSTULACI[OÓ]N.*$/i, '');
+  cleaned = cleaned.replace(/\s*PUBLICACI[OÓ]N DE LA CONVOCATORIA.*$/i, '');
+  cleaned = cleaned.replace(/\s*\[\s*VER M[AÁ]S.*$/i, '');
+  cleaned = cleaned.replace(/\s*Plazo de Contrato.*$/i, '');
+  return cleaned.trim() || undefined;
+}
+
+export function cleanPlazaText(text?: string): string | undefined {
+  if (!text) return undefined;
+  let cleaned = text.replace(/\\r\\n|\\n|\\r/g, ' ').replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+  cleaned = cleaned.replace(/\s*[«<\[]\s*\d+.*$/i, '');
+  cleaned = cleaned.replace(/\s*\[\s*VER M[AÁ]S.*$/i, '');
+  cleaned = cleaned.replace(/\s*Plazo de Contrato.*$/i, '');
+  cleaned = cleaned.replace(/\s*DETALLES DE POSTULACI[OÓ]N.*$/i, '');
+  cleaned = cleaned.replace(/\s*PUBLICACI[OÓ]N DE LA CONVOCATORIA.*$/i, '');
+  if (cleaned.length > 1 && cleaned[0] >= 'a' && cleaned[0] <= 'z') {
+    cleaned = cleaned[0].toUpperCase() + cleaned.slice(1);
+  }
+  return cleaned.trim() || undefined;
+}
+
 export function sanitizeOfficialUrl(
   url?: string, 
   fallback?: string, 
@@ -2711,6 +2741,10 @@ export async function getJobPostings(): Promise<JobPosting[]> {
       : j.fuente_url;
     const cleanPlazas = j.plazas ? j.plazas.map(p => ({
       ...p,
+      title: cleanPlazaText(p.title) || p.title,
+      education: cleanPlazaText(p.education),
+      experience: cleanPlazaText(p.experience),
+      salary: cleanPlazaSalary(p.salary),
       bases_url: sanitizeOfficialUrl(p.bases_url, cleanBases || cleanApply, j.entity_name, j.sector_type)
     })) : undefined;
 
@@ -2805,6 +2839,10 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
 
     if (job.plazas) {
       job.plazas.forEach(p => {
+        p.title = cleanPlazaText(p.title) || p.title;
+        p.education = cleanPlazaText(p.education);
+        p.experience = cleanPlazaText(p.experience);
+        p.salary = cleanPlazaSalary(p.salary);
         p.bases_url = sanitizeOfficialUrl(p.bases_url, job.bases_pdf_url || job.apply_url, job.entity_name, job.sector_type);
       });
     }

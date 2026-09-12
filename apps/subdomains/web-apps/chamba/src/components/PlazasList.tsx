@@ -12,13 +12,59 @@ interface PlazasListProps {
   anexosUrl?: string;
 }
 
+// Helper text cleaners to guarantee 100% clean typography and prevent design overflow
+function sanitizePlazaSalary(salary?: string): string {
+  if (!salary) return '';
+  let s = salary.replace(/[\r\n\t]+/g, ' ').trim();
+  const match = s.match(/^(S\/\.?\s*[\d,]+(?:\.\s*\d+)?)/i);
+  if (match) {
+    let numPart = match[1].replace(/\s+/g, '');
+    return numPart.replace(/S\/\.?/i, 'S/. ');
+  }
+  s = s.replace(/\s*[«<\[].*$/i, '');
+  s = s.replace(/\s*DETALLES DE POSTULACI[OÓ]N.*$/i, '');
+  s = s.replace(/\s*PUBLICACI[OÓ]N DE LA CONVOCATORIA.*$/i, '');
+  s = s.replace(/\s*\[\s*VER M[AÁ]S.*$/i, '');
+  s = s.replace(/\s*Plazo de Contrato.*$/i, '');
+  return s.trim();
+}
+
+function sanitizePlazaTitle(title?: string): string {
+  if (!title) return '';
+  return title.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function sanitizePlazaText(text?: string): string {
+  if (!text) return '';
+  let s = text.replace(/\\r\\n|\\n|\\r/g, ' ').replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+  s = s.replace(/\s*[«<\[]\s*\d+.*$/i, '');
+  s = s.replace(/\s*\[\s*VER M[AÁ]S.*$/i, '');
+  s = s.replace(/\s*Plazo de Contrato.*$/i, '');
+  s = s.replace(/\s*DETALLES DE POSTULACI[OÓ]N.*$/i, '');
+  s = s.replace(/\s*PUBLICACI[OÓ]N DE LA CONVOCATORIA.*$/i, '');
+  if (s.length > 1 && s[0] >= 'a' && s[0] <= 'z') {
+    s = s[0].toUpperCase() + s.slice(1);
+  }
+  return s.trim();
+}
+
 export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdfUrl, anexosUrl }: PlazasListProps) {
   const [filter, setFilter] = useState('');
 
+  const cleanedPlazas = useMemo(() => {
+    return (plazas || []).map(p => ({
+      ...p,
+      title: sanitizePlazaTitle(p.title),
+      education: sanitizePlazaText(p.education),
+      experience: sanitizePlazaText(p.experience),
+      salary: sanitizePlazaSalary(p.salary)
+    }));
+  }, [plazas]);
+
   const filteredPlazas = useMemo(() => {
-    if (!filter.trim()) return plazas;
+    if (!filter.trim()) return cleanedPlazas;
     const q = filter.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    return plazas.filter((p) => {
+    return cleanedPlazas.filter((p) => {
       const matchTitle = p.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q);
       const matchCas = p.cas_code?.toLowerCase().includes(q);
       const matchEdu = p.education?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q);
@@ -26,12 +72,12 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
       const matchSal = p.salary?.toLowerCase().includes(q);
       return matchTitle || matchCas || matchEdu || matchExp || matchSal;
     });
-  }, [plazas, filter]);
+  }, [cleanedPlazas, filter]);
 
   if (!plazas || plazas.length === 0) return null;
 
   return (
-    <div id="plazas-convocadas" className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-emerald-500/30 scroll-mt-24">
+    <div id="plazas-convocadas" className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-emerald-500/30 scroll-mt-24 overflow-hidden">
       {/* Header with Title and Counter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
@@ -48,7 +94,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
 
         <div className="flex items-center gap-2">
           <span className="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold whitespace-nowrap">
-            {plazas.length} Plazas Registradas
+            {cleanedPlazas.length} Plazas Registradas
           </span>
         </div>
       </div>
@@ -93,7 +139,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
       </div>
 
       {/* Filter Input if more than 3 plazas */}
-      {plazas.length > 3 && (
+      {cleanedPlazas.length > 3 && (
         <div className="relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           <input
@@ -140,34 +186,34 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
             return (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-slate-950/70 border border-white/10 hover:border-emerald-500/40 transition-all space-y-4 shadow-sm"
+                className="p-5 rounded-2xl bg-slate-950/70 border border-white/10 hover:border-emerald-500/40 transition-all space-y-4 shadow-sm overflow-hidden break-words"
               >
                 {/* Plaza Header */}
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="space-y-1">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                  <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       {plaza.cas_code && (
-                        <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono text-xs font-black">
+                        <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono text-xs font-black shrink-0">
                           {plaza.cas_code}
                         </span>
                       )}
-                      <span className="text-white font-extrabold text-sm sm:text-base font-display">
+                      <h4 className="text-white font-bold text-sm sm:text-base leading-snug break-words tracking-tight">
                         {plaza.title}
-                      </span>
+                      </h4>
                     </div>
                   </div>
 
                   {/* Remuneración & Vacantes Tags */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
                     {plaza.vacancies && plaza.vacancies > 1 && (
-                      <span className="px-2.5 py-1 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-mono text-xs font-bold whitespace-nowrap">
+                      <span className="px-2.5 py-1 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-mono text-xs font-bold shrink-0">
                         👥 {plaza.vacancies} vacantes
                       </span>
                     )}
                     {plaza.salary && (
-                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold whitespace-nowrap">
-                        <Banknote size={14} />
-                        <span>{plaza.salary}</span>
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold max-w-full truncate shadow-sm shrink-0">
+                        <Banknote size={14} className="shrink-0" />
+                        <span className="truncate">{plaza.salary}</span>
                       </div>
                     )}
                   </div>
@@ -176,24 +222,24 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                 {/* Requirements details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                   {plaza.education && (
-                    <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 space-y-1">
-                      <div className="flex items-center gap-1.5 text-slate-400 font-mono text-[10px] uppercase font-bold">
-                        <GraduationCap size={13} className="text-cyan-400" />
+                    <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
+                      <div className="flex items-center gap-1.5 text-cyan-400 font-mono text-[11px] uppercase font-bold tracking-wider">
+                        <GraduationCap size={14} className="text-cyan-400 shrink-0" />
                         <span>Formación Académica</span>
                       </div>
-                      <p className="text-slate-200 font-medium leading-relaxed">
+                      <p className="text-slate-200 font-normal leading-relaxed text-xs sm:text-[13px] break-words">
                         {plaza.education}
                       </p>
                     </div>
                   )}
 
                   {plaza.experience && (
-                    <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 space-y-1">
-                      <div className="flex items-center gap-1.5 text-slate-400 font-mono text-[10px] uppercase font-bold">
-                        <Briefcase size={13} className="text-amber-400" />
+                    <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5">
+                      <div className="flex items-center gap-1.5 text-amber-400 font-mono text-[11px] uppercase font-bold tracking-wider">
+                        <Briefcase size={14} className="text-amber-400 shrink-0" />
                         <span>Experiencia Laboral</span>
                       </div>
-                      <p className="text-slate-200 font-medium leading-relaxed">
+                      <p className="text-slate-200 font-normal leading-relaxed text-xs sm:text-[13px] break-words">
                         {plaza.experience}
                       </p>
                     </div>
@@ -203,7 +249,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                 {/* Direct Action Link for Official PDF bases */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/5">
                   <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
-                    <ShieldCheck size={14} className="text-emerald-400" />
+                    <ShieldCheck size={14} className="text-emerald-400 shrink-0" />
                     <span>Bases Oficiales emitidas por {entityName}</span>
                   </div>
 
