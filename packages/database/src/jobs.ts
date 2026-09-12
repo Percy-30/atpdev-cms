@@ -2269,9 +2269,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Ingreso a planilla directa de Interbank desde el primer día (14 sueldos + utilidades).",
       "EPS cubierta al 80% y programa de becas universitarias."
     ],
-    apply_url: "https://interbank.pe/trabaja-con-nosotros",
-    bases_pdf_url: "https://interbank.pe/trabaja-con-nosotros",
-    official_portal_name: "Interbank Empleos Oficial",
+    apply_url: "https://interbank.hiringroom.com/jobs",
+    bases_pdf_url: "https://interbank.hiringroom.com/jobs",
+    official_portal_name: "Portal de Empleos Oficial Interbank",
     start_date: "2026-08-22",
     end_date: "2026-09-15",
     featured: true,
@@ -2403,25 +2403,25 @@ export function isGenericPublicationUrl(url?: string): boolean {
 }
 
 export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: string): string {
-  if (!entityName) return 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+  if (!entityName) return 'https://www.gob.pe/servir';
   const norm = entityName.toUpperCase();
 
   // Sector Privado / Empresas Reconocidas
   if (norm.includes('ALICORP')) return 'https://oportunidadesalicorp.com/';
-  if (norm.includes('INTERBANK')) return 'https://interbank.pe/trabaja-con-nosotros';
-  if (norm.includes('BCP') || norm.includes('BANCO DE CREDITO') || norm.includes('BANCO DE CRÉDITO')) return 'https://www.viabcp.com/unete';
+  if (norm.includes('INTERBANK')) return 'https://interbank.hiringroom.com/jobs';
+  if (norm.includes('BCP') || norm.includes('BANCO DE CREDITO') || norm.includes('BANCO DE CRÉDITO')) return 'https://jobs.bcp.com.pe/';
   if (norm.includes('BBVA')) return 'https://www.bbva.com/es/pe/unete-a-bbva/';
-  if (norm.includes('SCOTIABANK')) return 'https://www.scotiabank.com.pe/Acerca-de/unete-a-nuestro-equipo';
+  if (norm.includes('SCOTIABANK')) return 'https://scotiabank.evaluar.com/';
   if (norm.includes('GLORIA')) return 'https://gloria.evaluar.com/';
-  if (norm.includes('BACKUS')) return 'https://www.backus.pe/trabaja-con-nosotros';
-  if (norm.includes('FERREYROS')) return 'https://www.ferreyros.com.pe/trabaja-con-nosotros';
+  if (norm.includes('BACKUS')) return 'https://backus.evaluar.com/';
+  if (norm.includes('FERREYROS')) return 'https://ferreycorp.evaluar.com/';
   if (norm.includes('ANTAMINA')) return 'https://www.antamina.com/trabaja-con-nosotros/';
   if (norm.includes('CERRO VERDE')) return 'https://cerroverde.pe/unete-a-nuestro-equipo/';
-  if (norm.includes('SOUTHERN')) return 'https://southernperu.com/';
+  if (norm.includes('SOUTHERN')) return 'https://southernperu.evaluar.com/';
   if (norm.includes('FALABELLA') || norm.includes('SAGA FALABELLA')) return 'https://uneteafalabella.pe/';
   if (norm.includes('RIPLEY')) return 'https://trabajaenripley.pe/';
   if (norm.includes('TOTTUS')) return 'https://trabajaentottus.pe/';
-  if (norm.includes('PLAZA VEA') || norm.includes('SUPERMERCADOS PERUANOS')) return 'https://www.supermercadosperuanos.com.pe/trabaja-con-nosotros/';
+  if (norm.includes('PLAZA VEA') || norm.includes('SUPERMERCADOS PERUANOS')) return 'https://intercorp.evaluar.com/';
   if (norm.includes('INRETAIL')) return 'https://inretail.pe/oportunidad-laboral/';
   if (norm.includes('ENTEL')) return 'https://entel.pe/trabaja-con-nosotros/';
   if (norm.includes('CLARO') || norm.includes('AMERICA MOVIL') || norm.includes('AMÉRICA MÓVIL')) return 'https://claro.pe/personas/trabaja-con-nosotros/';
@@ -2447,14 +2447,21 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('OSIPTEL')) return 'https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/';
   if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
   if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
+  if (norm.includes('AUTORIDAD DE TRANSPORTE URBANO') || norm.includes('ATU')) return 'https://portal.atu.gob.pe/convocatorias/';
+  if (norm.includes('CONADIS') || norm.includes('PERS.CON DISC') || norm.includes('DISCAPACIDAD')) return 'https://www.gob.pe/institucion/conadis/campa%C3%B1as/3295-convocatorias-cas';
+  if (norm.includes('BOSQUES') || norm.includes('CONSERVACION DE BOSQUES') || norm.includes('CONSERVACIÓN DE BOSQUES')) return 'https://www.gob.pe/bosques';
+  if (norm.includes('ACADEMIA DE LA MAGISTRATURA') || norm.includes('AMAG')) return 'https://www.amag.edu.pe/convocatorias';
+  if (norm.includes('INSTITUTO CATASTRAL') || norm.includes('CATASTRAL DE LIMA') || norm.includes('ICL')) return 'https://www.icl.gob.pe/';
+  if (norm.includes('OFTALMOLOG') || norm.includes('INSTITUTO REGIONAL DE OFTALMOLOGIA')) return 'https://www.gob.pe/minsa';
+  if (norm.includes('OLMOS') || norm.includes('AUTONOMA DE OLMOS') || norm.includes('AUTÓNOMA DE OLMOS')) return 'https://unao.edu.pe/';
   if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
-  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
+  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('UNIDAD DE GESTION EDUCATIVA') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
   if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
   if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
   if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/juntos';
   if (norm.includes('MIMP') || norm.includes('MUJER') || norm.includes('AURORA')) return 'https://www.gob.pe/mimp';
   if (norm.includes('MININTER') || norm.includes('POLICIA') || norm.includes('POLICÍA') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
-  if (norm.includes('MINDEF') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
+  if (norm.includes('MINDEF') || norm.includes('DEFENSA') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
   if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
   if (norm.includes('ANIN')) return 'https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo';
   if (norm.includes('MINEM') || norm.includes('ENERGIA') || norm.includes('ENERGÍA')) return 'https://www.gob.pe/minem';
@@ -2483,9 +2490,16 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('QUILLABAMBA') || norm.includes('LA CONVENCION') || norm.includes('LA CONVENCIÓN')) return 'https://munilaconvencion.gob.pe/';
   if (norm.includes('AREQUIPA') || norm.includes('REGION AREQUIPA') || norm.includes('GOBIERNO REGIONAL DE AREQUIPA')) return 'https://www.regionarequipa.gob.pe/convocatorias/';
   if (norm.includes('SAN MARCOS') || norm.includes('UNMSM')) return 'https://unmsm.edu.pe/';
-  if (norm.includes('UNI') || norm.includes('INGENIERIA') || norm.includes('INGENIERÍA')) return 'https://www.uni.edu.pe/';
-  if (norm.includes('AGRARIA') || norm.includes('UNALM')) return 'https://www.lamolina.edu.pe/';
-  if (norm.includes('MUNICIPALIDAD') || norm.includes('GOBIERNO REGIONAL')) return 'https://www.gob.pe/';
+  if ((norm.includes('UNIVERSIDAD NACIONAL DE INGENIERIA') || norm.includes('UNIVERSIDAD NACIONAL DE INGENIERÍA') || /\bUNI\b/.test(norm)) && !norm.includes('MUNICIPALIDAD') && !norm.includes('UNIDAD')) return 'https://www.uni.edu.pe/';
+  if (norm.includes('INIA') || norm.includes('INNOVACION AGRARIA') || norm.includes('INNOVACIÓN AGRARIA')) return 'https://www.gob.pe/inia';
+  if ((norm.includes('UNIVERSIDAD NACIONAL AGRARIA') || norm.includes('UNALM')) && !norm.includes('INIA')) return 'https://www.lamolina.edu.pe/';
+  if (norm.includes('MIRAFLORES')) return 'https://www.miraflores.gob.pe/convocatorias/';
+  if (norm.includes('SAN ISIDRO')) return 'https://msi.gob.pe/portal/convocatorias-de-trabajo/';
+  if (norm.includes('BREÑA') || norm.includes('BRENA')) return 'https://www.munibrena.gob.pe/';
+  if (norm.includes('ASCOPE')) return 'https://www.gob.pe/institucion/muniascope/campa%C3%B1as/';
+  if (norm.includes('ISLAY') || norm.includes('MOLLENDO')) return 'https://www.gob.pe/institucion/munimollendo/campa%C3%B1as/';
+  if (norm.includes('QUILCA')) return 'https://www.gob.pe/institucion/muniquilca/campa%C3%B1as/';
+  if (norm.includes('MUNICIPALIDAD') || norm.includes('GOBIERNO REGIONAL')) return 'https://www.gob.pe/servir';
 
   // Sector Privado genérico
   if (sectorType === 'Privado') {
@@ -2595,6 +2609,12 @@ export function sanitizeOfficialUrl(
       if (!low.includes('/postulacioncas/')) {
         return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
       }
+    }
+    if (low.includes('interbank.pe/trabaja-con-nosotros') || low === 'https://interbank.pe' || low === 'https://interbank.pe/' || low === 'http://interbank.pe' || low === 'http://interbank.pe/') {
+      return 'https://interbank.hiringroom.com/jobs';
+    }
+    if (low === 'https://www.viabcp.com' || low === 'https://www.viabcp.com/' || low === 'https://viabcp.com' || low === 'https://viabcp.com/') {
+      return 'https://jobs.bcp.com.pe/';
     }
     // Evitar que el usuario sea redirigido a páginas genéricas de búsqueda o SERVIR vacío
     if (isGenericPublicationUrl(low)) {

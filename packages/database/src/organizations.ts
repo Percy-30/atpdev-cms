@@ -46,19 +46,19 @@ const KNOWN_ORGANIZATIONS_METADATA: Record<string, {
     shortName: 'INEI',
     category: 'Organismos Autónomos',
     logo: '/logos/inei.jpg',
-    officialUrl: 'https://www.inei.gob.pe'
+    officialUrl: 'https://uneteservicios.inei.gob.pe/'
   },
   'JURADO NACIONAL DE ELECCIONES - JNE': {
     shortName: 'JNE',
     category: 'Organismos Autónomos',
     logo: '/logos/jne.jpg',
-    officialUrl: 'https://www.jne.gob.pe'
+    officialUrl: 'https://seleccionpersonal.jne.gob.pe/'
   },
   'SEGURO SOCIAL DE SALUD - ESSALUD': {
     shortName: 'ESSALUD',
     category: 'Salud y Seguridad Social',
     logo: '/logos/essalud.jpg',
-    officialUrl: 'https://www.gob.pe/essalud'
+    officialUrl: 'https://convocatorias.essalud.gob.pe/'
   },
   'SUPERINTENDENCIA NACIONAL DE ADUANAS Y DE ADMINISTRACIÓN TRIBUTARIA - SUNAT': {
     shortName: 'SUNAT',
@@ -76,25 +76,25 @@ const KNOWN_ORGANIZATIONS_METADATA: Record<string, {
     shortName: 'FISCALÍA',
     category: 'Poder Judicial y Fiscalía',
     logo: '/logos/ministerio-publico.jpg',
-    officialUrl: 'https://www.mpfn.gob.pe'
+    officialUrl: 'https://portal.mpfn.gob.pe/convocatorias'
   },
   'MINISTERIO PUBLICO - FISCALIA DE LA NACIÓN': {
     shortName: 'FISCALÍA',
     category: 'Poder Judicial y Fiscalía',
     logo: '/logos/ministerio-publico.jpg',
-    officialUrl: 'https://www.mpfn.gob.pe'
+    officialUrl: 'https://portal.mpfn.gob.pe/convocatorias'
   },
   'MINISTERIO PÚBLICO - FISCALÍA DE LA NACIÓN': {
     shortName: 'FISCALÍA',
     category: 'Poder Judicial y Fiscalía',
     logo: '/logos/ministerio-publico.jpg',
-    officialUrl: 'https://www.mpfn.gob.pe'
+    officialUrl: 'https://portal.mpfn.gob.pe/convocatorias'
   },
   'PODER JUDICIAL': {
     shortName: 'PODER JUDICIAL',
     category: 'Poder Judicial y Fiscalía',
     logo: '/logos/poder-judicial.jpg',
-    officialUrl: 'https://aplicativo.pj.gob.pe'
+    officialUrl: 'https://aplicativo.pj.gob.pe/psep/'
   },
   'ORGANISMO DE SUPERVISION DE LOS RECURSOS FORESTALES Y DE FAUNA SILVESTRE - OSINFOR': {
     shortName: 'OSINFOR',
@@ -196,7 +196,31 @@ const KNOWN_ORGANIZATIONS_METADATA: Record<string, {
     shortName: 'ALICORP',
     category: 'Empresas',
     logo: '/logos/alicorp.svg',
-    officialUrl: 'https://alicorp.com.pe'
+    officialUrl: 'https://oportunidadesalicorp.com/'
+  },
+  'BANCO INTERNACIONAL DEL PERÚ S.A.A. - INTERBANK': {
+    shortName: 'INTERBANK',
+    category: 'Empresas',
+    logo: '/logos/interbank.png',
+    officialUrl: 'https://interbank.hiringroom.com/jobs'
+  },
+  'INTERBANK': {
+    shortName: 'INTERBANK',
+    category: 'Empresas',
+    logo: '/logos/interbank.png',
+    officialUrl: 'https://interbank.hiringroom.com/jobs'
+  },
+  'BANCO DE CREDITO DEL PERU': {
+    shortName: 'BCP',
+    category: 'Empresas',
+    logo: '/logos/bcp.png',
+    officialUrl: 'https://jobs.bcp.com.pe/'
+  },
+  'SCOTIABANK': {
+    shortName: 'SCOTIABANK',
+    category: 'Empresas',
+    logo: '/logos/scotiabank.png',
+    officialUrl: 'https://scotiabank.evaluar.com/'
   }
 };
 
