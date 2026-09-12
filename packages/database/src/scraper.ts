@@ -24,6 +24,12 @@ function makeSlug(text: string): string {
     .replace(/-+/g, '-');
 }
 
+// eslint-disable-next-line no-var
+var onJobsUpdatedCallback: (() => void) | null = null;
+export function registerJobsUpdatedCallback(cb: () => void) {
+  onJobsUpdatedCallback = cb;
+}
+
 /**
  * 🔥 Firecrawl AI Scraper Engine
  * Extrae directamente en formato JSON estructurado usando LLMs (Firecrawl API v1).
@@ -573,11 +579,6 @@ async function refreshLiveFeedInBackground(): Promise<void> {
 }
 
 // 4. Live Scraper Engine para ConvocatoriasDeTrabajo.com
-let onJobsUpdatedCallback: (() => void) | null = null;
-export function registerJobsUpdatedCallback(cb: () => void) {
-  onJobsUpdatedCallback = cb;
-}
-
 let cachedCdJobs: { data: JobPosting[]; timestamp: number } = {
   data: [],
   timestamp: 0
@@ -818,22 +819,44 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         const opRes = await fetch(plazas[0].bases_url, { headers, signal: AbortSignal.timeout(6000) });
         if (opRes.ok) {
           const opHtml = await opRes.text();
-          const basesDivMatch = opHtml.match(/<div class="bases">([\s\S]*?)<\/div>/i);
-          const linkMatches = basesDivMatch
-            ? [...basesDivMatch[1].matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)]
-            : [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
+          const allLinkMatches = [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
 
-          for (const lm of linkMatches) {
+          for (const lm of allLinkMatches) {
             const lUrl = lm[1].trim();
-            const lText = lm[2].replace(/<[^>]+>/g, '').toLowerCase();
+            const lText = lm[2].replace(/<[^>]+>/g, '').toLowerCase().trim();
             const lowUrl = lUrl.toLowerCase();
-            if (lowUrl.includes('convocatoriasdetrabajo.com') || lUrl.startsWith('#') || lUrl.startsWith('javascript:')) continue;
+
+            // Ignorar enlaces internos, vacíos, hashtags o javascript
+            if (
+              !lUrl ||
+              lUrl.startsWith('#') ||
+              lUrl.startsWith('javascript:') ||
+              lowUrl.includes('convocatoriasdetrabajo.com')
+            ) {
+              continue;
+            }
+
+            // Ignorar redes sociales y boletines
+            if (
+              lowUrl.includes('whatsapp.com') ||
+              lowUrl.includes('facebook.com') ||
+              lowUrl.includes('instagram.com') ||
+              lowUrl.includes('linkedin.com') ||
+              lowUrl.includes('t.me') ||
+              lowUrl.includes('tiktok.com') ||
+              lowUrl.includes('youtube.com') ||
+              lowUrl.includes('eepurl.com') ||
+              lowUrl.includes('email-protection')
+            ) {
+              continue;
+            }
 
             const isPdf = lowUrl.includes('.pdf');
             const isDrive = lowUrl.includes('drive.google.com') || lowUrl.includes('docs.google.com');
-            const isDoc = isPdf || isDrive || lowUrl.includes('archivos.mpfn.gob.pe') || lowUrl.includes('descargar_tdr');
+            const isDoc = isPdf || isDrive || lowUrl.includes('archivos.mpfn.gob.pe') || lowUrl.includes('descargar_tdr') || lowUrl.includes('download');
+            const isOfficialDomain = lowUrl.includes('.gob.pe') || lowUrl.includes('.edu.pe') || lowUrl.includes('.mil.pe');
 
-            if (lText.includes('base') || (isDoc && !directBasesUrl)) {
+            if (lText.includes('base') || (isDoc && !directBasesUrl) || lText.includes('completa') || lText.includes('convocatoria completa')) {
               directBasesUrl = lUrl;
             } else if (lText.includes('anexo') || lowUrl.endsWith('.docx') || lowUrl.endsWith('.doc')) {
               directAnexosUrl = lUrl;
@@ -841,6 +864,12 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
               directResultadosUrl = lUrl;
             } else if (lText.includes('comunicado') && !directComunicadosUrl) {
               directComunicadosUrl = lUrl;
+            } else if (lText.includes('postula') || lText.includes('inscrib') || lText.includes('registro')) {
+              if (!directBasesUrl && isOfficialDomain) {
+                directBasesUrl = lUrl;
+              }
+            } else if (isOfficialDomain && !directBasesUrl) {
+              directBasesUrl = lUrl;
             }
           }
 
@@ -855,14 +884,13 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       }
     }
 
-    // Asegurar que ninguna plaza apunte al sitio externo de referencia; apuntar al PDF oficial de la entidad
-    if (directBasesUrl) {
+    // Asegurar que ninguna plaza apunte al sitio externo de referencia; apuntar al enlace oficial o bases
+    const fallbackTarget = directBasesUrl || directResultadosUrl || directComunicadosUrl;
+    if (fallbackTarget) {
       for (const p of plazas) {
-        p.bases_url = directBasesUrl;
-      }
-    } else if (directResultadosUrl || directComunicadosUrl) {
-      for (const p of plazas) {
-        p.bases_url = directResultadosUrl || directComunicadosUrl;
+        if (!p.bases_url || p.bases_url.includes('convocatoriasdetrabajo.com')) {
+          p.bases_url = fallbackTarget;
+        }
       }
     }
 
@@ -1023,9 +1051,9 @@ function parseServirJobsFromHtml(text: string, todayIso: string): JobPosting[] {
         'Contrato formal según régimen del Estado con cobertura de salud ESSALUD.',
         'Aportes al sistema previsional (ONP / AFP) y beneficios de ley.'
       ],
-      apply_url: SERVIR_BASE_URL,
-      bases_pdf_url: SERVIR_BASE_URL,
-      fuente_url: SERVIR_BASE_URL,
+      apply_url: 'https://www.gob.pe/servir',
+      bases_pdf_url: undefined,
+      fuente_url: 'https://www.gob.pe/servir',
       official_portal_name: 'SERVIR - Talento Perú Oficial',
       start_date,
       end_date,

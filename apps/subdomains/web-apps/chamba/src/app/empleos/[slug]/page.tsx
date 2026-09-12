@@ -144,12 +144,40 @@ export default async function JobDetailPage({
     ],
   };
 
-  const safeApplyUrl = sanitizeOfficialUrl(
+  // 1. Enlace a bases oficiales (PDF, Google Drive o documento específico)
+  const candidateBases = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url))
+    ? job.bases_pdf_url
+    : (job.plazas?.find(p => p.bases_url && (
+        p.bases_url.toLowerCase().includes('.pdf') || 
+        p.bases_url.includes('drive.google.com') || 
+        p.bases_url.includes('docs.google.com')
+      ))?.bases_url);
+
+  const cleanBasesUrl = candidateBases
+    ? sanitizeOfficialUrl(candidateBases, job.apply_url, job.entity_name, job.sector_type)
+    : undefined;
+
+  const lowBases = (cleanBasesUrl || '').toLowerCase();
+  const isBasesDoc = Boolean(
+    cleanBasesUrl && (
+      lowBases.includes('.pdf') ||
+      lowBases.includes('drive.google.com') ||
+      lowBases.includes('docs.google.com') ||
+      lowBases.includes('archivos.mpfn.gob.pe') ||
+      lowBases.includes('descargar_tdr') ||
+      lowBases.includes('/anexo-archivo/')
+    )
+  );
+
+  // 2. Enlace oficial para postulación / portal de empleo de la entidad
+  const cleanApplyUrl = sanitizeOfficialUrl(
     job.apply_url,
-    job.bases_pdf_url || job.resultados_url,
+    cleanBasesUrl,
     job.entity_name,
     job.sector_type
   );
+
+  const isSameAction = cleanBasesUrl === cleanApplyUrl;
 
   return (
     <>
@@ -260,15 +288,42 @@ export default async function JobDetailPage({
               </a>
             </div>
 
-            <a
-              href={safeApplyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold font-display text-sm transition-all shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:shadow-[0_0_35px_rgba(16,185,129,0.55)] flex items-center gap-2 cursor-pointer group"
-            >
-              <span>Ver Oferta Oficial y Postular</span>
-              <ExternalLink size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Botón de Bases Oficiales en PDF si existe documento */}
+              {cleanBasesUrl && isBasesDoc && (
+                <a
+                  href={
+                    cleanBasesUrl.includes('drive.google.com/file/d/')
+                      ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                      : cleanBasesUrl
+                  }
+                  target="_blank"
+                  rel="nofollow noopener noreferrer"
+                  className="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.55)] flex items-center gap-2 cursor-pointer group"
+                >
+                  <FileText size={16} />
+                  <span>Bases Oficiales (PDF)</span>
+                  <ExternalLink size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              )}
+
+              {/* Botón para postulación en portal oficial */}
+              {(!isBasesDoc || !isSameAction) && (
+                <a
+                  href={cleanApplyUrl}
+                  target="_blank"
+                  rel="nofollow noopener noreferrer"
+                  className={`px-5 py-3 rounded-xl font-extrabold font-display text-sm transition-all flex items-center gap-2 cursor-pointer group ${
+                    isBasesDoc
+                      ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-white/15 hover:border-emerald-500/40 shadow-sm'
+                      : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:shadow-[0_0_35px_rgba(16,185,129,0.55)]'
+                  }`}
+                >
+                  <span>{job.official_portal_name ? `Postular en ${job.official_portal_name.replace(/Gob\.pe Convocatorias de Trabajo\s*/i, '').replace(/ - Portal Oficial/i, '')}` : 'Ver Oferta Oficial y Postular'}</span>
+                  <ExternalLink size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
@@ -378,6 +433,65 @@ export default async function JobDetailPage({
               }
               anexosUrl={job.anexos_url}
             />
+
+            {/* Visor Oficial de Bases Incrustado (Si existe PDF o Google Drive) */}
+            {cleanBasesUrl && isBasesDoc && (
+              <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-emerald-500/30 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-2.5">
+                    <FileText className="text-emerald-400" size={22} />
+                    <h2 className="text-xl font-bold font-display text-white">
+                      Documento Oficial de Bases del Concurso
+                    </h2>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={
+                        cleanBasesUrl.includes('drive.google.com/file/d/')
+                          ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/uc?export=download&id=$1')
+                          : cleanBasesUrl
+                      }
+                      target="_blank"
+                      download
+                      rel="nofollow noopener noreferrer"
+                      className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold font-mono transition-colors flex items-center gap-1.5 border border-white/10"
+                    >
+                      <span>📥 Descargar PDF</span>
+                    </a>
+                    <a
+                      href={
+                        cleanBasesUrl.includes('drive.google.com/file/d/')
+                          ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                          : cleanBasesUrl
+                      }
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                      className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-display transition-colors flex items-center gap-1.5"
+                    >
+                      <span>Pantalla Completa</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-300">
+                  Visualización oficial directa del documento emitido por <b className="text-white">{job.entity_name}</b>:
+                </p>
+
+                <div className="rounded-2xl overflow-hidden border border-white/10 h-[550px] bg-slate-950 relative shadow-2xl">
+                  <iframe
+                    src={
+                      cleanBasesUrl.includes('drive.google.com/file/d/')
+                        ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                        : cleanBasesUrl
+                    }
+                    className="w-full h-full border-0"
+                    title={`Bases Oficiales - ${job.title}`}
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Technical Job Profile Table */}
             <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
@@ -495,7 +609,7 @@ export default async function JobDetailPage({
                   
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a
-                      href={safeApplyUrl}
+                      href={cleanApplyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2 cursor-pointer"
@@ -540,7 +654,7 @@ export default async function JobDetailPage({
 
                   const pdfTargetUrl = sanitizeOfficialUrl(
                     rawPdfUrl,
-                    safeApplyUrl,
+                    cleanApplyUrl,
                     job.entity_name,
                     job.sector_type
                   );

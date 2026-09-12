@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, JobPosting } from './jobs';
+import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, isGenericPublicationUrl, JobPosting } from './jobs';
 
 async function verifyAllJobs() {
   console.log('🔍 Iniciando AUDITORÍA 100% EXHAUSTIVA DE TODAS LAS CONVOCATORIAS...');
@@ -9,6 +9,7 @@ async function verifyAllJobs() {
 
   let errorsCount = 0;
   let competitorLinksFound = 0;
+  let genericLinksFound = 0;
   let directPdfCount = 0;
   let officialPortalCount = 0;
   let structuredPlazasCount = 0;
@@ -42,6 +43,22 @@ async function verifyAllJobs() {
     console.log(`✔ [OK] INEI sedes: ${inei.odpe_vacancies?.length || 0}`);
   }
 
+  // Verificación caso especial: MINEDU
+  console.log('\n🎯 Verificando caso crítico: MINEDU Especialistas en Monitoreo...');
+  const minedu = await getJobPostingBySlug('minedu-especialistas-monitoreo-pedagogico-gestores-territoriales');
+  if (!minedu) {
+    console.error('❌ ERROR: MINEDU no encontrado!');
+    errorsCount++;
+  } else {
+    if (isGenericPublicationUrl(minedu.apply_url) || isGenericPublicationUrl(minedu.bases_pdf_url)) {
+      console.error('❌ ERROR: MINEDU tiene URLs genéricas de informes-publicaciones!');
+      errorsCount++;
+    } else {
+      console.log(`✔ [OK] MINEDU apply_url: ${minedu.apply_url}`);
+      console.log(`✔ [OK] MINEDU bases_pdf_url: ${minedu.bases_pdf_url}`);
+    }
+  }
+
   console.log(`\n🚀 Auditando una por una las ${totalJobs} convocatorias en vivo al 100%...\n`);
 
   for (let i = 0; i < totalJobs; i++) {
@@ -70,13 +87,18 @@ async function verifyAllJobs() {
         errorsCount++;
       }
 
-      // 4. Verificación estricta de CERO competidores (computrabajo, bumeran, indeed, convocatoriasdetrabajo, etc.)
+      // 4. Verificación estricta de CERO competidores y CERO URLs genéricas
       const checkField = (fieldVal: string | undefined, fieldName: string) => {
         if (!fieldVal) return;
         if (isCompetitorUrl(fieldVal)) {
           console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene competidor en ${fieldName}: ${fieldVal}`);
           errorsCount++;
           competitorLinksFound++;
+        }
+        if (isGenericPublicationUrl(fieldVal)) {
+          console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene URL genérica de búsqueda en ${fieldName}: ${fieldVal}`);
+          errorsCount++;
+          genericLinksFound++;
         }
       };
 
@@ -125,6 +147,7 @@ async function verifyAllJobs() {
   console.log('===================================================');
   console.log(`Total de convocatorias auditadas: ${totalJobs}`);
   console.log(`Enlaces a competidores/agregadores encontrados: ${competitorLinksFound}`);
+  console.log(`Enlaces genéricos de búsqueda encontrados: ${genericLinksFound}`);
   console.log(`Errores técnicos detectados: ${errorsCount}`);
   console.log(`Convocatorias con bases PDF / Drive directo: ${directPdfCount}`);
   console.log(`Convocatorias con enlace a Portal Oficial directo: ${officialPortalCount}`);
@@ -136,7 +159,7 @@ async function verifyAllJobs() {
     console.error(`\n❌ FALLARON ${errorsCount} CHEQUEOS. SE REQUIERE CORRECCIÓN.`);
     process.exit(1);
   } else {
-    console.log('\n🎉 ¡AUDITORÍA 100% EXITOSA! 0 ERRORES, 0 ENLACES A TERCEROS.');
+    console.log('\n🎉 ¡AUDITORÍA 100% EXITOSA! 0 ERRORES, 0 ENLACES A TERCEROS, 0 ENLACES GENÉRICOS.');
     console.log('Todas las convocatorias funcionan al 1000% con enlaces directos oficiales o PDF.');
   }
 }

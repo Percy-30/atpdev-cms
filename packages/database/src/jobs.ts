@@ -381,7 +381,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contrato laboral bajo régimen CAS 1057 con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional (ONP/AFP)."
     ],
-    apply_url: "https://www.gob.pe/institucion/juntos/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    apply_url: "https://cloud.juntos.gob.pe/convocatoria/",
     bases_pdf_url: "https://drive.google.com/file/d/1cemIyOm3MeY9CPcvJ92v5pELZCksXDUK/view?usp=drive_link",
     official_portal_name: "Portal de Convocatorias Programa JUNTOS",
     start_date: "2026-08-28",
@@ -452,7 +452,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contrato laboral bajo régimen CAS 1057 con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional (ONP/AFP)."
     ],
-    apply_url: "https://www.gob.pe/institucion/juntos/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
+    apply_url: "https://cloud.juntos.gob.pe/convocatoria/",
     bases_pdf_url: "https://drive.google.com/file/d/1NQ-rjwgfNJcJD1MZeQ33iKg9PziapuV3/view?usp=drive_link",
     official_portal_name: "Portal de Convocatorias Programa JUNTOS",
     start_date: "2026-08-25",
@@ -1573,9 +1573,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Uniforme institucional y EPPs.",
       "Capacitaciones en biometría registral."
     ],
-    apply_url: "https://www.gob.pe/institucion/reniec/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/reniec/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias RENIEC",
+    apply_url: "https://apps.reniec.gob.pe/convocaWeb/",
+    bases_pdf_url: "https://apps.reniec.gob.pe/convocaWeb/",
+    official_portal_name: "Sistema de Selección de Personal RENIEC",
     start_date: "2026-08-27",
     end_date: "2026-09-01",
     featured: false,
@@ -1804,9 +1804,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Capacitación continua en derecho fiscalizador electoral.",
       "Certificación institucional."
     ],
-    apply_url: "https://www.gob.pe/institucion/jne/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/jne/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias JNE",
+    apply_url: "https://seleccionpersonal.jne.gob.pe/",
+    bases_pdf_url: "https://seleccionpersonal.jne.gob.pe/",
+    official_portal_name: "Portal de Selección Personal JNE",
     start_date: "2026-08-24",
     end_date: "2026-08-31",
     featured: true,
@@ -1959,9 +1959,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS de Alta Dirección.",
       "Capacitación en metodología BIM y contratos NEC3/NEC4."
     ],
-    apply_url: "https://www.gob.pe/institucion/anin/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/anin/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo ANIN",
+    apply_url: "https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo",
+    bases_pdf_url: "https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo",
+    official_portal_name: "Portal Convocatorias de Trabajo ANIN",
     start_date: "2026-08-28",
     end_date: "2026-09-09",
     featured: true,
@@ -1996,16 +1996,36 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS Decreto Legislativo 1057.",
       "Seguro médico de ley y capacitaciones certificadas por el MINEDU."
     ],
-    apply_url: "https://www.gob.pe/institucion/minedu/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/minedu/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo MINEDU",
+    apply_url: "https://postulacioncas.minedu.gob.pe/",
+    bases_pdf_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682",
+    official_portal_name: "Sistema Oficial de Convocatorias CAS - MINEDU",
     start_date: "2026-08-26",
     end_date: "2026-09-12",
     featured: true,
     views_count: 5210,
     clicks_count: 2130,
     status: "Vigente",
-    created_at: "2026-08-26T08:00:00Z"
+    created_at: "2026-08-26T08:00:00Z",
+    plazas: [
+      {
+        cas_code: "CAS Nº 084-2026",
+        title: "(180) Especialistas en Monitoreo Pedagógico para DRE y UGEL",
+        education: "Título Profesional Universitario en Educación, Psicología o Sociología.",
+        experience: "Experiencia mínima de 3 años en gestión educativa o docencia.",
+        salary: "S/. 5,500 Soles",
+        vacancies: 180,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682"
+      },
+      {
+        cas_code: "CAS Nº 085-2026",
+        title: "(132) Gestores Territoriales de Acompañamiento y Articulación",
+        education: "Título Profesional en Ciencias Sociales, Administración o Educación.",
+        experience: "Mínimo 3 años en el sector público o coordinación territorial.",
+        salary: "S/. 6,500 Soles",
+        vacancies: 132,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29618"
+      }
+    ]
   },
   {
     id: "job-mef-01",
@@ -2032,9 +2052,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS especial de alta calificación.",
       "Capacitación en normativa de finanzas públicas del MEF."
     ],
-    apply_url: "https://www.gob.pe/institucion/mef/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/mef/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo MEF",
+    apply_url: "https://convocatorias.mef.gob.pe/",
+    bases_pdf_url: "https://convocatorias.mef.gob.pe/",
+    official_portal_name: "Portal Oficial Convocatorias MEF",
     start_date: "2026-08-25",
     end_date: "2026-09-10",
     featured: true,
@@ -2069,9 +2089,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Planilla CAS con derecho a guardia médica.",
       "Seguro Médico ESSALUD + SCTR."
     ],
-    apply_url: "https://www.gob.pe/institucion/minsa/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/minsa/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo MINSA",
+    apply_url: "https://postulacion.minsa.gob.pe/",
+    bases_pdf_url: "https://postulacion.minsa.gob.pe/",
+    official_portal_name: "Portal de Convocatorias MINSA",
     start_date: "2026-08-27",
     end_date: "2026-09-14",
     featured: true,
@@ -2105,9 +2125,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Régimen CAS con acreditación oficial como Inspector del Trabajo.",
       "Viáticos cubiertos para inspecciones de campo."
     ],
-    apply_url: "https://www.gob.pe/institucion/sunafil/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/sunafil/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo SUNAFIL",
+    apply_url: "https://aplicativosweb2.sunafil.gob.pe/si.convocatorias/",
+    bases_pdf_url: "https://aplicativosweb2.sunafil.gob.pe/si.convocatorias/",
+    official_portal_name: "Sistema Oficial de Convocatorias SUNAFIL",
     start_date: "2026-08-24",
     end_date: "2026-09-08",
     featured: true,
@@ -2141,9 +2161,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contrato CAS con beneficios de ley.",
       "Capacitación en regulación de servicios públicos de telecomunicaciones."
     ],
-    apply_url: "https://www.gob.pe/institucion/osiptel/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/osiptel/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gob.pe Convocatorias de Trabajo OSIPTEL",
+    apply_url: "https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/",
+    bases_pdf_url: "https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/",
+    official_portal_name: "Portal Oportunidades Laborales OSIPTEL",
     start_date: "2026-08-26",
     end_date: "2026-09-10",
     featured: false,
@@ -2249,9 +2269,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS regional.",
       "Seguro SCTR y movilidad a obra."
     ],
-    apply_url: "https://www.gob.pe/institucion/regionarequipa/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    bases_pdf_url: "https://www.gob.pe/institucion/regionarequipa/informes-publicaciones?tipo_publicacion=convocatoria-de-trabajo",
-    official_portal_name: "Gobierno Regional de Arequipa Convocatorias",
+    apply_url: "https://www.regionarequipa.gob.pe/convocatorias/",
+    bases_pdf_url: "https://www.regionarequipa.gob.pe/convocatorias/",
+    official_portal_name: "Portal Oficial Convocatorias GORE Arequipa",
     start_date: "2026-08-25",
     end_date: "2026-09-08",
     featured: false,
@@ -2300,6 +2320,16 @@ export function isCompetitorUrl(url?: string): boolean {
   return AGGREGATOR_AND_COMPETITOR_DOMAINS.some(domain => low.includes(domain));
 }
 
+export function isGenericPublicationUrl(url?: string): boolean {
+  if (!url) return false;
+  const low = url.toLowerCase().trim();
+  return (
+    low.includes('informes-publicaciones?tipo_publicacion=') ||
+    low.includes('colecciones/171-convocatorias-de-trabajo-cas') ||
+    low.includes('app.servir.gob.pe/difusionofertasexterno/faces/consultas/ofertas_laborales.xhtml')
+  );
+}
+
 export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: string): string {
   if (!entityName) return 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
   const norm = entityName.toUpperCase();
@@ -2326,33 +2356,35 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('TELEFONICA') || norm.includes('TELEFÓNICA') || norm.includes('MOVISTAR')) return 'https://telefonica.com.pe/trabaja-con-nosotros/';
 
   // Sector Público / Estado Peruano
-  if (norm.includes('ONPE')) return 'https://www.onpe.gob.pe/convocatorias/';
-  if (norm.includes('RENIEC')) return 'https://www.reniec.gob.pe/portal/convocatoria.htm';
-  if (norm.includes('JNE')) return 'https://portal.jne.gob.pe/portal/convocatorias';
+  if (norm.includes('ONPE')) return 'https://reclutamiento.onpe.gob.pe/convocatorias';
+  if (norm.includes('RENIEC')) return 'https://apps.reniec.gob.pe/convocaWeb/';
+  if (norm.includes('JNE')) return 'https://seleccionpersonal.jne.gob.pe/';
   if (norm.includes('SUNAT')) return 'https://unete.sunat.gob.pe/';
-  if (norm.includes('ESSALUD') || norm.includes('ES SALUD')) return 'https://ww1.essalud.gob.pe/convocatorias/';
-  if (norm.includes('BCRP') || norm.includes('BANCO CENTRAL DE RESERVA')) return 'https://www.bcrp.gob.pe/concursos-de-trabajo.html';
+  if (norm.includes('ESSALUD') || norm.includes('ES SALUD')) return 'https://convocatorias.essalud.gob.pe/';
+  if (norm.includes('BCRP') || norm.includes('BANCO CENTRAL DE RESERVA')) return 'https://bcrp.hiringroom.com/jobs';
   if (norm.includes('BANCO DE LA NACION') || norm.includes('BANCO DE LA NACIÓN')) return 'https://www.bn.com.pe/oportunidad-laboral/';
   if (norm.includes('PODER JUDICIAL') || norm.includes('CORTE SUPERIOR')) return 'https://aplicativo.pj.gob.pe/psep/';
   if (norm.includes('MINISTERIO PUBLICO') || norm.includes('MINISTERIO PÚBLICO') || norm.includes('FISCALIA') || norm.includes('FISCALÍA') || norm.includes('MPFN')) return 'https://portal.mpfn.gob.pe/convocatorias';
   if (norm.includes('CONTRALORIA') || norm.includes('CONTRALORÍA')) return 'https://www.gob.pe/contraloria';
-  if (norm.includes('INEI')) return 'https://proyectos.inei.gob.pe/convocatorias/2026/';
+  if (norm.includes('INEI')) return 'https://uneteservicios.inei.gob.pe/';
   if (norm.includes('DEFENSORIA') || norm.includes('DEFENSORÍA')) return 'https://www.defensoria.gob.pe/convocatorias-cas/';
-  if (norm.includes('SUNAFIL')) return 'https://www.gob.pe/sunafil';
+  if (norm.includes('SUNAFIL')) return 'https://aplicativosweb2.sunafil.gob.pe/si.convocatorias/';
   if (norm.includes('INDECOPI')) return 'https://www.gob.pe/indecopi';
   if (norm.includes('OSINERGMIN')) return 'https://www.osinergmin.gob.pe/seccion/institucional/oportunidades-laborales';
   if (norm.includes('SUNASS')) return 'https://www.sunass.gob.pe/trabaja-con-nosotros/';
   if (norm.includes('OSIPTEL')) return 'https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/';
   if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
   if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
-  if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
-  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://www.gob.pe/minedu';
+  if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://postulacion.minsa.gob.pe/';
+  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/';
+  if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
   if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
-  if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/midis';
+  if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://cloud.juntos.gob.pe/convocatoria/';
   if (norm.includes('MIMP') || norm.includes('MUJER') || norm.includes('AURORA')) return 'https://www.gob.pe/mimp';
   if (norm.includes('MININTER') || norm.includes('POLICIA') || norm.includes('POLICÍA') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
   if (norm.includes('MINDEF') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
-  if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/mef';
+  if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://convocatorias.mef.gob.pe/';
+  if (norm.includes('ANIN')) return 'https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo';
   if (norm.includes('MINEM') || norm.includes('ENERGIA') || norm.includes('ENERGÍA')) return 'https://www.gob.pe/minem';
   if (norm.includes('PRODUCE') || norm.includes('PRODUCCION') || norm.includes('PRODUCCIÓN') || norm.includes('SANIPES') || norm.includes('ITP')) return 'https://www.gob.pe/produce';
   if (norm.includes('MIDAGRI') || norm.includes('MINAGRI') || norm.includes('AGRICULTURA') || norm.includes('SERFOR') || norm.includes('SENASA') || norm.includes('ANA')) return 'https://www.gob.pe/midagri';
@@ -2360,20 +2392,36 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('MINCETUR') || norm.includes('PROMPERU') || norm.includes('PROMPERÚ')) return 'https://www.gob.pe/mincetur';
   if (norm.includes('CULTURA')) return 'https://www.gob.pe/cultura';
   if (norm.includes('MTPE') || norm.includes('TRABAJO')) return 'https://www.gob.pe/mtpe';
-  if (norm.includes('MINJUSDH') || norm.includes('JUSTICIA') || norm.includes('INPE') || norm.includes('SUNARP')) return 'https://www.gob.pe/minjus';
+  if (norm.includes('MINJUSDH') || norm.includes('JUSTICIA') || norm.includes('INPE') || norm.includes('SUNARP')) return 'https://www.inpe.gob.pe/';
   if (norm.includes('UNAJMA') || norm.includes('JOSE MARIA ARGUEDAS') || norm.includes('JOSÉ MARÍA ARGUEDAS')) return 'https://www.unajma.edu.pe/convocatorias';
   if (norm.includes('CUSCO') || norm.includes('MUNICIPALIDAD DEL CUSCO') || norm.includes('MUNICIPALIDAD PROVINCIAL DEL CUSCO')) return 'https://web.cusco.gob.pe/category/convocatorias/';
+  if (norm.includes('OSINFOR')) return 'https://www.gob.pe/osinfor';
+  if (norm.includes('OEFA')) return 'https://www.gob.pe/oefa';
+  if (norm.includes('SERFOR')) return 'https://www.gob.pe/serfor';
+  if (norm.includes('SERNANP')) return 'https://www.gob.pe/sernanp';
+  if (norm.includes('SENASA')) return 'https://www.gob.pe/senasa';
+  if (norm.includes('SENAMHI')) return 'https://www.gob.pe/senamhi';
+  if (norm.includes('SUNARP')) return 'https://www.gob.pe/sunarp';
+  if (norm.includes('INPE')) return 'https://www.inpe.gob.pe/';
+  if (norm.includes('PRONABEC')) return 'https://www.gob.pe/pronabec';
+  if (norm.includes('DEVIDA')) return 'https://www.gob.pe/devida';
+  if (norm.includes('PROINVERSION') || norm.includes('PROINVERSIÓN')) return 'https://www.investinperu.pe/';
+  if (norm.includes('AGROIDEAS')) return 'https://www.gob.pe/agroideas';
+  if (norm.includes('SIERRA Y SELVA EXPORTADORA')) return 'https://www.gob.pe/sierraexportadora';
+  if (norm.includes('QUILLABAMBA') || norm.includes('LA CONVENCION') || norm.includes('LA CONVENCIÓN')) return 'https://munilaconvencion.gob.pe/';
+  if (norm.includes('AREQUIPA') || norm.includes('REGION AREQUIPA') || norm.includes('GOBIERNO REGIONAL DE AREQUIPA')) return 'https://www.regionarequipa.gob.pe/convocatorias/';
   if (norm.includes('SAN MARCOS') || norm.includes('UNMSM')) return 'https://unmsm.edu.pe/';
   if (norm.includes('UNI') || norm.includes('INGENIERIA') || norm.includes('INGENIERÍA')) return 'https://www.uni.edu.pe/';
   if (norm.includes('AGRARIA') || norm.includes('UNALM')) return 'https://www.lamolina.edu.pe/';
+  if (norm.includes('MUNICIPALIDAD') || norm.includes('GOBIERNO REGIONAL')) return 'https://www.gob.pe/';
 
   // Sector Privado genérico
   if (sectorType === 'Privado') {
     return 'https://empleos.atpdev.dev/empleos';
   }
 
-  // Portal oficial del Estado peruano (SERVIR - Talento Perú)
-  return 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
+  // Portal oficial del Estado peruano (SERVIR - Talento Perú Oficial)
+  return 'https://www.gob.pe/servir';
 }
 
 export function sanitizeOfficialUrl(
@@ -2382,29 +2430,32 @@ export function sanitizeOfficialUrl(
   entityName?: string, 
   sectorType?: string
 ): string {
-  if (url) {
-    const low = url.toLowerCase().trim();
+  const officialPortal = getOfficialEntityPortalUrl(entityName, sectorType);
+
+  const cleanCandidate = (u?: string): string | null => {
+    if (!u) return null;
+    const low = u.toLowerCase().trim();
+    if (isCompetitorUrl(low)) return null;
     if (low.includes('cusco.gob.pe/convocatorias-cas') || low.includes('cusco.gob.pe/convocatoria')) {
       return 'https://web.cusco.gob.pe/category/convocatorias/';
     }
     if (low.includes('alicorp.com.pe/es/unete-a-nuestro-equipo')) {
       return 'https://oportunidadesalicorp.com/';
     }
-    if (!isCompetitorUrl(url)) {
-      return url;
+    // Evitar que el usuario sea redirigido a páginas genéricas de búsqueda o SERVIR vacío
+    if (isGenericPublicationUrl(low)) {
+      return null;
     }
-  }
-  if (fallback && !isCompetitorUrl(fallback)) {
-    const lowFallback = fallback.toLowerCase().trim();
-    if (lowFallback.includes('cusco.gob.pe/convocatorias-cas') || lowFallback.includes('cusco.gob.pe/convocatoria')) {
-      return 'https://web.cusco.gob.pe/category/convocatorias/';
-    }
-    if (lowFallback.includes('alicorp.com.pe/es/unete-a-nuestro-equipo')) {
-      return 'https://oportunidadesalicorp.com/';
-    }
-    return fallback;
-  }
-  return getOfficialEntityPortalUrl(entityName, sectorType);
+    return u;
+  };
+
+  const directUrl = cleanCandidate(url);
+  if (directUrl) return directUrl;
+
+  const directFallback = cleanCandidate(fallback);
+  if (directFallback) return directFallback;
+
+  return officialPortal;
 }
 
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
@@ -2519,15 +2570,21 @@ export async function getJobPostings(): Promise<JobPosting[]> {
       p.bases_url.toLowerCase().includes('docs.google.com')
     ));
 
-    const candidateBases = (j.bases_pdf_url && !isCompetitorUrl(j.bases_pdf_url))
+    const rawCandidateBases = (j.bases_pdf_url && !isCompetitorUrl(j.bases_pdf_url))
       ? j.bases_pdf_url
       : (plazaPdf?.bases_url && !isCompetitorUrl(plazaPdf.bases_url) ? plazaPdf.bases_url : undefined);
 
-    const safeTarget = candidateBases || ((j.resultados_url && !isCompetitorUrl(j.resultados_url)) ? j.resultados_url : fallbackPortal);
+    const candidateBases = (rawCandidateBases && !isGenericPublicationUrl(rawCandidateBases))
+      ? rawCandidateBases
+      : undefined;
+
+    const safeTarget = candidateBases || ((j.resultados_url && !isCompetitorUrl(j.resultados_url) && !isGenericPublicationUrl(j.resultados_url)) ? j.resultados_url : fallbackPortal);
 
     const cleanApply = sanitizeOfficialUrl(j.apply_url, safeTarget, j.entity_name, j.sector_type);
     const cleanBases = candidateBases ? sanitizeOfficialUrl(candidateBases, cleanApply, j.entity_name, j.sector_type) : undefined;
-    const cleanFuente = (j.fuente_url && isCompetitorUrl(j.fuente_url)) ? (j.resultados_url || cleanBases || cleanApply) : j.fuente_url;
+    const cleanFuente = (j.fuente_url && (isCompetitorUrl(j.fuente_url) || isGenericPublicationUrl(j.fuente_url)))
+      ? (cleanBases || cleanApply)
+      : j.fuente_url;
     const cleanPlazas = j.plazas ? j.plazas.map(p => ({
       ...p,
       bases_url: sanitizeOfficialUrl(p.bases_url, cleanBases || cleanApply, j.entity_name, j.sector_type)
@@ -2587,22 +2644,23 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
 
     // SANITIZACIÓN ESTRICTA: NUNCA enviar al usuario a computrabajo, convocatoriasdetrabajo, portaltrabajos, bumeran, etc.
     const fallbackPortal = getOfficialEntityPortalUrl(job.entity_name, job.sector_type);
-    const safeTarget = (!isCompetitorUrl(job.bases_pdf_url) && job.bases_pdf_url) || 
-                       (!isCompetitorUrl(job.resultados_url) && job.resultados_url) || 
+    const rawBases = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url) && !isGenericPublicationUrl(job.bases_pdf_url)) ? job.bases_pdf_url : undefined;
+    const safeTarget = rawBases || 
+                       (!isCompetitorUrl(job.resultados_url) && !isGenericPublicationUrl(job.resultados_url) && job.resultados_url) || 
                        fallbackPortal;
 
     job.apply_url = sanitizeOfficialUrl(job.apply_url, safeTarget, job.entity_name, job.sector_type);
-    if (job.bases_pdf_url && isCompetitorUrl(job.bases_pdf_url)) {
-      job.bases_pdf_url = safeTarget;
+    if (job.bases_pdf_url && (isCompetitorUrl(job.bases_pdf_url) || isGenericPublicationUrl(job.bases_pdf_url))) {
+      job.bases_pdf_url = rawBases;
     }
-    if (job.fuente_url && isCompetitorUrl(job.fuente_url)) {
+    if (job.fuente_url && (isCompetitorUrl(job.fuente_url) || isGenericPublicationUrl(job.fuente_url))) {
       job.fuente_url = job.resultados_url || job.bases_pdf_url || job.apply_url;
     }
-    if (job.cuadro_plazas_url && isCompetitorUrl(job.cuadro_plazas_url)) job.cuadro_plazas_url = undefined;
-    if (job.cronograma_url && isCompetitorUrl(job.cronograma_url)) job.cronograma_url = undefined;
-    if (job.anexos_url && isCompetitorUrl(job.anexos_url)) job.anexos_url = undefined;
-    if (job.guia_postulante_url && isCompetitorUrl(job.guia_postulante_url)) job.guia_postulante_url = undefined;
-    if (job.resultados_url && isCompetitorUrl(job.resultados_url)) job.resultados_url = undefined;
+    if (job.cuadro_plazas_url && (isCompetitorUrl(job.cuadro_plazas_url) || isGenericPublicationUrl(job.cuadro_plazas_url))) job.cuadro_plazas_url = undefined;
+    if (job.cronograma_url && (isCompetitorUrl(job.cronograma_url) || isGenericPublicationUrl(job.cronograma_url))) job.cronograma_url = undefined;
+    if (job.anexos_url && (isCompetitorUrl(job.anexos_url) || isGenericPublicationUrl(job.anexos_url))) job.anexos_url = undefined;
+    if (job.guia_postulante_url && (isCompetitorUrl(job.guia_postulante_url) || isGenericPublicationUrl(job.guia_postulante_url))) job.guia_postulante_url = undefined;
+    if (job.resultados_url && (isCompetitorUrl(job.resultados_url) || isGenericPublicationUrl(job.resultados_url))) job.resultados_url = undefined;
 
     if (job.plazas) {
       job.plazas.forEach(p => {
