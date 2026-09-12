@@ -2713,6 +2713,9 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
         if (enriched.vacancies_count) {
           job.vacancies_count = enriched.vacancies_count;
         }
+        if (enriched.official_documents && enriched.official_documents.length > 0) {
+          job.official_documents = enriched.official_documents;
+        }
       } catch (err) {
         console.warn('Error enriqueciendo plazas y bases de CD:', err);
       }

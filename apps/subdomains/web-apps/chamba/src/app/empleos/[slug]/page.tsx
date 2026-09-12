@@ -178,16 +178,21 @@ export default async function JobDetailPage({
     job.sector_type
   );
 
-  // En el caso de MINEDU, dirigir siempre a la plataforma de convocatorias en vivo
-  if (job.entity_name?.toUpperCase().includes('MINEDU') || job.entity_name?.toUpperCase().includes('EDUCACI')) {
-    cleanApplyUrl = 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
-  }
-
   const hasMultiplePlazas = Boolean(job.plazas && job.plazas.length > 1);
   const distinctPlazaBases = hasMultiplePlazas
     ? Array.from(new Set(job.plazas!.map(p => p.bases_url).filter(Boolean)))
     : [];
   const hasDistinctPlazaBases = distinctPlazaBases.length > 1;
+
+  // En el caso de MINEDU, dirigir a la convocatoria específica si tiene idReq único, o al portal general
+  if (job.entity_name?.toUpperCase().includes('MINEDU') || job.entity_name?.toUpperCase().includes('EDUCACI')) {
+    const mineduIdMatch = cleanBasesUrl?.match(/idReq=(\d+)/i);
+    if (mineduIdMatch && !hasDistinctPlazaBases) {
+      cleanApplyUrl = `https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/${mineduIdMatch[1]}`;
+    } else {
+      cleanApplyUrl = 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
+    }
+  }
 
   const isSameAction = cleanBasesUrl === cleanApplyUrl;
 

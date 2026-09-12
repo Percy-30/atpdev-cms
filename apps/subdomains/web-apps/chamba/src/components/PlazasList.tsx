@@ -241,18 +241,27 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                       </a>
                     )}
 
-                    {/* Botón para postular en el portal oficial de la entidad */}
-                    {defaultApplyUrl && defaultApplyUrl !== pdfUrl && (
-                      <a
-                        href={defaultApplyUrl}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-white/10 text-slate-200 text-xs font-bold font-display transition-all flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <span>Postular en Portal</span>
-                        <ExternalLink size={12} />
-                      </a>
-                    )}
+                    {/* Botón para postular en el portal oficial de la entidad o convocatoria específica */}
+                    {(() => {
+                      const mineduIdMatch = pdfUrl?.match(/idReq=(\d+)/i);
+                      const targetPortalUrl = mineduIdMatch
+                        ? `https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/${mineduIdMatch[1]}`
+                        : (defaultApplyUrl && defaultApplyUrl !== pdfUrl ? defaultApplyUrl : undefined);
+
+                      if (!targetPortalUrl) return null;
+
+                      return (
+                        <a
+                          href={targetPortalUrl}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-white/10 text-slate-200 text-xs font-bold font-display transition-all flex items-center gap-1.5 cursor-pointer hover:border-emerald-500/30"
+                        >
+                          <span>{mineduIdMatch ? '🌐 Convocatoria Oficial' : 'Postular en Portal'}</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>

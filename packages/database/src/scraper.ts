@@ -736,6 +736,7 @@ const CD_ENRICHED_CACHE = new Map<string, {
   directAnexosUrl?: string;
   directResultadosUrl?: string;
   directComunicadosUrl?: string;
+  official_documents?: { title: string; url: string; category?: string }[];
   vacancies_count?: number;
 }>();
 
@@ -745,6 +746,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
   directAnexosUrl?: string;
   directResultadosUrl?: string;
   directComunicadosUrl?: string;
+  official_documents?: { title: string; url: string; category?: string }[];
   vacancies_count?: number;
 }> {
   if (!fuenteUrl) return { plazas: [] };
@@ -762,23 +764,115 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
     if (!res.ok) return { plazas: [] };
     const html = await res.text();
 
+    let directBasesUrl: string | undefined;
+    let directAnexosUrl: string | undefined;
+    let directResultadosUrl: string | undefined;
+    let directComunicadosUrl: string | undefined;
+    const official_documents: { title: string; url: string; category?: string }[] = [];
+
+    // 1. Escanear enlaces del cuerpo principal de la oferta
+    const allPageLinks = [...html.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
+    for (const lm of allPageLinks) {
+      const lUrl = lm[1].trim();
+      const lText = lm[2].replace(/<[^>]+>/g, '').trim();
+      const lowUrl = lUrl.toLowerCase();
+      const lowText = lText.toLowerCase();
+
+      if (
+        !lUrl ||
+        lUrl.startsWith('#') ||
+        lUrl.startsWith('javascript:') ||
+        lowUrl.includes('convocatoriasdetrabajo.com') ||
+        lowUrl.includes('whatsapp.com') ||
+        lowUrl.includes('facebook.com') ||
+        lowUrl.includes('instagram.com') ||
+        lowUrl.includes('linkedin.com') ||
+        lowUrl.includes('t.me') ||
+        lowUrl.includes('telegram') ||
+        lowUrl.includes('tiktok.com') ||
+        lowUrl.includes('youtube.com') ||
+        lowUrl.includes('eepurl.com') ||
+        lowUrl.includes('email-protection')
+      ) {
+        continue;
+      }
+
+      const isPdf = lowUrl.includes('.pdf');
+      const isDrive = lowUrl.includes('drive.google.com') || lowUrl.includes('docs.google.com');
+      const isOfficialDomain = lowUrl.includes('.gob.pe') || lowUrl.includes('.edu.pe') || lowUrl.includes('.mil.pe');
+
+      if (isDrive || isPdf) {
+        if (!official_documents.some(d => d.url === lUrl)) {
+          official_documents.push({
+            title: lText.replace(/^ver aqu[ií]\s*/i, '').trim() || 'Documento Oficial',
+            url: lUrl
+          });
+        }
+        if (!directBasesUrl && (lowText.includes('base') || lowText.includes('convocatoria') || lowText.includes('cronograma'))) {
+          directBasesUrl = lUrl;
+        }
+      } else if (isOfficialDomain) {
+        if (!directBasesUrl || lowText.includes('postula') || lowText.includes('base') || lowText.includes('convocatoria')) {
+          directBasesUrl = lUrl;
+        }
+      }
+
+      if (lowText.includes('anexo') || lowUrl.endsWith('.docx') || lowUrl.endsWith('.doc')) {
+        directAnexosUrl = lUrl;
+      } else if (lowText.includes('resultado') && !directResultadosUrl) {
+        directResultadosUrl = lUrl;
+      } else if (lowText.includes('comunicado') && !directComunicadosUrl) {
+        directComunicadosUrl = lUrl;
+      }
+    }
+
+    // 2. Extraer plazas individuales
     const plazas: JobPlaza[] = [];
-    const articles = html.split(/<article\s+class=['"]oferta['"]>/i);
-    articles.shift();
+    const articles = html.split(/<article\s+class=['"][^'"]*oferta[^'"]*['"]>/i);
+    articles.shift(); // Quitar cabecera antes del primer artículo
 
     for (const art of articles) {
       const endArtIdx = art.indexOf('</article>');
       const content = endArtIdx !== -1 ? art.substring(0, endArtIdx) : art;
-      if (content.includes('adsbygoogle') || !content.includes('<h')) continue;
+      if (content.includes('adsbygoogle') || (!content.includes('<h') && !content.includes('href='))) continue;
 
-      const titleMatch = content.match(/<h[34][^>]*>\s*<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/i);
-      if (!titleMatch) continue;
+      const linkMatch = content.match(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/i);
+      const hMatch = content.match(/<h[234][^>]*>([\s\S]*?)<\/h[234]>/i);
+      const rawTitle = (linkMatch ? linkMatch[2] : (hMatch ? hMatch[1] : '')).replace(/<[^>]+>/g, '').trim();
+      if (!rawTitle || rawTitle.length < 4 || rawTitle.toLowerCase().includes('postular')) continue;
 
-      let opUrl = titleMatch[1].trim();
-      if (!opUrl.startsWith('http')) {
+      let opUrl = linkMatch ? linkMatch[1].trim() : '';
+      if (opUrl && !opUrl.startsWith('http')) {
         opUrl = `https://www.convocatoriasdetrabajo.com/${opUrl.replace(/^\//, '')}`;
       }
-      const rawTitle = titleMatch[2].replace(/<[^>]+>/g, '').trim();
+
+      const reqMatch = content.match(/<span>\s*(?:Formaci[oó]n|Se\s*requiere)[^:]*:\s*<\/span>\s*([^<]+)/i);
+      const education = reqMatch ? reqMatch[1].trim() : 'Cumplir con los requisitos establecidos en las bases oficiales.';
+
+      const expMatch = content.match(/<span>\s*Experiencia[^:]*:\s*<\/span>\s*([^<]+)/i);
+      const experience = expMatch ? expMatch[1].trim() : 'Acreditar experiencia laboral requerida.';
+
+      const remMatch = content.match(/<span>\s*Remuneraci[oó]n:\s*<\/span>\s*([^<]+)/i);
+      const salary = remMatch ? `S/. ${remMatch[1].trim()}` : '';
+
+      // Si el título contiene múltiples vacantes y puestos e.g. (14,018) APLICADORES Y (3,220) ORIENTADORES
+      const multiMatches = [...rawTitle.matchAll(/\((\d[\d,.]*)\)\s*([A-Za-zÁÉÍÓÚáéíóúñÑ\s]+)/g)];
+      if (multiMatches.length > 1) {
+        for (const mm of multiMatches) {
+          const vCount = parseInt(mm[1].replace(/[,.]/g, ''), 10);
+          const pTitle = mm[2].replace(/\s+Y\s*$/i, '').trim();
+          plazas.push({
+            cas_code: `Plaza ${plazas.length + 1}`,
+            title: pTitle,
+            education,
+            experience,
+            salary,
+            vacancies: vCount,
+            bases_url: opUrl || directBasesUrl || fuenteUrl
+          });
+        }
+        continue;
+      }
 
       let cas_code = '';
       let title = rawTitle;
@@ -788,103 +882,73 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         title = parts.slice(1).join(':').trim();
       }
 
-      const vacMatch = content.match(/<span>\s*N[°º]\s*de\s*vacantes:\s*<\/span>\s*(\d+)/i);
+      const vacMatch = content.match(/<span>\s*N[°º]\s*de\s*vacantes:\s*<\/span>\s*(\d+)/i) ||
+                       content.match(/(\d+)\s*(?:plazas|vacantes)/i);
       const vacancies = vacMatch ? parseInt(vacMatch[1], 10) : 1;
-
-      const reqMatch = content.match(/<span>\s*Se\s*requiere:\s*<\/span>\s*([^<]+)/i);
-      const education = reqMatch ? reqMatch[1].trim() : 'Cumplir con los requisitos establecidos en las bases oficiales.';
-
-      const remMatch = content.match(/<span>\s*Remuneraci[oó]n:\s*<\/span>\s*([^<]+)/i);
-      const salary = remMatch ? `S/. ${remMatch[1].trim()}` : '';
 
       plazas.push({
         cas_code: cas_code || `Plaza ${plazas.length + 1}`,
         title: title || rawTitle,
         education,
-        experience: `Acreditar experiencia laboral requerida según bases de ${title}.`,
+        experience,
         salary,
         vacancies,
         bases_url: opUrl,
       });
     }
 
-    let directBasesUrl: string | undefined;
-    let directAnexosUrl: string | undefined;
-    let directResultadosUrl: string | undefined;
-    let directComunicadosUrl: string | undefined;
-
-    // Si encontramos plazas, consultamos la primera oportunidad laboral para extraer el PDF real y anexos
-    if (plazas.length > 0 && plazas[0].bases_url) {
-      try {
-        const opRes = await fetch(plazas[0].bases_url, { headers, signal: AbortSignal.timeout(6000) });
-        if (opRes.ok) {
-          const opHtml = await opRes.text();
-          const allLinkMatches = [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
-
-          for (const lm of allLinkMatches) {
-            const lUrl = lm[1].trim();
-            const lText = lm[2].replace(/<[^>]+>/g, '').toLowerCase().trim();
-            const lowUrl = lUrl.toLowerCase();
-
-            // Ignorar enlaces internos, vacíos, hashtags o javascript
-            if (
-              !lUrl ||
-              lUrl.startsWith('#') ||
-              lUrl.startsWith('javascript:') ||
-              lowUrl.includes('convocatoriasdetrabajo.com')
-            ) {
-              continue;
+    // Si no se encontraron artículos tipo oferta pero hay encabezados de puestos múltiples:
+    if (plazas.length === 0) {
+      const headingPuestos = [...html.matchAll(/<h[234][^>]*>([\s\S]*?)<\/h[234]>/gi)];
+      for (const hp of headingPuestos) {
+        const hText = hp[1].replace(/<[^>]+>/g, '').trim();
+        if (hText.includes('(') && (hText.includes('APLICADOR') || hText.includes('ORIENTADOR') || hText.includes('DOCENTE') || hText.includes('ASISTENTE') || hText.includes('ESPECIALISTA') || hText.includes('ANALISTA'))) {
+          const subParts = hText.split(/\s+Y\s+|\s*,\s*/i);
+          for (const sp of subParts) {
+            const vMatch = sp.match(/\((\d[\d,.]*)\)\s*(.+)/i);
+            if (vMatch) {
+              const vCount = parseInt(vMatch[1].replace(/[,.]/g, ''), 10);
+              const pTitle = vMatch[2].trim();
+              plazas.push({
+                cas_code: `Plaza ${plazas.length + 1}`,
+                title: pTitle,
+                education: 'Requisitos de formación académica según bases oficiales publicadas.',
+                experience: 'Acreditar experiencia requerida en el cronograma oficial.',
+                vacancies: vCount,
+                bases_url: directBasesUrl || fuenteUrl
+              });
             }
-
-            // Ignorar redes sociales y boletines
-            if (
-              lowUrl.includes('whatsapp.com') ||
-              lowUrl.includes('facebook.com') ||
-              lowUrl.includes('instagram.com') ||
-              lowUrl.includes('linkedin.com') ||
-              lowUrl.includes('t.me') ||
-              lowUrl.includes('tiktok.com') ||
-              lowUrl.includes('youtube.com') ||
-              lowUrl.includes('eepurl.com') ||
-              lowUrl.includes('email-protection')
-            ) {
-              continue;
-            }
-
-            const isPdf = lowUrl.includes('.pdf');
-            const isDrive = lowUrl.includes('drive.google.com') || lowUrl.includes('docs.google.com');
-            const isDoc = isPdf || isDrive || lowUrl.includes('archivos.mpfn.gob.pe') || lowUrl.includes('descargar_tdr') || lowUrl.includes('download');
-            const isOfficialDomain = lowUrl.includes('.gob.pe') || lowUrl.includes('.edu.pe') || lowUrl.includes('.mil.pe');
-
-            if (lText.includes('base') || (isDoc && !directBasesUrl) || lText.includes('completa') || lText.includes('convocatoria completa')) {
-              directBasesUrl = lUrl;
-            } else if (lText.includes('anexo') || lowUrl.endsWith('.docx') || lowUrl.endsWith('.doc')) {
-              directAnexosUrl = lUrl;
-            } else if (lText.includes('resultado') && !directResultadosUrl) {
-              directResultadosUrl = lUrl;
-            } else if (lText.includes('comunicado') && !directComunicadosUrl) {
-              directComunicadosUrl = lUrl;
-            } else if (lText.includes('postula') || lText.includes('inscrib') || lText.includes('registro')) {
-              if (!directBasesUrl && isOfficialDomain) {
-                directBasesUrl = lUrl;
-              }
-            } else if (isOfficialDomain && !directBasesUrl) {
-              directBasesUrl = lUrl;
-            }
-          }
-
-          // Si hay enlace específico para perfil o tdr de la primera plaza
-          const perfilMatch = opHtml.match(/<a[^>]+href=['"]([^'"]+)['"][^>]*>[\s\S]*?(?:perfil|tdr)[\s\S]*?<\/a>/i);
-          if (perfilMatch && !perfilMatch[1].toLowerCase().includes('convocatoriasdetrabajo.com')) {
-            plazas[0].bases_url = perfilMatch[1].trim();
           }
         }
-      } catch (e) {
-        console.warn('Error resolviendo bases directas en CD:', e);
       }
     }
 
-    // Asegurar que ninguna plaza apunte al sitio externo de referencia; apuntar al enlace oficial o bases
+    // 3. Enriquecer las primeras oportunidades laborales con sus perfiles / TDR específicos
+    const plazasToFetch = plazas.filter(p => p.bases_url && p.bases_url.includes('oportunidad-laboral-')).slice(0, 6);
+    if (plazasToFetch.length > 0) {
+      await Promise.all(plazasToFetch.map(async (p) => {
+        try {
+          const opRes = await fetch(p.bases_url, { headers, signal: AbortSignal.timeout(5000) });
+          if (!opRes.ok) return;
+          const opHtml = await opRes.text();
+          const perfilMatch = opHtml.match(/<a[^>]+href=['"]([^'"]+)['"][^>]*>[\s\S]*?(?:perfil|tdr|descargar|bases)[\s\S]*?<\/a>/i);
+          if (perfilMatch && !perfilMatch[1].toLowerCase().includes('convocatoriasdetrabajo.com')) {
+            p.bases_url = perfilMatch[1].trim();
+          } else {
+            // Buscar cualquier enlace PDF o Drive en esa página
+            const pdfMatch = opHtml.match(/href=['"](https?:\/\/[^'"]+\.(?:pdf|docx?)[^'"]*)['"]/i) ||
+                             opHtml.match(/href=['"](https:\/\/drive\.google\.com\/[^\/?#]+(?:\/[^\/?#]+)*)['"]/i);
+            if (pdfMatch && !pdfMatch[1].toLowerCase().includes('convocatoriasdetrabajo.com')) {
+              p.bases_url = pdfMatch[1].trim();
+            }
+          }
+        } catch {
+          // Fallback silencioso
+        }
+      }));
+    }
+
+    // 4. Asegurar que ninguna plaza apunte al sitio externo; asignar directBasesUrl o fallback oficial
     const fallbackTarget = directBasesUrl || directResultadosUrl || directComunicadosUrl;
     if (fallbackTarget) {
       for (const p of plazas) {
@@ -901,6 +965,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       directAnexosUrl,
       directResultadosUrl,
       directComunicadosUrl,
+      official_documents: official_documents.length > 0 ? official_documents : undefined,
       vacancies_count: totalVacancies > 0 ? totalVacancies : undefined
     };
 
