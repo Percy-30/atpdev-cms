@@ -530,26 +530,36 @@ export default async function JobDetailPage({
                     </div>
                     <div>
                       <h3 className="text-white font-bold font-display text-base">
-                        {hasDistinctPlazaBases ? `Bases Oficiales: ${job.plazas![0].title}` : `Bases Oficiales del Concurso`}
+                        {hasDistinctPlazaBases ? `Bases Oficiales: ${job.plazas!.length} Puestos Convocados` : `Bases Oficiales del Concurso`}
                       </h3>
                       <p className="text-xs text-slate-300 mt-1 max-w-md mx-auto">
                         {hasDistinctPlazaBases
-                          ? `Documento oficial correspondiente al puesto 1. Para descargar las bases de las demás especialidades (${job.plazas!.length} puestos), consulte la sección de plazas arriba.`
+                          ? `Esta convocatoria cuenta con ${job.plazas!.length} bases y TDRs oficiales independientes emitidos por ${job.entity_name}. Cada especialidad tiene su propio archivo PDF para descargar arriba.`
                           : `Documento oficial verificado emitido por ${job.entity_name}.`}
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                      <a
-                        href={cleanBasesUrl}
-                        target="_blank"
-                        download
-                        rel="nofollow noopener noreferrer"
-                        className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 cursor-pointer"
-                      >
-                        <FileText size={15} />
-                        <span>Descargar Bases (PDF)</span>
-                        <ExternalLink size={12} />
-                      </a>
+                      {hasDistinctPlazaBases ? (
+                        <a
+                          href="#plazas-convocadas"
+                          className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 cursor-pointer"
+                        >
+                          <FileText size={15} />
+                          <span>Ver y Descargar las {job.plazas!.length} Bases Individuales</span>
+                        </a>
+                      ) : (
+                        <a
+                          href={cleanBasesUrl}
+                          target="_blank"
+                          download
+                          rel="nofollow noopener noreferrer"
+                          className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 cursor-pointer"
+                        >
+                          <FileText size={15} />
+                          <span>Descargar Bases (PDF)</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      )}
                     </div>
                   </div>
                 )}
@@ -761,19 +771,28 @@ export default async function JobDetailPage({
                             <ExternalLink size={14} />
                           </a>
 
-                          <a
-                            href={
-                              pdfTargetUrl.includes('drive.google.com/file/d/')
-                                ? pdfTargetUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/uc?export=download&id=$1')
-                                : pdfTargetUrl
-                            }
-                            target="_blank"
-                            download
-                            rel="nofollow noopener noreferrer"
-                            className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
-                          >
-                            <span>📥 Descargar Archivo Directo</span>
-                          </a>
+                          {hasDistinctPlazaBases ? (
+                            <a
+                              href="#plazas-convocadas"
+                              className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                              <span>📋 Elegir entre las {job.plazas!.length} Plazas</span>
+                            </a>
+                          ) : (
+                            <a
+                              href={
+                                pdfTargetUrl.includes('drive.google.com/file/d/')
+                                  ? pdfTargetUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/uc?export=download&id=$1')
+                                  : pdfTargetUrl
+                              }
+                              target="_blank"
+                              download
+                              rel="nofollow noopener noreferrer"
+                              className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                              <span>📥 Descargar Archivo Directo</span>
+                            </a>
+                          )}
 
                           {/* Visor interactivo incrustado solo para Google Drive / Docs */}
                           {(pdfTargetUrl.includes('drive.google.com') || pdfTargetUrl.includes('docs.google.com')) && (
@@ -873,17 +892,23 @@ export default async function JobDetailPage({
                         </a>
                       )}
 
-                      {job.fuente_url && !isCompetitorUrl(job.fuente_url) && (
-                        <a
-                          href={job.fuente_url}
-                          target="_blank"
-                          rel="nofollow noopener noreferrer"
-                          className="w-full py-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-slate-400 hover:text-slate-200 font-mono text-[11px] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
-                        >
-                          <span>🔗 Ver Portal Institucional Oficial</span>
-                          <ExternalLink size={12} />
-                        </a>
-                      )}
+                      {(() => {
+                        const targetPortal = hasDistinctPlazaBases
+                          ? cleanApplyUrl
+                          : (job.fuente_url && !isCompetitorUrl(job.fuente_url) ? job.fuente_url : cleanApplyUrl);
+                        if (!targetPortal) return null;
+                        return (
+                          <a
+                            href={targetPortal}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            className="w-full py-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-slate-400 hover:text-slate-200 font-mono text-[11px] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
+                          >
+                            <span>🔗 Ver Portal Institucional Oficial</span>
+                            <ExternalLink size={12} />
+                          </a>
+                        );
+                      })()}
                     </>
                   );
                 })()}
