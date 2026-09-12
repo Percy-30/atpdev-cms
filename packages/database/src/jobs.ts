@@ -2469,6 +2469,18 @@ export function sanitizeOfficialUrl(
     if (low.includes('alicorp.com.pe/es/unete-a-nuestro-equipo')) {
       return 'https://oportunidadesalicorp.com/';
     }
+    // MINEDU: transformar vistas individuales antiguas a descarga directa de bases PDF o portal oficial
+    if (low.includes('postulacioncas.minedu.gob.pe')) {
+      if (low.includes('home/convocatoria/')) {
+        const m = u.match(/home\/convocatoria\/(\d+)/i);
+        if (m) {
+          return `https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=${m[1]}`;
+        }
+      }
+      if (!low.includes('/postulacioncas/')) {
+        return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
+      }
+    }
     // Evitar que el usuario sea redirigido a páginas genéricas de búsqueda o SERVIR vacío
     if (isGenericPublicationUrl(low)) {
       return null;

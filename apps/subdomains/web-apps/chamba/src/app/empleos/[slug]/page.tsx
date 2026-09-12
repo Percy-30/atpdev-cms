@@ -165,17 +165,23 @@ export default async function JobDetailPage({
       lowBases.includes('docs.google.com') ||
       lowBases.includes('archivos.mpfn.gob.pe') ||
       lowBases.includes('descargar_tdr') ||
+      lowBases.includes('descargar_bases') ||
       lowBases.includes('/anexo-archivo/')
     )
   );
 
   // 2. Enlace oficial para postulación / portal de empleo de la entidad
-  const cleanApplyUrl = sanitizeOfficialUrl(
+  let cleanApplyUrl = sanitizeOfficialUrl(
     job.apply_url,
     cleanBasesUrl,
     job.entity_name,
     job.sector_type
   );
+
+  // En el caso de MINEDU, dirigir siempre a la plataforma de convocatorias en vivo
+  if (job.entity_name?.toUpperCase().includes('MINEDU') || job.entity_name?.toUpperCase().includes('EDUCACI')) {
+    cleanApplyUrl = 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
+  }
 
   const isSameAction = cleanBasesUrl === cleanApplyUrl;
 
@@ -667,6 +673,7 @@ export default async function JobDetailPage({
                     lowUrl.includes('archivos.mpfn.gob.pe') ||
                     lowUrl.includes('/anexo-archivo/') ||
                     lowUrl.includes('descargar_tdr') ||
+                    lowUrl.includes('descargar_bases') ||
                     lowUrl.includes('download') ||
                     lowUrl.includes('.docx') ||
                     lowUrl.includes('.doc') ||
