@@ -2729,6 +2729,20 @@ export async function getJobPostingBySlug(slug: string): Promise<JobPosting | nu
       }
     }
 
+    // Normalización automática para MINEDU: convertir enlaces de visualización en enlaces de descarga directa
+    if (job.entity_name?.toUpperCase().includes('MINEDU') || job.entity_name?.toUpperCase().includes('EDUCACI')) {
+      if (job.bases_pdf_url && job.bases_pdf_url.includes('/Home/Convocatoria/')) {
+        job.bases_pdf_url = job.bases_pdf_url.replace(/\/Home\/Convocatoria\/(\d+)/i, '/Postulacion/Descargar_Bases?idReq=$1');
+      }
+      if (job.plazas) {
+        job.plazas.forEach(p => {
+          if (p.bases_url && p.bases_url.includes('/Home/Convocatoria/')) {
+            p.bases_url = p.bases_url.replace(/\/Home\/Convocatoria\/(\d+)/i, '/Postulacion/Descargar_Bases?idReq=$1');
+          }
+        });
+      }
+    }
+
     // SANITIZACIÓN ESTRICTA: NUNCA enviar al usuario a computrabajo, convocatoriasdetrabajo, portaltrabajos, bumeran, etc.
     const fallbackPortal = getOfficialEntityPortalUrl(job.entity_name, job.sector_type);
     const rawBases = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url) && !isGenericPublicationUrl(job.bases_pdf_url)) ? job.bases_pdf_url : undefined;

@@ -5296,7 +5296,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682",
-    "bases_pdf_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682",
+    "bases_pdf_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29682",
     "fuente_url": "https://www.portaltrabajos.pe/2026/09/minedu-especialistas-coordinadores.html",
     "official_portal_name": "MINISTERIO DE EDUCACIÓN - MINEDU - Portal Oficial",
     "start_date": "2026-08-25",
@@ -5313,7 +5313,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Derecho",
         "experience": "8 años",
         "salary": "S/. 14000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29682"
       },
       {
         "cas_code": "CAS Nº 066",
@@ -5321,7 +5321,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Derecho",
         "experience": "4 años",
         "salary": "S/. 7500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29670"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29670"
       },
       {
         "cas_code": "CAS Nº 067",
@@ -5329,7 +5329,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Derecho",
         "experience": "4 años",
         "salary": "S/. 6000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29671"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29671"
       },
       {
         "cas_code": "CAS Nº 068",
@@ -5337,7 +5337,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Administración; Contabilidad; Economía",
         "experience": "3 años",
         "salary": "S/. 6000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29673"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29673"
       },
       {
         "cas_code": "CAS Nº 069",
@@ -5345,7 +5345,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Administración; Antropología; Ciencias Políticas; Derecho; Educación; sociologia",
         "experience": "5 años",
         "salary": "S/. 10000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29676"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29676"
       },
       {
         "cas_code": "CAS Nº 070",
@@ -5353,7 +5353,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Administración; Contabilidad; Economía; Ingeniería Económica; Ingeniería Industrial",
         "experience": "4 años",
         "salary": "S/. 8000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29672"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29672"
       },
       {
         "cas_code": "CAS Nº 071",
@@ -5361,7 +5361,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Ciencias Económicas; Contabilidad; Economía",
         "experience": "3 años",
         "salary": "S/. 6000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29675"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29675"
       },
       {
         "cas_code": "CAS Nº 559",
@@ -5369,7 +5369,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Derecho",
         "experience": "4 años",
         "salary": "S/. 7000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29679"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29679"
       },
       {
         "cas_code": "CAS Nº 560",
@@ -5377,7 +5377,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación",
         "experience": "4 años",
         "salary": "S/. 7000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29680"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29680"
       },
       {
         "cas_code": "CAS Nº 561",
@@ -5385,7 +5385,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación; Psicología",
         "experience": "4 años",
         "salary": "S/. 5500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29681"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29681"
       },
       {
         "cas_code": "CAS Nº 562",
@@ -5393,7 +5393,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Comunicación Social; Educación; Psicología; sociologia",
         "experience": "6 años",
         "salary": "S/. 12000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29674"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29674"
       },
       {
         "cas_code": "CAS Nº 563",
@@ -5401,7 +5401,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación; Psicología; Sociología",
         "experience": "5 años",
         "salary": "S/. 7000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29685"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29685"
       },
       {
         "cas_code": "CAS Nº 564",
@@ -5409,7 +5409,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Administración; Economía; Educación; Psicología",
         "experience": "8 años",
         "salary": "S/. 10500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29686"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29686"
       },
       {
         "cas_code": "CAS Nº 565",
@@ -5417,7 +5417,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Administración; Derecho; Economía; gestión",
         "experience": "7 años",
         "salary": "S/. 13000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29683"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29683"
       },
       {
         "cas_code": "CAS Nº 566",
@@ -5425,7 +5425,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Derecho; Educación; Sociología; Derecho administrativo; gestión escolar; Gestión Pública",
         "experience": "7 años",
         "salary": "S/. 12000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29684"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29684"
       }
     ]
   },
@@ -9641,7 +9641,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29618",
-    "bases_pdf_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29618",
+    "bases_pdf_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29618",
     "fuente_url": "https://www.portaltrabajos.pe/2026/08/minedu-docentes-auxiliares.html",
     "official_portal_name": "MINISTERIO DE EDUCACIÓN - MINEDU - Portal Oficial",
     "start_date": "2026-08-25",
@@ -9658,7 +9658,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Educación en la especialidad de Biología y Química y/o ciencia y tecnología y/o técnico en laboratorio y/o bachiller en Biología y/o Química y/o Farmacia",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29618"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29618"
       },
       {
         "cas_code": "CAS Nº 510",
@@ -9666,7 +9666,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Educación en la especialidad de Biología y Química y/o ciencia y tecnología y/o técnico en laboratorio y/o bachiller en Biología y/o Química y/o Farmacia",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29619"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29619"
       },
       {
         "cas_code": "CAS Nº 511",
@@ -9674,7 +9674,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Administración; Educación; Psicología; Educación y/o investigación pedagógica y/o gestión educativa",
         "experience": "6 años",
         "salary": "S/. 6500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29620"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29620"
       },
       {
         "cas_code": "CAS Nº 512",
@@ -9682,7 +9682,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Administración; Derecho; Educación",
         "experience": "8 años",
         "salary": "S/. 8000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29621"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29621"
       },
       {
         "cas_code": "CAS Nº 513",
@@ -9690,7 +9690,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en las especialidades de ciencia, tecnología y ambiente y/o Biología y Química y/o Ciencias Naturales y/o bachiller en Biología y/o Química",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29622"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29622"
       },
       {
         "cas_code": "CAS Nº 514",
@@ -9698,7 +9698,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en las especialidades de ciencia, tecnología y ambiente y/o Biología y Química y/o Ciencias Naturales y/o bachiller en Biología y/o Química",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29623"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29623"
       },
       {
         "cas_code": "CAS Nº 515",
@@ -9706,7 +9706,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Ciencias del Deporte y/o Educación Física",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29624"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29624"
       },
       {
         "cas_code": "CAS Nº 516",
@@ -9714,7 +9714,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de Historia y Geografía y/o ciencias histórico sociales y/o Ciencias Sociales y/o ciudadanía y cívica y/o bachiller en Historia y/o Ciencias Políticas",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29625"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29625"
       },
       {
         "cas_code": "CAS Nº 517",
@@ -9722,7 +9722,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de Historia y Geografía y/o ciencias histórico sociales y/o Ciencias Sociales y/o ciudadanía y cívica y/o bachiller en Historia y/o Ciencias Políticas",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29626"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29626"
       },
       {
         "cas_code": "CAS Nº 518",
@@ -9730,7 +9730,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de Historia y Geografía y/o ciencias histórico sociales y/o Ciencias Sociales y/o ciudadanía y cívica y/o bachiller en Historia y/o Ciencias Políticas",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29627"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29627"
       },
       {
         "cas_code": "CAS Nº 519",
@@ -9738,7 +9738,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de lengua y literatura y/o comunicación y/o bachiller en humanidades y/o letras con mención en lingüística y/o literatura y/o lenguas hispanas; literatura y lingüística y/o filología española y/o teoría del texto y/o comprensión y producción textual y/o didáctica de la comprensión y producción textual y/o didáctica de lengua y literatura",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29628"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29628"
       },
       {
         "cas_code": "CAS Nº 520",
@@ -9746,7 +9746,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de lengua y literatura y/o comunicación y/o bachiller en humanidades y/o letras con mención en lingüística y/o literatura y/o lenguas hispanas; literatura y lingüística y/o filología española y/o teoría del texto y/o comprensión y producción textual y/o didáctica de la comprensión y producción textual y/o didáctica de lengua y literatura",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29629"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29629"
       },
       {
         "cas_code": "CAS Nº 521",
@@ -9754,7 +9754,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de lengua y literatura y/o comunicación y/o bachiller en humanidades y/o letras con mención en lingüística y/o literatura y/o lenguas hispanas; literatura y lingüística y/o filología española y/o teoría del texto y/o comprensión y producción textual y/o didáctica de la comprensión y producción textual y/o didáctica de lengua y literatura",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29630"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29630"
       },
       {
         "cas_code": "CAS Nº 522",
@@ -9762,7 +9762,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria con mención en religión y/o Ciencias Sociales y/o Historia y/o Historia y Geografía y/o ciudadanía y cívica y/o Ciencias Naturales y/o Biología",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29631"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29631"
       },
       {
         "cas_code": "CAS Nº 523",
@@ -9770,7 +9770,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en carrera técnica o profesional o programa de enseñanza en la especialidad de inglés o Traducción o interpretación y/o Turismo y/o Educación",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29632"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29632"
       },
       {
         "cas_code": "CAS Nº 524",
@@ -9778,7 +9778,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en carrera técnica o profesional o programa de enseñanza en la especialidad de inglés o Traducción o interpretación y/o Turismo y/o Educación",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29633"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29633"
       },
       {
         "cas_code": "CAS Nº 525",
@@ -9786,7 +9786,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Educación (superior pedagógico) y/o técnica superior en Enfermería, y/o título universitario en Educación y/o Enfermería, y/o bachiller Psicología y/o Trabajo Social y/o Obstetricia",
         "experience": "2 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29634"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29634"
       },
       {
         "cas_code": "CAS Nº 526",
@@ -9794,7 +9794,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Educación (superior pedagógico) y/o técnica superior en Enfermería, y/o título universitario en Educación y/o Enfermería, y/o bachiller Psicología y/o Trabajo Social y/o Obstetricia",
         "experience": "2 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29635"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29635"
       },
       {
         "cas_code": "CAS Nº 527",
@@ -9802,7 +9802,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Computación e Informática y/o universitario titulado en Ingeniería de Sistemas y/o Informática y/o Computación y/o sistemas",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29636"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29636"
       },
       {
         "cas_code": "CAS Nº 528",
@@ -9810,7 +9810,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Administración y/o Contabilidad y/o asistente de gerencia y/o Secretariado",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29638"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29638"
       },
       {
         "cas_code": "CAS Nº 529",
@@ -9818,7 +9818,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29639"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29639"
       },
       {
         "cas_code": "CAS Nº 530",
@@ -9826,7 +9826,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29640"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29640"
       },
       {
         "cas_code": "CAS Nº 531",
@@ -9834,7 +9834,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en técnico en laboratorio y/o bachiller en Biología y/o Química y/o Farmacia y/o ciencia, tecnología y ambiente",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29641"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29641"
       },
       {
         "cas_code": "CAS Nº 532",
@@ -9842,7 +9842,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en archivística y gestión documental; Archivos; BibliotEcología y Ciencias de la Información; Educación secundaria",
         "experience": "4 años",
         "salary": "S/. 4000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29642"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29642"
       },
       {
         "cas_code": "CAS Nº 533",
@@ -9850,7 +9850,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en BibliotEcología y Ciencias de la Información; Educación secundaria",
         "experience": "3 años",
         "salary": "S/. 4000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29643"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29643"
       },
       {
         "cas_code": "CAS Nº 534",
@@ -9858,7 +9858,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación religiosa/Ciencias Sociales",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29644"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29644"
       },
       {
         "cas_code": "CAS Nº 535",
@@ -9866,7 +9866,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación religiosa/Ciencias Sociales",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29645"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29645"
       },
       {
         "cas_code": "CAS Nº 536",
@@ -9874,7 +9874,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en las especialidades de ciencia, tecnología y ambiente y/o Biología y Química y/o Ciencias Naturales y/o bachiller en Biología y/o Química",
         "experience": "3 años",
         "salary": "S/. 4499",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29646"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29646"
       },
       {
         "cas_code": "CAS Nº 537",
@@ -9882,7 +9882,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en la especialidad en lengua y literatura, comunicación y/o bachiller en lingüística y/o literatura",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29647"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29647"
       },
       {
         "cas_code": "CAS Nº 538",
@@ -9890,7 +9890,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de religión y/o Ciencias Sociales y/o Historia y Geografía",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29648"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29648"
       },
       {
         "cas_code": "CAS Nº 539",
@@ -9898,7 +9898,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en la especialidad de Ciencias Sociales",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29649"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29649"
       },
       {
         "cas_code": "CAS Nº 540",
@@ -9906,7 +9906,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación Artística",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29650"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29650"
       },
       {
         "cas_code": "CAS Nº 541",
@@ -9914,7 +9914,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación con especialidad en Física y/o bachiller en Física pura y/o Ingeniería Electrónica y/o Ingeniería Mecánica y/o Ingeniería Civil",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29651"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29651"
       },
       {
         "cas_code": "CAS Nº 542",
@@ -9922,7 +9922,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de Historia y Geografía y/o ciencias histórico sociales y/o Ciencias Sociales y/o bachiller en Historia",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29652"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29652"
       },
       {
         "cas_code": "CAS Nº 543",
@@ -9930,7 +9930,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en la especialidad de ciencias históricas sociales o Historia y Geografía",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29653"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29653"
       },
       {
         "cas_code": "CAS Nº 544",
@@ -9938,7 +9938,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en la especialidad de ciencias históricas sociales o Historia y Geografía",
         "experience": "4 años",
         "salary": "S/. 4499",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29654"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29654"
       },
       {
         "cas_code": "CAS Nº 545",
@@ -9946,7 +9946,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "carrera técnica o profesional o programa de enseñanza en la especialidad de inglés o Traducción o interpretación y/o Educación con mención/especialización en inglés",
         "experience": "03 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29655"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29655"
       },
       {
         "cas_code": "CAS Nº 546",
@@ -9954,7 +9954,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación en la especialidad de matemática y/o profesor de matemática",
         "experience": "6 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29656"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29656"
       },
       {
         "cas_code": "CAS Nº 547",
@@ -9962,7 +9962,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria en la especialidad de Historia y Geografía y/o ciencias histórico sociales y/o Ciencias Sociales y/o bachiller en Historia",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29658"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29658"
       },
       {
         "cas_code": "CAS Nº 548",
@@ -9970,7 +9970,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación con mención en Música y/o Educación Artística con mención en Música y/o bachiller en Música",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29659"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29659"
       },
       {
         "cas_code": "CAS Nº 549",
@@ -9978,7 +9978,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en ed. - Secundaria con mención en ciencias histórico sociales y/o Ciencias Sociales, y/o comunicación y/o literatura y/o Biología y/o bachiller en Antropología o lingüística o Filosofía",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29660"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29660"
       },
       {
         "cas_code": "CAS Nº 550",
@@ -9986,7 +9986,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria con mención en ciencias histórico sociales y/o Ciencias Sociales, y/o comunicación y/o literatura y/o Biología y/o bachiller en Antropología o lingüística o filosofía",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29661"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29661"
       },
       {
         "cas_code": "CAS Nº 551",
@@ -9994,7 +9994,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación y/o Filosofía y/o Antropología y/o Historia",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29662"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29662"
       },
       {
         "cas_code": "CAS Nº 552",
@@ -10002,7 +10002,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en técnico superior en Enfermería, y/o Educación (superior pedagógico); y /o título universitario en Educación y/o Enfermería",
         "experience": "1 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29663"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29663"
       },
       {
         "cas_code": "CAS Nº 553",
@@ -10010,7 +10010,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera técnica en técnico superior en Enfermería, y/o Educación (superior pedagógico); y /o egresado universitario en Educación y/o Enfermería y/o Trabajo Social y/o Psicología",
         "experience": "3 años",
         "salary": "S/. 2500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29664"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29664"
       },
       {
         "cas_code": "CAS Nº 554",
@@ -10018,7 +10018,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Psicología",
         "experience": "4 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29665"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29665"
       },
       {
         "cas_code": "CAS Nº 555",
@@ -10026,7 +10026,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado de carrera técnica en Computación e Informática y/o universitario titulado en Ingeniería de Sistemas y/o Informática y/o Computación y/o sistemas",
         "experience": "3 años",
         "salary": "S/. 3000",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29666"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29666"
       },
       {
         "cas_code": "CAS Nº 556",
@@ -10034,7 +10034,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en Educación secundaria bilingüe",
         "experience": "3 años",
         "salary": "S/. 4500",
-        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29667"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29667"
       }
     ]
   },
