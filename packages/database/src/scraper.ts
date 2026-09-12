@@ -88,7 +88,7 @@ export async function scrapeWithFirecrawlAI(targetUrl: string, promptText?: stri
       return null;
     }
 
-    const data = await response.json();
+    const data: any = await response.json();
     console.log('✅ [Firecrawl AI] Extracción exitosa:', data?.data?.extract?.jobs?.length || 0, 'ofertas');
     return data?.data?.extract || null;
   } catch (err) {
@@ -128,7 +128,7 @@ export async function scrapeWithBrowserbaseCloud(targetUrl: string): Promise<str
       return null;
     }
 
-    const session = await response.json();
+    const session: any = await response.json();
     console.log(`✅ [Browserbase Cloud] Sesión creada con éxito: ${session.id}`);
 
     const pageContentRes = await fetch(`https://www.browserbase.com/v1/sessions/${session.id}/content`, {
@@ -188,7 +188,7 @@ export async function scrapeSunatJobs(): Promise<JobPosting[]> {
     const res = await fetch('https://unete.sunat.gob.pe/', {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
       next: { revalidate: 3600 }
-    });
+    } as any);
     if (!res.ok) return [];
     const html = await res.text();
     const casMatches = html.match(/CAS\s*N[°º]?\s*\d+[-\s]*\d+/gi) || [];
@@ -414,7 +414,7 @@ async function refreshLiveFeedInBackground(): Promise<void> {
           signal: AbortSignal.timeout(10000)
         });
         if (!res.ok) continue;
-        const data = await res.json();
+        const data: any = await res.json();
         const entries = data.feed?.entry || [];
         for (const entry of entries) {
           const link = entry.link?.find((l: any) => l.rel === 'alternate')?.href;
@@ -928,6 +928,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
     if (plazasToFetch.length > 0) {
       await Promise.all(plazasToFetch.map(async (p) => {
         try {
+          if (!p.bases_url) return;
           const opRes = await fetch(p.bases_url, { headers, signal: AbortSignal.timeout(5000) });
           if (!opRes.ok) return;
           const opHtml = await opRes.text();

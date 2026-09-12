@@ -605,7 +605,7 @@ export async function fetchScreenshotFromUrl(siteUrl: string): Promise<Screensho
     try {
       const endpoint = `https://api.microlink.io/?url=${encodeURIComponent(trimmed)}&screenshot=true&meta=false&viewport.width=1280&viewport.height=800&waitUntil=${waitUntil}`;
       const res = await fetch(endpoint);
-      const json = await res.json().catch(() => null);
+      const json: any = await res.json().catch(() => null);
 
       if (res.status === 429) {
         console.error('Microlink: límite de 50 capturas/día alcanzado.', json);
@@ -617,13 +617,13 @@ export async function fetchScreenshotFromUrl(siteUrl: string): Promise<Screensho
         lastError = `Microlink respondió ${res.status}: ${reason}`;
         continue; // probar la siguiente estrategia
       }
-      if (json?.status !== 'success' || !json.data?.screenshot?.url) {
+      if (json?.status !== 'success' || !json?.data?.screenshot?.url) {
         const reason = json?.message || 'respuesta inesperada de Microlink';
         console.error(`Microlink: no se pudo generar el screenshot (waitUntil=${waitUntil})`, json);
         lastError = `No se pudo generar la captura: ${reason}`;
         continue;
       }
-      return { url: json.data.screenshot.url as string };
+      return { url: json?.data?.screenshot?.url as string };
     } catch (err) {
       console.error(`Error fetching screenshot (waitUntil=${waitUntil}):`, err);
       lastError = `Error de red al contactar Microlink: ${err instanceof Error ? err.message : String(err)}`;
@@ -708,13 +708,13 @@ export async function fetchGithubAutofillData(repoFullName: string): Promise<Git
       return null;
     }
 
-    const repoData = await repoRes.json();
+    const repoData: any = await repoRes.json();
     const isPrivate = !!repoData.private;
 
     // Lenguajes ordenados de mayor a menor % de código (top 4 como stack sugerido)
     let stack: string[] = [];
     if (langRes.ok) {
-      const langBytes: Record<string, number> = await langRes.json();
+      const langBytes = (await langRes.json()) as Record<string, number>;
       stack = Object.entries(langBytes)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 4)
@@ -723,7 +723,7 @@ export async function fetchGithubAutofillData(repoFullName: string): Promise<Git
       stack = [repoData.language];
     }
 
-    const topics: string[] = topicsRes.ok ? (await topicsRes.json()).names ?? [] : [];
+    const topics: string[] = topicsRes.ok ? ((await topicsRes.json()) as any).names ?? [] : [];
 
     return {
       title: repoNameToTitle(repoData.name),
@@ -761,7 +761,7 @@ export async function fetchGithubRepoData(repoFullName: string): Promise<GithubR
       }
       return null;
     }
-    const data = await res.json();
+    const data: any = await res.json();
     const isPrivate = !!data.private;
     return {
       stars: data.stargazers_count ?? 0,

@@ -291,6 +291,7 @@ export async function getOrganizations(): Promise<OrganizationItem[]> {
   const orgsMap = new Map<string, {
     name: string;
     shortName: string;
+    slug: string;
     logo?: string;
     category: OrganizationCategory;
     officialUrl?: string;
@@ -316,18 +317,27 @@ export async function getOrganizations(): Promise<OrganizationItem[]> {
     else if (upperName.includes('JNE')) canonicalKey = 'JURADO NACIONAL DE ELECCIONES - JNE';
     else if (upperName.includes('UNAJMA')) canonicalKey = 'UNIVERSIDAD NACIONAL JOSÉ MARÍA ARGUEDAS - UNAJMA';
     else if (upperName === 'PODER JUDICIAL' || upperName.startsWith('PODER JUDICIAL')) canonicalKey = 'PODER JUDICIAL';
+    else if (upperName.includes('SUTRAN')) canonicalKey = 'SUPERINTENDENCIA DE TRANSPORTE TERRESTRE DE PERSONAS, CARGA Y MERCANCÍAS - SUTRAN';
+    else if (upperName.includes('SUNARP')) canonicalKey = 'SUPERINTENDENCIA NACIONAL DE LOS REGISTROS PÚBLICOS - SUNARP';
+    else if (upperName.includes('SUNAFIL')) canonicalKey = 'SUPERINTENDENCIA NACIONAL DE FISCALIZACIÓN LABORAL - SUNAFIL';
+    else if (upperName.includes('INDECOPI')) canonicalKey = 'INSTITUTO NACIONAL DE DEFENSA DE LA COMPETENCIA Y DE LA PROTECCIÓN DE LA PROPIEDAD INTELECTUAL - INDECOPI';
+    else if (upperName.includes('OSINFOR')) canonicalKey = 'ORGANISMO DE SUPERVISIÓN DE LOS RECURSOS FORESTALES Y DE FAUNA SILVESTRE - OSINFOR';
+    else if (upperName.includes('RENIEC')) canonicalKey = 'REGISTRO NACIONAL DE IDENTIFICACIÓN Y ESTADO CIVIL - RENIEC';
 
-    const existing = orgsMap.get(canonicalKey);
     const meta = KNOWN_ORGANIZATIONS_METADATA[canonicalKey] || KNOWN_ORGANIZATIONS_METADATA[rawName];
+    const shortName = meta?.shortName || inferShortName(canonicalKey);
+    const category = meta?.category || inferCategory(canonicalKey.toUpperCase());
+    const slug = makeSlug(shortName ? `${shortName}-${canonicalKey}` : canonicalKey);
+
+    const existing = orgsMap.get(slug);
 
     if (!existing) {
-      const shortName = meta?.shortName || inferShortName(canonicalKey);
-      const category = meta?.category || inferCategory(canonicalKey.toUpperCase());
       const logo = meta?.logo || job.entity_logo;
 
-      orgsMap.set(canonicalKey, {
+      orgsMap.set(slug, {
         name: canonicalKey,
         shortName,
+        slug,
         logo,
         category,
         officialUrl: meta?.officialUrl || job.apply_url,
@@ -335,7 +345,7 @@ export async function getOrganizations(): Promise<OrganizationItem[]> {
         vacanciesCount: job.vacancies_count || 1,
         regions: new Set(job.region ? [job.region] : []),
         sectors: new Set(job.sector_type ? [job.sector_type] : []),
-        featured: !!job.featured || ['ONPE', 'INEI', 'JNE', 'ESSALUD', 'SUNAT', 'MINEDU', 'PODER JUDICIAL', 'FISCALÍA'].includes(shortName)
+        featured: !!job.featured || ['ONPE', 'INEI', 'JNE', 'ESSALUD', 'SUNAT', 'MINEDU', 'PODER JUDICIAL', 'FISCALÍA', 'SUTRAN'].includes(shortName)
       });
     } else {
       existing.jobCount++;
@@ -348,12 +358,11 @@ export async function getOrganizations(): Promise<OrganizationItem[]> {
   }
 
   const items: OrganizationItem[] = Array.from(orgsMap.values()).map(o => {
-    const slug = makeSlug(o.shortName ? `${o.shortName}-${o.name}` : o.name);
     return {
-      id: `org-${slug}`,
+      id: `org-${o.slug}`,
       name: o.name,
       shortName: o.shortName,
-      slug,
+      slug: o.slug,
       category: o.category,
       logo: o.logo,
       jobCount: o.jobCount,

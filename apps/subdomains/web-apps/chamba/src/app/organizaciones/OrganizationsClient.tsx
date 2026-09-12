@@ -164,13 +164,13 @@ export default function OrganizationsClient({ initialOrganizations }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {visibleOrgs.map((org) => {
+          {visibleOrgs.map((org, idx) => {
             const queryTarget = org.shortName || org.name;
             const searchUrl = `/empleos?q=${encodeURIComponent(queryTarget)}`;
 
             return (
               <div
-                key={org.id}
+                key={`${org.id}-${idx}`}
                 className="group relative rounded-2xl bg-gradient-to-b from-slate-900/80 to-slate-950/90 border border-white/10 p-5 hover:border-emerald-500/40 hover:shadow-[0_10px_30px_rgba(16,185,129,0.1)] transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-3.5">
