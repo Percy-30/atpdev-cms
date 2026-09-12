@@ -1996,11 +1996,11 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS Decreto Legislativo 1057.",
       "Seguro médico de ley y capacitaciones certificadas por el MINEDU."
     ],
-    apply_url: "https://postulacioncas.minedu.gob.pe/",
-    bases_pdf_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682",
+    apply_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/",
+    bases_pdf_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29695",
     official_portal_name: "Sistema Oficial de Convocatorias CAS - MINEDU",
     start_date: "2026-08-26",
-    end_date: "2026-09-12",
+    end_date: "2026-09-18",
     featured: true,
     views_count: 5210,
     clicks_count: 2130,
@@ -2008,22 +2008,49 @@ export const INITIAL_JOBS: JobPosting[] = [
     created_at: "2026-08-26T08:00:00Z",
     plazas: [
       {
-        cas_code: "CAS Nº 084-2026",
-        title: "(180) Especialistas en Monitoreo Pedagógico para DRE y UGEL",
-        education: "Título Profesional Universitario en Educación, Psicología o Sociología.",
-        experience: "Experiencia mínima de 3 años en gestión educativa o docencia.",
-        salary: "S/. 5,500 Soles",
-        vacancies: 180,
-        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29682"
+        cas_code: "CAS Nº 0034-2026-MINEDU/U.E. 116",
+        title: "Monitor Local de Nutrición y Gestión Pedagógica (DEBEDSAR)",
+        education: "Título Profesional Universitario en Nutrición, Educación, Psicología o Ciencias Sociales.",
+        experience: "Experiencia mínima de 3 años en gestión educativa o programas del sector educación.",
+        salary: "S/. 5,000 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29695"
       },
       {
-        cas_code: "CAS Nº 085-2026",
-        title: "(132) Gestores Territoriales de Acompañamiento y Articulación",
-        education: "Título Profesional en Ciencias Sociales, Administración o Educación.",
-        experience: "Mínimo 3 años en el sector público o coordinación territorial.",
-        salary: "S/. 6,500 Soles",
-        vacancies: 132,
-        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Home/Convocatoria/29618"
+        cas_code: "CAS Nº 0570-2026-MINEDU/U.E. 026",
+        title: "Director/a General para Colegio de Alto Rendimiento (COAR) La Libertad",
+        education: "Título Profesional Universitario en Educación, Administración o carreras afines.",
+        experience: "Experiencia directiva mínima de 3 años en gestión institucional o pedagógica.",
+        salary: "S/. 7,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29690"
+      },
+      {
+        cas_code: "CAS Nº 0574-2026-MINEDU/U.E. 026",
+        title: "Docente de Historia y Geografía para Colegio de Alto Rendimiento (COAR) Piura",
+        education: "Licenciado en Educación con especialidad en Ciencias Sociales / Historia.",
+        experience: "Experiencia docente mínima de 2 años en nivel secundario o bachillerato.",
+        salary: "S/. 4,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29694"
+      },
+      {
+        cas_code: "CAS Nº 0571-2026-MINEDU/U.E. 026",
+        title: "Docente de Matemática y Física para Colegio de Alto Rendimiento (COAR) Puno",
+        education: "Licenciado en Educación con especialidad en Matemática o Física.",
+        experience: "Experiencia docente mínima de 2 años en educación secundaria.",
+        salary: "S/. 4,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29691"
+      },
+      {
+        cas_code: "CAS Nº 0575-2026-MINEDU/U.E. 026",
+        title: "Auxiliar de Laboratorio para Colegio de Alto Rendimiento (COAR) Áncash",
+        education: "Titulado de Carrera Técnica en Laboratorio, Biología, Química o afines.",
+        experience: "Experiencia mínima de 2 años en soporte técnico de laboratorio escolar.",
+        salary: "S/. 2,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29696"
       }
     ]
   },
@@ -2376,7 +2403,7 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
   if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
   if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://postulacion.minsa.gob.pe/';
-  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/';
+  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
   if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
   if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
   if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://cloud.juntos.gob.pe/convocatoria/';
