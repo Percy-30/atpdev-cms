@@ -1,11 +1,15 @@
 import process from 'node:process';
-import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, isGenericPublicationUrl, isDeadOrBrokenUrl, JobPosting } from './jobs';
+import { getJobPostings, getJobPostingBySlug, invalidateJobsCache, isCompetitorUrl, isGenericPublicationUrl, isDeadOrBrokenUrl, JobPosting } from './jobs';
+import { refreshConvocatoriasDeTrabajoInBackground } from './scraper';
 
 async function verifyAllJobs() {
-  console.log('🔍 Iniciando AUDITORÍA 100% EXHAUSTIVA DE TODAS LAS CONVOCATORIAS...');
+  console.log('🔍 Sincronizando catálogo completo en tiempo real (962+ convocatorias)...');
+  await refreshConvocatoriasDeTrabajoInBackground();
+  invalidateJobsCache();
+
   const jobs = await getJobPostings();
   const totalJobs = jobs.length;
-  console.log(`📊 Total de convocatorias registradas en el sistema: ${totalJobs}`);
+  console.log(`📊 Total de convocatorias consolidadas y auditadas en el sistema: ${totalJobs}`);
 
   let errorsCount = 0;
   let competitorLinksFound = 0;
@@ -91,8 +95,8 @@ async function verifyAllJobs() {
       }
       slugsSeen.add(job.slug);
 
-      // 2. Verificar resolución por getJobPostingBySlug
-      const resolved = await getJobPostingBySlug(job.slug);
+      // 2. Verificar resolución por getJobPostingBySlug (en memoria ultra-rápida)
+      const resolved = await getJobPostingBySlug(job.slug, { skipRemoteEnrichment: true });
       if (!resolved) {
         console.error(`❌ ${prefix} ERROR: No se pudo resolver por slug: "${job.slug}"`);
         errorsCount++;

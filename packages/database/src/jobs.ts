@@ -2783,13 +2783,16 @@ export async function getJobPostings(): Promise<JobPosting[]> {
   return results;
 }
 
-export async function getJobPostingBySlug(slug: string): Promise<JobPosting | null> {
+export async function getJobPostingBySlug(
+  slug: string,
+  options?: { skipRemoteEnrichment?: boolean }
+): Promise<JobPosting | null> {
   const normSlug = slug.toLowerCase().trim();
 
   const maybeEnrichJob = async (job: JobPosting | null): Promise<JobPosting | null> => {
     if (!job) return null;
     const cdUrl = job.scrape_source_url || (job.fuente_url && job.fuente_url.includes('convocatoriasdetrabajo.com') ? job.fuente_url : undefined);
-    if (cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && (!job.plazas || job.plazas.length <= 1)) {
+    if (!options?.skipRemoteEnrichment && cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && (!job.plazas || job.plazas.length <= 1)) {
       try {
         const enriched = await extractPlazasAndBasesFromCdUrl(cdUrl);
         if (enriched.plazas && enriched.plazas.length > 0) {
