@@ -60,6 +60,7 @@ export * from './aiModels';
 export * from './analytics';
 export * from './jobs';
 export * from './scraper';
+export * from './organizations';
 export type SiteConfig = {
   id: number;
   // Hero

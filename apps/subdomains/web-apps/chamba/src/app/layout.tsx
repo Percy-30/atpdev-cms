@@ -12,7 +12,7 @@ import Script from "next/script";
 import { 
   Briefcase, ShieldCheck, Search, PlusCircle, Globe, Award, 
   Calculator, FileText, HelpCircle, Bot, FileSpreadsheet, Scale,
-  Mail, ExternalLink, Lock
+  Mail, ExternalLink, Lock, Building2
 } from "lucide-react";
 import { MobileNavMenu } from "@/components/MobileNavMenu";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
@@ -39,24 +39,24 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://empleos.atpdev.dev"),
-  title: "chamba pro — Agregador de Convocatorias de Trabajo y Empleos Perú 2026",
-  description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
+  title: {
+    default: "chamba pro — Buscador de Empleos y Convocatorias de Trabajo Perú",
+    template: "%s | chamba pro",
+  },
+  description:
+    "El buscador de convocatorias CAS 1057, D.L. 728, 276 y sector privado en Perú. Revisa bases oficiales, requisitos, salarios y postula directamente en portales institucionales del Estado.",
   keywords: [
-    "chamba peru",
-    "busco chamba",
-    "convocatorias de trabajo peru",
-    "convocatorias cas 2026",
-    "convocatorias cas 1057",
-    "trabajo peru 2026",
-    "chamba cas",
-    "chamba lima",
+    "convocatorias de trabajo",
     "empleos peru",
-    "portal trabajo peru",
-    "chamba sunat",
-    "chamba minedu",
-    "chamba bcrp",
-    "chamba essalud",
-    "chamba poder judicial",
+    "trabajo en el estado",
+    "convocatorias cas 2026",
+    "portal de empleo peru",
+    "servir convocatorias",
+    "sunat empleos",
+    "minedu convocatorias",
+    "essalud convocatorias",
+    "empleos lima",
+    "trabajo remoto peru",
     "ofertas laborales peru",
     "chamba pro"
   ],
@@ -172,6 +172,10 @@ export default function RootLayout({
                 <Search size={14} className="text-emerald-400" />
                 <span>Buscador</span>
               </Link>
+              <Link href="/organizaciones" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
+                <Building2 size={14} className="text-emerald-400" />
+                <span>Organizaciones</span>
+              </Link>
               <Link href="/calculadora-sueldo" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
                 <Calculator size={14} className="text-emerald-400" />
                 <span>Calculadora Sueldo</span>
@@ -195,10 +199,18 @@ export default function RootLayout({
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
+              <Link
+                href="/publicar-empleo"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-slate-200 hover:text-emerald-400 transition-all"
+              >
+                <PlusCircle size={14} className="text-emerald-400" />
+                <span>Publicar</span>
+              </Link>
+
               <Link
                 href="/empleos"
-                className="relative group overflow-hidden px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-950 font-display transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="relative group overflow-hidden px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-950 font-display transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>Explorar Vacantes</span>
               </Link>
@@ -273,6 +285,18 @@ export default function RootLayout({
                   <li>
                     <Link href="/preguntas-entrevista-cas" className="hover:text-emerald-400 transition-colors">
                       Preguntas de Examen CAS
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/organizaciones" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <Building2 size={12} className="text-emerald-400" />
+                      <span>Directorio de Entidades del Estado</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/publicar-empleo" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <PlusCircle size={12} className="text-emerald-400" />
+                      <span>Publicar Convocatoria (RRHH)</span>
                     </Link>
                   </li>
                 </ul>

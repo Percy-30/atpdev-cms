@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail } from 'lucide-react';
+import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2 } from 'lucide-react';
 
 export function MobileNavMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,6 +63,24 @@ export function MobileNavMenu() {
             >
               <Search size={18} className="text-emerald-400" />
               <span>Buscar Convocatorias</span>
+            </Link>
+
+            <Link
+              href="/organizaciones"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 p-3 rounded-2xl bg-slate-900/60 border border-white/5 hover:border-emerald-500/30 text-slate-200 hover:text-emerald-400 transition-colors"
+            >
+              <Building2 size={18} className="text-emerald-400" />
+              <span>Entidades del Estado</span>
+            </Link>
+
+            <Link
+              href="/publicar-empleo"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 hover:border-emerald-500/40 text-emerald-300 hover:text-emerald-200 transition-colors"
+            >
+              <PlusCircle size={18} className="text-emerald-400" />
+              <span>Publicar Convocatoria</span>
             </Link>
 
             <Link

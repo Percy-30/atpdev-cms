@@ -18,7 +18,10 @@ const nextConfig = {
       { source: '/generar-cv', destination: '/crear-cv-cas', permanent: true },
       { source: '/cv', destination: '/crear-cv-cas', permanent: true },
       { source: '/convocatorias', destination: '/empleos', permanent: true },
-      { source: '/organizaciones', destination: '/empleos', permanent: false }
+      { source: '/instituciones', destination: '/organizaciones', permanent: true },
+      { source: '/entidades', destination: '/organizaciones', permanent: true },
+      { source: '/publicar-oferta', destination: '/publicar-empleo', permanent: true },
+      { source: '/publicar', destination: '/publicar-empleo', permanent: true }
     ];
   }
 };
