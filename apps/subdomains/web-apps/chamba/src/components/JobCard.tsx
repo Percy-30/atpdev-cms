@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { JobPosting, isCompetitorUrl, sanitizeOfficialUrl } from "@atpdev/database";
-import { ShieldCheck, MapPin, ExternalLink, Users, GraduationCap, ArrowRight, FileText } from "lucide-react";
+import { JobPosting } from "@atpdev/database";
+import { ShieldCheck, MapPin, Users, GraduationCap, ArrowRight } from "lucide-react";
 import { EntityLogo } from "@/components/EntityLogo";
 import { JobCountdownClock } from "@/components/JobCountdownClock";
 
@@ -9,7 +9,6 @@ interface JobCardProps {
 }
 
 export function JobCard({ job }: JobCardProps) {
-
   return (
     <div className="glass-card glass-card-hover p-6 rounded-3xl flex flex-col justify-between gap-5 relative group overflow-hidden border border-white/10 hover:border-emerald-500/50 transition-all bg-gradient-to-b from-slate-900/95 via-[#0c1424] to-[#070b14] shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_45px_-10px_rgba(16,185,129,0.25)]">
       {/* Top Ambient Glow Line */}
@@ -80,6 +79,11 @@ export function JobCard({ job }: JobCardProps) {
             <Users size={13} className="text-slate-400" />
             <span>{job.vacancies_count} vacante{job.vacancies_count > 1 ? 's' : ''}</span>
           </span>
+          {job.plazas && job.plazas.length > 1 && (
+            <span className="px-2.5 py-1 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 font-bold flex items-center gap-1">
+              <span>{job.plazas.length} plazas</span>
+            </span>
+          )}
           <span className="px-2.5 py-1 rounded-xl bg-slate-900/90 border border-white/10 text-slate-300 flex items-center gap-1.5">
             <GraduationCap size={13} className="text-slate-400" />
             <span>{job.education_level}</span>
@@ -87,68 +91,20 @@ export function JobCard({ job }: JobCardProps) {
         </div>
       </div>
 
-      {/* Footer Row with countdown and two clear CTAs */}
-      <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+      {/* Footer Row with countdown and single clear Details CTA */}
+      <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3 text-xs">
         {/* Dynamic Countdown Clock (Green, Orange, Red, Blue) */}
         <JobCountdownClock endDate={job.end_date} size="sm" />
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2">
-          <Link
-            href={`/empleos/${job.slug}`}
-            className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold font-display transition-all flex items-center justify-center gap-1.5 border border-white/10 shadow-sm"
-            aria-label={`Ver detalles y requisitos de ${job.title}`}
-          >
-            <span>Detalles</span>
-            <ArrowRight size={13} />
-          </Link>
-          {(() => {
-            const candidateUrl = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url))
-              ? job.bases_pdf_url
-              : (job.apply_url || job.resultados_url);
-
-            const targetApplyUrl = sanitizeOfficialUrl(
-              candidateUrl,
-              job.apply_url || job.bases_pdf_url,
-              job.entity_name,
-              job.sector_type
-            );
-            const isExternal = targetApplyUrl.startsWith('http');
-            const lowTarget = targetApplyUrl.toLowerCase();
-            const isDoc = (
-              lowTarget.includes('.pdf') ||
-              lowTarget.includes('drive.google.com') ||
-              lowTarget.includes('docs.google.com') ||
-              lowTarget.includes('archivos.mpfn.gob.pe')
-            );
-
-            return isExternal ? (
-              <a
-                href={targetApplyUrl}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold font-display transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] group/btn"
-                aria-label={isDoc ? `Abrir bases oficiales en PDF de ${job.entity_name}` : `Postular directamente en la web oficial de ${job.entity_name}`}
-              >
-                <span>{isDoc ? 'Bases (PDF)' : 'Postular'}</span>
-                {isDoc ? (
-                  <FileText size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                ) : (
-                  <ExternalLink size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                )}
-              </a>
-            ) : (
-              <Link
-                href={targetApplyUrl}
-                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold font-display transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] group/btn"
-                aria-label={`Ver convocatoria oficial de ${job.entity_name}`}
-              >
-                <span>Ver Bases</span>
-                <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
-              </Link>
-            );
-          })()}
-        </div>
+        {/* Ver Detalles CTA */}
+        <Link
+          href={`/empleos/${job.slug}`}
+          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500/15 via-teal-500/20 to-emerald-500/15 hover:from-emerald-400 hover:via-teal-400 hover:to-emerald-400 text-emerald-300 hover:text-slate-950 font-bold font-display transition-all duration-200 flex items-center justify-center gap-1.5 border border-emerald-500/30 hover:border-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.15)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] group/btn cursor-pointer"
+          aria-label={`Ver detalles, bases y requisitos de ${job.title}`}
+        >
+          <span>Ver Detalles</span>
+          <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
+        </Link>
       </div>
     </div>
   );
