@@ -183,6 +183,12 @@ export default async function JobDetailPage({
     cleanApplyUrl = 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
   }
 
+  const hasMultiplePlazas = Boolean(job.plazas && job.plazas.length > 1);
+  const distinctPlazaBases = hasMultiplePlazas
+    ? Array.from(new Set(job.plazas!.map(p => p.bases_url).filter(Boolean)))
+    : [];
+  const hasDistinctPlazaBases = distinctPlazaBases.length > 1;
+
   const isSameAction = cleanBasesUrl === cleanApplyUrl;
 
   return (
@@ -299,16 +305,22 @@ export default async function JobDetailPage({
               {cleanBasesUrl && isBasesDoc && (
                 <a
                   href={
-                    cleanBasesUrl.includes('drive.google.com/file/d/')
-                      ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
-                      : cleanBasesUrl
+                    hasDistinctPlazaBases
+                      ? '#plazas-convocadas'
+                      : cleanBasesUrl.includes('drive.google.com/file/d/')
+                        ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                        : cleanBasesUrl
                   }
-                  target="_blank"
-                  rel="nofollow noopener noreferrer"
+                  target={hasDistinctPlazaBases ? undefined : '_blank'}
+                  rel={hasDistinctPlazaBases ? undefined : 'nofollow noopener noreferrer'}
                   className="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.55)] flex items-center gap-2 cursor-pointer group"
                 >
                   <FileText size={16} />
-                  <span>Bases Oficiales (PDF)</span>
+                  <span>
+                    {hasDistinctPlazaBases
+                      ? `Ver Plazas y Descargar Bases (${job.plazas!.length} Puestos)`
+                      : 'Bases Oficiales (PDF)'}
+                  </span>
                   <ExternalLink size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               )}
@@ -425,16 +437,18 @@ export default async function JobDetailPage({
               entityName={job.entity_name}
               defaultApplyUrl={job.apply_url}
               globalBasesPdfUrl={
-                (job.bases_pdf_url && (
-                  job.bases_pdf_url.toLowerCase().includes('.pdf') ||
-                  job.bases_pdf_url.toLowerCase().includes('drive.google.com') ||
-                  job.bases_pdf_url.toLowerCase().includes('docs.google.com')
-                )) ? job.bases_pdf_url : (
-                  job.plazas?.find(p => p.bases_url && (
-                    p.bases_url.toLowerCase().includes('.pdf') ||
-                    p.bases_url.toLowerCase().includes('drive.google.com') ||
-                    p.bases_url.toLowerCase().includes('docs.google.com')
-                  ))?.bases_url || job.bases_pdf_url
+                hasDistinctPlazaBases ? undefined : (
+                  (job.bases_pdf_url && (
+                    job.bases_pdf_url.toLowerCase().includes('.pdf') ||
+                    job.bases_pdf_url.toLowerCase().includes('drive.google.com') ||
+                    job.bases_pdf_url.toLowerCase().includes('docs.google.com')
+                  )) ? job.bases_pdf_url : (
+                    job.plazas?.find(p => p.bases_url && (
+                      p.bases_url.toLowerCase().includes('.pdf') ||
+                      p.bases_url.toLowerCase().includes('drive.google.com') ||
+                      p.bases_url.toLowerCase().includes('docs.google.com')
+                    ))?.bases_url || job.bases_pdf_url
+                  )
                 )
               }
               anexosUrl={job.anexos_url}
@@ -446,9 +460,16 @@ export default async function JobDetailPage({
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
                   <div className="flex items-center gap-2.5">
                     <FileText className="text-emerald-400" size={22} />
-                    <h2 className="text-xl font-bold font-display text-white">
-                      Documento Oficial de Bases del Concurso
-                    </h2>
+                    <div>
+                      <h2 className="text-xl font-bold font-display text-white">
+                        Documento Oficial de Bases {hasDistinctPlazaBases ? `- ${job.plazas![0].title}` : 'del Concurso'}
+                      </h2>
+                      {hasDistinctPlazaBases && (
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          Visualizando bases del puesto 1. Cada plaza de la lista superior dispone de su propia descarga oficial de bases y TDR en PDF.
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <a

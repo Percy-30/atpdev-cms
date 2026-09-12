@@ -2051,6 +2051,51 @@ export const INITIAL_JOBS: JobPosting[] = [
         salary: "S/. 2,500 Soles",
         vacancies: 1,
         bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29696"
+      },
+      {
+        cas_code: "CAS Nº 0569-2026-MINEDU/U.E. 026",
+        title: "Docente de Ciencias del Deporte, el Ejercicio y la Salud para COAR La Libertad",
+        education: "Licenciado en Educación Física, Ciencias del Deporte o carreras afines.",
+        experience: "Experiencia docente mínima de 2 años en el nivel secundario.",
+        salary: "S/. 4,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29689"
+      },
+      {
+        cas_code: "CAS Nº 0572-2026-MINEDU/U.E. 026",
+        title: "Docente para Coordinación de Investigación y Monografía COAR Puno",
+        education: "Licenciado en Educación, Humanidades, Ciencias o Filosofía.",
+        experience: "Experiencia mínima de 2 años en asesoría de monografías o metodología de investigación.",
+        salary: "S/. 4,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29692"
+      },
+      {
+        cas_code: "CAS Nº 0573-2026-MINEDU/U.E. 026",
+        title: "Docente de Aprendizaje Servicio y Valores para COAR Madre de Dios",
+        education: "Licenciado en Educación con especialidad en Ciencias Sociales o Humanidades.",
+        experience: "Experiencia docente mínima de 2 años en programas de formación de valores o tutoría.",
+        salary: "S/. 4,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29693"
+      },
+      {
+        cas_code: "CAS Nº 0568-2026-MINEDU/U.E. 026",
+        title: "Profesional Director de Bienestar y Desarrollo Estudiantil COAR Tumbes",
+        education: "Título Profesional Universitario en Psicología, Trabajo Social o Educación.",
+        experience: "Experiencia mínima de 3 años en programas de bienestar estudiantil o acompañamiento psicosocial.",
+        salary: "S/. 5,000 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29688"
+      },
+      {
+        cas_code: "CAS Nº 0567-2026-MINEDU/U.E. 026",
+        title: "Docente de Ciencias Sociales, Historia y Desarrollo Personal COAR Ica",
+        education: "Licenciado en Educación con especialidad en Ciencias Sociales o Historia y Geografía.",
+        experience: "Experiencia docente mínima de 2 años en educación básica regular.",
+        salary: "S/. 4,500 Soles",
+        vacancies: 1,
+        bases_url: "https://postulacioncas.minedu.gob.pe/PostulacionCas/Postulacion/Descargar_Bases?idReq=29687"
       }
     ]
   },

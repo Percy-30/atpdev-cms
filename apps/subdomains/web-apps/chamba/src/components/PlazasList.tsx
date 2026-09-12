@@ -31,7 +31,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
   if (!plazas || plazas.length === 0) return null;
 
   return (
-    <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-emerald-500/30">
+    <div id="plazas-convocadas" className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-emerald-500/30 scroll-mt-24">
       {/* Header with Title and Counter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
@@ -42,7 +42,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
             </h2>
           </div>
           <p className="text-xs text-slate-300 mt-1">
-            Cada plaza cuenta con su perfil específico, requisitos mínimos y acceso directo al documento oficial de bases en PDF.
+            Cada puesto cuenta con requisitos mínimos, remuneración y descarga directa e individual de sus bases oficiales en PDF.
           </p>
         </div>
 
@@ -54,41 +54,43 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
       </div>
 
       {/* Quick Access Official Document Banner */}
-      {(globalBasesPdfUrl || anexosUrl) && (
-        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
-            <span className="text-slate-200 font-medium">
-              Documentos oficiales publicados por <b className="text-white">{entityName}</b>:
-            </span>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {globalBasesPdfUrl && (
-              <a
-                href={globalBasesPdfUrl}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all shadow-[0_0_10px_rgba(16,185,129,0.3)] cursor-pointer"
-              >
-                <FileText size={13} />
-                <span>Bases Oficiales (PDF Directo)</span>
-                <ExternalLink size={11} />
-              </a>
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs">
+        <div className="flex items-center gap-2">
+          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+          <span className="text-slate-200 font-medium">
+            {globalBasesPdfUrl ? (
+              <>Documentos oficiales publicados por <b className="text-white">{entityName}</b>:</>
+            ) : (
+              <>Bases independientes por especialidad emitidas por <b className="text-white">{entityName}</b>. Cada puesto tiene su PDF específico abajo:</>
             )}
-            {anexosUrl && (
-              <a
-                href={anexosUrl}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 font-bold transition-colors cursor-pointer"
-              >
-                <span>📝 Descargar Anexos (Word)</span>
-                <ExternalLink size={11} />
-              </a>
-            )}
-          </div>
+          </span>
         </div>
-      )}
+        <div className="flex flex-wrap items-center gap-2">
+          {globalBasesPdfUrl && (
+            <a
+              href={globalBasesPdfUrl}
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all shadow-[0_0_10px_rgba(16,185,129,0.3)] cursor-pointer"
+            >
+              <FileText size={13} />
+              <span>Bases Oficiales (PDF Directo)</span>
+              <ExternalLink size={11} />
+            </a>
+          )}
+          {anexosUrl && (
+            <a
+              href={anexosUrl}
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 font-bold transition-colors cursor-pointer"
+            >
+              <span>📝 Descargar Anexos (Word)</span>
+              <ExternalLink size={11} />
+            </a>
+          )}
+        </div>
+      </div>
 
       {/* Filter Input if more than 3 plazas */}
       {plazas.length > 3 && (
@@ -129,6 +131,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
               lowPlazaUrl.includes('archivos.mpfn.gob.pe') ||
               lowPlazaUrl.includes('/anexo-archivo/') ||
               lowPlazaUrl.includes('descargar_tdr') ||
+              lowPlazaUrl.includes('descargar_bases') ||
               lowPlazaUrl.includes('download') ||
               lowPlazaUrl.includes('.docx') ||
               lowPlazaUrl.includes('.doc')
@@ -205,30 +208,48 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    {/* Botón principal de la plaza (Bases / Perfil específico) */}
+                    {/* Botón de bases específico de ESTA plaza */}
                     {pdfUrl && !isCompetitorUrl(pdfUrl) && (
                       <a
-                        href={pdfUrl}
+                        href={
+                          pdfUrl.includes('drive.google.com/file/d/')
+                            ? pdfUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                            : pdfUrl
+                        }
                         target="_blank"
+                        download
                         rel="nofollow noopener noreferrer"
                         className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_12px_rgba(16,185,129,0.3)] flex items-center gap-1.5 cursor-pointer"
                       >
                         {isPlazaDoc ? <FileText size={14} /> : <ExternalLink size={14} />}
-                        <span>{isPlazaDoc ? '[ BASES OFICIALES (PDF) ]' : '[ VER EN PORTAL OFICIAL ]'}</span>
+                        <span>{isPlazaDoc ? '📄 Descargar Bases (PDF)' : 'Ver en Portal Oficial'}</span>
                         <ExternalLink size={12} />
                       </a>
                     )}
 
-                    {/* Si existen Bases Generales globales y son diferentes del link de la plaza */}
-                    {globalBasesPdfUrl && globalBasesPdfUrl !== pdfUrl && !isCompetitorUrl(globalBasesPdfUrl) && (
+                    {/* Botón TDR específico para convocatorias MINEDU */}
+                    {pdfUrl && pdfUrl.includes('postulacioncas.minedu.gob.pe') && pdfUrl.includes('idReq=') && (
                       <a
-                        href={globalBasesPdfUrl}
+                        href={pdfUrl.replace(/Descargar_Bases/i, 'Descargar_Tdr')}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        className="px-3 py-1.5 rounded-xl bg-cyan-950/80 hover:bg-cyan-900/80 border border-cyan-500/40 text-cyan-300 text-xs font-bold font-display transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <FileText size={13} className="text-cyan-400" />
+                        <span>Ver TDR (PDF)</span>
+                        <ExternalLink size={11} />
+                      </a>
+                    )}
+
+                    {/* Botón para postular en el portal oficial de la entidad */}
+                    {defaultApplyUrl && defaultApplyUrl !== pdfUrl && (
+                      <a
+                        href={defaultApplyUrl}
                         target="_blank"
                         rel="nofollow noopener noreferrer"
                         className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-white/10 text-slate-200 text-xs font-bold font-display transition-all flex items-center gap-1.5 cursor-pointer"
                       >
-                        <FileText size={12} className="text-emerald-400" />
-                        <span>[ BASES GENERALES (PDF) ]</span>
+                        <span>Postular en Portal</span>
                         <ExternalLink size={12} />
                       </a>
                     )}
