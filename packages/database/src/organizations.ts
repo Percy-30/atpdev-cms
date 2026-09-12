@@ -58,7 +58,7 @@ const KNOWN_ORGANIZATIONS_METADATA: Record<string, {
     shortName: 'ESSALUD',
     category: 'Salud y Seguridad Social',
     logo: '/logos/essalud.jpg',
-    officialUrl: 'https://ww1.essalud.gob.pe'
+    officialUrl: 'https://www.gob.pe/essalud'
   },
   'SUPERINTENDENCIA NACIONAL DE ADUANAS Y DE ADMINISTRACIÓN TRIBUTARIA - SUNAT': {
     shortName: 'SUNAT',

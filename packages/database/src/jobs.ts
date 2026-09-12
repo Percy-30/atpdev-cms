@@ -381,7 +381,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contrato laboral bajo régimen CAS 1057 con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional (ONP/AFP)."
     ],
-    apply_url: "https://cloud.juntos.gob.pe/convocatoria/",
+    apply_url: "https://www.gob.pe/juntos",
     bases_pdf_url: "https://drive.google.com/file/d/1cemIyOm3MeY9CPcvJ92v5pELZCksXDUK/view?usp=drive_link",
     official_portal_name: "Portal de Convocatorias Programa JUNTOS",
     start_date: "2026-08-28",
@@ -452,7 +452,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contrato laboral bajo régimen CAS 1057 con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional (ONP/AFP)."
     ],
-    apply_url: "https://cloud.juntos.gob.pe/convocatoria/",
+    apply_url: "https://www.gob.pe/juntos",
     bases_pdf_url: "https://drive.google.com/file/d/1NQ-rjwgfNJcJD1MZeQ33iKg9PziapuV3/view?usp=drive_link",
     official_portal_name: "Portal de Convocatorias Programa JUNTOS",
     start_date: "2026-08-25",
@@ -2124,8 +2124,8 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Contratación CAS especial de alta calificación.",
       "Capacitación en normativa de finanzas públicas del MEF."
     ],
-    apply_url: "https://convocatorias.mef.gob.pe/",
-    bases_pdf_url: "https://convocatorias.mef.gob.pe/",
+    apply_url: "https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag",
+    bases_pdf_url: "https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag",
     official_portal_name: "Portal Oficial Convocatorias MEF",
     start_date: "2026-08-25",
     end_date: "2026-09-10",
@@ -2161,9 +2161,9 @@ export const INITIAL_JOBS: JobPosting[] = [
       "Planilla CAS con derecho a guardia médica.",
       "Seguro Médico ESSALUD + SCTR."
     ],
-    apply_url: "https://postulacion.minsa.gob.pe/",
-    bases_pdf_url: "https://postulacion.minsa.gob.pe/",
-    official_portal_name: "Portal de Convocatorias MINSA",
+    apply_url: "https://www.gob.pe/minsa",
+    bases_pdf_url: "https://www.gob.pe/minsa",
+    official_portal_name: "Portal Oficial MINSA (gob.pe)",
     start_date: "2026-08-27",
     end_date: "2026-09-14",
     featured: true,
@@ -2447,15 +2447,15 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('OSIPTEL')) return 'https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/';
   if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
   if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
-  if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://postulacion.minsa.gob.pe/';
+  if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
   if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
   if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
   if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
-  if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://cloud.juntos.gob.pe/convocatoria/';
+  if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/juntos';
   if (norm.includes('MIMP') || norm.includes('MUJER') || norm.includes('AURORA')) return 'https://www.gob.pe/mimp';
   if (norm.includes('MININTER') || norm.includes('POLICIA') || norm.includes('POLICÍA') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
   if (norm.includes('MINDEF') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
-  if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://convocatorias.mef.gob.pe/';
+  if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
   if (norm.includes('ANIN')) return 'https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo';
   if (norm.includes('MINEM') || norm.includes('ENERGIA') || norm.includes('ENERGÍA')) return 'https://www.gob.pe/minem';
   if (norm.includes('PRODUCE') || norm.includes('PRODUCCION') || norm.includes('PRODUCCIÓN') || norm.includes('SANIPES') || norm.includes('ITP')) return 'https://www.gob.pe/produce';
@@ -2496,6 +2496,43 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   return 'https://www.gob.pe/servir';
 }
 
+export function isDeadOrBrokenUrl(url?: string): boolean {
+  if (!url) return false;
+  const low = url.toLowerCase().trim();
+  return (
+    low.includes('postulacion.minsa.gob.pe') ||
+    low.includes('sicoin.mpfn.gob.pe') ||
+    low.includes('ww1.essalud.gob.pe') ||
+    low.includes('censos2025.com.pe') ||
+    low.includes('cloud.juntos.gob.pe') ||
+    low.includes('convocatorias.mef.gob.pe')
+  );
+}
+
+export function fixDeadDomainUrl(url?: string, entityName?: string, sectorType?: string): string {
+  if (!url) return getOfficialEntityPortalUrl(entityName, sectorType);
+  const low = url.toLowerCase().trim();
+  if (low.includes('postulacion.minsa.gob.pe')) {
+    return 'https://www.gob.pe/minsa';
+  }
+  if (low.includes('sicoin.mpfn.gob.pe')) {
+    return 'https://portal.mpfn.gob.pe/convocatorias';
+  }
+  if (low.includes('ww1.essalud.gob.pe')) {
+    return 'https://www.gob.pe/essalud';
+  }
+  if (low.includes('censos2025.com.pe')) {
+    return 'https://uneteservicios.inei.gob.pe/';
+  }
+  if (low.includes('cloud.juntos.gob.pe')) {
+    return 'https://www.gob.pe/juntos';
+  }
+  if (low.includes('convocatorias.mef.gob.pe')) {
+    return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
+  }
+  return url;
+}
+
 export function sanitizeOfficialUrl(
   url?: string, 
   fallback?: string, 
@@ -2508,6 +2545,9 @@ export function sanitizeOfficialUrl(
     if (!u) return null;
     const low = u.toLowerCase().trim();
     if (isCompetitorUrl(low)) return null;
+    if (isDeadOrBrokenUrl(low)) {
+      return fixDeadDomainUrl(u, entityName, sectorType);
+    }
     if (low.includes('cusco.gob.pe/convocatorias-cas') || low.includes('cusco.gob.pe/convocatoria')) {
       return 'https://web.cusco.gob.pe/category/convocatorias/';
     }

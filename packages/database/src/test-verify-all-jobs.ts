@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, isGenericPublicationUrl, JobPosting } from './jobs';
+import { getJobPostings, getJobPostingBySlug, isCompetitorUrl, isGenericPublicationUrl, isDeadOrBrokenUrl, JobPosting } from './jobs';
 
 async function verifyAllJobs() {
   console.log('🔍 Iniciando AUDITORÍA 100% EXHAUSTIVA DE TODAS LAS CONVOCATORIAS...');
@@ -10,13 +10,31 @@ async function verifyAllJobs() {
   let errorsCount = 0;
   let competitorLinksFound = 0;
   let genericLinksFound = 0;
+  let deadDomainsFound = 0;
   let directPdfCount = 0;
   let officialPortalCount = 0;
   let structuredPlazasCount = 0;
   let fallbackPlazasCount = 0;
   const slugsSeen = new Set<string>();
 
-  // Verificación caso especial: Alicorp
+  // Verificación caso especial: MINSA
+  console.log('\n🎯 Verificando caso crítico: MINSA Médicos y Enfermeros...');
+  const minsa = await getJobPostingBySlug('minsa-enfermeros-medicos-epidemiologos-tecnicos');
+  if (!minsa) {
+    console.error('❌ ERROR: MINSA no encontrado!');
+    errorsCount++;
+  } else {
+    if (isDeadOrBrokenUrl(minsa.apply_url) || isDeadOrBrokenUrl(minsa.bases_pdf_url)) {
+      console.error('❌ ERROR: MINSA tiene dominio caído postulacion.minsa.gob.pe!');
+      errorsCount++;
+    } else {
+      console.log(`✔ [OK] MINSA apply_url: ${minsa.apply_url}`);
+      console.log(`✔ [OK] MINSA bases_pdf_url: ${minsa.bases_pdf_url}`);
+      console.log(`✔ [OK] MINSA official_portal_name: ${minsa.official_portal_name}`);
+    }
+  }
+
+  // Verificación caso especial: ALICORP Logística
   console.log('\n🎯 Verificando caso crítico: ALICORP Logística...');
   const alicorp = await getJobPostingBySlug('alicorp-analistas-logistica-cadena-suministro');
   if (!alicorp) {
@@ -87,7 +105,7 @@ async function verifyAllJobs() {
         errorsCount++;
       }
 
-      // 4. Verificación estricta de CERO competidores y CERO URLs genéricas
+      // 4. Verificación estricta de CERO competidores, CERO URLs genéricas y CERO dominios caídos
       const checkField = (fieldVal: string | undefined, fieldName: string) => {
         if (!fieldVal) return;
         if (isCompetitorUrl(fieldVal)) {
@@ -99,6 +117,11 @@ async function verifyAllJobs() {
           console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene URL genérica de búsqueda en ${fieldName}: ${fieldVal}`);
           errorsCount++;
           genericLinksFound++;
+        }
+        if (isDeadOrBrokenUrl(fieldVal)) {
+          console.error(`❌ ${prefix} ERROR: "${job.slug}" tiene dominio caído en ${fieldName}: ${fieldVal}`);
+          errorsCount++;
+          deadDomainsFound++;
         }
       };
 
@@ -148,6 +171,7 @@ async function verifyAllJobs() {
   console.log(`Total de convocatorias auditadas: ${totalJobs}`);
   console.log(`Enlaces a competidores/agregadores encontrados: ${competitorLinksFound}`);
   console.log(`Enlaces genéricos de búsqueda encontrados: ${genericLinksFound}`);
+  console.log(`Dominios caídos/rotos encontrados: ${deadDomainsFound}`);
   console.log(`Errores técnicos detectados: ${errorsCount}`);
   console.log(`Convocatorias con bases PDF / Drive directo: ${directPdfCount}`);
   console.log(`Convocatorias con enlace a Portal Oficial directo: ${officialPortalCount}`);

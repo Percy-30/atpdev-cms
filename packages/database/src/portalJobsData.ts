@@ -18664,10 +18664,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://otroscargos.censos2025.com.pe/public/cuenta/login/4/301/2",
-    "bases_pdf_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/301",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/301",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-profesional-en-seguridad.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18741,8 +18741,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/home/detalle/2/299",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/299",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-supervisores-locales-nivel-nacional.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18909,8 +18909,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/home/detalle/2/298",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/298",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-encuestadores-nivel-nacional..html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19116,10 +19116,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/291/2",
-    "bases_pdf_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/291",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/291",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-analista-de-cobertura.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19154,8 +19154,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/290",
-    "bases_pdf_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/290",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-analista-codificador.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19229,8 +19229,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/282/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/282",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "resultados_url": "https://drive.google.com/file/d/12gIzMf66AKgu5_trn8S2ykO0Qzm7xI40/view?usp=drive_link",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-censistas-conv-063.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
@@ -19388,10 +19388,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/263/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/263",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/263",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-jefes-de-brigada-censal-de-comunidades-indigenas.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19426,10 +19426,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/262/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/262",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/262",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-jefes-de-brigada-censal-de-personas-sin-vivienda.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19521,10 +19521,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/261/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/261",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/261",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-jefes-de-brigada-censal-de-vivienda-colectiva.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19559,10 +19559,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/260/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/260",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/260",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-censistas-de-viviendas-colectivas.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19597,10 +19597,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/259/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/259",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/259",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-censistas-de-comunidades-indigenas.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19635,10 +19635,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/cuenta/login/4/258/2",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/258",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
-    "resultados_url": "https://unete.censos2025.com.pe/public/home/detalle/2/258",
+    "resultados_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/INEI-CENSISTAS-PERSONAS-SIN-VIVIENDA.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19712,8 +19712,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/244",
-    "bases_pdf_url": "https://otroscargos.censos2025.com.pe/public/home/detalle/2/244",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-02-metodologos.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19818,8 +19818,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://unete.censos2025.com.pe/public/home/detalle/2/225",
-    "bases_pdf_url": "https://unete.censos2025.com.pe/public/home/detalle/2/225",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/inei-jefes-de-seccion-censal-lima-y-callao.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -28772,7 +28772,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-PRA-ANINA-2023",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-001-PRA-ANINA-2023.pdf",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2023/02/essalud-practicas-2023-nivel-nacional.html",
@@ -28809,7 +28809,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-CAS-RPLAM-2022",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "https://docs.google.com/document/d/15xIVaxtLfuQVFtWj79LYLvqwCEBdGEl-/edit?usp=sharing",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2022/04/essalud-cajamarca-tecnicos-en-enfermeria-digitadores.html",
@@ -28846,9 +28846,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=047-CAS-SCENT-2021",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-047-CAS-SCENT-2021.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=047-CAS-SCENT-2021",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2021/10/convocatoria-essalud-callao-226-plazas.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -28994,7 +28994,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PRA-ANINA-2020",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-002-PRA-ANINA-2020.doc",
     "resultados_url": "http://www.essalud.gob.pe/practicas_a_nivel_nacional/",
     "fuente_url": "https://www.portaltrabajos.pe/2020/02/essalud-practicas-2020-nivel-nacional.html",
@@ -29031,9 +29031,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=008-CAS-RPREB-2019",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-008-CAS-RPREB-2019.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=008-CAS-RPREB-2019",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2019/08/essalud-20-tecnicos-enfermeria.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29068,9 +29068,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=011-PVA-RPALM-2019",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://www.munijorgebasadre.gob.pe/pagina/web_inst/trans_bt_down.php?file=conv_4580.pdf",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=011-PVA-RPALM-2019",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2019/07/essalud-tecnicos-en-enfermeria-farmacia.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29105,9 +29105,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PVA-RAREB-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-002-PVA-RAREB-2018.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PVA-RAREB-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/09/essalud-lima-23-tecnicos-enfermeria-farmacia.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29142,9 +29142,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-CAS-RAREB-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-001-CAS-RAREB-2018.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-CAS-RAREB-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/09/essalud-lima-125-medicos-enfermerosas.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29179,7 +29179,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=006-CAS-RAARE-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-006-CAS-RAARE-2018.docx",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2018/09/essalud-arequipa-18-auxiliares-de-servicio.html",
@@ -29216,7 +29216,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=006-CAS-RAMDD-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-006-CAS-RAMDD-2018.docx",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2018/09/essalud-madre-de-dios-enfermeras.html",
@@ -29253,9 +29253,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=003-PVA-RAPAS-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-001-PVA-RAPIU-2018.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=P.S.%20001-PVA-RAPIU-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/08/essalud-piura-5-tecnicos-de-enfermeria-ii.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29290,9 +29290,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=003-PVA-RAPAS-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-003-PVA-RAPAS-2018.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=003-PVA-RAPAS-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/08/essalud-pasco-tecnologo-medico.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29327,9 +29327,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-PVA-RALAM-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-001-PVA-RALAM-2018.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-PVA-RALAM-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/08/essalud-lambayeque-9-tecnicos-enfermeria-y-laboratorio.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29364,9 +29364,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PVA-RALOR-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-002-PVA-RALOR-2018.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PVA-RALOR-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/07/essalud-enfermera-universitaria.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29401,9 +29401,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=003-PVA-RAARE-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-003-PVA-RAARE-2018.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-SUP-RDSAB-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/07/essalud-arequipa-2018-29-plazas-plazo-indeterminado.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29438,9 +29438,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-CAS-RAAPU-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-001-CAS-RAAPU-2018.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-CAS-RAAPU-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/04/essalud-medicos-asist-social.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29475,9 +29475,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PRA-ANINA-2018",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://www.essalud.gob.pe/practicas_a_nivel_nacional/#tabs-50371-0-1",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=002-PRA-ANINA-2018",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2018/03/essalud-practicas-2018-nivel-nacional.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29512,7 +29512,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=016-CAS-RAANC-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-016-CAS-RAANC-2017.doc",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2017/11/essalud-ancash-14-tecnicos-y-lic-enfermeria.html",
@@ -29549,9 +29549,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=009-PVA-RAREB-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-009-PVA-RAREB-2017.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=009-PVA-RAREB-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/10/essalud-lima-9-medicos-especialistas.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29586,9 +29586,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=074-CAS-SCENT-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-074-CAS-SCENT-2017.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=074-CAS-SCENT-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/10/essalud-lima-2-auxiliares.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29623,9 +29623,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=010-CAS-RALAM-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-010-CAS-RALAM-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=010-CAS-RALAM-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/10/essalud-lambayeque-10-tecnicos-enfermeria.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29660,7 +29660,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=012-CAS-RAPIU-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-012-CAS-RAPIU-2017.doc",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-piura-27-tecnicos-y-profesionales-salud.html",
@@ -29697,9 +29697,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=003-PRA-ANINA-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "https://drive.google.com/file/d/0B7zqdfHmuh1lZ1Nua3A0ZGwwNzQ/view?usp=sharing",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=003-PRA-ANINA-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-practicas-2017.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29734,9 +29734,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=015-CAS-RDSAB-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-015-CAS-RDSAB-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=015-CAS-RDSAB-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-9-digitadores-auxiliar.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29771,9 +29771,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=068-CAS-SCENT-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-068-CAS-SCENT-2017.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=068-CAS-SCENT-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-central-analista-programador.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29808,9 +29808,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=028-CAS-RAMOQ-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-028-CAS-RAMOQ-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=028-CAS-RAMOQ-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-moquegua-08-tec-enfermeria.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29845,9 +29845,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=064-CAS-SCENT-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-064-CAS-SCENT-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=064-CAS-SCENT-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-central-prof-ingenieria-industrial.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29882,9 +29882,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=059-CAS-SCENT-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-059-CAS-SCENT-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=059-CAS-SCENT-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-central-profesional.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29919,9 +29919,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=009-CAS-RDALM-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-009-CAS-RDALM-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=009-CAS-RDALM-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/09/essalud-lima-6-digitadores-enfermeria.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29956,9 +29956,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-CAS-ANINA-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-001-CAS-ANINA-2017.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=001-CAS-ANINA-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/08/essalud-79-medicos-varios-departamentos.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -29993,9 +29993,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=057-CAS-SCENT-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-057-CAS-SCENT-2017.docx",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=057-CAS-SCENT-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/08/essalud-central-10-tecnicos.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -30030,7 +30030,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=018-CAS-RALLI-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-018-CAS-RALLI-2017.docx",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2017/08/essalud-la-libertad-15-tecnologos.html",
@@ -30067,7 +30067,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=010-CAS-RATUM-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-010-CAS-RATUM-2017.docx",
     "resultados_url": "http://convocatorias.essalud.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2017/08/essalud-tumbes-2-prof-ing-industrial.html",
@@ -30104,9 +30104,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=048-CAS-SCENT-2017",
+    "apply_url": "https://www.gob.pe/essalud",
     "bases_pdf_url": "http://convocatorias.essalud.gob.pe/convocatorias/files/bases/BA-048-CAS-SCENT-2017.doc",
-    "resultados_url": "https://ww1.essalud.gob.pe/sisep/oportunidades-laborales/ofertasPaginaInst-convocatoria.htm?Prc=048-CAS-SCENT-2017",
+    "resultados_url": "https://www.gob.pe/essalud",
     "fuente_url": "https://www.portaltrabajos.pe/2017/08/essalud-central-auxiliar-administrativo.html",
     "official_portal_name": "SEGURO SOCIAL DE SALUD - ESSALUD - Portal Oficial",
     "start_date": "2026-08-25",
@@ -40250,9 +40250,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1552",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21549/a/20250801162907d09bf41544a3365a46c9077ebb5e35c3.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21551/a/2025080116300272b32a1f754ba1c09b3695e0cb6cde7f.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21555/a/202508011635252838023a778dfaecdc212708f721b788.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1552",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/ministerio-publico-asistentes-administrativos-funcion-fiscal.html",
@@ -40271,7 +40271,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en Derecho, estudiante de maestría en Derecho, gestión de políticas públicas o Gestión Pública",
         "experience": "04 años de experiencia laboral general, 02 años de",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40279,7 +40279,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho (colegiatura y habilitación vigente)",
         "experience": "02 años de Experiencia General 01 año de",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40287,7 +40287,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario en la carrera de Derecho. - (colegiatura y habilitación vigente)",
         "experience": "02 años de Experiencia General 01 año de",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40295,7 +40295,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho. - Colegiatura y habilitación vigente",
         "experience": "05 años de experiencia laboral general. - 03 años de",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40303,7 +40303,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario de Estadística o Ingeniería Estadística. - Colegiatura y habilitación vigente",
         "experience": "05 años experiencia laboral general",
         "salary": "S/. 8264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40311,7 +40311,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario de Ingeniería de Sistemas o Ingeniería Informática. - Colegiatura y habilitación vigente",
         "experience": "05 años experiencia laboral general",
         "salary": "S/. 8264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40319,7 +40319,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario de Ingeniería de Sistemas y/o Informática. - Colegiatura y habilitación vigente",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40327,7 +40327,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en Ciencias de la Comunicación",
         "experience": "02 años",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40335,7 +40335,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título en la carrera de Administración o Ingeniería Industrial o Psicología",
         "experience": "04 años de Experiencia General, 03 años llevando a cabo procesos de selección de personal, 02 años en el sector público",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40343,7 +40343,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Administración, Contabilidad o afines",
         "experience": "5 años, experiencia laboral general",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40351,7 +40351,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería Civil o Arquitectura colegiado y habilitado",
         "experience": "8 años experiencia laboral general",
         "salary": "S/. 7764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40359,7 +40359,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "02 años como conductor o chofer en el sector público",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40367,7 +40367,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "03 años de experiencia laboral general, 02 años como conductor o chofer en el sector público",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40375,7 +40375,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "01 año de Experiencia General 01 año de",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40383,7 +40383,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general 01 año de",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40391,7 +40391,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de la carrera universitaria de Ingeniería de Sistemas o Ingeniería Informática o Computación",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40399,7 +40399,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de la carrera de Derecho",
         "experience": "01 año de experiencia laboral general 01 año de",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40407,7 +40407,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho o Administración",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40415,7 +40415,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40423,7 +40423,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40431,7 +40431,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40439,7 +40439,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40447,7 +40447,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general. - 01 año de",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40455,7 +40455,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general. - 01 año de",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40463,7 +40463,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de Experiencia General 01 año de",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40471,7 +40471,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho o Administración o Ingeniería Industrial o Bibliotecología o archivística",
         "experience": "01 año de experiencia laboral general. - 01 año de",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40479,7 +40479,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general. - 01 año de",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40487,7 +40487,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiantes universitarios a partir del 4to. - Año 8vo ciclo de las carreras de Derecho, Psicología, sociología, Economía, Administración, Ingeniería Industrial, Educación, Informática, Comunicaciones",
         "experience": "01 año de Experiencia General 01 año de experiencia en funciones relacionadas al cargo",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40495,7 +40495,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en las carreras de Administración o Ingeniería Industrial o Derecho",
         "experience": "02 años de Experiencia General. - 01 año en el sector público",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40503,7 +40503,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en las carreras de Administración o Computación o Informática o Ingeniería de Sistemas o Ingeniería Industrial",
         "experience": "01 año realizando funciones administrativas",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40511,7 +40511,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Administración o Historia o archivista y gestión documental, o bibliotecologia",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40519,7 +40519,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 4771",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40527,7 +40527,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40535,7 +40535,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "02 años de Experiencia General 01 año de",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40543,7 +40543,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40551,7 +40551,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40559,7 +40559,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40567,7 +40567,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40575,7 +40575,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40583,7 +40583,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40591,7 +40591,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en Derecho",
         "experience": "02 años experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40599,7 +40599,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general. - 1 año,",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40607,7 +40607,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general. - 1 año,",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40615,7 +40615,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40623,7 +40623,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40631,7 +40631,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4771",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40639,7 +40639,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 4771",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40647,7 +40647,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40655,7 +40655,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40663,7 +40663,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho y Ciencias Políticas",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40671,7 +40671,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 4771",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40679,7 +40679,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40687,7 +40687,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40695,7 +40695,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40703,7 +40703,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en Psicología",
         "experience": "03 años de experiencia laboral",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40711,7 +40711,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "no aplica contar con carné de sanidad vigente. - Contar con certificado de manipulación de alimentos",
         "experience": "3 años de Experiencia General",
         "salary": "S/. 2701.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40719,7 +40719,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Administración o Derecho o Contabilidad o Economía o Ingeniería Industrial o estudiante maestría en las carreras de Gestión Pública o Derecho administrativo",
         "experience": "04 años de Experiencia General",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40727,7 +40727,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "*titulado universitario en las carreras de Ingeniería de Sistemas *egresado maestría en las carreras de Gestión Pública y/o Ingeniería de Software y/o sistemas informáticos",
         "experience": "04 años",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40735,7 +40735,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería Civil",
         "experience": "06 años",
         "salary": "S/. 8764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40743,7 +40743,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 3° año (6 ciclo) en las carreras de Administración o Economía",
         "experience": "01 año de Experiencia General",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40751,7 +40751,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 3° año (6 ciclo) en las carreras de de Ingeniería de Sistemas, electrónica o afines o técnico concluido (3) años en las carreras de Computación e Informática",
         "experience": "3 años, experiencia laboral general, en soporte técnico de hardware y software",
         "salary": "S/. 2764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40759,7 +40759,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "no aplica",
         "experience": "2 años, experiencia laboral general 2 años",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40767,7 +40767,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Contabilidad",
         "experience": "04 años",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40775,7 +40775,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Psicología (colegiatura y habilitación vigente)",
         "experience": "02 años de experiencia laboral general 01 año de",
         "salary": "S/. 4850",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 094",
@@ -40783,7 +40783,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Psicología. Colegiatura y habilitación vigente. - Contar con resolución emitida por el ministerio de salud, que acredite haber realizado serums",
         "experience": "02 años de experiencia laboral general. - 01 año de",
         "salary": "S/. 3764.19 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21552/a/2025080116305037693cfc748049e45d87b8c7d8b9aacd.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -40812,9 +40812,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1491",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21495/a/202507301133237f39f8317fbdb1988ef4c628eba02591.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21493/a/20250730113137d67d8ab4f4c10bf22aa353e27879133c.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21497/a/2025073011343728dd2c7955ce926456240b2ff0100bde.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1538",
     "fuente_url": "https://www.portaltrabajos.pe/2025/08/ministerio-publico-lima-este-asistentes-administrativos.html",
@@ -40833,7 +40833,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Administración o Contabilidad",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40841,7 +40841,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40849,7 +40849,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40857,7 +40857,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40865,7 +40865,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40873,7 +40873,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40881,7 +40881,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40889,7 +40889,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40897,7 +40897,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40905,7 +40905,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40913,7 +40913,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa / licencia de conducir moto bii-c",
         "experience": "1 año experiencia laboral general",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40921,7 +40921,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa / licencia de conducir aiia y/o aiib (según lo señale el perfil de puestos). - Contar con record del sistema de licencias de conducir por puntos (mínimo 50 puntos a su favor)",
         "experience": "2 años, experiencia laboral general como conductor o chofer",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40929,7 +40929,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40937,7 +40937,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40945,7 +40945,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40953,7 +40953,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40961,7 +40961,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40969,7 +40969,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 2° año (3° ciclo) en las carreras de Administración o Ingeniería Industrial",
         "experience": "01 año experiencia laboral general",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40977,7 +40977,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40985,7 +40985,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudios universitarios a partir del 4° año (8° ciclo) en la carrera de Derecho",
         "experience": "1 año, experiencia laboral general en entidades del sector publico y/o privado en el area juridica realizando funciones relacionadas al cargo, incluye secigra",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -40993,7 +40993,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudios universitarios a partir del 4° año (8° ciclo) en la carrera de Derecho",
         "experience": "1 año, experiencia laboral general en entidades del sector publico y/o privado en el área jurídica realizando funciones relacionadas al cargo, incluye secigra",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -41001,7 +41001,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia profesional general incluyendo secigra",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -41009,7 +41009,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años, experiencia laboral general incluyendo secigra / 1 año, experiencia profesional especifica en materia penal",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -41017,7 +41017,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Informática, electrónica o carreras afines / técnico concluido (3) años en las carreras de Computación e Informática",
         "experience": "2 años, experiencia laboral especifica comprobada en ensamblaje, configuración, diagnostico y reparación de hardware (cpu’s, monitores, impresoras, etc. y mantenimiento preventivo de hardware",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 93",
@@ -41025,7 +41025,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "técnico concluido (1) años en las carreras de Administración o Contabilidad o Computación e Informática / estudiante universitario a partir del 3° año (5 ciclo) en las carreras de Administración o Contabilidad",
         "experience": "01 año, experiencia laboral general en entidades del sector público y/o privado en labores administrativas a fines a las características del cargo convocado",
         "salary": "S/. 2464.19 « 1 2 3 4 5 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/21494/a/20250730113235c51ce410c124a10e0db5e4b97fc2af39.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -41054,9 +41054,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1491",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20920/a/20250630184805c0c7c76d30bd3dcaefc96f40275bdc0a.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20923/a/20250630184905ea5d2f1c4608232e07d3aa3d998e5135.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20924/a/2025063018492217e62166fc8586dfa4d1bc0e1742c08b.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1505",
     "fuente_url": "https://www.portaltrabajos.pe/2025/07/ministerio-publico-lima-centro-asistentes.html",
@@ -41075,7 +41075,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4835",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41083,7 +41083,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4835",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41091,7 +41091,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41099,7 +41099,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41107,7 +41107,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4835",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41115,7 +41115,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4835",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41123,7 +41123,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 67",
@@ -41131,7 +41131,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4835 « 1 2 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20922/a/20250630184843fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -41159,8 +41159,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf",
+    "apply_url": "https://www.gob.pe/mpfn",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-lima-este-asistentes-administrativos-funcion-fiscal.html",
     "official_portal_name": "MINISTERIO PUBLICO - FISCALÍA DE LA NACIÓN - Portal Oficial",
     "start_date": "2026-08-25",
@@ -41177,7 +41177,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41185,7 +41185,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41193,7 +41193,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41201,7 +41201,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de carrera universitaria de Derecho",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41209,7 +41209,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa / licencia de conducir moto BII-C",
         "experience": "1 año experiencia laboral general / 1 año",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41217,7 +41217,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41225,7 +41225,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41233,7 +41233,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41241,7 +41241,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41249,7 +41249,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41257,7 +41257,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41265,7 +41265,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41273,7 +41273,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41281,7 +41281,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41289,7 +41289,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41297,7 +41297,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Administración o Contabilidad",
         "experience": "2 año",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41305,7 +41305,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41313,7 +41313,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "técnico básico concluido titulado de un (1) año en la carrera de Mecánica Automotriz",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41321,7 +41321,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "1 año, experiencia laboral general",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41329,7 +41329,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario en la carrera de Ingeniería Industrial o Estadística o Economía o Contabilidad o Ingeniería de Sistemas o Administración",
         "experience": "2 año, experiencia laboral general / 1 año, experiencia profesional",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41337,7 +41337,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario de la carrera de Ingeniería de Sistemas o Computación o Informática o Ingeniería Electrónica o Ingeniería Mecatrónica o ingeniería robótica a partir del 4° año (8vo ciclo de la carrera)",
         "experience": "1 año, experiencia laboral general en entidades del sector publico y/o privado en el área de Informática o soporte técnico",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41345,7 +41345,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudios universitarios a partir del 4° año (8° ciclo) en la carrera de Derecho",
         "experience": "1 año, experiencia laboral general en entidades del sector publico y/o privado en el área jurídica realizando funciones relacionadas al cargo",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41353,7 +41353,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años. - Experiencia profesional",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41361,7 +41361,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años. - Experiencia profesional",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41369,7 +41369,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años. - Experiencia profesional",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41377,7 +41377,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años. - Experiencia profesional",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41385,7 +41385,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años. - Experiencia profesional",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41393,7 +41393,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "2 años. - Experiencia profesional",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 69",
@@ -41401,7 +41401,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en la carrera de Psicología / contar con colegiatura y habilitación profesional vigente. - / contar con resolución emitida por el ministerio de salud, que acredite haber realizado serums",
         "experience": "(03) años",
         "salary": "S/. 3764.19 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20618/a/202506181623126512bd43d9caa6e02c990b0a82652dca.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -41429,8 +41429,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf",
+    "apply_url": "https://www.gob.pe/mpfn",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-lima-sur-asistentes-administrativos-funcion-fiscal.html",
     "official_portal_name": "MINISTERIO PUBLICO - FISCALÍA DE LA NACIÓN - Portal Oficial",
     "start_date": "2026-08-25",
@@ -41447,7 +41447,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho o Administración o Economía o Contabilidad o ingeniera industrial",
         "experience": "02 años",
         "salary": "S/. 2886.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41455,7 +41455,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41463,7 +41463,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41471,7 +41471,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Administración o Economía o Contabilidad o Ingeniería Industrial",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 2014.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41479,7 +41479,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Administración o Economía o Contabilidad o Ingeniería Industrial",
         "experience": "01 año, experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41487,7 +41487,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa / licencia de conducir AIIA y/o AIIB (según lo señale el perfil de puestos) / contar con récord del sistema de licencias de conducir por puntos (mínimo 50 puntos a su favor)",
         "experience": "02 años",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41495,7 +41495,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "01 año",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41503,7 +41503,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "-01 año",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41511,7 +41511,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41519,7 +41519,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41527,7 +41527,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41535,7 +41535,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de trabajador social o asistente social / colegiado y habilitado / contar con resolución emitida por el ministerio de salud, que acredite haber realizado serums",
         "experience": "02 años",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41543,7 +41543,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Ciencias de la Comunicación o Administración o Educación o Psicología",
         "experience": "02 años de e",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 065",
@@ -41551,7 +41551,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de trabajador social o asistente social / colegiado y habilitado / contar con resolución emitida por el ministerio de salud, que acredite haber realizado serums",
         "experience": "02 años",
         "salary": "S/. 3764.19 « 1 2 3 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20631/a/20250618183456e2c420d928d4bf8ce0ff2ec19b371514.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -41580,9 +41580,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1493",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20590/a/20250617084654ed3d2c21991e3bef5e069713af9fa6ca.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20592/a/202506170849109778d5d219c5080b9a6a17bef029331c.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20594/a/202506170851172a38a4a9316c49e5a833517c45d31070.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1495",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-piura-asistentes.html",
@@ -41601,7 +41601,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41609,7 +41609,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41617,7 +41617,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41625,7 +41625,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Administración o Contabilidad o Economía",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41633,7 +41633,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41641,7 +41641,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41649,7 +41649,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Administración o Contabilidad o Economía",
         "experience": "02 años",
         "salary": "S/. 4901.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 026",
@@ -41657,7 +41657,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Administración o Contabilidad o Economía",
         "experience": "02 años",
         "salary": "S/. 6201.11 « 1 2 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20591/a/20250617084811ad61ab143223efbc24c7d2583be69251.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -41686,9 +41686,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1493",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20537/a/20250616081025d645920e395fedad7bbbed0eca3fe2e0.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20536/a/20250616080812c7e1249ffc03eb9ded908c236bd1996d.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20539/a/202506160820337cbbc409ec990f19c78c75bd1e06f215.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1493",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-cajamarca-asistentes.html",
@@ -41707,7 +41707,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41715,7 +41715,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41723,7 +41723,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8° ciclo) en la carrera de Derecho",
         "experience": "01 de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41731,7 +41731,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41739,7 +41739,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8° ciclo) en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41747,7 +41747,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41755,7 +41755,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41763,7 +41763,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año ( 8 ciclo) en la carrera de Derecho",
         "experience": "01 año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41771,7 +41771,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41779,7 +41779,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "01 año de Experiencia General en el sector público o privado",
         "salary": "S/. 4051. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41787,7 +41787,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41795,7 +41795,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41803,7 +41803,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 24",
@@ -41811,7 +41811,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de Derecho",
         "experience": "02 años de Experiencia General en el sector público o privado",
         "salary": "S/. 4822. 11 « 1 2 3 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Público",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20538/a/2025061608133535f4a8d465e6e1edc05f3d8ab658c551.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -41840,9 +41840,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1346",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19048/a/2025032116584044f683a84163b3523afe57c2e008bc8c.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20490/a/2025061120342398dce83da57b0395e163467c9dae521b.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20489/a/202506112033556c8349cc7260ae62e3b1396831a8398f.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1496",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-auxiliares-educativos-profesores.html",
@@ -41861,7 +41861,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudios técnicos de auxiliar de Educación o Educación Inicial ( formación mínima de 01 año) o estudiante universitario de la carrera de Educación o Educación Inicial (como mínimo primeros años)",
         "experience": "01 año de experiencia laboral general. - Experiencia en actividades relacionadas como auxiliar o asistente de niños de cuna y/o jardin en el sector publico",
         "salary": "S/. 2701.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41869,7 +41869,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario de las carreras de Educación Inicial o titulado pedagógico en las carreras de Educación Inicial",
         "experience": "02 años de experiencia laboral general. - Experiencia como profesor en el sector publico",
         "salary": "S/. 3300.6",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41877,7 +41877,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41885,7 +41885,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería Civil, colegiatura y habilitación vigente",
         "experience": "05 años de experiencia laboral general",
         "salary": "S/. 6100",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41893,7 +41893,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "constancia de bachiller universitario en Derecho",
         "experience": "02 años de experiencia profesional general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41901,7 +41901,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en carrera técnica de (3) años de Administración o Computación",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41909,7 +41909,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 2464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41917,7 +41917,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Contabilidad, colegiatura y habilitación vigente",
         "experience": "05 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41925,7 +41925,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería Civil, colegiatura y habilitación vigente",
         "experience": "06 años",
         "salary": "S/. 8150",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41933,7 +41933,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería Civil, colegiatura y habilitación vigente",
         "experience": "05 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41941,7 +41941,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "técnico concluido (3) años en las carreras de Administración o Gestión de Recursos Humanos",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41949,7 +41949,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "constancia de título profesional universitario en la carrera de Derecho",
         "experience": "02 años de experiencia laboral general 01 año",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41957,7 +41957,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41965,7 +41965,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41973,7 +41973,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho / colegiatura y habilitación vigente",
         "experience": "4 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41981,7 +41981,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho / colegiatura y habilitación vigente",
         "experience": "4 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41989,7 +41989,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho / colegiatura y habilitación vigente",
         "experience": "4 años de experiencia laboral general",
         "salary": "S/. 6000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -41997,7 +41997,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho / colegiatura y habilitación vigente",
         "experience": "05 años de experiencia laboral general 03 años de",
         "salary": "S/. 8264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42005,7 +42005,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho u oficial en situación de retiro acreditado con resolución de pase a retiro de no haber sido dado de baja por medida disciplinaria",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 8264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42013,7 +42013,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería Civil",
         "experience": "03 años de experiencia profesional general, 01 año de",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42021,7 +42021,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería de Sistemas o Ingeniería Informática o Ingeniería de Software",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42029,7 +42029,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería de Sistemas o Ingeniería Informática o Ingeniería de Software",
         "experience": "03 años de experiencia laboral general 02 año de",
         "salary": "S/. 626419",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42037,7 +42037,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional en Administración Pública o Ciencias Políticas o Derecho o Economía",
         "experience": "4 años de experiencia laboral general 02 años de",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42045,7 +42045,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario en la carrera de Ciencias de la Computación o Ingeniería de Sistemas o Ingeniería de Software o Ingeniería Informática",
         "experience": "04 años de experiencia laboral general",
         "salary": "S/. 7514.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42053,7 +42053,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Antropología",
         "experience": "03 años de experiencia profesional general, 01 año de",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42061,7 +42061,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42069,7 +42069,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Administración o Antropología o Derecho o Economía",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42077,7 +42077,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Administración o Economía o Derecho o Ingeniería Industrial",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42085,7 +42085,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Administración, Ingeniería Industrial, Psicología, Derecho, Contabilidad, Economía",
         "experience": "1 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42093,7 +42093,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42101,7 +42101,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42109,7 +42109,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho o Administración",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42117,7 +42117,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado de la carrera de Ingeniería Industrial, Administración, Contabilidad, Derecho o Economía",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42125,7 +42125,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "1 año de experiencia laboral general 1 año,",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42133,7 +42133,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller en la carrera de Economía o Administración o Ciencias de la Comunicación",
         "experience": "04 años de Experiencia General 02 años de",
         "salary": "S/. 4000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42141,7 +42141,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42149,7 +42149,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42157,7 +42157,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42165,7 +42165,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "constancia de bachiller universitario en Derecho",
         "experience": "03 años de experiencia laboral general 02 años de",
         "salary": "S/. 4835",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42173,7 +42173,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudios técnicos de Administración o Computación o afines ( formación mínima de 01 año) o estudiante universitario de la carrera de Administración o Computación e Informática o afines (como mínimo primeros años)",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 2701.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42181,7 +42181,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa / contar con carnet de sanidad vigente. - / contar con certificado de manipulación de alimentos",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 1764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42189,7 +42189,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 3° año ( 6 ciclo) en la carrera de Educación o Educación Inicial o estudiante de la escuela/instituto de Educación superior pedagógico a partir del 3° año ( 6 ciclo)en la carrera de Educación o Educación Inicial",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 2701.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42197,7 +42197,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Administración, Historia, archivista y gestión documental, bibliotecologia",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42205,7 +42205,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Contabilidad, colegiatura y habilitación vigente",
         "experience": "05 años laboral general",
         "salary": "S/. 5764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42213,7 +42213,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho / colegiatura y habilitación vigente / estudiante de maestría en Gestión Pública o Derecho procesal",
         "experience": "06 años de Experiencia General 04 años de",
         "salary": "S/. 8264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42221,7 +42221,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Administración o Contabilidad o Psicología o Economía o Derecho o Ingeniería Industrial",
         "experience": "03 años de experiencia laboral general",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42229,7 +42229,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Arquitectura / colegiatura y habilitación vigente",
         "experience": "04 años de experiencia laboral general",
         "salary": "S/. 6000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42237,7 +42237,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho / colegiatura y habilitación vigente",
         "experience": "04 años de experiencia laboral general",
         "salary": "S/. 6000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42245,7 +42245,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa / contar con carnet de sanidad vigente. - / contar con certificado de manipulación de alimentos",
         "experience": "03 años de experiencia laboral general. - Experiencia en actividades de Cocina en cuna y/o jardin en el sector público",
         "salary": "S/. 2701.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42253,7 +42253,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitario de psicólogo / egresado de la mestría en gerencia de proyectos y programas sociales y/o gerencia social y/o Gestión Pública / colegiatura y habilitación vigente",
         "experience": "04 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42261,7 +42261,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Ingeniería de Sistemas",
         "experience": "04 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42269,7 +42269,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho, Contabilidad, Ingeniería Industrial, Administración y/o Economía",
         "experience": "4 años de experiencia laboral general",
         "salary": "S/. 6000",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42277,7 +42277,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho",
         "experience": "05 años de experiencia laboral general 03 años de",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42285,7 +42285,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho, colegiatura y habilitación vigente",
         "experience": "03 años de experiencia laboral general",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42293,7 +42293,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título universitario en la carrera de Derecho / colegiatura y habilitación vigente",
         "experience": "03 años de experiencia laboral general 02 años de",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42301,7 +42301,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Economía, colegiatura y habilitación vigente",
         "experience": "05 años deexperiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42309,7 +42309,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 5° año (10 ciclo) en las carreras de Historia",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42317,7 +42317,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "técnico concluido (3) años en las carreras de Administración",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42325,7 +42325,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho o Administración o Contabilidad o Economía. - Egresado maestría en las carreras de Gestión Pública",
         "experience": "05 años",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 64",
@@ -42333,7 +42333,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho, colegiatura y habilitación vigente",
         "experience": "03 años de experiencia laboral general",
         "salary": "S/. 4264.19 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20493/a/2025061315191498f13708210194c475687be6106a3b84.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -42362,9 +42362,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1435",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20295/a/20250604145732182be0c5cdcd5072bb1864cdee4d3d6e.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20298/a/202506041503131c383cd30b7c298ab50293adfecb7b18.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20299/a/2025060415034517e62166fc8586dfa4d1bc0e1742c08b.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1446",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-callao-asistentes-funcion-fiscal-administrativos.html",
@@ -42383,7 +42383,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42391,7 +42391,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42399,7 +42399,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42407,7 +42407,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "no aplica",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42415,7 +42415,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42423,7 +42423,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42431,7 +42431,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Contabilidad",
         "experience": "05 años de experiencia laboral general",
         "salary": "S/. 6264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42439,7 +42439,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ciencias de la Comunicación o Relaciones Públicas",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42447,7 +42447,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42455,7 +42455,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42463,7 +42463,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42471,7 +42471,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42479,7 +42479,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42487,7 +42487,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42495,7 +42495,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42503,7 +42503,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42511,7 +42511,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42519,7 +42519,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42527,7 +42527,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42535,7 +42535,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42543,7 +42543,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42551,7 +42551,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42559,7 +42559,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42567,7 +42567,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(03) años)",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42575,7 +42575,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 060",
@@ -42583,7 +42583,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20296/a/20250604145954fbd7939d674997cdb4692d34de8633c4.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -42611,8 +42611,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf",
+    "apply_url": "https://www.gob.pe/mpfn",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
     "fuente_url": "https://www.portaltrabajos.pe/2025/06/ministerio-publico-lambayeque-asistentes-en-funcion-fiscal.html",
     "official_portal_name": "MINISTERIO PUBLICO - FISCALIA DE LA NACIÓN - Portal Oficial",
     "start_date": "2026-08-25",
@@ -42629,7 +42629,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 55",
@@ -42637,7 +42637,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras Contabilidad, Economía o Administración",
         "experience": "1 año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 55",
@@ -42645,7 +42645,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "1 año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 55",
@@ -42653,7 +42653,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras Contabilidad, Economía o Administración",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 55",
@@ -42661,7 +42661,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4835",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 55",
@@ -42669,7 +42669,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 55",
@@ -42677,7 +42677,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Contabilidad, Economía o Administración",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 3464.19 « 1 2 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/20208/a/20250529201506a5bfc9e07964f8dddeb95fc584cd965d.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -42705,8 +42705,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf",
+    "apply_url": "https://www.gob.pe/mpfn",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
     "fuente_url": "https://www.portaltrabajos.pe/2025/05/mpfn-cusco-asistentes-en-funcion.html",
     "official_portal_name": "MINISTERIO PUBLICO - GERENCIA ADMINISTRATIVA DEL CUSCO - Portal Oficial",
     "start_date": "2026-08-25",
@@ -42723,7 +42723,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal y/o Derecho, procesal penal, y/o nuevo código procesal penal y/o Derecho constitucional, no menor a (12) horas académicas,acumulable",
         "experience": "1 año de experiencia laboral ,ya sea en el sector público o privado",
         "salary": "S/. 4051.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42731,7 +42731,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal o Derecho de familia, no menor a (12) horas académicas,acumulable",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42739,7 +42739,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal o Derecho procesal penal, no menor a (12) horas académicas,acumulable",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42747,7 +42747,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal o Derecho procesal penal, no menor a (12) horas academicas,acumulable",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42755,7 +42755,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Ingeniería de Sistemas o Ingeniería Informática",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 6201. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42763,7 +42763,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal o Derecho de familia, no menor a (12) horas académicas,acumulable",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42771,7 +42771,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal o Derecho procesal penal, no menor a (12) horas académicas,acumulable",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42779,7 +42779,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal y/o Derecho, procesal penal, y/o nuevo código procesal penal y/o Derecho constitucional, no menor a (12) horas académicas,acumulable",
         "experience": "1 año de experiencia laboral ,ya sea en el sector público o privado",
         "salary": "S/. 4051.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42787,7 +42787,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho de familia, no menor a (12) horas académicas,acumulable",
         "experience": "2 años de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42795,7 +42795,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal y/o Derecho, procesal penal, y/o nuevo código procesal penal y/o Derecho constitucional, no menor a (12) horas académicas,acumulable",
         "experience": "1 año de experiencia laboral ,ya sea en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 12",
@@ -42803,7 +42803,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8 ciclo) en las carreras de Derecho; contar con cursos, talleres, seminarios en Derecho penal y/o Derecho, procesal penal, y/o nuevo código procesal penal y/o Derecho constitucional, no menor a (12) horas académicas,acumulable",
         "experience": "1 año de experiencia laboral, ya sea en el sector público o privado",
         "salary": "S/. 4051.11 « 1 2 3 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: MPFN Cusco",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19798/a/20250509201335c20ad4d76fe97759aa27a0c99bff6710.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -42832,9 +42832,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1435",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19658/a/202504301740591ff1de774005f8da13f42943881c655f.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19657/a/2025043017382566f041e16a60928b05a7e228a89c3799.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19656/a/20250430173033fbd7939d674997cdb4692d34de8633c4.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1435",
     "fuente_url": "https://www.portaltrabajos.pe/2025/05/ministerio-publico-lambayeque-asistentes-en-funcion-fiscal.html",
@@ -42853,7 +42853,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42861,7 +42861,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Administración o Contabilidad o Economía",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4901.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42869,7 +42869,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42877,7 +42877,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42885,7 +42885,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42893,7 +42893,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42901,7 +42901,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42909,7 +42909,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 3° año (6 ciclo) en las carreras de Administración o Economía o Contabilidad",
         "experience": "01 año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4201.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42917,7 +42917,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de Derecho",
         "experience": "1 año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42925,7 +42925,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de Derecho – colegiado y habilitado",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 6201.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 010",
@@ -42933,7 +42933,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "2 años de experiencia laboral general",
         "salary": "S/. 4822.11 « 1 2 3 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19655/a/20250502101041d645920e395fedad7bbbed0eca3fe2e0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -42962,9 +42962,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1392",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19376/a/202504160930366ea9ab1baa0efb9e19094440c317e21b.pdf",
-    "cuadro_plazas_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19375/a/202504160947589778d5d219c5080b9a6a17bef029331c.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19374/a/202504160929206364d3f0f495b6ab9dcf8d3b5c6e0b01.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cuadro_plazas_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1392",
     "fuente_url": "https://www.portaltrabajos.pe/2025/04/ministerio-publico-ancash-asistentes-funcion-fiscal.html",
@@ -42983,7 +42983,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "Educación secundaria",
         "experience": "(02) años en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -42991,7 +42991,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -42999,7 +42999,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Administración o Contabilidad o Economía o Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43007,7 +43007,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43015,7 +43015,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43023,7 +43023,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43031,7 +43031,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43039,7 +43039,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 4° año (8vo ciclo) en las carreras de Derecho",
         "experience": "(01) año en el sector público o privado",
         "salary": "S/. 4051.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43047,7 +43047,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia. - (01) año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43055,7 +43055,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia. - (01) año de experiencia laboral general en el sector público o privado",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43063,7 +43063,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43071,7 +43071,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43079,7 +43079,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43087,7 +43087,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822. 11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43095,7 +43095,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43103,7 +43103,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43111,7 +43111,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43119,7 +43119,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43127,7 +43127,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43135,7 +43135,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43143,7 +43143,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43151,7 +43151,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43159,7 +43159,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43167,7 +43167,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43175,7 +43175,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43183,7 +43183,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "728 Nº 003",
@@ -43191,7 +43191,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de Derecho",
         "experience": "(02) años de experiencia",
         "salary": "S/. 4822.11 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19378/a/2025041609390467c6a1e7ce56d3d6fa748ab6d9af3fd7.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43220,9 +43220,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1384",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19237/a/20250408174857d645920e395fedad7bbbed0eca3fe2e0.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19239/a/2025040817503337693cfc748049e45d87b8c7d8b9aacd.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19223/a/20250408145347e369853df766fa44e1ed0ff613f563bd.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1400",
     "fuente_url": "https://www.portaltrabajos.pe/2025/04/ministerio-publico-asistentes-en-funcion-fiscal-auxiliar.html",
@@ -43241,7 +43241,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43249,7 +43249,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "1 año",
         "salary": "S/. 1464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43257,7 +43257,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "2 años",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43265,7 +43265,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43273,7 +43273,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "2 años",
         "salary": "S/. 4771",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43281,7 +43281,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43289,7 +43289,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de contabilidad, economía o administración",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43297,7 +43297,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de contabilidad",
         "experience": "2 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43305,7 +43305,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de contabilidad, economía o administración",
         "experience": "1 año",
         "salary": "S/. 2014.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43313,7 +43313,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de contabilidad o administración",
         "experience": "2 años",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 040",
@@ -43321,7 +43321,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "2 años",
         "salary": "S/. 3464.19 « 1 2 3 »",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19222/a/20250408145320d3d9446802a44259755d38e6d163e820.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43350,9 +43350,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1384",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19063/a/20250326094435fbd7939d674997cdb4692d34de8633c4.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19066/a/20250326094631c0c7c76d30bd3dcaefc96f40275bdc0a.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19067/a/20250326094719f033ab37c30201f73f142449d037028d.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1384",
     "fuente_url": "https://www.portaltrabajos.pe/2025/04/ministerio-publico-junin-convocatoria-2025-asistentes.html",
@@ -43371,7 +43371,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "título profesional universitaria en las carreras de derecho o derecho y ciencias políticas",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43379,7 +43379,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en la carrera de derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 2764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43387,7 +43387,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en la carrera de derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43395,7 +43395,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en la carrera de derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43403,7 +43403,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en la carrera de derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43411,7 +43411,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en la carrera de derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43419,7 +43419,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado en la carrera profesional de administración, contabilidad o derecho",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 2764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43427,7 +43427,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "constancia de bachiller universitario en derecho",
         "experience": "02 años de experiencia laboral general",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 030",
@@ -43435,7 +43435,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "estudiante universitario a partir del 3° año (6° ciclo) en la carrera de ingeniería de sistemas o ingeniería industrial o administración de empresas",
         "experience": "01 año de experiencia laboral general",
         "salary": "S/. 3264.19 « 1 2 »",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19065/a/20250326094559f457c545a9ded88f18ecee47145a72c0.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43464,9 +43464,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1354",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19058/a/2025032518080437693cfc748049e45d87b8c7d8b9aacd.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19062/a/202503261111277647966b7343c29048673252e490f736.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19061/a/2025032518100114bfa6bb14875e45bba028a21ed38046.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1354",
     "fuente_url": "https://www.portaltrabajos.pe/2025/04/ministerio-publico-ancash-convocatoria-2025.html",
@@ -43485,7 +43485,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en la carrera de ciencias de la comunicación",
         "experience": "01 año en el sector público",
         "salary": "S/. 3264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43493,7 +43493,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en la carrera de trabajo social o asistente social",
         "experience": "01 año en el sector publico",
         "salary": "S/. 3764.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43501,7 +43501,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en la carrera de derecho",
         "experience": "01 año en el sector público",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43509,7 +43509,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de derecho",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43517,7 +43517,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de derecho",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43525,7 +43525,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en la carrera de derecho",
         "experience": "01 año en el sector público",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43533,7 +43533,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en la carrera de derecho",
         "experience": "01 año en el sector publico",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43541,7 +43541,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "grado de bachiller universitario en la carrera de derecho",
         "experience": "01 año en el sector público",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 025",
@@ -43549,7 +43549,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en la carrera de derecho",
         "experience": "01 año",
         "salary": "S/. 3064.19 « 1 2 »",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19060/a/20250325180914fe9fc289c3ff0af142b6d3bead98a923.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43578,9 +43578,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1365",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19126/a/202504011714419f61408e3afb633e50cdf1b20de6f466.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19127/a/202504011715017cbbc409ec990f19c78c75bd1e06f215.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19130/a/20250401171642ad61ab143223efbc24c7d2583be69251.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1394",
     "fuente_url": "https://www.portaltrabajos.pe/2025/04/ministerio-publico-convocatoria-2025.html",
@@ -43618,9 +43618,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1365",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19035/a/202503210749168e296a067a37563370ded05f5a3bf3ec.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19038/a/20250321075147a1d0c6e83f027327d8461063f4ac58a6.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19039/a/20250321075239a684eceee76fc522773286a895bc8436.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1365",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-piura-10-asistentes.html",
@@ -43658,9 +43658,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1378",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19033/a/20250320174539a3f390d88e4c41f2747bfa2f1b5f87db.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19031/a/20250320174357e2c420d928d4bf8ce0ff2ec19b371514.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19025/a/202503201723099778d5d219c5080b9a6a17bef029331c.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1378",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-cajamarca-asistentes-.html",
@@ -43698,9 +43698,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1369",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19055/a/202503211953067cbbc409ec990f19c78c75bd1e06f215.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19054/a/20250321195202fe9fc289c3ff0af142b6d3bead98a923.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19046/a/20250321154713a684eceee76fc522773286a895bc8436.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1369",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-callao-asistentes.html",
@@ -43719,7 +43719,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de derecho",
         "experience": "02 años",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19047/a/20250321154742642e92efb79421734881b53e1e1b18b6.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 27",
@@ -43727,7 +43727,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado universitario en las carreras de ingeniería de sistemas o ingeniería informática",
         "experience": "02 años",
         "salary": "S/. 4264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19047/a/20250321154742642e92efb79421734881b53e1e1b18b6.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 27",
@@ -43735,7 +43735,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "01 año (como notificador de documentos y/o mensajero)",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19047/a/20250321154742642e92efb79421734881b53e1e1b18b6.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 27",
@@ -43743,7 +43743,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de derecho",
         "experience": "01 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19047/a/20250321154742642e92efb79421734881b53e1e1b18b6.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       },
       {
         "cas_code": "CAS Nº 27",
@@ -43751,7 +43751,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "bachiller universitario en las carreras de derecho",
         "experience": "02 años",
         "salary": "S/. 3464.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19047/a/20250321154742642e92efb79421734881b53e1e1b18b6.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43780,9 +43780,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/convoca/in-cargo/convocatoria/1346",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19048/a/2025032116584044f683a84163b3523afe57c2e008bc8c.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19051/a/20250321170121ea5d2f1c4608232e07d3aa3d998e5135.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19052/a/20250321170151c51ce410c124a10e0db5e4b97fc2af39.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1346",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-lima-asistentes-funcion-fiscal-administrativos.html",
@@ -43801,7 +43801,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "01 año",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/19050/a/202503211700329f61408e3afb633e50cdf1b20de6f466.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43830,9 +43830,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/CONVOCA",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18987/a/20250319093721c51ce410c124a10e0db5e4b97fc2af39.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18984/a/20250319093026c0c7c76d30bd3dcaefc96f40275bdc0a.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18983/a/202503190924531ff1de774005f8da13f42943881c655f.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1368",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-huanuco-asistentes-administrativos-funcion-fiscal.html",
@@ -43870,9 +43870,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/CONVOCA",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18974/a/20250318171600093f65e080a295f8076b1c5722a46aa2.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18975/a/20250318171813a5bfc9e07964f8dddeb95fc584cd965d.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18957/a/202503181033036ea9ab1baa0efb9e19094440c317e21b.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1367",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-lima-este-asistentes-administrativos-en-funcion-fiscal.html",
@@ -43910,10 +43910,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/CONVOCA",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18967/a/2025031814273998f13708210194c475687be6106a3b84.pdf",
-    "cuadro_plazas_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18968/a/20250318142839b6d767d2f8ed5d21a44b0e5886680cb9.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18970/a/202503181430352838023a778dfaecdc212708f721b788.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18971/a/20250318143108072b030ba126b2f4b2374f342be9ed44.pdf",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cuadro_plazas_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1342",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-arequipa-convocatorias-2025.html",
@@ -43932,7 +43932,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "año, experiencia laboral general en funciones relacionadas al cargo, mensajería, servicio de courier",
         "salary": "S/. 2264.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18969/a/20250318142949072b030ba126b2f4b2374f342be9ed44.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -43961,9 +43961,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/CONVOCA",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18945/a/2025031719493103afdbd66e7929b125f8597834fa83a4.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18947/a/202503171950271f0e3dad99908345f7439f8ffabdffc4.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18949/a/20250317195114ac627ab1ccbdb62ec96e702f07f6425b.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1336",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/mpfn-cusco-asistentes-en-funcion-fiscal-administrativos.html",
@@ -43982,7 +43982,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "egresado universitario en las carreras de derecho; contar con cursos, talleres",
         "experience": "(01) año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18946/a/202503181447361c383cd30b7c298ab50293adfecb7b18.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   },
@@ -44011,10 +44011,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://portal.mpfn.gob.pe/CONVOCA",
-    "bases_pdf_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18899/a/2025031319464143ec517d68b6edd3015b3edc9a11367b.pdf",
-    "cuadro_plazas_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18900/a/20250313194706d09bf41544a3365a46c9077ebb5e35c3.pdf",
-    "cronograma_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18903/a/2025031319574098dce83da57b0395e163467c9dae521b.pdf",
-    "anexos_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18904/a/202503131958006f4922f45568161a8cdf4ad2299f6d23.docx",
+    "bases_pdf_url": "https://www.gob.pe/mpfn",
+    "cuadro_plazas_url": "https://www.gob.pe/mpfn",
+    "cronograma_url": "https://www.gob.pe/mpfn",
+    "anexos_url": "https://www.gob.pe/mpfn",
     "guia_postulante_url": "https://portal.mpfn.gob.pe/convoca/media/manuales/Guia_Postulante.pdf",
     "resultados_url": "https://portal.mpfn.gob.pe/convoca/anexos/convocatoria/1347",
     "fuente_url": "https://www.portaltrabajos.pe/2025/03/ministerio-publico-convocatoria-2025-asistentes-en-funcion-fiscal.html",
@@ -44033,7 +44033,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "secundaria completa",
         "experience": "1 año",
         "salary": "S/. 3064.19",
-        "bases_url": "https://sicoin.mpfn.gob.pe/convoca/anexo-archivo/i/18901/a/20250313194731a684eceee76fc522773286a895bc8436.pdf"
+        "bases_url": "https://www.gob.pe/mpfn"
       }
     ]
   }
