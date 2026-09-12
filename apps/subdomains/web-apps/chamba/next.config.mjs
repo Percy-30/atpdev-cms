@@ -9,7 +9,18 @@ const nextConfig = {
       { protocol: 'https', hostname: 'yeeupdgjfrkkaurytyrs.supabase.co' }
     ],
   },
-  transpilePackages: ['@atpdev/database']
+  transpilePackages: ['@atpdev/database'],
+  async redirects() {
+    return [
+      { source: '/calculadora-sueldo-cas', destination: '/calculadora-sueldo', permanent: true },
+      { source: '/comparador-cas', destination: '/comparador-regimenes', permanent: true },
+      { source: '/entrevista-ia', destination: '/simulador-entrevista-ia', permanent: true },
+      { source: '/generar-cv', destination: '/crear-cv-cas', permanent: true },
+      { source: '/cv', destination: '/crear-cv-cas', permanent: true },
+      { source: '/convocatorias', destination: '/empleos', permanent: true },
+      { source: '/organizaciones', destination: '/empleos', permanent: false }
+    ];
+  }
 };
 
 export default nextConfig;
