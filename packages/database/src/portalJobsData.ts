@@ -24992,7 +24992,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "titulado profesional técnico en Analista Programador, Ciencias de la Computación, Computación e Informática, Computación y Sistemas, Informática, técnica en Ingeniería Mecánica de Producción egresado universitario en Ciencias de la Computación, Ingeniería de Computación y Sistemas",
         "experience": "(03) años",
         "salary": "S/. 5500",
-        "bases_url": "vhttps://unete.sunat.gob.pe/sites/default/files/archivos_adjuntos/183_4.pdf"
+        "bases_url": "https://unete.sunat.gob.pe/sites/default/files/archivos_adjuntos/183_4.pdf"
       },
       {
         "cas_code": "CAS Nº 184",
