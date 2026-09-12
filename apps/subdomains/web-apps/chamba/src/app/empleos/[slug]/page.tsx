@@ -505,18 +505,49 @@ export default async function JobDetailPage({
                   Visualización oficial directa del documento emitido por <b className="text-white">{job.entity_name}</b>:
                 </p>
 
-                <div className="rounded-2xl overflow-hidden border border-white/10 h-[550px] bg-slate-950 relative shadow-2xl">
-                  <iframe
-                    src={
-                      cleanBasesUrl.includes('drive.google.com/file/d/')
-                        ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
-                        : cleanBasesUrl
-                    }
-                    className="w-full h-full border-0"
-                    title={`Bases Oficiales - ${job.title}`}
-                    loading="lazy"
-                  />
-                </div>
+                {cleanBasesUrl.includes('drive.google.com') || cleanBasesUrl.includes('docs.google.com') ? (
+                  <div className="rounded-2xl overflow-hidden border border-white/10 h-[550px] bg-slate-950 relative shadow-2xl">
+                    <iframe
+                      src={
+                        cleanBasesUrl.includes('drive.google.com/file/d/')
+                          ? cleanBasesUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                          : cleanBasesUrl
+                      }
+                      className="w-full h-full border-0"
+                      title={`Bases Oficiales - ${job.title}`}
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div className="p-6 rounded-2xl bg-slate-950/80 border border-emerald-500/20 space-y-4 text-center">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
+                      <FileText size={24} />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold font-display text-base">
+                        {hasDistinctPlazaBases ? `Bases Oficiales: ${job.plazas![0].title}` : `Bases Oficiales del Concurso`}
+                      </h3>
+                      <p className="text-xs text-slate-300 mt-1 max-w-md mx-auto">
+                        {hasDistinctPlazaBases
+                          ? `Documento oficial correspondiente al puesto 1. Para descargar las bases de las demás especialidades (${job.plazas!.length} puestos), consulte la sección de plazas arriba.`
+                          : `Documento oficial verificado emitido por ${job.entity_name}.`}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                      <a
+                        href={cleanBasesUrl}
+                        target="_blank"
+                        download
+                        rel="nofollow noopener noreferrer"
+                        className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 cursor-pointer"
+                      >
+                        <FileText size={15} />
+                        <span>Descargar Bases (PDF)</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -707,13 +738,21 @@ export default async function JobDetailPage({
                       {isDoc ? (
                         <>
                           <a
-                            href={pdfTargetUrl}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
+                            href={
+                              hasDistinctPlazaBases
+                                ? '#plazas-convocadas'
+                                : pdfTargetUrl
+                            }
+                            target={hasDistinctPlazaBases ? undefined : '_blank'}
+                            rel={hasDistinctPlazaBases ? undefined : 'nofollow noopener noreferrer'}
                             className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
                           >
                             <FileText size={16} />
-                            <span>[ ABRIR BASES OFICIALES EN PDF ]</span>
+                            <span>
+                              {hasDistinctPlazaBases
+                                ? `VER ${job.plazas!.length} BASES INDIVIDUALES`
+                                : 'ABRIR BASES OFICIALES EN PDF'}
+                            </span>
                             <ExternalLink size={14} />
                           </a>
 
@@ -731,28 +770,30 @@ export default async function JobDetailPage({
                             <span>📥 Descargar Archivo Directo</span>
                           </a>
 
-                          {/* Visor interactivo incrustado de bases */}
-                          <details className="group/preview pt-1">
-                            <summary className="cursor-pointer text-xs font-mono text-emerald-400 hover:text-emerald-300 py-2.5 px-3 rounded-xl bg-slate-900/90 border border-emerald-500/20 flex items-center justify-between transition-colors list-none select-none">
-                              <span className="flex items-center gap-2">
-                                <FileText size={14} className="text-emerald-400" />
-                                <span>Visualizar documento aquí</span>
-                              </span>
-                              <span className="text-[10px] text-slate-400 group-open/preview:rotate-180 transition-transform">▼</span>
-                            </summary>
-                            <div className="mt-2 rounded-2xl overflow-hidden border border-white/10 h-80 bg-slate-950/90">
-                              <iframe
-                                src={
-                                  pdfTargetUrl.includes('drive.google.com/file/d/')
-                                    ? pdfTargetUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
-                                    : pdfTargetUrl
-                                }
-                                className="w-full h-full border-0"
-                                title="Visor de Bases Oficiales"
-                                loading="lazy"
-                              />
-                            </div>
-                          </details>
+                          {/* Visor interactivo incrustado solo para Google Drive / Docs */}
+                          {(pdfTargetUrl.includes('drive.google.com') || pdfTargetUrl.includes('docs.google.com')) && (
+                            <details className="group/preview pt-1">
+                              <summary className="cursor-pointer text-xs font-mono text-emerald-400 hover:text-emerald-300 py-2.5 px-3 rounded-xl bg-slate-900/90 border border-emerald-500/20 flex items-center justify-between transition-colors list-none select-none">
+                                <span className="flex items-center gap-2">
+                                  <FileText size={14} className="text-emerald-400" />
+                                  <span>Visualizar documento aquí</span>
+                                </span>
+                                <span className="text-[10px] text-slate-400 group-open/preview:rotate-180 transition-transform">▼</span>
+                              </summary>
+                              <div className="mt-2 rounded-2xl overflow-hidden border border-white/10 h-80 bg-slate-950/90">
+                                <iframe
+                                  src={
+                                    pdfTargetUrl.includes('drive.google.com/file/d/')
+                                      ? pdfTargetUrl.replace(/drive\.google\.com\/file\/d\/([^\/?#]+).*/, 'https://drive.google.com/file/d/$1/preview')
+                                      : pdfTargetUrl
+                                  }
+                                  className="w-full h-full border-0"
+                                  title="Visor de Bases Oficiales"
+                                  loading="lazy"
+                                />
+                              </div>
+                            </details>
+                          )}
                         </>
                       ) : (
                         <a
@@ -762,7 +803,7 @@ export default async function JobDetailPage({
                           className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
                         >
                           <ExternalLink size={16} />
-                          <span>[ VER BASES EN PORTAL OFICIAL ]</span>
+                          <span>VER BASES EN PORTAL OFICIAL</span>
                         </a>
                       )}
 
