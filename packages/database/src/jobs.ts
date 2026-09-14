@@ -309,7 +309,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 078",
-            "title": "(1) GESTOR/A INSTITUCIONAL JUNÍN - SANTO DOMINGO DE\n          ACOBAMBA",
+            "title": "(1) GESTOR/A INSTITUCIONAL JUNÍN - SANTO DOMINGO DE ACOBAMBA",
             "education": "bachiller universitario en Ciencias Sociales, administrativas, económicas, agrarias, forestales, Educación, Comunicaciones, salud, Psicología, Ecología, veterinaria, Zootecnia, Industrias Alimentarias o Ingeniería Agropecuaria o afines por la formación.",
             "experience": "(02) años de Experiencia General en el sector público o privado.",
             "salary": "S/. 3000",
@@ -467,7 +467,7 @@ export const INITIAL_JOBS: JobPosting[] = [
     plazas: [
       {
             "cas_code": "CAS Nº 123",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL CAJAMARCA -\n          CAJAMARCA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL CAJAMARCA - CAJAMARCA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -475,7 +475,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 124",
-            "title": "(1) GESTOR LOCAL - ZONA ALEJADA PARA LA UNIDAD TERRITORIAL\n          CAJAMARCA - JAEN",
+            "title": "(1) GESTOR LOCAL - ZONA ALEJADA PARA LA UNIDAD TERRITORIAL CAJAMARCA - JAEN",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 3000",
@@ -515,7 +515,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 131",
-            "title": "(1) ASISTENTE DE ARCHIVO PARA LA UNIDAD TERRITORIAL LIMA -\n          LIMA",
+            "title": "(1) ASISTENTE DE ARCHIVO PARA LA UNIDAD TERRITORIAL LIMA - LIMA",
             "education": "Egresado técnico básico y/o egresado técnico superior en las carreras de Administración, Secretariado, Archivística, Computación, Gestión Documental, Historia, Bibliotecología o afines por la formación. O egresado universitario en las",
             "experience": "de (01) año en el sector público y/o privado.",
             "salary": "S/. 1700",
@@ -523,7 +523,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 132",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          LIRCAY",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA - LIRCAY",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -531,7 +531,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 133",
-            "title": "(2) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          CHURCAMPA",
+            "title": "(2) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA - CHURCAMPA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -539,7 +539,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 134",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          HUANCAVELICA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA - HUANCAVELICA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -547,7 +547,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 135",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA -\n          HUANCAVELICA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUANCAVELICA - HUANCAVELICA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -555,7 +555,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 137",
-            "title": "(1) TÉCNICO DE ORIENTACIÓN Y ATENCIÓN AL USUARIO&nbsp;\n          PARA LA UNIDAD TERRITORIAL AMAZONAS CONDORCANQUI - NIEVA",
+            "title": "(1) TÉCNICO DE ORIENTACIÓN Y ATENCIÓN AL USUARIO PARA LA UNIDAD TERRITORIAL AMAZONAS CONDORCANQUI - NIEVA",
             "education": "Titulado Técnico Superior en Administración, Secretariado Ejecutivo o Computación e Informática, Egresado universitario en Administración, Derecho o Ciencias de la Comunicación.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 1700",
@@ -563,7 +563,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 138",
-            "title": "(2) GESTORES LOCALES PARA LA UNIDAD TERRITORIAL AMAZONAS\n          BAGUA&nbsp;",
+            "title": "(2) GESTORES LOCALES PARA LA UNIDAD TERRITORIAL AMAZONAS BAGUA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -571,7 +571,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 139",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL APURÍMAC\n          APURÍMAC - CHINCHEROS",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL APURÍMAC APURÍMAC - CHINCHEROS",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -579,7 +579,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 140",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL APURÍMAC -\n          CHALHUANCA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL APURÍMAC - CHALHUANCA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -587,7 +587,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 141",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL CUSCO -\n          KIMBIRI",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL CUSCO - KIMBIRI",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -603,7 +603,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 143",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL ÁNCASH -\n          POMABAMBA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL ÁNCASH - POMABAMBA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -611,7 +611,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 144",
-            "title": "(1) GESTOR DE DESARROLLO SOCIAL PARA LA UNIDAD TERRITORIAL\n          AYACUCHO - HUANTA",
+            "title": "(1) GESTOR DE DESARROLLO SOCIAL PARA LA UNIDAD TERRITORIAL AYACUCHO - HUANTA",
             "education": "Título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (03) años en el sector público y/o privado.",
             "salary": "S/. 3000",
@@ -619,7 +619,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 145",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LORETO -\n          REQUENA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LORETO - REQUENA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -627,7 +627,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 146",
-            "title": "(1) ADMINISTRADOR PARA LA UNIDAD TERRITORIAL LORETO -\n          IQUITOS",
+            "title": "(1) ADMINISTRADOR PARA LA UNIDAD TERRITORIAL LORETO - IQUITOS",
             "education": "Título universitario en Ciencias Administrativas o Ciencias Económicas o Ciencias Contables o Ingeniería Industrial o afines por la formación.",
             "experience": "de (05) años en el sector público y/o privado.",
             "salary": "S/. 4000",
@@ -635,7 +635,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 147",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LORETO\n          YURIMAGUAS LORETO - YURIMAGUAS",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL LORETO YURIMAGUAS LORETO - YURIMAGUAS",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -643,7 +643,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 148",
-            "title": "(1) ADMINISTRADOR PARA LA UNIDAD TERRITORIAL MADRE DE DIOS\n          MADRE DE DIOS - TAMBOPATA",
+            "title": "(1) ADMINISTRADOR PARA LA UNIDAD TERRITORIAL MADRE DE DIOS MADRE DE DIOS - TAMBOPATA",
             "education": "Título universitario en Ciencias Administrativas o Ciencias Económicas o Ciencias Contables o Ingeniería Industrial o afines por la formación.",
             "experience": "de (05) años en el sector público y/o privado.",
             "salary": "S/. 4000",
@@ -651,7 +651,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 149",
-            "title": "(1) COORDINADOR/A TÉCNICO ZONAL PARA LA UNIDAD TERRITORIAL\n          TACNA TACNA - TACNA",
+            "title": "(1) COORDINADOR/A TÉCNICO ZONAL PARA LA UNIDAD TERRITORIAL TACNA TACNA - TACNA",
             "education": "Título profesional universitario en Ciencias Sociales, Ciencias Económicas y Administrativas, Ciencias de la Salud, Educación, Ciencias Agropecuarias, Ingeniería e Informática o afines por la formación.",
             "experience": "de (06) años en el sector público y/o privado.",
             "salary": "S/. 3500",
@@ -659,7 +659,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 150",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUÁNUCO\n          HUÁNUCO - LLATA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUÁNUCO HUÁNUCO - LLATA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -667,7 +667,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 151",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUÁNUCO\n          HUÁNUCO - RUPA-RUPA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL HUÁNUCO HUÁNUCO - RUPA-RUPA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -675,7 +675,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 152",
-            "title": "(1) GESTOR LOCAL - ZONA ALEJADA PARA LA UNIDAD TERRITORIAL\n          SAN MARTÍN SAN MARTÍN - HUICUNGO",
+            "title": "(1) GESTOR LOCAL - ZONA ALEJADA PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN MARTÍN - HUICUNGO",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 3000",
@@ -683,7 +683,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 153",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN\n          MARTÍN - RIOJA",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN MARTÍN - RIOJA",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -691,7 +691,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 154",
-            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN\n          MARTÍN - TOCACHE",
+            "title": "(1) GESTOR LOCAL PARA LA UNIDAD TERRITORIAL SAN MARTÍN SAN MARTÍN - TOCACHE",
             "education": "título técnico superior o egresado universitario, o bachiller o título universitario en todas las carreras.",
             "experience": "de (02) años en el sector público y/o privado.",
             "salary": "S/. 2000",
@@ -957,7 +957,7 @@ export const INITIAL_JOBS: JobPosting[] = [
             "title": "(1) TRABAJADORA SOCIAL JUNÍN - ORCOTUNA",
             "education": "titulado en la carrera de Trabajo Social, colegiado, habilitado y resoluciòn de termino de serums",
             "experience": "01 año de experiencia",
-            "salary": "S/. 5300 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Red de Salud Valle del Mantaro",
+            "salary": "S/. 5,300.00",
             "bases_url": "https://www.rsvm.gob.pe/intranet/convocatoriadet/685.pdf"
       }
 ]
@@ -1017,7 +1017,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 3",
-            "title": "(1) ESPECIALISTA EN GESTIÓN DEL TALENTO HUMANO PIURA -\n          SULLANA",
+            "title": "(1) ESPECIALISTA EN GESTIÓN DEL TALENTO HUMANO PIURA - SULLANA",
             "education": "bachiller y/o título profesional",
             "experience": "(02) años de experiencia laboral en el sector público o privado (01) año en puesto o cargos en el sector público o privado. - Especialización: Derecho, Psicología, Ingeniería Industrial, Administración, Economía o afines por la formación",
             "salary": "S/. 4500",
@@ -1068,7 +1068,7 @@ export const INITIAL_JOBS: JobPosting[] = [
             "title": "(1) RESPONSABLE DE ARCHIVO PIURA - SULLANA",
             "education": "bachiller y/o título profesional",
             "experience": "(02) años de experiencia laboral en el sector público o privado. - (01) año en puesto o cargos en el sector público o privado. - Especialización: Administración, Economía, Contabilidad, Derecho o afines por la formación",
-            "salary": "S/. 3000 « 1 2 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: SAT Sullana",
+            "salary": "S/. 3,000.00",
             "bases_url": "https://cdn.www.gob.pe/uploads/document/file/10555860/8551023-perfiles-anexo-a-cas-003-2026-sat-sullana.pdf?v=1788386759"
       }
 ]
@@ -1444,7 +1444,7 @@ export const INITIAL_JOBS: JobPosting[] = [
       },
       {
             "cas_code": "CAS Nº 103",
-            "title": "(1) INGENIERO CIVIL ESPECIALISTA EN ESTRUCTURAS LIMA -\n          LIMA",
+            "title": "(1) INGENIERO CIVIL ESPECIALISTA EN ESTRUCTURAS LIMA - LIMA",
             "education": "título profesional universitario en la carrera de Ingeniería Civil. - Colegiatura y habilitación profesional vigente",
             "experience": "06 años experiencia laboral general",
             "salary": "S/. 8864.19",
@@ -1543,7 +1543,7 @@ export const INITIAL_JOBS: JobPosting[] = [
             "title": "(1) PERITO LIMA - LIMA",
             "education": "titulado universitario en las carreras de Contabilidad",
             "experience": "4 años experiencia laboral general",
-            "salary": "S/. 6300 « 1 2 3 4 5 6 » DETALLES DE POSTULACIÓN PUBLICACIÓN DE LA CONVOCATORIA: Publicación oficial de la convocatoria, en la opción trabaja con nosotros, en el portal web institucional: Ministerio Publico",
+            "salary": "S/. 6,300.00",
             "bases_url": "https://archivos.mpfn.gob.pe/convoca/anexo-archivo/i/29159"
       }
 ]
