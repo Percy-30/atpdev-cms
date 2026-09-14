@@ -2635,11 +2635,25 @@ export function sanitizeOfficialUrl(
 }
 
 // Local submissions persistence shared across monorepo apps (chamba on port 3005 and admin on port 3003)
+function getSafeNodeModules() {
+  try {
+    if (typeof window !== 'undefined' || typeof process === 'undefined' || !process.versions?.node) {
+      return { fs: null, path: null };
+    }
+    const nodeReq = eval('require');
+    return {
+      fs: nodeReq('fs'),
+      path: nodeReq('path')
+    };
+  } catch {
+    return { fs: null, path: null };
+  }
+}
+
 function getSubmissionsFilePath(): string | null {
   try {
-    if (typeof (globalThis as any).window !== 'undefined') return null;
-    const pathMod = require('path');
-    const fsMod = require('fs');
+    const { fs: fsMod, path: pathMod } = getSafeNodeModules();
+    if (!fsMod || !pathMod) return null;
 
     const cwd = process.cwd();
     const candidates = [
@@ -2665,8 +2679,8 @@ function getSubmissionsFilePath(): string | null {
 
 export function loadPersistedSubmissions(): JobPosting[] {
   try {
-    if (typeof (globalThis as any).window !== 'undefined') return [];
-    const fsMod = require('fs');
+    const { fs: fsMod } = getSafeNodeModules();
+    if (!fsMod) return [];
     const filePath = getSubmissionsFilePath();
     if (filePath && fsMod.existsSync(filePath)) {
       const raw = fsMod.readFileSync(filePath, 'utf-8');
@@ -2682,8 +2696,8 @@ export function loadPersistedSubmissions(): JobPosting[] {
 
 export function persistSubmissions(submissions: JobPosting[]): void {
   try {
-    if (typeof (globalThis as any).window !== 'undefined') return;
-    const fsMod = require('fs');
+    const { fs: fsMod } = getSafeNodeModules();
+    if (!fsMod) return;
     const filePath = getSubmissionsFilePath();
     if (filePath) {
       fsMod.writeFileSync(filePath, JSON.stringify(submissions, null, 2), 'utf-8');

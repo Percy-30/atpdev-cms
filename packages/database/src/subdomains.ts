@@ -154,11 +154,25 @@ export const DEFAULT_CHAMBA_CONFIG: SubdomainConfig = {
   updated_at: new Date().toISOString()
 };
 
+function getSafeNodeModules() {
+  try {
+    if (typeof window !== 'undefined' || typeof process === 'undefined' || !process.versions?.node) {
+      return { fs: null, path: null };
+    }
+    const nodeReq = eval('require');
+    return {
+      fs: nodeReq('fs'),
+      path: nodeReq('path')
+    };
+  } catch {
+    return { fs: null, path: null };
+  }
+}
+
 function getConfigFilePath(): string | null {
   try {
-    if (typeof (globalThis as any).window !== 'undefined') return null;
-    const pathMod = require('path');
-    const fsMod = require('fs');
+    const { fs: fsMod, path: pathMod } = getSafeNodeModules();
+    if (!fsMod || !pathMod) return null;
 
     const cwd = process.cwd();
     const possiblePaths = [
@@ -189,8 +203,8 @@ let inMemoryConfigs: Record<string, SubdomainConfig> = {
 
 export function listSubdomains(): SubdomainConfig[] {
   try {
-    if (typeof (globalThis as any).window !== 'undefined') return Object.values(inMemoryConfigs);
-    const fsMod = require('fs');
+    const { fs: fsMod } = getSafeNodeModules();
+    if (!fsMod) return Object.values(inMemoryConfigs);
     const filePath = getConfigFilePath();
     if (filePath && fsMod.existsSync(filePath)) {
       const data = JSON.parse(fsMod.readFileSync(filePath, 'utf-8'));
@@ -206,8 +220,8 @@ export function listSubdomains(): SubdomainConfig[] {
 
 export function getSubdomainConfig(id: string): SubdomainConfig {
   try {
-    if (typeof (globalThis as any).window !== 'undefined') return inMemoryConfigs[id] || { ...DEFAULT_CHAMBA_CONFIG };
-    const fsMod = require('fs');
+    const { fs: fsMod } = getSafeNodeModules();
+    if (!fsMod) return inMemoryConfigs[id] || { ...DEFAULT_CHAMBA_CONFIG };
     const filePath = getConfigFilePath();
     if (filePath && fsMod.existsSync(filePath)) {
       const data = JSON.parse(fsMod.readFileSync(filePath, 'utf-8'));
@@ -237,9 +251,8 @@ export function saveSubdomainConfig(id: string, updates: Partial<SubdomainConfig
 
     inMemoryConfigs[id] = updated;
 
-    if (typeof (globalThis as any).window === 'undefined') {
-      const fsMod = require('fs');
-      const pathMod = require('path');
+    const { fs: fsMod, path: pathMod } = getSafeNodeModules();
+    if (fsMod && pathMod) {
       const filePath = getConfigFilePath();
       if (filePath) {
         const dir = pathMod.dirname(filePath);

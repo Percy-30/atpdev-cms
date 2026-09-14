@@ -586,7 +586,8 @@ let cachedCdJobs: { data: JobPosting[]; timestamp: number } = {
 let isRefreshingCd = false;
 
 export async function scrapeConvocatoriasDeTrabajo(): Promise<JobPosting[]> {
-  if (cachedCdJobs.data.length > 0 && Date.now() - cachedCdJobs.timestamp < 1000 * 60 * 60) {
+  // Cooldown de 10 minutos si falló o si ya se ejecutó recientemente
+  if (Date.now() - cachedCdJobs.timestamp < 1000 * 60 * 10) {
     return cachedCdJobs.data;
   }
   // Disparar actualización en segundo plano sin bloquear la respuesta del servidor (0ms)
@@ -601,10 +602,9 @@ export async function scrapeConvocatoriasDeTrabajo(): Promise<JobPosting[]> {
 
 export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPosting[]> {
   try {
-    console.log("⚡ [ConvocatoriasDeTrabajo Scraper] Extrayendo ofertas en tiempo real de convocatoriasdetrabajo.com...");
     const res = await fetch('https://www.convocatoriasdetrabajo.com/', {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(4000)
     });
     if (!res.ok) return cachedCdJobs.data;
     const html = await res.text();
@@ -723,8 +723,10 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
       onJobsUpdatedCallback?.();
     }
     return jobs;
-  } catch (err) {
-    console.error("❌ [ConvocatoriasDeTrabajo Scraper] Error:", err);
+  } catch (err: any) {
+    cachedCdJobs.timestamp = Date.now();
+    const reason = err?.cause?.code || err?.code || err?.message || 'timeout';
+    console.warn(`⚠️ [ConvocatoriasDeTrabajo Scraper] Feed en pausa temporal (${reason}). Usando catálogo verificado local.`);
     return cachedCdJobs.data;
   }
 }

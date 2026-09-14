@@ -158,7 +158,7 @@ export default function RootLayout({
         {(theme.font_headline || theme.font_body || theme.font_label) && (
           <link
             rel="stylesheet"
-            href={`https://fonts.googleapis.com/css2?${[theme.font_headline, theme.font_body, theme.font_label].filter(Boolean).map((f: string) => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700;800;900`).join('&')}&display=swap`}
+            href={`https://fonts.googleapis.com/css2?${[theme.font_headline, theme.font_body, theme.font_label].filter((f): f is string => Boolean(f)).map((f: string) => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700;800;900`).join('&')}&display=swap`}
           />
         )}
         {/* Google AdSense Script Inyección Oficial */}
