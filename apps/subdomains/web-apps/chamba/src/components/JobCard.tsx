@@ -72,7 +72,7 @@ export function JobCard({ job }: JobCardProps) {
 
         {/* Meta badges row */}
         <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-300">
-          <span className="px-3 py-1 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-400 font-extrabold shadow-[0_0_12px_rgba(16,185,129,0.1)]">
+          <span className="salary-pill px-3 py-1 rounded-xl font-extrabold flex items-center gap-1.5 shadow-sm">
             {job.salary_text}
           </span>
           <span className="px-2.5 py-1 rounded-xl bg-slate-900/90 border border-white/10 text-slate-300 flex items-center gap-1.5">
@@ -99,7 +99,7 @@ export function JobCard({ job }: JobCardProps) {
         {/* Ver Detalles CTA */}
         <Link
           href={`/empleos/${job.slug}`}
-          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500/15 via-teal-500/20 to-emerald-500/15 hover:from-emerald-400 hover:via-teal-400 hover:to-emerald-400 text-emerald-300 hover:text-slate-950 font-bold font-display transition-all duration-200 flex items-center justify-center gap-1.5 border border-emerald-500/30 hover:border-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.15)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] group/btn cursor-pointer"
+          className="btn-brand-gradient px-4 py-2 rounded-xl font-bold font-display text-xs transition-all duration-200 flex items-center justify-center gap-1.5 hover:scale-[1.03] active:scale-[0.98] group/btn cursor-pointer shadow-md"
           aria-label={`Ver detalles, bases y requisitos de ${job.title}`}
         >
           <span>Ver Detalles</span>

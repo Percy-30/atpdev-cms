@@ -211,7 +211,7 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                       </span>
                     )}
                     {plaza.salary && (
-                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold max-w-full truncate shadow-sm shrink-0">
+                      <div className="salary-pill flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono text-xs font-bold max-w-full truncate shadow-sm shrink-0">
                         <Banknote size={14} className="shrink-0" />
                         <span className="truncate">{plaza.salary}</span>
                       </div>

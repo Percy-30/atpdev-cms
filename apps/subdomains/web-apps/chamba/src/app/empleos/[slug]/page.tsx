@@ -952,10 +952,10 @@ export default async function JobDetailPage({
                             href={targetPortal}
                             target="_blank"
                             rel="nofollow noopener noreferrer"
-                            className="w-full py-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-slate-400 hover:text-slate-200 font-mono text-[11px] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
+                            className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-300 dark:border-white/10 text-slate-800 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white font-mono text-xs transition-all flex items-center justify-center gap-2 cursor-pointer mt-2 shadow-sm font-bold"
                           >
                             <span>🔗 Ver Portal Institucional Oficial</span>
-                            <ExternalLink size={12} />
+                            <ExternalLink size={13} />
                           </a>
                         );
                       })()}
