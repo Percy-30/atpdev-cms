@@ -3430,9 +3430,11 @@ export default function ChambaAdminClient({ initialJobs, initialConfig }: Chamba
                                 }
                               });
                             }}
-                            className="sr-only peer"
+                            className="sr-only"
                           />
-                          <div className="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-500"></div>
+                          <div className={`w-10 h-5.5 rounded-full transition-colors duration-200 ease-in-out flex items-center p-0.5 ${isChecked ? 'bg-blue-600 border border-blue-500 shadow-sm shadow-blue-500/20' : 'bg-slate-800 border border-slate-700'}`}>
+                            <div className={`w-4.5 h-4.5 rounded-full bg-white transition-transform duration-200 ease-in-out shadow ${isChecked ? 'translate-x-4' : 'translate-x-0'}`} />
+                          </div>
                         </label>
                       </div>
                     );
