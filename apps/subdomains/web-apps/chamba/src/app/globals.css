@@ -457,6 +457,14 @@ html.light .glass-card .bg-slate-900 svg {
   color: #64748b !important;
 }
 
+/* Region Cards Count Pill in Light Mode */
+html.light .regiones-count-pill {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
 /* Neutralize dark card gradients & callouts in Light Mode */
 html.light header.rounded-3xl,
 html.light section.rounded-3xl,

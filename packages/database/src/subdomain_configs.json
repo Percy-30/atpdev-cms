@@ -59,11 +59,15 @@
       "salary_calculator_enabled": true,
       "regimes_comparator_enabled": true,
       "ai_simulator_enabled": true,
-      "cv_generator_enabled": true
+      "cv_generator_enabled": true,
+      "whatsapp_channel_enabled": true,
+      "telegram_channel_enabled": true
     },
     "contact": {
       "email": "contacto@atpdev.dev",
       "whatsapp": "+51987654321",
+      "whatsapp_channel_url": "https://whatsapp.com/channel/0029Vaexample",
+      "telegram_channel_url": "https://t.me/chambapro_peru",
       "support_url": "https://empleos.atpdev.dev/contacto"
     },
     "updated_at": "2026-09-13T18:20:36.951Z"

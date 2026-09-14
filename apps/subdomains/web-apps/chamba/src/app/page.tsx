@@ -215,9 +215,14 @@ export default async function HomePage() {
           <RegionesGrid />
         </section>
 
-        {/* WhatsApp Subscriptions Banner */}
+        {/* WhatsApp & Telegram Subscriptions Banner */}
         <section>
-          <WhatsAppSubscribeWidget />
+          <WhatsAppSubscribeWidget 
+            whatsappEnabled={config.modules?.whatsapp_channel_enabled ?? true}
+            telegramEnabled={config.modules?.telegram_channel_enabled ?? true}
+            whatsappUrl={config.contact?.whatsapp_channel_url || (config.contact?.whatsapp ? `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, '')}` : undefined)}
+            telegramUrl={config.contact?.telegram_channel_url || 'https://t.me/chambapro_peru'}
+          />
         </section>
 
         {/* High Utility Tools Banner (Calculadora, Examen CAS, Entrevista IA, Generador CV, Comparador, Plantillas) */}

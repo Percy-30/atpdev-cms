@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import WhatsAppSubscribeWidget from '@/components/WhatsAppSubscribeWidget';
+import { getSubdomainConfig } from '@atpdev/database';
 import { ShieldCheck, CheckCircle2, Award, ExternalLink, Zap, Users, Lock } from 'lucide-react';
 
 import type { Metadata } from 'next';
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function QuienesSomosPage() {
+export default async function QuienesSomosPage() {
+  const config = await getSubdomainConfig('chamba');
   return (
     <div className="min-h-screen bg-[#070d14] text-slate-100 font-sans py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-16">
@@ -106,8 +108,13 @@ export default function QuienesSomosPage() {
           </div>
         </div>
 
-        {/* WhatsApp Widget */}
-        <WhatsAppSubscribeWidget />
+        {/* WhatsApp & Telegram Widget */}
+        <WhatsAppSubscribeWidget 
+          whatsappEnabled={config.modules?.whatsapp_channel_enabled ?? true}
+          telegramEnabled={config.modules?.telegram_channel_enabled ?? true}
+          whatsappUrl={config.contact?.whatsapp_channel_url || (config.contact?.whatsapp ? `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, '')}` : undefined)}
+          telegramUrl={config.contact?.telegram_channel_url || 'https://t.me/chambapro_peru'}
+        />
 
       </div>
     </div>

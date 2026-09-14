@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getJobPostings } from "@atpdev/database";
+import { getJobPostings, getSubdomainConfig } from "@atpdev/database";
 import { JobCard } from "@/components/JobCard";
 import { JobFilterClient } from "@/components/JobFilterClient";
 import WhatsAppSubscribeWidget from "@/components/WhatsAppSubscribeWidget";
@@ -37,7 +37,10 @@ export default async function EmpleosPage({
   const sort = params.sort || "ending_soon";
   const hideExpired = params.hide_expired !== "false"; // Por defecto true para no mostrar ofertas vencidas
 
-  const allJobs = await getJobPostings();
+  const [allJobs, config] = await Promise.all([
+    getJobPostings(),
+    getSubdomainConfig("chamba")
+  ]);
   const todayIso = new Date().toISOString().split("T")[0];
 
   const parseSalaryNumber = (s: string) => {
@@ -176,7 +179,12 @@ export default async function EmpleosPage({
       </div>
 
       {/* WhatsApp / Telegram Subscription Widget */}
-      <WhatsAppSubscribeWidget />
+      <WhatsAppSubscribeWidget 
+        whatsappEnabled={config.modules?.whatsapp_channel_enabled ?? true}
+        telegramEnabled={config.modules?.telegram_channel_enabled ?? true}
+        whatsappUrl={config.contact?.whatsapp_channel_url || (config.contact?.whatsapp ? `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, '')}` : undefined)}
+        telegramUrl={config.contact?.telegram_channel_url || 'https://t.me/chambapro_peru'}
+      />
     </div>
   );
 }

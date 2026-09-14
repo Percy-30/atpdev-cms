@@ -41,13 +41,13 @@ export function RegionesGrid() {
           <Link
             key={reg.name}
             href={`/empleos?region=${encodeURIComponent(reg.name)}`}
-            className={`p-4 rounded-2xl bg-gradient-to-br ${reg.color} border ${reg.border} hover:scale-[1.04] transition-all duration-300 group relative overflow-hidden backdrop-blur-md shadow-lg hover:shadow-[0_10px_25px_rgba(0,0,0,0.5)]`}
+            className={`p-4 rounded-2xl bg-gradient-to-br ${reg.color} border ${reg.border} hover:scale-[1.04] transition-all duration-300 group relative overflow-hidden backdrop-blur-md shadow-sm hover:shadow-md dark:shadow-lg dark:hover:shadow-[0_10px_25px_rgba(0,0,0,0.5)]`}
           >
             <div className="flex items-center justify-between gap-1">
-              <span className="text-xs font-mono text-slate-200 font-bold block truncate group-hover:text-white transition-colors">{reg.label}</span>
-              <ChevronRight size={14} className="text-slate-400 group-hover:text-emerald-300 group-hover:translate-x-1 transition-all flex-shrink-0" />
+              <span className="text-xs font-display text-slate-900 dark:text-slate-200 font-extrabold block truncate group-hover:text-emerald-700 dark:group-hover:text-white transition-colors">{reg.label}</span>
+              <ChevronRight size={14} className="text-slate-600 dark:text-slate-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </div>
-            <span className="inline-block text-[11px] font-mono text-emerald-300 font-extrabold mt-2 px-2 py-0.5 rounded-md bg-black/40 border border-white/5">
+            <span className="regiones-count-pill inline-block text-[11px] font-mono text-slate-900 dark:text-emerald-300 font-black mt-2.5 px-2.5 py-0.5 rounded-lg bg-white/90 dark:bg-black/40 border border-black/10 dark:border-white/10 shadow-sm">
               {reg.count}
             </span>
           </Link>

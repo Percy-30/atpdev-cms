@@ -3284,7 +3284,7 @@ export default function ChambaAdminClient({ initialJobs, initialConfig }: Chamba
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-mono text-slate-300 font-semibold">
-                      WhatsApp de Consultas
+                      WhatsApp de Consultas / Soporte
                     </label>
                     <input
                       type="text"
@@ -3292,6 +3292,40 @@ export default function ChambaAdminClient({ initialJobs, initialConfig }: Chamba
                       onChange={e => setSiteConfig({
                         ...siteConfig,
                         contact: { ...siteConfig.contact, whatsapp: e.target.value }
+                      })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-mono text-slate-300 font-semibold flex items-center gap-1.5">
+                      <span>Enlace Canal de WhatsApp</span>
+                      <span className="text-[10px] text-emerald-400 font-normal">(/alertas)</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="https://whatsapp.com/channel/..."
+                      value={siteConfig.contact.whatsapp_channel_url || ''}
+                      onChange={e => setSiteConfig({
+                        ...siteConfig,
+                        contact: { ...siteConfig.contact, whatsapp_channel_url: e.target.value }
+                      })}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-mono text-slate-300 font-semibold flex items-center gap-1.5">
+                      <span>Enlace Canal de Telegram</span>
+                      <span className="text-[10px] text-sky-400 font-normal">(t.me/...)</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="https://t.me/chambapro_peru"
+                      value={siteConfig.contact.telegram_channel_url || ''}
+                      onChange={e => setSiteConfig({
+                        ...siteConfig,
+                        contact: { ...siteConfig.contact, telegram_channel_url: e.target.value }
                       })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
                     />
@@ -3313,6 +3347,18 @@ export default function ChambaAdminClient({ initialJobs, initialConfig }: Chamba
 
                 <div className="space-y-3">
                   {[
+                    {
+                      key: 'whatsapp_channel_enabled',
+                      label: 'Canal de Alertas WhatsApp',
+                      desc: 'Muestra el botón y widget de suscripción directa a WhatsApp.',
+                      badge: 'Comunidad'
+                    },
+                    {
+                      key: 'telegram_channel_enabled',
+                      label: 'Canal de Alertas Telegram',
+                      desc: 'Muestra el botón de unión al canal oficial de Telegram.',
+                      badge: 'Comunidad'
+                    },
                     {
                       key: 'scraper_enabled',
                       label: 'Motor Scraper SERVIR',

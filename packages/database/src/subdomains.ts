@@ -49,11 +49,15 @@ export interface SubdomainModules {
   regimes_comparator_enabled: boolean;
   ai_simulator_enabled: boolean;
   cv_generator_enabled: boolean;
+  whatsapp_channel_enabled?: boolean;
+  telegram_channel_enabled?: boolean;
 }
 
 export interface SubdomainContact {
   email: string;
   whatsapp: string;
+  whatsapp_channel_url?: string;
+  telegram_channel_url?: string;
   support_url?: string;
 }
 
@@ -144,11 +148,15 @@ export const DEFAULT_CHAMBA_CONFIG: SubdomainConfig = {
     salary_calculator_enabled: true,
     regimes_comparator_enabled: true,
     ai_simulator_enabled: true,
-    cv_generator_enabled: true
+    cv_generator_enabled: true,
+    whatsapp_channel_enabled: true,
+    telegram_channel_enabled: true
   },
   contact: {
     email: 'contacto@atpdev.dev',
     whatsapp: '+51987654321',
+    whatsapp_channel_url: 'https://whatsapp.com/channel/0029Vaexample',
+    telegram_channel_url: 'https://t.me/chambapro_peru',
     support_url: 'https://empleos.atpdev.dev/contacto'
   },
   updated_at: new Date().toISOString()
