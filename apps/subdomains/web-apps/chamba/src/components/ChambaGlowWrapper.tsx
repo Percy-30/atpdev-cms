@@ -13,68 +13,74 @@ export function ChambaGlowWrapper({ children, enabled = true, className = "" }: 
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !enabled) return;
+
+    let activeCard: HTMLElement | null = null;
+    let rafId: number | null = null;
+    let latestEvent: PointerEvent | null = null;
+
+    const updateActiveCard = () => {
+      if (!latestEvent || !activeCard) {
+        rafId = null;
+        return;
+      }
+
+      const rect = activeCard.getBoundingClientRect();
+      const x = latestEvent.clientX - rect.left;
+      const y = latestEvent.clientY - rect.top;
+
+      activeCard.style.setProperty('--x', `${x}px`);
+      activeCard.style.setProperty('--y', `${y}px`);
+
+      const mode = document.body.getAttribute("data-interaction") || "";
+      if (mode.includes("tilt")) {
+        const px = x / rect.width - 0.5;
+        const py = y / rect.height - 0.5;
+        activeCard.style.transform = `rotateY(${px * 10}deg) rotateX(${-py * 10}deg)`;
+      }
+
+      rafId = null;
+    };
 
     const handlePointerMove = (e: PointerEvent) => {
-      const mode = document.body.getAttribute("data-interaction") || "spotlight-border";
-      const cards = container.querySelectorAll('.interactive-card, .glass-card');
-      
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Track mouse coordinates for neon spotlight & effects
-        (card as HTMLElement).style.setProperty('--x', `${x}px`);
-        (card as HTMLElement).style.setProperty('--y', `${y}px`);
-        
-        if (mode.includes("tilt")) {
-          const px = (e.clientX - rect.left) / rect.width - 0.5;
-          const py = (e.clientY - rect.top) / rect.height - 0.5;
-          (card as HTMLElement).style.transform = `rotateY(${px * 14}deg) rotateX(${-py * 14}deg)`;
-        }
-      });
-      
-      // Magnet effect for buttons
-      if (mode.includes("magnet")) {
-        const buttons = container.querySelectorAll('a, button, [role="button"]');
-        buttons.forEach(btn => {
-          const r = btn.getBoundingClientRect();
-          const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-          const dx = e.clientX - cx, dy = e.clientY - cy;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120 && r.width < 400) {
-            (btn as HTMLElement).style.transition = 'transform 0.1s ease-out';
-            (btn as HTMLElement).style.transform = `translate(${dx * 0.25}px, ${dy * 0.25}px)`;
-          } else {
-            (btn as HTMLElement).style.transition = 'transform 0.3s ease-out';
-            (btn as HTMLElement).style.transform = 'translate(0,0)';
-          }
-        });
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      const hoveredCard = target.closest('.interactive-card, .glass-card') as HTMLElement | null;
+
+      // If we moved away from the previously active card, reset it
+      if (activeCard && activeCard !== hoveredCard) {
+        activeCard.style.transform = '';
+      }
+
+      activeCard = hoveredCard;
+      if (!activeCard) return;
+
+      latestEvent = e;
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateActiveCard);
       }
     };
 
-    const handleMouseLeave = () => {
-      const cards = container.querySelectorAll('.interactive-card, .glass-card');
-      cards.forEach((card) => {
-        (card as HTMLElement).style.transform = 'rotateY(0) rotateX(0)';
-      });
-      const buttons = container.querySelectorAll('a, button, [role="button"]');
-      buttons.forEach(btn => {
-        (btn as HTMLElement).style.transition = 'transform 0.3s ease-out';
-        (btn as HTMLElement).style.transform = 'translate(0,0)';
-      });
+    const handlePointerOut = (e: PointerEvent) => {
+      const related = e.relatedTarget as HTMLElement | null;
+      if (!related || !activeCard?.contains(related)) {
+        if (activeCard) {
+          activeCard.style.transform = '';
+          activeCard = null;
+        }
+      }
     };
 
     const handleClick = (e: MouseEvent) => {
-      const mode = document.body.getAttribute("data-interaction") || "spotlight-border";
-      const target = e.target as HTMLElement;
-      const card = target.closest('.interactive-card, .glass-card') as HTMLElement;
+      const mode = document.body.getAttribute("data-interaction") || "";
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const card = target.closest('.interactive-card, .glass-card') as HTMLElement | null;
       if (!card) return;
 
-      const rect = card.getBoundingClientRect();
-
       if (mode.includes("ripple")) {
+        const rect = card.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height) * 2;
         const el = document.createElement('span');
         el.className = 'interaction-ripple';
@@ -86,47 +92,39 @@ export function ChambaGlowWrapper({ children, enabled = true, className = "" }: 
       }
 
       if (mode.includes("burst")) {
+        const rect = card.getBoundingClientRect();
         const cols = ['var(--accent-emerald, #10b981)', 'var(--primary, #10b981)', '#ffffff', '#38bdf8'];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 16; i++) {
           const ang = Math.random() * Math.PI * 2;
-          const spd = Math.random() * 4 + 1.5;
+          const spd = Math.random() * 3 + 1.5;
           const p = document.createElement('div');
           p.className = 'interaction-particle';
           p.style.left = `${e.clientX - rect.left}px`;
           p.style.top = `${e.clientY - rect.top}px`;
           p.style.backgroundColor = cols[i % cols.length];
-          p.style.setProperty('--vx', `${Math.cos(ang) * spd * 15}px`);
-          p.style.setProperty('--vy', `${Math.sin(ang) * spd * 15}px`);
+          p.style.setProperty('--vx', `${Math.cos(ang) * spd * 12}px`);
+          p.style.setProperty('--vy', `${Math.sin(ang) * spd * 12}px`);
           card.appendChild(p);
-          setTimeout(() => p.remove(), 600);
+          setTimeout(() => p.remove(), 500);
         }
       }
     };
 
-    container.addEventListener('pointermove', handlePointerMove);
-    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('pointermove', handlePointerMove, { passive: true });
+    container.addEventListener('pointerout', handlePointerOut, { passive: true });
     container.addEventListener('click', handleClick);
-    
+
     return () => {
       container.removeEventListener('pointermove', handlePointerMove);
-      container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('pointerout', handlePointerOut);
       container.removeEventListener('click', handleClick);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (activeCard) activeCard.style.transform = '';
     };
   }, [enabled]);
 
   return (
     <div ref={containerRef} className={className}>
-      {/* SVG Noise Filter for Electric Glow Effect */}
-      <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
-        <defs>
-          <filter id="atp-electric-jitter" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04 0.95" numOctaves="3" result="noise">
-              <animate attributeName="baseFrequency" dur="0.15s" values="0.04 0.95;0.08 0.85;0.03 0.98;0.04 0.95" repeatCount="indefinite" />
-            </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
       {children}
     </div>
   );

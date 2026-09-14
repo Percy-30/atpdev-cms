@@ -28,14 +28,11 @@ export function ChambaCustomCursor() {
     const handleMouseMove = (e: MouseEvent) => {
       target.current.x = e.clientX;
       target.current.y = e.clientY;
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(prev => (!prev ? true : prev));
 
       const el = e.target as HTMLElement | null;
-      if (el && (el.closest('button, a, input, select, textarea, [role="button"], .interactive-card, .glass-card'))) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
+      const hovering = Boolean(el && el.closest('button, a, input, select, textarea, [role="button"], .interactive-card, .glass-card'));
+      setIsHovering(prev => (prev !== hovering ? hovering : prev));
     };
 
     const handleMouseLeave = () => {
@@ -52,14 +49,16 @@ export function ChambaCustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.addEventListener("mouseleave", handleMouseLeave, { passive: true });
     window.addEventListener("message", handleMessage);
 
     // Smooth animation loop (lerp)
+    let isRunning = true;
     const loop = () => {
-      pos.current.x += (target.current.x - pos.current.x) * 0.2;
-      pos.current.y += (target.current.y - pos.current.y) * 0.2;
+      if (!isRunning) return;
+      pos.current.x += (target.current.x - pos.current.x) * 0.25;
+      pos.current.y += (target.current.y - pos.current.y) * 0.25;
 
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${target.current.x}px, ${target.current.y}px, 0) translate(-50%, -50%)`;
@@ -73,12 +72,13 @@ export function ChambaCustomCursor() {
     animFrame.current = requestAnimationFrame(loop);
 
     return () => {
+      isRunning = false;
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("message", handleMessage);
       if (animFrame.current) cancelAnimationFrame(animFrame.current);
     };
-  }, [isVisible]);
+  }, []);
 
   if (styleType === "cursor-off" || !isVisible) return null;
 

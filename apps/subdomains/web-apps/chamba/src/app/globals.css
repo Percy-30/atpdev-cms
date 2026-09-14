@@ -674,19 +674,20 @@ html.light footer a:hover {
   inset: 0;
   border-radius: inherit;
   padding: var(--neon-thickness, 4px);
-  background: radial-gradient(600px circle at var(--x) var(--y), var(--accent-emerald, #10b981), transparent 75%);
+  background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), var(--accent-emerald, #10b981), transparent 75%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   z-index: 10;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease, padding 0.3s ease;
-  filter: drop-shadow(0 0 var(--neon-glow, 16px) var(--accent-emerald, #10b981));
+  transition: opacity 0.25s ease;
+  will-change: opacity;
 }
 [data-interaction*="spotlight-border"] .interactive-card:hover::before,
 [data-interaction*="spotlight-border"] .glass-card:hover::before {
   opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 14px) var(--accent-emerald, #10b981));
 }
 
 /* 1.5. FULL NEON BORDER (Borde Neón Completo) */
@@ -710,13 +711,13 @@ html.light footer a:hover {
   z-index: 10;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease, filter 0.4s ease, padding 0.3s ease;
-  filter: drop-shadow(0 0 var(--neon-glow, 12px) var(--accent-emerald, #10b981));
+  transition: opacity 0.25s ease;
+  will-change: opacity;
 }
 [data-interaction*="full-border"] .interactive-card:hover::before,
 [data-interaction*="full-border"] .glass-card:hover::before {
   opacity: 1;
-  filter: drop-shadow(0 0 var(--neon-glow, 20px) var(--accent-emerald, #10b981));
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) var(--accent-emerald, #10b981));
 }
 
 /* MULTICOLOR & ARMONICO (FULL BORDER) */
