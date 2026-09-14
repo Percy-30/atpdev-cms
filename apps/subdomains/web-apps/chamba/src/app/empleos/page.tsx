@@ -45,8 +45,11 @@ export default async function EmpleosPage({
     return num ? Math.max(...num.map(Number)) : 0;
   };
 
-  // 1. Lógica de Filtrado
+  // 1. Lógica de Filtrado (Solo convocatorias aprobadas y vigentes)
   const filteredJobs = allJobs.filter((job) => {
+    if (job.status !== 'Vigente') {
+      return false;
+    }
     // Si hideExpired está activo, ocultamos las convocatorias cerradas
     if (hideExpired && job.end_date && job.end_date < todayIso) {
       return false;
@@ -83,11 +86,15 @@ export default async function EmpleosPage({
   // 2. Lógica de Ordenamiento Inteligente
   filteredJobs.sort((a, b) => {
     if (sort === "ending_soon") {
-      // Las que vencen más pronto primero
-      const aExpired = a.end_date < todayIso;
-      const bExpired = b.end_date < todayIso;
+      // Las no vencidas primero, priorizando convocatorias del CMS / reclutadores
+      const aExpired = a.end_date && a.end_date < todayIso;
+      const bExpired = b.end_date && b.end_date < todayIso;
       if (aExpired && !bExpired) return 1;
       if (!aExpired && bExpired) return -1;
+      const isCmsA = a.id?.startsWith('job-cms-') || a.id?.startsWith('job-admin-');
+      const isCmsB = b.id?.startsWith('job-cms-') || b.id?.startsWith('job-admin-');
+      if (isCmsA && !isCmsB) return -1;
+      if (!isCmsA && isCmsB) return 1;
       return (a.end_date || "9999").localeCompare(b.end_date || "9999");
     }
     if (sort === "recent") {

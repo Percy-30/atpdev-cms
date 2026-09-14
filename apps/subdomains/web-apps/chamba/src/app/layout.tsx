@@ -12,10 +12,15 @@ import Script from "next/script";
 import { 
   Briefcase, ShieldCheck, Search, PlusCircle, Globe, Award, 
   Calculator, FileText, HelpCircle, Bot, FileSpreadsheet, Scale,
-  Mail, ExternalLink, Lock, Building2
+  Mail, ExternalLink, Lock, Building2, Compass
 } from "lucide-react";
 import { MobileNavMenu } from "@/components/MobileNavMenu";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
+import { ChambaThemeListener } from "@/components/ChambaThemeListener";
+import { ChambaGlowWrapper } from "@/components/ChambaGlowWrapper";
+import { ChambaCustomCursor } from "@/components/ChambaCustomCursor";
+import { ChambaThemeToggle } from "@/components/ChambaThemeToggle";
+import { getSubdomainConfig } from "@atpdev/database";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -118,11 +123,44 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const config = getSubdomainConfig("chamba");
+  const theme = config.theme || ({} as any);
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const accentHex = theme.accent_color || theme.primary_color || "#10b981";
+  const glowStyle = theme.glow_style || "spotlight-border";
+  const neonThickness = theme.neon_thickness || "4px";
+  const neonGlow = neonThickness === "2px" ? "10px" : neonThickness === "4px" ? "18px" : neonThickness === "6px" ? "26px" : "36px";
+  const radiusScale = theme.radius_scale === 'none' ? '0px' : theme.radius_scale === 'small' ? '0.375rem' : theme.radius_scale === 'medium' ? '1rem' : '9999px';
 
   return (
-    <html lang="es" className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
+    <html lang="es" className={`${theme.theme_mode === 'light' ? 'light' : 'dark'} ${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
       <head>
+        {/* Dynamic Subdomain Theme Custom Properties */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root {
+              --accent-emerald: ${accentHex};
+              --accent-primary: ${accentHex};
+              --primary: ${accentHex};
+              --secondary: ${theme.secondary_color || '#0f172a'};
+              --tertiary: ${theme.tertiary_color || '#1e293b'};
+              --neutral: ${theme.neutral_color || '#64748b'};
+              --neon-thickness: ${neonThickness};
+              --neon-glow: ${neonGlow};
+              --radius-scale: ${radiusScale};
+              ${theme.font_headline ? `--font-space: "${theme.font_headline}", sans-serif; --font-heading: "${theme.font_headline}", sans-serif;` : ''}
+              ${theme.font_body ? `--font-inter: "${theme.font_body}", sans-serif; --font-body: "${theme.font_body}", sans-serif;` : ''}
+              ${theme.font_label ? `--font-mono: "${theme.font_label}", monospace; --font-label: "${theme.font_label}", monospace;` : ''}
+            }
+          `
+        }} />
+        {/* Dynamically Load Google Fonts if customized */}
+        {(theme.font_headline || theme.font_body || theme.font_label) && (
+          <link
+            rel="stylesheet"
+            href={`https://fonts.googleapis.com/css2?${[theme.font_headline, theme.font_body, theme.font_label].filter(Boolean).map((f: string) => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700;800;900`).join('&')}&display=swap`}
+          />
+        )}
         {/* Google AdSense Script Inyección Oficial */}
         {adsenseId && (
           <Script
@@ -133,17 +171,35 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className="bg-[#070a12] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-400 selection:text-slate-950">
+      <body data-interaction={glowStyle} className="bg-[#070a12] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-400 selection:text-slate-950">
+        <ChambaThemeListener />
+        <ChambaCustomCursor />
+        <ChambaGlowWrapper className="min-h-screen flex flex-col">
         {/* Top Announcement Bar */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-slate-950 via-emerald-950/60 to-slate-950 text-white text-xs font-semibold py-2 px-4 text-center flex items-center justify-center gap-2.5 border-b border-emerald-500/20 print:hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.15),_transparent_70%)] pointer-events-none" />
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span className="font-mono text-[11px] text-emerald-300 font-bold uppercase tracking-wider">Servicio Verificado 2026:</span>
-          <span className="text-slate-300 font-medium">Postulación 100% directa a bases oficiales de SERVIR, Ministerios y Empresas líderes</span>
-        </div>
+        {config.branding?.announcement_enabled && (
+          <div 
+            className="announcement-bar relative overflow-hidden text-white text-xs font-semibold py-2 px-4 text-center flex items-center justify-center gap-2.5 border-b print:hidden"
+            style={{
+              backgroundColor: `${accentHex}10`,
+              borderColor: `${accentHex}30`
+            }}
+          >
+            <div 
+              className="absolute inset-0 pointer-events-none" 
+              style={{ background: `radial-gradient(ellipse at center, ${accentHex}25, transparent 70%)` }}
+            />
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: accentHex }}></span>
+              <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: accentHex }}></span>
+            </span>
+            <span className="font-mono text-[11px] font-bold uppercase tracking-wider" style={{ color: accentHex }}>
+              Servicio Verificado 2026:
+            </span>
+            <span className="text-slate-200 font-medium">
+              {config.branding.announcement_text || "Postulación 100% directa a bases oficiales de SERVIR, Ministerios y Empresas líderes"}
+            </span>
+          </div>
+        )}
 
         {/* Global Navigation Header with Ultra-Refined Glassmorphism */}
         <header className="sticky top-0 z-40 bg-[#070a12]/85 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
@@ -199,10 +255,12 @@ export default function RootLayout({
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <ChambaThemeToggle />
+
               <Link
                 href="/publicar-empleo"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-slate-200 hover:text-emerald-400 transition-all"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-slate-200 hover:text-emerald-400 transition-all shadow-sm"
               >
                 <PlusCircle size={14} className="text-emerald-400" />
                 <span>Publicar</span>
@@ -210,9 +268,10 @@ export default function RootLayout({
 
               <Link
                 href="/empleos"
-                className="relative group overflow-hidden px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-950 font-display transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-2 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="btn-brand-gradient relative group overflow-hidden px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-black font-display transition-all flex items-center gap-2 shadow-lg"
               >
-                <span>Explorar Vacantes</span>
+                <Compass size={16} className="text-white drop-shadow-sm shrink-0" />
+                <span className="text-white drop-shadow-sm tracking-tight">Explorar Vacantes</span>
               </Link>
 
               {/* Mobile Drawer Button */}
@@ -361,6 +420,7 @@ export default function RootLayout({
 
         {/* Global Regulatory Cookie Consent Banner */}
         <CookieConsentBanner />
+        </ChambaGlowWrapper>
       </body>
     </html>
   );

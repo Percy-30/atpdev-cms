@@ -267,9 +267,696 @@
     page-break-inside: avoid !important;
   }
 
-  .cv-page-break {
-    break-after: page !important;
-    page-break-after: always !important;
-  }
 }
 
+/* ============================================================
+   CHAMBA PRO - LIGHT MODE THEME OVERRIDES
+   ============================================================ */
+html.light {
+  --bg-main: #f8fafc;
+  --text-main: #0f172a;
+  --card-bg: rgba(255, 255, 255, 0.98);
+  --border-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light body {
+  background-color: #f8fafc !important;
+  background-image: 
+    radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-emerald, rgba(16, 185, 129, 0.1)), transparent 70%) !important;
+  color: #0f172a !important;
+}
+
+/* Header in light mode */
+html.light header {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-bottom-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light nav a {
+  color: #475569 !important;
+}
+
+html.light nav a:hover {
+  color: #0f172a !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Announcement bar in light mode */
+html.light .announcement-bar {
+  background-color: color-mix(in srgb, var(--accent-emerald, #10b981) 8%, #f8fafc) !important;
+  border-bottom-color: color-mix(in srgb, var(--accent-emerald, #10b981) 20%, transparent) !important;
+}
+html.light .announcement-bar .text-slate-200 {
+  color: #334155 !important;
+}
+
+/* Cards, Modals and Background Panels in Light Mode */
+html.light .glass-card,
+html.light .bg-slate-950,
+html.light .bg-slate-950\/60,
+html.light .bg-slate-950\/70,
+html.light .bg-slate-950\/80,
+html.light .bg-slate-900,
+html.light .bg-slate-900\/40,
+html.light .bg-slate-900\/50,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/90,
+html.light .bg-\[\#070a12\],
+html.light .bg-\[\#070a12\]\/85,
+html.light div[class*="bg-slate-900\/50"],
+html.light div[class*="bg-slate-950"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Neutralize dark card gradients & callouts in Light Mode */
+html.light header.rounded-3xl,
+html.light section.rounded-3xl,
+html.light div.rounded-3xl.bg-gradient-to-r,
+html.light header.bg-gradient-to-b,
+html.light section.bg-gradient-to-r,
+html.light .bg-gradient-to-b.from-slate-950,
+html.light div[class*="from-slate-950"][class*="via-[#070d18]"],
+html.light div[class*="from-emerald-950"],
+html.light section[class*="from-emerald-950"],
+html.light div[class*="from-amber-950"],
+html.light section[class*="from-amber-950"],
+html.light div[class*="from-cyan-950"],
+html.light section[class*="from-cyan-950"] {
+  background-image: linear-gradient(135deg, color-mix(in srgb, var(--accent-emerald, #10b981) 6%, #ffffff) 0%, #ffffff 100%) !important;
+  background-color: #ffffff !important;
+  border-color: color-mix(in srgb, var(--accent-emerald, #10b981) 25%, #cbd5e1) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light div[class*="from-emerald-950"] .text-white,
+html.light div[class*="from-emerald-950"] h2,
+html.light div[class*="from-emerald-950"] h3,
+html.light section[class*="from-emerald-950"] h2,
+html.light section[class*="from-emerald-950"] h3 {
+  color: #0f172a !important;
+}
+
+html.light div[class*="from-emerald-950"] p,
+html.light section[class*="from-emerald-950"] p {
+  color: #475569 !important;
+}
+
+html.light header.rounded-3xl,
+html.light section.rounded-3xl {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Subtle nested card areas in Light Mode */
+html.light .bg-slate-950\/60,
+html.light .bg-slate-950\/70 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Translucent border overrides for Light Mode */
+html.light .border-white\/5,
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/25,
+html.light .border-t.border-white\/10 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Search Bar & Form on Hero in Light Mode */
+html.light form.glass-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08) !important;
+}
+html.light form.glass-card div.bg-slate-900\/90 {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+html.light form.glass-card input,
+html.light form.glass-card select {
+  background-color: transparent !important;
+  color: #0f172a !important;
+}
+html.light form.glass-card input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Trending tags & Buttons on Hero in Light Mode */
+html.light button.bg-slate-900\/80,
+html.light button[class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+html.light button.bg-slate-900\/80:hover,
+html.light button[class*="bg-slate-900"]:hover {
+  background-color: color-mix(in srgb, var(--accent-emerald, #10b981) 10%, #ffffff) !important;
+  border-color: var(--accent-emerald, #10b981) !important;
+  color: #0f172a !important;
+}
+
+/* Title Neon Glow in Light Mode (High Contrast text gradient) */
+html.light .title-neon-glow {
+  background: linear-gradient(135deg, var(--accent-emerald, #059669) 0%, color-mix(in srgb, var(--accent-emerald, #059669) 70%, #0284c7) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light .glass-card-hover:hover {
+  background: #ffffff !important;
+  border-color: var(--accent-emerald, #10b981) !important;
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Entity quick-select chips */
+html.light .entity-quick-btn,
+html.light button.bg-slate-900 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+html.light .entity-quick-btn:hover,
+html.light button.bg-slate-900:hover {
+  background-color: color-mix(in srgb, var(--accent-emerald, #10b981) 12%, #ffffff) !important;
+  border-color: var(--accent-emerald, #10b981) !important;
+  color: #0f172a !important;
+}
+
+/* Headings and Texts in Light Mode */
+html.light .text-white {
+  color: #0f172a !important;
+}
+html.light .text-slate-100,
+html.light [class*="text-slate-100"] {
+  color: #1e293b !important;
+}
+html.light .text-slate-200,
+html.light [class*="text-slate-200"],
+html.light .text-slate-300,
+html.light [class*="text-slate-300"] {
+  color: #334155 !important;
+}
+html.light .text-slate-400,
+html.light [class*="text-slate-400"],
+html.light .text-gray-400,
+html.light [class*="text-gray-400"],
+html.light .text-slate-500,
+html.light [class*="text-slate-500"] {
+  color: #475569 !important;
+}
+
+/* ============================================================
+   GUARANTEED PURE WHITE HIGH-CONTRAST TEXT ON ALL BRAND ACTION BUTTONS
+   (Overrides html.light .text-white for all primary buttons)
+   ============================================================ */
+html.light .btn-brand-gradient,
+html.light .btn-brand-gradient *,
+html.light .btn-brand-gradient .text-white,
+html.light .btn-brand-accent,
+html.light .btn-brand-accent *,
+html.light .btn-brand-accent .text-white,
+html.light .btn-brand-gradient [class*="text-white"],
+html.light .btn-brand-accent [class*="text-white"],
+html.light button.btn-brand-gradient,
+html.light button.btn-brand-gradient *,
+html.light a.btn-brand-gradient,
+html.light a.btn-brand-gradient *,
+html.light button.btn-brand-accent,
+html.light button.btn-brand-accent *,
+html.light a.btn-brand-accent,
+html.light a.btn-brand-accent *,
+html.light button.bg-emerald-500,
+html.light button.bg-emerald-500 *,
+html.light a.bg-emerald-500,
+html.light a.bg-emerald-500 * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.light .btn-brand-gradient svg,
+html.light .btn-brand-accent svg,
+html.light button.bg-emerald-500 svg,
+html.light a.bg-emerald-500 svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Form Inputs, Selects and Textareas */
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: var(--accent-emerald, #10b981) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-emerald, #10b981) 20%, transparent) !important;
+}
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Footer in Light Mode */
+html.light footer {
+  background-color: #f1f5f9 !important;
+  border-top-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+html.light footer .text-white {
+  color: #0f172a !important;
+}
+html.light footer a {
+  color: #475569 !important;
+}
+html.light footer a:hover {
+  color: var(--accent-emerald, #10b981) !important;
+}
+
+/* ============================================================
+   DYNAMIC BRAND ACCENT COLOR MAPPING (THEME STUDIO SYNC)
+   ============================================================ */
+.bg-emerald-500,
+.bg-emerald-400 {
+  background-color: var(--accent-emerald, #10b981) !important;
+}
+.hover\:bg-emerald-400:hover,
+.hover\:bg-emerald-300:hover {
+  background-color: var(--accent-emerald, #10b981) !important;
+  filter: brightness(1.15) !important;
+}
+.text-emerald-400,
+.text-emerald-300,
+.text-emerald-500 {
+  color: var(--accent-emerald, #10b981) !important;
+}
+.border-emerald-500,
+.border-emerald-500\/10,
+.border-emerald-500\/20,
+.border-emerald-500\/25,
+.border-emerald-500\/30,
+.border-emerald-500\/40,
+.border-emerald-500\/50 {
+  border-color: color-mix(in srgb, var(--accent-emerald, #10b981) 40%, transparent) !important;
+}
+.bg-emerald-500\/10,
+.bg-emerald-500\/15,
+.bg-emerald-500\/20,
+.bg-emerald-500\/25 {
+  background-color: color-mix(in srgb, var(--accent-emerald, #10b981) 15%, transparent) !important;
+}
+.shadow-emerald-500\/20,
+.shadow-emerald-500\/25,
+.shadow-emerald-500\/30,
+.shadow-emerald-500\/35,
+.shadow-emerald-500\/40,
+.shadow-emerald-500\/50 {
+  box-shadow: 0 10px 25px -5px color-mix(in srgb, var(--accent-emerald, #10b981) 35%, transparent) !important;
+}
+
+/* HIGH-CONTRAST BRAND BUTTON UTILITIES (GUARANTEED WCAG CONTRAST) */
+.btn-brand-gradient {
+  background: linear-gradient(135deg, var(--accent-emerald, #10b981) 0%, color-mix(in srgb, var(--accent-emerald, #10b981) 75%, #06b6d4) 100%) !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: 0 4px 20px -2px color-mix(in srgb, var(--accent-emerald, #10b981) 50%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-emerald, #10b981) 40%, white) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-brand-gradient:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 8px 28px -2px color-mix(in srgb, var(--accent-emerald, #10b981) 70%, transparent) !important;
+}
+
+.btn-brand-gradient * {
+  color: #ffffff !important;
+}
+
+.btn-brand-accent {
+  background-color: var(--accent-emerald, #10b981) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+  box-shadow: 0 4px 15px -2px color-mix(in srgb, var(--accent-emerald, #10b981) 45%, transparent) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-brand-accent:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 22px -2px color-mix(in srgb, var(--accent-emerald, #10b981) 65%, transparent) !important;
+}
+
+.btn-brand-accent * {
+  color: #ffffff !important;
+}
+
+/* Dynamic Gradients for Hero Buttons and Header Actions (Solid & High-Contrast) */
+.from-emerald-400,
+.from-emerald-500 {
+  --tw-gradient-from: var(--accent-emerald, #10b981) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, color-mix(in srgb, var(--accent-emerald, #10b981) 75%, #06b6d4)) !important;
+}
+.via-teal-400 {
+  --tw-gradient-stops: var(--tw-gradient-from), color-mix(in srgb, var(--accent-emerald, #10b981) 85%, white) 50%, var(--tw-gradient-to, color-mix(in srgb, var(--accent-emerald, #10b981) 75%, #06b6d4)) !important;
+}
+.to-teal-400,
+.to-teal-300,
+.to-cyan-400 {
+  --tw-gradient-to: color-mix(in srgb, var(--accent-emerald, #10b981) 75%, #06b6d4) !important;
+}
+.hover\:from-emerald-300:hover {
+  --tw-gradient-from: color-mix(in srgb, var(--accent-emerald, #10b981) 85%, white) !important;
+}
+.hover\:to-teal-300:hover,
+.hover\:to-cyan-300:hover {
+  --tw-gradient-to: color-mix(in srgb, var(--accent-emerald, #10b981) 65%, #38bdf8) !important;
+}
+
+.title-neon-glow {
+  background: linear-gradient(135deg, #ffffff 0%, var(--accent-emerald, #34d399) 45%, #38bdf8 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* ============================================================
+   CHAMBA PRO - LABORATORIO DE INTERACCIÓN & EFECTOS DE NEÓN
+   ============================================================ */
+
+/* 1. SPOTLIGHT BORDER (Reflector Neón) */
+[data-interaction*="spotlight-border"] .interactive-card,
+[data-interaction*="spotlight-border"] .glass-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="spotlight-border"] .interactive-card::before,
+[data-interaction*="spotlight-border"] .glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: radial-gradient(600px circle at var(--x) var(--y), var(--accent-emerald, #10b981), transparent 75%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease, padding 0.3s ease;
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) var(--accent-emerald, #10b981));
+}
+[data-interaction*="spotlight-border"] .interactive-card:hover::before,
+[data-interaction*="spotlight-border"] .glass-card:hover::before {
+  opacity: 1;
+}
+
+/* 1.5. FULL NEON BORDER (Borde Neón Completo) */
+[data-interaction*="full-border"] .interactive-card,
+[data-interaction*="full-border"] .glass-card {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="full-border"] .interactive-card::before,
+[data-interaction*="full-border"] .glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: var(--accent-emerald, #10b981);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease, filter 0.4s ease, padding 0.3s ease;
+  filter: drop-shadow(0 0 var(--neon-glow, 12px) var(--accent-emerald, #10b981));
+}
+[data-interaction*="full-border"] .interactive-card:hover::before,
+[data-interaction*="full-border"] .glass-card:hover::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 20px) var(--accent-emerald, #10b981));
+}
+
+/* MULTICOLOR & ARMONICO (FULL BORDER) */
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .interactive-card::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .glass-card::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 150) 95% 60%),
+    hsl(calc(var(--hue, 150) + 60) 95% 55%),
+    hsl(calc(var(--hue, 150) + 120) 95% 50%)
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 12px) hsl(var(--hue, 150) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .interactive-card:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .glass-card:hover::before {
+  animation-play-state: running;
+  filter: drop-shadow(0 0 var(--neon-glow, 20px) hsl(var(--hue, 150) 95% 60%));
+}
+
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .interactive-card::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .glass-card::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 140) 85% 55%),
+    hsl(calc(var(--hue, 140) + 45) 80% 50%)
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 12px) hsl(var(--hue, 140) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .interactive-card:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .glass-card:hover::before {
+  animation-play-state: running;
+  filter: drop-shadow(0 0 var(--neon-glow, 20px) hsl(var(--hue, 140) 85% 55%));
+}
+
+@property --hue {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 150;
+}
+
+@keyframes hueRotateHarmonic {
+  0%   { --hue: 140; }
+  33%  { --hue: 280; }
+  66%  { --hue: 45;  }
+  100% { --hue: 140; }
+}
+
+@keyframes hueRotateMulti {
+  0%   { --hue: 0; }
+  25%  { --hue: 90; }
+  50%  { --hue: 180; }
+  75%  { --hue: 270; }
+  100% { --hue: 360; }
+}
+
+/* MULTICOLOR & ARMONICO (SPOTLIGHT BORDER) */
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .interactive-card::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .glass-card::before {
+  background: radial-gradient(
+    320px circle at var(--x) var(--y),
+    hsl(var(--hue, 150) 95% 60%),
+    hsl(calc(var(--hue, 150) + 60) 95% 55%),
+    transparent 75%
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 150) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .interactive-card:hover::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .glass-card:hover::before {
+  animation-play-state: running;
+}
+
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .interactive-card::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .glass-card::before {
+  background: radial-gradient(
+    300px circle at var(--x) var(--y),
+    hsl(var(--hue, 140) 85% 55%),
+    hsl(calc(var(--hue, 140) + 45) 80% 50%),
+    transparent 75%
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 140) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .interactive-card:hover::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .glass-card:hover::before {
+  animation-play-state: running;
+}
+
+/* 2. ELECTRIC SPOTLIGHT & ELECTRIC FULL BORDER */
+[data-interaction~="electric"] .interactive-card,
+[data-interaction~="electric"] .glass-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction~="electric"] .interactive-card::before,
+[data-interaction~="electric"] .glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: radial-gradient(400px circle at var(--x) var(--y), var(--accent-emerald, #10b981), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 14px) var(--accent-emerald, #10b981));
+  transition: opacity 0.3s ease;
+}
+[data-interaction~="electric"] .interactive-card:hover::before,
+[data-interaction~="electric"] .glass-card:hover::before {
+  opacity: 1;
+}
+
+[data-interaction*="electric-full"] .interactive-card,
+[data-interaction*="electric-full"] .glass-card {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="electric-full"] .interactive-card::before,
+[data-interaction*="electric-full"] .glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: var(--accent-emerald, #10b981);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) var(--accent-emerald, #10b981));
+  transition: opacity 0.3s ease;
+}
+[data-interaction*="electric-full"] .interactive-card:hover::before,
+[data-interaction*="electric-full"] .glass-card:hover::before {
+  opacity: 1;
+}
+
+/* 3. SPOTLIGHT FULL (Relleno Neón) */
+[data-interaction*="spotlight-full"] .interactive-card,
+[data-interaction*="spotlight-full"] .glass-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  overflow: hidden;
+}
+[data-interaction*="spotlight-full"] .interactive-card::after,
+[data-interaction*="spotlight-full"] .glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(500px circle at var(--x) var(--y), color-mix(in srgb, var(--accent-emerald, #10b981) 18%, transparent), transparent 80%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+[data-interaction*="spotlight-full"] .interactive-card:hover::after,
+[data-interaction*="spotlight-full"] .glass-card:hover::after {
+  opacity: 1;
+}
+
+/* 4. TILT 3D */
+[data-interaction*="tilt"] .interactive-card,
+[data-interaction*="tilt"] .glass-card {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+/* 5. RIPPLE (Ondas Clic) */
+[data-interaction*="ripple"] .interactive-card,
+[data-interaction*="ripple"] .glass-card {
+  position: relative;
+  overflow: hidden;
+}
+.interaction-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: rippleAnim 0.9s cubic-bezier(0.1, 0.8, 0.3, 1);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-emerald, #10b981) 35%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 20;
+}
+@keyframes rippleAnim {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+/* 6. BURST (Explosión Clic) */
+[data-interaction*="burst"] .interactive-card,
+[data-interaction*="burst"] .glass-card {
+  position: relative;
+  overflow: hidden;
+}
+.interaction-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: burstAnim 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 20;
+  box-shadow: 0 0 8px currentColor;
+}
+@keyframes burstAnim {
+  0% { transform: translate(0, 0) scale(1.5); opacity: 1; }
+  100% { transform: translate(var(--vx), var(--vy)) scale(0); opacity: 0; }
+}
+
+/* 7. TEXT GLITCH */
+[data-interaction*="glitch"] .interactive-card:hover h1,
+[data-interaction*="glitch"] .interactive-card:hover h2,
+[data-interaction*="glitch"] .interactive-card:hover h3,
+[data-interaction*="glitch"] .glass-card:hover h1,
+[data-interaction*="glitch"] .glass-card:hover h2,
+[data-interaction*="glitch"] .glass-card:hover h3 {
+  animation: glitchAnim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+@keyframes glitchAnim {
+  0% { transform: translate(0); text-shadow: none; }
+  20% { transform: translate(-2px, 2px); text-shadow: 2px 0 #ff0055, -2px 0 #00ffff; }
+  40% { transform: translate(-1px, -1px); text-shadow: -2px 0 #ff0055, 2px 0 #00ffff; }
+  60% { transform: translate(2px, 1px); text-shadow: 2px 0 #ff0055, -2px 0 #00ffff; }
+  80% { transform: translate(1px, -2px); text-shadow: -2px 0 #ff0055, 2px 0 #00ffff; }
+  100% { transform: translate(0); text-shadow: none; }
+}

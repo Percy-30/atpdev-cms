@@ -51,6 +51,7 @@ next-env.d.ts
 /test_login.js
 # Scratch and test files
 scratch-*.ts
+/scratch/
 fix-bucket*.js
 list-files.js
 packages/database/test-buckets.ts

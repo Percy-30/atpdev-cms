@@ -1021,7 +1021,7 @@ function extractServirEntityLogo(entidad: string): string {
   return '/logos/gob-pe.png';
 }
 
-function parseServirJobsFromHtml(text: string, todayIso: string): JobPosting[] {
+function parseServirJobsFromHtml(text: string, todayIso: string, pageIndex = 1): JobPosting[] {
   const jobs: JobPosting[] = [];
   const sections = text.split(/<div class="col-sm-12 cuadro-vacantes">/i);
   sections.shift(); // discard header
@@ -1089,10 +1089,13 @@ function parseServirJobsFromHtml(text: string, todayIso: string): JobPosting[] {
     else if (/ingenier|civil|arquitect|obras|mantenimiento/i.test(titleLow)) category = 'Ingeniería y Construcción';
 
     const region = extractServirDepartment(ubicacion);
-    const slug = `servir-${makeSlug(entity_name).slice(0, 30)}-${makeSlug(title).slice(0, 40)}-${i}`;
+    const entitySlug = makeSlug(entity_name).slice(0, 25);
+    const titleSlug = makeSlug(title).slice(0, 30);
+    const slug = `servir-${entitySlug}-${titleSlug}-${pageIndex}-${i}`;
+    const uniqueId = `job-servir-p${pageIndex}-${i}-${entitySlug.slice(0, 15)}-${titleSlug.slice(0, 15)}`;
 
     jobs.push({
-      id: `job-servir-live-${i}`,
+      id: uniqueId,
       title,
       slug,
       entity_name,
@@ -1157,7 +1160,7 @@ export async function refreshServirInBackground(maxPages = 15): Promise<void> {
     if (!vsMatch) return;
 
     let currentViewState = vsMatch[1];
-    const allJobs = [...parseServirJobsFromHtml(html1, todayIso)];
+    const allJobs = [...parseServirJobsFromHtml(html1, todayIso, 1)];
 
     for (let p = 2; p <= maxPages; p++) {
       const body = new URLSearchParams();
@@ -1196,7 +1199,7 @@ export async function refreshServirInBackground(maxPages = 15): Promise<void> {
         const newVs = xml.match(/<update\s+id="[^"]*javax\.faces\.ViewState[^"]*"><!\[CDATA\[([\s\S]*?)\]\]><\/update>/i);
         if (newVs) currentViewState = newVs[1];
 
-        const pageJobs = parseServirJobsFromHtml(xml, todayIso);
+        const pageJobs = parseServirJobsFromHtml(xml, todayIso, p);
         if (pageJobs.length === 0) break;
         allJobs.push(...pageJobs);
       } catch (err) {

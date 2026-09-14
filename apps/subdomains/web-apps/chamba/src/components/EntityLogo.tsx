@@ -225,10 +225,10 @@ function findLocalLogo(entityName: string): string | null {
 export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoProps) {
   const [imgErr, setImgErr] = useState(false);
 
-  // Priority 1: Use locally downloaded real logo from /public/logos/
+  // Priority 1: Locally downloaded curated logo from /public/logos/
   const localLogo = findLocalLogo(entityName);
   
-  // Priority 2: Use scraped logoUrl ONLY if official (never third-party scrapers)
+  // Priority 2: Clean custom logoUrl (allow Base64 data URLs, domain favicons, or direct image links)
   const safeScrapedLogo = (
     logoUrl && 
     !logoUrl.includes('convocatoriasdetrabajo.com') && 
@@ -236,8 +236,19 @@ export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoP
     !logoUrl.includes('blogspot.com')
   ) ? logoUrl : null;
 
+  // Prioritize explicitly uploaded or captured logo if available
+  const hasCustomUpload = Boolean(
+    safeScrapedLogo && (
+      safeScrapedLogo.startsWith('data:image/') ||
+      safeScrapedLogo.startsWith('blob:') ||
+      safeScrapedLogo.includes('favicons') ||
+      safeScrapedLogo.includes('google.com/s2') ||
+      !localLogo
+    )
+  );
+
   const imageSrc = !imgErr
-    ? (localLogo || safeScrapedLogo)
+    ? (hasCustomUpload ? safeScrapedLogo : (localLogo || safeScrapedLogo))
     : null;
 
   const isBanner = size === 'banner';

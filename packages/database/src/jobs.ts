@@ -36,6 +36,8 @@ export type JobPosting = {
   entity_ruc?: string;
   entity_verified: boolean;
   entity_logo?: string;
+  contact_email?: string;
+  contact_phone?: string;
   sector_type: 'CAS 1057' | 'D.L. 728' | 'D.L. 276' | 'Locación / FAG' | 'Privado' | 'Prácticas';
   region: string;
   category: string;
@@ -2632,8 +2634,68 @@ export function sanitizeOfficialUrl(
   return officialPortal;
 }
 
+// Local submissions persistence shared across monorepo apps (chamba on port 3005 and admin on port 3003)
+function getSubmissionsFilePath(): string | null {
+  try {
+    if (typeof (globalThis as any).window !== 'undefined') return null;
+    const pathMod = require('path');
+    const fsMod = require('fs');
+
+    const cwd = process.cwd();
+    const candidates = [
+      'D:\\PROYECTOS\\atpdev-web\\packages\\database\\src\\user_submissions.json',
+      'd:/PROYECTOS/atpdev-web/packages/database/src/user_submissions.json',
+      pathMod.resolve(cwd, 'packages/database/src/user_submissions.json'),
+      pathMod.resolve(cwd, '../packages/database/src/user_submissions.json'),
+      pathMod.resolve(cwd, '../../packages/database/src/user_submissions.json'),
+      pathMod.resolve(cwd, '../../../packages/database/src/user_submissions.json'),
+      pathMod.resolve(cwd, '../../../../packages/database/src/user_submissions.json')
+    ];
+    for (const c of candidates) {
+      if (fsMod.existsSync(c)) return c;
+    }
+    for (const c of candidates) {
+      if (fsMod.existsSync(pathMod.dirname(c))) return c;
+    }
+    return candidates[0];
+  } catch {
+    return null;
+  }
+}
+
+export function loadPersistedSubmissions(): JobPosting[] {
+  try {
+    if (typeof (globalThis as any).window !== 'undefined') return [];
+    const fsMod = require('fs');
+    const filePath = getSubmissionsFilePath();
+    if (filePath && fsMod.existsSync(filePath)) {
+      const raw = fsMod.readFileSync(filePath, 'utf-8');
+      if (raw && raw.trim()) {
+        return JSON.parse(raw);
+      }
+    }
+  } catch (err) {
+    // silently fallback to empty array
+  }
+  return [];
+}
+
+export function persistSubmissions(submissions: JobPosting[]): void {
+  try {
+    if (typeof (globalThis as any).window !== 'undefined') return;
+    const fsMod = require('fs');
+    const filePath = getSubmissionsFilePath();
+    if (filePath) {
+      fsMod.writeFileSync(filePath, JSON.stringify(submissions, null, 2), 'utf-8');
+    }
+  } catch (err) {
+    console.warn('Error saving user_submissions.json:', err);
+  }
+}
+
 // In-memory overrides para desarrollo local, pruebas unitarias y fallback de alta disponibilidad
-const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = new Map();
+const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = (globalThis as any).__LOCAL_DYNAMIC_JOBS__ || new Map();
+(globalThis as any).__LOCAL_DYNAMIC_JOBS__ = LOCAL_DYNAMIC_JOBS;
 
 // In-Memory Global Cache para búsquedas ultra-rápidas e instantáneas (0ms)
 let GLOBAL_JOBS_CACHE: JobPosting[] | null = null;
@@ -2648,24 +2710,58 @@ export function invalidateJobsCache(): void {
 registerJobsUpdatedCallback(() => invalidateJobsCache());
 
 export async function getJobPostings(): Promise<JobPosting[]> {
+  const diskSubmissions = loadPersistedSubmissions();
+
   if (GLOBAL_JOBS_CACHE && (Date.now() - GLOBAL_JOBS_TIMESTAMP < GLOBAL_CACHE_TTL)) {
+    // Sincronizar siempre solicitudes en disco para que nuevas convocatorias aparezcan de inmediato en todos los procesos
+    if (diskSubmissions.length > 0) {
+      const mergedMap = new Map<string, JobPosting>();
+      // Convocatorias recientes y en disco PRIMERO
+      diskSubmissions.forEach(j => {
+        mergedMap.set(j.id, j);
+        LOCAL_DYNAMIC_JOBS.set(j.id, j);
+      });
+      GLOBAL_JOBS_CACHE.forEach(j => {
+        if (!mergedMap.has(j.id)) {
+          mergedMap.set(j.id, j);
+        }
+      });
+      return Array.from(mergedMap.values());
+    }
     return GLOBAL_JOBS_CACHE;
   }
 
   const jobsMap = new Map<string, JobPosting>();
 
-  // 1. Cargar catálogo verificado de respaldo y convocatorias prioritarias (Juntos, PAIS, ONPE, SUNAT...)
-  INITIAL_JOBS.forEach(j => jobsMap.set(j.slug, j));
+  // 1. Cargar solicitudes de usuarios persistidas en disco PRIMERO (para máxima visibilidad en el tope de la lista)
+  diskSubmissions.forEach(j => {
+    jobsMap.set(j.slug, j);
+    LOCAL_DYNAMIC_JOBS.set(j.id, j);
+  });
 
-  // 2. Cargar convocatorias ricas en plazas oficiales de PortalTrabajos (100 convocatorias con 692 plazas!)
-  PORTAL_JOBS_DATA.forEach(j => {
+  // 1b. Cargar modificaciones y convocatorias añadidas localmente en memoria
+  LOCAL_DYNAMIC_JOBS.forEach(j => jobsMap.set(j.slug, j));
+
+  // 2. Cargar convocatorias oficiales universitarias (UNAJMA)
+  UNAJMA_OFFICIAL_JOBS.forEach(j => {
     if (!jobsMap.has(j.slug)) {
       jobsMap.set(j.slug, j);
     }
   });
 
-  // 3. Cargar modificaciones y convocatorias añadidas localmente en memoria
-  LOCAL_DYNAMIC_JOBS.forEach(j => jobsMap.set(j.slug, j));
+  // 3. Cargar catálogo verificado de respaldo y convocatorias prioritarias (Juntos, PAIS, ONPE, SUNAT...)
+  INITIAL_JOBS.forEach(j => {
+    if (!jobsMap.has(j.slug)) {
+      jobsMap.set(j.slug, j);
+    }
+  });
+
+  // 4. Cargar convocatorias ricas en plazas oficiales de PortalTrabajos (100 convocatorias con 692 plazas!)
+  PORTAL_JOBS_DATA.forEach(j => {
+    if (!jobsMap.has(j.slug)) {
+      jobsMap.set(j.slug, j);
+    }
+  });
 
   // 4. Cargar ingesta en vivo del feed oficial de PortalTrabajos
   try {
@@ -2778,9 +2874,31 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     };
   });
 
-  GLOBAL_JOBS_CACHE = results;
+  // Priorizar convocatorias creadas en CMS o de usuarios en el tope del listado
+  results.sort((a, b) => {
+    const isCmsA = a.id?.startsWith('job-cms-') || a.id?.startsWith('job-admin-');
+    const isCmsB = b.id?.startsWith('job-cms-') || b.id?.startsWith('job-admin-');
+    if (isCmsA && !isCmsB) return -1;
+    if (!isCmsA && isCmsB) return 1;
+    const dateA = a.created_at || a.start_date || '';
+    const dateB = b.created_at || b.start_date || '';
+    return dateB.localeCompare(dateA);
+  });
+
+  // Garantizar unicidad absoluta de id en todo el dataset unificado
+  const seenJobIds = new Set<string>();
+  const uniqueResults: JobPosting[] = [];
+  for (const j of results) {
+    if (seenJobIds.has(j.id)) {
+      j.id = `${j.id}-${j.slug ? j.slug.slice(0, 20) : Math.random().toString(36).substring(2, 7)}`;
+    }
+    seenJobIds.add(j.id);
+    uniqueResults.push(j);
+  }
+
+  GLOBAL_JOBS_CACHE = uniqueResults;
   GLOBAL_JOBS_TIMESTAMP = Date.now();
-  return results;
+  return uniqueResults;
 }
 
 export async function getJobPostingBySlug(
@@ -2895,8 +3013,11 @@ export async function getJobPostingBySlug(
     }
   }
 
-  // 2. Búsqueda rápida directa en memoria
-  const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j && j.slug === normSlug);
+  // 2. Búsqueda rápida directa en disco y memoria
+  const diskMatch = loadPersistedSubmissions().find(j => j && (j.slug === normSlug || j.id === normSlug));
+  if (diskMatch) return maybeEnrichJob(diskMatch);
+
+  const localDynamic = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j && (j.slug === normSlug || j.id === normSlug));
   if (localDynamic) return maybeEnrichJob(localDynamic);
 
   const portalJob = PORTAL_JOBS_DATA.find(j => j && j.slug === normSlug);
@@ -2964,7 +3085,10 @@ export async function saveJobPosting(
       slug,
       entity_name: jobData.entity_name,
       entity_ruc: jobData.entity_ruc || '',
-      entity_verified: jobData.entity_verified ?? true,
+      entity_verified: jobData.entity_verified ?? false,
+      entity_logo: jobData.entity_logo,
+      contact_email: jobData.contact_email,
+      contact_phone: jobData.contact_phone,
       sector_type: jobData.sector_type,
       region: jobData.region,
       category: jobData.category,
@@ -2984,11 +3108,27 @@ export async function saveJobPosting(
       featured: jobData.featured ?? false,
       views_count: jobData.views_count || 0,
       clicks_count: jobData.clicks_count || 0,
-      status: jobData.status || 'Vigente',
+      status: jobData.status || 'Pendiente',
       created_at: jobData.created_at || new Date().toISOString()
     };
 
     LOCAL_DYNAMIC_JOBS.set(newJob.id, newJob);
+
+    const initIdx = INITIAL_JOBS.findIndex(j => j.id === newJob.id || j.slug === newJob.slug);
+    if (initIdx !== -1) {
+      INITIAL_JOBS[initIdx] = newJob;
+    }
+
+    // Persistir en disco para sincronización entre Chamba Pro (port 3005) y ATPDev Admin (port 3003)
+    const currentSubmissions = loadPersistedSubmissions();
+    const existingIdx = currentSubmissions.findIndex(j => j.id === newJob.id || j.slug === newJob.slug);
+    if (existingIdx !== -1) {
+      currentSubmissions[existingIdx] = newJob;
+    } else {
+      currentSubmissions.unshift(newJob);
+    }
+    persistSubmissions(currentSubmissions);
+
     invalidateJobsCache();
 
     // Intentar persistir en Supabase si están disponibles las claves
@@ -3010,9 +3150,16 @@ export async function saveJobPosting(
 }
 
 export async function toggleJobFeatured(id: string, featured: boolean): Promise<boolean> {
-  const localJob = LOCAL_DYNAMIC_JOBS.get(id) || INITIAL_JOBS.find(j => j.id === id);
+  let localJob = LOCAL_DYNAMIC_JOBS.get(id);
+  if (!localJob) {
+    localJob = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j.id === id || j.slug === id);
+  }
+  if (!localJob) {
+    localJob = INITIAL_JOBS.find(j => j.id === id || j.slug === id);
+  }
   if (localJob) {
     localJob.featured = featured;
+    LOCAL_DYNAMIC_JOBS.set(localJob.id, localJob);
     invalidateJobsCache();
   }
 
@@ -3028,19 +3175,55 @@ export async function toggleJobFeatured(id: string, featured: boolean): Promise<
   return true;
 }
 
-export async function updateJobStatus(id: string, status: 'Vigente' | 'Finalizado' | 'Pendiente'): Promise<boolean> {
-  const localJob = LOCAL_DYNAMIC_JOBS.get(id) || INITIAL_JOBS.find(j => j.id === id);
+export async function updateJobStatus(
+  id: string, 
+  status: 'Vigente' | 'Finalizado' | 'Pendiente',
+  options?: { entity_verified?: boolean; entity_logo?: string }
+): Promise<boolean> {
+  let localJob = LOCAL_DYNAMIC_JOBS.get(id);
+  if (!localJob) {
+    localJob = Array.from(LOCAL_DYNAMIC_JOBS.values()).find(j => j.id === id || j.slug === id);
+  }
+  if (!localJob) {
+    localJob = INITIAL_JOBS.find(j => j.id === id || j.slug === id);
+  }
   if (localJob) {
     localJob.status = status;
-    invalidateJobsCache();
+    if (status === 'Vigente') {
+      localJob.entity_verified = options?.entity_verified ?? true;
+    }
+    if (options?.entity_logo !== undefined) {
+      localJob.entity_logo = options.entity_logo;
+    }
+    LOCAL_DYNAMIC_JOBS.set(localJob.id, localJob);
   }
+
+  // Persistir actualización en disco
+  const currentSubmissions = loadPersistedSubmissions();
+  const subIdx = currentSubmissions.findIndex(j => j.id === id || j.slug === id);
+  if (subIdx !== -1) {
+    currentSubmissions[subIdx].status = status;
+    if (status === 'Vigente') {
+      currentSubmissions[subIdx].entity_verified = options?.entity_verified ?? true;
+    }
+    if (options?.entity_logo !== undefined) {
+      currentSubmissions[subIdx].entity_logo = options.entity_logo;
+    }
+    persistSubmissions(currentSubmissions);
+  }
+
+  invalidateJobsCache();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (supabaseUrl && adminKey) {
     const supabase = createClient(supabaseUrl, adminKey);
-    const { error } = await supabase.from('job_postings').update({ status }).eq('id', id);
+    const updatePayload: any = { status };
+    if (status === 'Vigente') {
+      updatePayload.entity_verified = options?.entity_verified ?? true;
+    }
+    const { error } = await supabase.from('job_postings').update(updatePayload).eq('id', id);
     if (!error) return true;
   }
 
@@ -3049,10 +3232,23 @@ export async function updateJobStatus(id: string, status: 'Vigente' | 'Finalizad
 
 export async function deleteJobPosting(id: string): Promise<boolean> {
   LOCAL_DYNAMIC_JOBS.delete(id);
-  const index = INITIAL_JOBS.findIndex(j => j.id === id);
+  for (const [key, job] of LOCAL_DYNAMIC_JOBS.entries()) {
+    if (job.id === id || job.slug === id) {
+      LOCAL_DYNAMIC_JOBS.delete(key);
+    }
+  }
+  const index = INITIAL_JOBS.findIndex(j => j.id === id || j.slug === id);
   if (index !== -1) {
     INITIAL_JOBS.splice(index, 1);
   }
+
+  // Persistir eliminación en disco
+  const currentSubmissions = loadPersistedSubmissions();
+  const filteredSubmissions = currentSubmissions.filter(j => j.id !== id && j.slug !== id);
+  if (filteredSubmissions.length !== currentSubmissions.length) {
+    persistSubmissions(filteredSubmissions);
+  }
+
   invalidateJobsCache();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

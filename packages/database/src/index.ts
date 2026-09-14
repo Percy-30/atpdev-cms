@@ -1036,8 +1036,9 @@ export async function translateText(sourceText: string, targetLang: string): Pro
   }
 }
 
-// Exportar dominio de empleos y convocatorias Chamba Pro, IA y analíticas
+// Exportar dominio de empleos y convocatorias Chamba Pro, IA, analíticas y subdominios
 export * from './jobs';
 export * from './scraper';
 export * from './aiModels';
-export * from './analytics';
+export * from './analytics';
+export * from './subdomains';

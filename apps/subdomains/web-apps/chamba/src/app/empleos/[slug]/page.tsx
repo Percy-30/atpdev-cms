@@ -221,6 +221,46 @@ export default async function JobDetailPage({
           <span className="text-slate-200 truncate max-w-[250px] sm:max-w-[400px]">{job.title}</span>
         </nav>
 
+        {/* Banner de Revisión Editorial si la convocatoria aún está pendiente */}
+        {job.status === 'Pendiente' && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_30px_rgba(245,158,11,0.15)]">
+            <div className="flex items-center gap-3">
+              <Clock size={20} className="text-amber-400 shrink-0 animate-pulse" />
+              <div>
+                <strong className="text-white block sm:inline">Modo Vista Previa Editorial: </strong>
+                <span>Esta solicitud se encuentra <strong>en revisión por ATPDev</strong> y aún no se lista públicamente.</span>
+              </div>
+            </div>
+            <span className="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-[10px] font-bold tracking-wider shrink-0 uppercase">
+              Pendiente de Moderación
+            </span>
+          </div>
+        )}
+
+        {/* Banner de Convocatoria Finalizada con enlace al CMS */}
+        {job.status === 'Finalizado' && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_30px_rgba(244,63,94,0.15)]">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
+                <Clock size={18} />
+              </div>
+              <div>
+                <strong className="text-white block sm:inline">Convocatoria Finalizada: </strong>
+                <span>El plazo de postulación ha concluido. Puedes revisar otras convocatorias o editar/reactivar esta plaza en el panel de control.</span>
+              </div>
+            </div>
+            <a
+              href="http://localhost:3003/dashboard/chamba"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-white text-[11px] font-bold tracking-wider shrink-0 uppercase flex items-center gap-1.5 transition-colors"
+            >
+              <span>Editar en CMS</span>
+              <ExternalLink size={11} />
+            </a>
+          </div>
+        )}
+
         {/* Main Convocatoria Header Card */}
         <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/15 space-y-6 relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-[#0b0f19]">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
@@ -243,9 +283,19 @@ export default async function JobDetailPage({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-mono font-bold animate-pulse">
-                ● CONVOCATORIA VIGENTE
-              </span>
+              {job.status === 'Vigente' ? (
+                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-mono font-bold animate-pulse">
+                  ● CONVOCATORIA VIGENTE
+                </span>
+              ) : job.status === 'Pendiente' ? (
+                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold animate-pulse">
+                  ● EN REVISIÓN EDITORIAL
+                </span>
+              ) : (
+                <span className="px-3 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-xs font-mono font-bold">
+                  ● CONVOCATORIA FINALIZADA
+                </span>
+              )}
               <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-mono font-bold">
                 {job.sector_type}
               </span>
@@ -672,11 +722,11 @@ export default async function JobDetailPage({
                 )}
 
                 {/* Primary Redirection Box */}
-                <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 text-center space-y-4 mt-6">
+                <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 text-center space-y-4 mt-6 shadow-xl">
                   <h3 className="font-display font-bold text-lg text-white">
                     Postula en la Plataforma Oficial de {job.entity_name}
                   </h3>
-                  <p className="text-xs text-slate-300 max-w-md mx-auto">
+                  <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
                     Haz clic en el siguiente botón para acceder directamente al sistema de postulación oficial ({job.official_portal_name || "Portal Oficial"}):
                   </p>
                   
@@ -685,10 +735,10 @@ export default async function JobDetailPage({
                       href={cleanApplyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2 cursor-pointer"
+                      className="btn-brand-gradient w-full sm:w-auto px-8 py-3.5 rounded-xl text-white font-black font-display text-sm transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>[ POSTULAR AHORA EN ENLACE OFICIAL ]</span>
-                      <ExternalLink size={16} />
+                      <span className="text-white drop-shadow-sm font-black tracking-wide">[ POSTULAR AHORA EN ENLACE OFICIAL ]</span>
+                      <ExternalLink size={16} className="text-white drop-shadow-sm" />
                     </a>
                   </div>
                 </div>

@@ -59,12 +59,12 @@ export async function POST(req: NextRequest) {
       ? requirements
       : (typeof requirements === 'string' ? requirements.split('\n').map((r: string) => r.trim()).filter(Boolean) : []);
 
-    // 5. Guardar la convocatoria
+    // 5. Guardar la convocatoria en estado 'Pendiente' para moderación previa
     const result = await saveJobPosting({
       title: title.trim(),
       entity_name: entity_name.trim(),
       entity_ruc: entity_ruc?.trim() || '',
-      entity_verified: true,
+      entity_verified: false,
       sector_type: sector_type || 'CAS 1057',
       region: region || 'Nacional / Remoto',
       category: category || 'Administración y Gestión Pública',
@@ -81,21 +81,25 @@ export async function POST(req: NextRequest) {
       start_date: start_date || new Date().toISOString().split('T')[0],
       end_date: end_date || new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
       featured: false,
-      status: 'Vigente'
+      status: 'Pendiente',
+      entity_logo: body.entity_logo?.trim() || undefined,
+      contact_email: contact_email?.trim() || undefined,
+      contact_phone: contact_phone?.trim() || undefined
     });
 
     if (!result.success || !result.job) {
       return NextResponse.json(
-        { success: false, error: result.error || 'No se pudo registrar la convocatoria' },
+        { success: false, error: result.error || 'No se pudo registrar la solicitud de convocatoria' },
         { status: 500 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Convocatoria registrada con éxito en chamba pro',
+      message: 'Solicitud recibida para revisión editorial (< 2h)',
       jobId: result.job.id,
-      slug: result.job.slug
+      slug: result.job.slug,
+      status: 'Pendiente'
     });
 
   } catch (err: any) {

@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0f19;
+  --foreground: #f8fafc;
+  color-scheme: dark;
+}
+
+html.dark {
+  --background: #0b0f19;
+  --foreground: #f8fafc;
+  color-scheme: dark;
+}
+
+html.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -13,15 +28,205 @@
   --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
 }
+
+/* ============================================================
+   LIGHT MODE COMPLETE DASHBOARD OVERRIDES
+   ============================================================ */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Surfaces, Cards & Panels across ALL pages */
+html.light [class*="bg-[#262626]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#262626\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#181d28]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#181d28\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#1e1e1e]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#1e1e1e\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#141414]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#141414\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#171717]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#171717\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#111622]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#111622\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#12141a]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#12141a\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#111318]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#111318\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-900:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-900\/60:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-900\/40:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-900\/80:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-950:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-950\/60:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-950\/80:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-slate-950\/90:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-gray-900:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-gray-950:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *) {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Secondary inset containers (Inputs, list items, toggles, sub-boxes) */
+html.light [class*="bg-[#1A1A1A]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#1A1A1A\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#1a1c23]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#1a1c23\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#0A0A0B]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#0A0A0B\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#0A0A0A]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#0A0A0A\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#0a0b0e]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#0a0b0e\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#070a12]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#070a12\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light [class*="bg-[#030712]"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#030712\]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *) {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light [class*="bg-[#1A1A1A]/50"]:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *),
+html.light .bg-\[\#1A1A1A\]\/50:not(.fixed.inset-0.z-\[100\] *):not([role="dialog"] *) {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Borders */
+html.light .border-slate-800:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-slate-800\/60:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-slate-800\/50:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-slate-700:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-gray-800:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-gray-800\/50:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-gray-800\/60:not(.fixed.inset-0.z-\[100\] *),
+html.light .border-gray-700:not(.fixed.inset-0.z-\[100\] *) {
+  border-color: #e2e8f0 !important;
+}
+
+/* Gradients in Light Mode */
+html.light .from-emerald-950\/40 {
+  --tw-gradient-from: #f0fdf4 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #ffffff 50%, #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+}
+html.light .from-purple-950\/40 {
+  --tw-gradient-from: #faf5ff !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #ffffff 50%, #faf5ff !important;
+  border-color: #e9d5ff !important;
+}
+html.light .from-blue-950\/40 {
+  --tw-gradient-from: #eff6ff !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #ffffff 50%, #eff6ff !important;
+  border-color: #bfdbfe !important;
+}
+
+/* Typography in Light Mode */
+html.light h1:not(.fixed.inset-0.z-\[100\] *),
+html.light h2:not(.fixed.inset-0.z-\[100\] *),
+html.light h3:not(.fixed.inset-0.z-\[100\] *),
+html.light h4:not(.fixed.inset-0.z-\[100\] *),
+html.light h5:not(.fixed.inset-0.z-\[100\] *),
+html.light h6:not(.fixed.inset-0.z-\[100\] *) {
+  color: #0f172a !important;
+}
+
+html.light .text-white:not(
+  .fixed.inset-0.z-\[100\] *,
+  [role="dialog"] *,
+  button.bg-blue-600, 
+  button.bg-blue-500,
+  button.bg-emerald-500,
+  button.bg-emerald-600,
+  button.bg-rose-600,
+  button.bg-purple-600,
+  button.bg-indigo-600,
+  a.bg-blue-600, 
+  a.bg-emerald-500, 
+  a.bg-purple-600,
+  .bg-blue-600 *, 
+  .bg-blue-500 *, 
+  .bg-emerald-500 *, 
+  .bg-emerald-600 *, 
+  .bg-purple-600 *, 
+  .bg-purple-500 *, 
+  .bg-rose-600 *, 
+  .bg-indigo-600 *, 
+  .bg-amber-500 *
+) {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-400:not(.fixed.inset-0.z-\[100\] *),
+html.light .text-gray-400:not(.fixed.inset-0.z-\[100\] *) {
+  color: #64748b !important;
+}
+
+html.light .text-slate-300:not(.fixed.inset-0.z-\[100\] *),
+html.light .text-gray-300:not(.fixed.inset-0.z-\[100\] *) {
+  color: #334155 !important;
+}
+
+html.light .text-slate-200:not(.fixed.inset-0.z-\[100\] *),
+html.light .text-gray-200:not(.fixed.inset-0.z-\[100\] *) {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-500:not(.fixed.inset-0.z-\[100\] *),
+html.light .text-gray-500:not(.fixed.inset-0.z-\[100\] *) {
+  color: #64748b !important;
+}
+
+/* Inputs, Selects & Textareas */
+html.light input:not([type="checkbox"]):not([type="radio"]):not(.fixed.inset-0.z-\[100\] *),
+html.light select:not(.fixed.inset-0.z-\[100\] *),
+html.light textarea:not(.fixed.inset-0.z-\[100\] *) {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input:not([type="checkbox"]):not([type="radio"]):focus:not(.fixed.inset-0.z-\[100\] *),
+html.light select:focus:not(.fixed.inset-0.z-\[100\] *),
+html.light textarea:focus:not(.fixed.inset-0.z-\[100\] *) {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15) !important;
+}
+
+html.light input:not(.fixed.inset-0.z-\[100\] *)::placeholder,
+html.light textarea:not(.fixed.inset-0.z-\[100\] *)::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Tables */
+html.light tr.hover\:bg-slate-800\/30:hover,
+html.light tr:hover {
+  background-color: #f8fafc !important;
+}
+
+html.light th {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+/* Badges & Pills */
+html.light .bg-slate-800:not(.fixed.inset-0.z-\[100\] *) {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+

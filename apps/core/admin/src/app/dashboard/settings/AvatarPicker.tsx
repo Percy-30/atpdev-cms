@@ -31,14 +31,14 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
   };
 
   return (
-    <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6 mb-6">
+    <div className="bg-white dark:bg-[#262626] border border-slate-200 dark:border-gray-800 rounded-2xl p-6 mb-6 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
+        <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400">
           <Camera size={18} />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-white">Fotografía de Perfil (Avatar)</h3>
-          <p className="text-xs text-gray-500">Sube una foto desde tu equipo o selecciona una de la galería.</p>
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Fotografía de Perfil (Avatar)</h3>
+          <p className="text-xs text-slate-500 dark:text-gray-400">Sube una foto desde tu equipo o selecciona una de la galería.</p>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
                 className="w-full h-full object-cover rounded-xl"
               />
             ) : (
-              <div className="w-full h-full bg-gray-800 rounded-xl flex items-center justify-center text-gray-500">
+              <div className="w-full h-full bg-slate-100 dark:bg-gray-800 rounded-xl flex items-center justify-center text-slate-400 dark:text-gray-500">
                 <ImageIcon size={24} />
               </div>
             )}
@@ -75,7 +75,7 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
           {/* UPLOAD BUTTON + URL INPUT */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
-              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block">
+              <label className="text-[10px] font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest mb-1.5 block">
                 URL o Imagen Cargada
               </label>
               <input
@@ -87,7 +87,7 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
                   setPreviewError(false);
                 }}
                 placeholder="https://... o sube una imagen"
-                className="bg-[#1A1A1A] border border-gray-800 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full font-mono"
+                className="bg-white dark:bg-[#1A1A1A] border border-slate-300 dark:border-gray-800 text-slate-900 dark:text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-sm w-full font-mono"
               />
             </div>
 
@@ -102,7 +102,7 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 bg-blue-600/10 border border-blue-500/30 text-blue-400 hover:bg-blue-600/20 hover:border-blue-500/50 px-4 py-2.5 rounded-xl font-medium text-xs transition-all h-[42px] shrink-0"
+                className="flex items-center gap-2 bg-blue-50 dark:bg-blue-600/10 border border-blue-200 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-600/20 hover:border-blue-500/50 px-4 py-2.5 rounded-xl font-medium text-xs transition-all h-[42px] shrink-0"
               >
                 <Upload size={14} /> Subir Imagen desde Equipo
               </button>
@@ -111,7 +111,7 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
 
           {/* Quick Presets */}
           <div>
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">
+            <span className="text-[10px] font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider block mb-2">
               O elige de la galería predefinida:
             </span>
             <div className="flex items-center gap-3 overflow-x-auto pb-1">
@@ -126,7 +126,7 @@ export function AvatarPicker({ initialAvatarUrl }: { initialAvatarUrl: string })
                       setPreviewError(false);
                     }}
                     className={`relative w-10 h-10 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
-                      isSelected ? "border-blue-500 scale-105 shadow-[0_0_10px_rgba(37,99,235,0.5)]" : "border-gray-800 hover:border-gray-600 opacity-70 hover:opacity-100"
+                      isSelected ? "border-blue-500 scale-105 shadow-[0_0_10px_rgba(37,99,235,0.5)]" : "border-slate-200 dark:border-gray-800 hover:border-slate-400 dark:hover:border-gray-600 opacity-70 hover:opacity-100"
                     }`}
                   >
                     <img src={preset} alt={`Preset ${idx}`} className="w-full h-full object-cover" />

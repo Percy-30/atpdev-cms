@@ -117,11 +117,11 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
               href={globalBasesPdfUrl}
               target="_blank"
               rel="nofollow noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all shadow-[0_0_10px_rgba(16,185,129,0.3)] cursor-pointer"
+              className="btn-brand-gradient inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-white font-bold transition-all shadow-md cursor-pointer"
             >
-              <FileText size={13} />
-              <span>Bases Oficiales (PDF Directo)</span>
-              <ExternalLink size={11} />
+              <FileText size={13} className="text-white drop-shadow-sm" />
+              <span className="text-white drop-shadow-sm">Bases Oficiales (PDF Directo)</span>
+              <ExternalLink size={11} className="text-white drop-shadow-sm" />
             </a>
           )}
           {anexosUrl && (
@@ -265,11 +265,11 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
                         target="_blank"
                         download
                         rel="nofollow noopener noreferrer"
-                        className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_12px_rgba(16,185,129,0.3)] flex items-center gap-1.5 cursor-pointer"
+                        className="btn-brand-gradient px-3.5 py-1.5 rounded-xl text-white text-xs font-black font-display transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
                       >
-                        {isPlazaDoc ? <FileText size={14} /> : <ExternalLink size={14} />}
-                        <span>{isPlazaDoc ? '📄 Descargar Bases (PDF)' : 'Ver en Portal Oficial'}</span>
-                        <ExternalLink size={12} />
+                        {isPlazaDoc ? <FileText size={14} className="text-white drop-shadow-sm" /> : <ExternalLink size={14} className="text-white drop-shadow-sm" />}
+                        <span className="text-white drop-shadow-sm">{isPlazaDoc ? '📄 Descargar Bases (PDF)' : 'Ver en Portal Oficial'}</span>
+                        <ExternalLink size={12} className="text-white drop-shadow-sm" />
                       </a>
                     )}
 

@@ -70,10 +70,10 @@ export function CvMatcherTool({ requirements }: CvMatcherToolProps) {
         <button
           onClick={handleAnalyze}
           disabled={!cvText.trim()}
-          className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-slate-950 font-bold font-display text-xs transition-all cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2"
+          className="btn-brand-gradient w-full py-3 rounded-xl disabled:opacity-50 text-white font-black font-display text-xs transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2"
         >
-          <Sparkles size={16} />
-          <span>Calcular Compatibilidad</span>
+          <Sparkles size={16} className="text-white drop-shadow-sm" />
+          <span className="text-white drop-shadow-sm font-black">Calcular Compatibilidad</span>
         </button>
       </div>
 

@@ -1,0 +1,71 @@
+{
+  "chamba": {
+    "id": "chamba",
+    "name": "Chamba Pro",
+    "slug": "chamba",
+    "subdomain": "empleos",
+    "full_domain": "empleos.atpdev.dev",
+    "devPort": 3005,
+    "category": "Convocatorias & Empleos Perú",
+    "status": "active",
+    "theme": {
+      "accent_color": "#9C33FF",
+      "accent_name": "custom",
+      "theme_mode": "dark",
+      "radius_style": "rounded-3xl",
+      "radius_scale": "full",
+      "seed_color": "#a855f7",
+      "color_theme": "vibrant",
+      "primary_color": "#9C33FF",
+      "secondary_color": "#1A1320",
+      "tertiary_color": "#381537",
+      "neutral_color": "#807986",
+      "font_headline": "Space Grotesk",
+      "font_body": "Inter",
+      "font_label": "IBM Plex Mono",
+      "glow_style": "full-border",
+      "neon_thickness": "4px",
+      "cursor_effect": "cursor-ia",
+      "global_background_image": ""
+    },
+    "branding": {
+      "site_title": "chamba pro",
+      "site_tagline": "Agregador de Convocatorias y Empleos Perú",
+      "hero_badge": "Buscador Oficial de Empleos Perú 2026 • Live Sync",
+      "hero_title_prefix": "Encuentra tu próximo empleo en el Estado con",
+      "hero_title_highlight": "Chamba Pro",
+      "hero_description": "Monitoreo diario de convocatorias CAS 1057, D.L. 728, 276 y sector privado. Postulación directa en portales oficiales sin intermediarios.",
+      "logo_url": "/icon.svg",
+      "favicon_url": "/icon.svg",
+      "announcement_text": "🚀 Actualizado en tiempo real con convocatorias vigentes de SERVIR y entidades públicas.",
+      "announcement_enabled": true
+    },
+    "seo": {
+      "meta_title": "chamba pro — Buscador de Empleos y Convocatorias de Trabajo Perú",
+      "meta_description": "El buscador de convocatorias CAS 1057, D.L. 728, 276 y sector privado en Perú. Revisa bases oficiales, requisitos, salarios y postula directamente.",
+      "keywords": [
+        "convocatorias de trabajo",
+        "empleos peru",
+        "trabajo en el estado",
+        "convocatorias cas 2026",
+        "servir convocatorias"
+      ],
+      "canonical_url": "https://empleos.atpdev.dev"
+    },
+    "modules": {
+      "scraper_enabled": true,
+      "public_submissions_enabled": true,
+      "adsense_enabled": true,
+      "salary_calculator_enabled": true,
+      "regimes_comparator_enabled": true,
+      "ai_simulator_enabled": true,
+      "cv_generator_enabled": true
+    },
+    "contact": {
+      "email": "contacto@atpdev.dev",
+      "whatsapp": "+51987654321",
+      "support_url": "https://empleos.atpdev.dev/contacto"
+    },
+    "updated_at": "2026-09-13T18:20:36.951Z"
+  }
+}

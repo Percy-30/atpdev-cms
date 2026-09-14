@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Moon, Sun, Wand2, Type, Square, ChevronDown, Sparkles, Loader2, Palette, X, Eye, Zap } from "lucide-react";
+import { Moon, Sun, Wand2, Type, Square, ChevronDown, Sparkles, Loader2, Palette, X, Eye, Zap, Laptop, Tablet, Smartphone, RefreshCw, ExternalLink } from "lucide-react";
 import { suggestThemeWithAI } from "./actions";
 
 // ==========================================
@@ -91,10 +91,14 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const hiddenIframeRef = useRef<HTMLIFrameElement>(null);
   const [portalUrl, setPortalUrl] = useState<string>("http://localhost:3000");
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [iframeRefreshKey, setIframeRefreshKey] = useState(0);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (process.env.NEXT_PUBLIC_PORTAL_URL) {
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        setPortalUrl("http://localhost:3000");
+      } else if (process.env.NEXT_PUBLIC_PORTAL_URL) {
         setPortalUrl(process.env.NEXT_PUBLIC_PORTAL_URL);
       } else {
         setPortalUrl("https://atpdev.dev");
@@ -211,16 +215,16 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
       {hiddenInputs}
 
       {/* LAUNCHER CARD (Shown in the grid) */}
-      <div className="bg-[#262626] border border-gray-800 rounded-2xl p-6 h-full flex flex-col justify-center items-center text-center shadow-lg relative overflow-hidden">
+      <div className="bg-white dark:bg-[#262626] border border-slate-200 dark:border-gray-800 rounded-2xl p-6 h-full flex flex-col justify-center items-center text-center shadow-sm relative overflow-hidden">
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 blur-[50px] rounded-full pointer-events-none"></div>
-        <Palette size={32} className="text-blue-400 mb-4" />
-        <h2 className="text-lg font-bold text-white">Diseñador de Tema</h2>
-        <p className="text-xs text-gray-500 mt-2 mb-6">Configura colores, tipografías y estética global AAA para todo tu portal.</p>
+        <Palette size={32} className="text-blue-500 mb-4" />
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Diseñador de Tema</h2>
+        <p className="text-xs text-slate-500 dark:text-gray-400 mt-2 mb-6">Configura colores, tipografías y estética global AAA para todo tu portal.</p>
         
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:shadow-[0_0_25px_rgba(37,99,235,0.4)] transition-all"
+          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:shadow-[0_0_25px_rgba(37,99,235,0.4)] transition-all cursor-pointer"
         >
           <Wand2 size={14} />
           Abrir Diseñador
@@ -771,32 +775,125 @@ export function ThemeBuilder({ initialConfig }: { initialConfig: any }) {
           </div>
 
           {/* RIGHT PANEL: LIVE PREVIEW (ACTUAL PORTAL) */}
-          <div className="flex-1 relative bg-[#050505] hidden md:block">
-            <div className="absolute top-4 left-4 flex items-center gap-2 text-white bg-black/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest uppercase z-10 shadow-xl pointer-events-none">
-              <Eye size={14} className="text-emerald-400" /> Vista Previa en Vivo (Portal Real)
+          <div className="flex-1 relative bg-[#070a12] hidden md:flex flex-col overflow-hidden">
+            {/* Top Toolbar */}
+            <div className="h-14 border-b border-gray-800 bg-[#0c0c0e]/95 px-6 flex items-center justify-between z-10 backdrop-blur shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+                <span className="text-xs font-bold text-white tracking-wider uppercase font-mono flex items-center gap-2">
+                  <Eye size={14} className="text-emerald-400" />
+                  Live Preview: <strong className="text-blue-400 font-semibold lowercase">portal.atpdev.dev (:3000)</strong>
+                </span>
+              </div>
+
+              {/* Selector de Dispositivos Responsivo */}
+              <div className="flex items-center p-1 rounded-xl bg-black border border-gray-800 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setPreviewDevice('desktop')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    previewDevice === 'desktop'
+                      ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.4)]'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  title="Laptop / Desktop (100%)"
+                >
+                  <Laptop size={14} />
+                  <span>100%</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewDevice('tablet')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    previewDevice === 'tablet'
+                      ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.4)]'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  title="Tablet (768px)"
+                >
+                  <Tablet size={14} />
+                  <span>Tablet</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewDevice('mobile')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    previewDevice === 'mobile'
+                      ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.4)]'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  title="Móvil (390px)"
+                >
+                  <Smartphone size={14} />
+                  <span>Móvil</span>
+                </button>
+              </div>
+
+              {/* Acciones de Recarga y Apertura Externa */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIframeRefreshKey(prev => prev + 1)}
+                  className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/80 transition-colors border border-transparent hover:border-gray-700 cursor-pointer"
+                  title="Recargar vista previa"
+                >
+                  <RefreshCw size={15} />
+                </button>
+                <a
+                  href={portalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors border border-transparent hover:border-blue-500/20 cursor-pointer"
+                  title="Abrir portal en pestaña nueva"
+                >
+                  <ExternalLink size={15} />
+                </a>
+              </div>
             </div>
-            
-            <iframe 
-              ref={iframeRef}
-              src={portalUrl}
-              className="w-full h-full border-0"
-              title="Portal Live Preview"
-              onLoad={() => {
-                if (iframeRef.current && iframeRef.current.contentWindow) {
-                  iframeRef.current.contentWindow.postMessage({
-                    type: "UPDATE_THEME_PREVIEW",
-                    payload: {
-                      mode, primary, secondary, tertiary, neutral, 
-                      fontHeadline, fontBody, fontLabel, radiusScale, 
-                      globalBackgroundImage, 
-                      glowStyle: mouseEffects.join(','),
-                      neonThickness,
-                      neonGlow: neonThickness === "2px" ? "10px" : neonThickness === "4px" ? "18px" : neonThickness === "6px" ? "26px" : "36px"
+
+            {/* Viewport de Previsualización Centrado */}
+            <div className="flex-1 w-full bg-[#030712] p-4 md:p-6 flex items-center justify-center overflow-hidden">
+              <div
+                className={`transition-all duration-300 bg-[#070a12] shadow-2xl relative ${
+                  previewDevice === 'desktop'
+                    ? 'w-full h-full rounded-2xl border border-gray-800'
+                    : previewDevice === 'tablet'
+                    ? 'w-[768px] max-w-full h-full max-h-[92vh] rounded-2xl border-4 border-gray-700 ring-4 ring-black'
+                    : 'w-[390px] max-w-full h-full max-h-[844px] rounded-[44px] border-[10px] border-[#18181b] ring-4 ring-black relative overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.9)]'
+                }`}
+              >
+                {/* Notch simulado para vista móvil */}
+                {previewDevice === 'mobile' && (
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-5 bg-[#18181b] rounded-b-2xl z-20 flex items-center justify-center pointer-events-none">
+                    <div className="w-3 h-3 rounded-full bg-black border border-gray-800 mr-3" />
+                    <div className="w-12 h-1 bg-gray-900 rounded-full" />
+                  </div>
+                )}
+
+                <iframe 
+                  ref={iframeRef}
+                  key={iframeRefreshKey}
+                  src={portalUrl}
+                  className="w-full h-full border-0 bg-transparent"
+                  title="Portal Live Preview"
+                  onLoad={() => {
+                    if (iframeRef.current && iframeRef.current.contentWindow) {
+                      iframeRef.current.contentWindow.postMessage({
+                        type: "UPDATE_THEME_PREVIEW",
+                        payload: {
+                          mode, primary, secondary, tertiary, neutral, 
+                          fontHeadline, fontBody, fontLabel, radiusScale, 
+                          globalBackgroundImage, 
+                          glowStyle: mouseEffects.join(','),
+                          neonThickness,
+                          neonGlow: neonThickness === "2px" ? "10px" : neonThickness === "4px" ? "18px" : neonThickness === "6px" ? "26px" : "36px"
+                        }
+                      }, "*");
                     }
-                  }, "*");
-                }
-              }}
-            />
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

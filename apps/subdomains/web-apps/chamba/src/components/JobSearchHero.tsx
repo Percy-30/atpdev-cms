@@ -3,13 +3,16 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Building2, Briefcase, Award, TrendingUp } from "lucide-react";
+import type { SubdomainBranding } from "@atpdev/database";
 
 interface JobSearchHeroProps {
   totalJobs: number;
   totalVacancies: number;
+  branding?: SubdomainBranding;
+  accentColor?: string;
 }
 
-export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps) {
+export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor = "#10b981" }: JobSearchHeroProps) {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("");
   const router = useRouter();
@@ -28,19 +31,29 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
   return (
     <div className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 border-b border-white/10 overflow-hidden bg-gradient-to-b from-slate-950 via-[#070d18] to-[#070a12]">
       {/* Ambient Gradient Lights & Cyber Glow */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-emerald-500/15 blur-[140px] pointer-events-none rounded-full" />
+      <div 
+        className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] blur-[140px] pointer-events-none rounded-full" 
+        style={{ backgroundColor: `${accentColor}25` }}
+      />
       <div className="absolute top-20 right-10 w-[350px] h-[250px] bg-cyan-500/10 blur-[120px] pointer-events-none rounded-full" />
       <div className="absolute top-40 left-10 w-[300px] h-[200px] bg-amber-500/10 blur-[100px] pointer-events-none rounded-full" />
 
       <div className="max-w-4xl mx-auto text-center space-y-9 relative z-10">
         {/* Domain, Verified Pill Badge & Live Status Indicator */}
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+          <div 
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border text-xs font-mono font-semibold shadow-sm"
+            style={{ 
+              backgroundColor: `${accentColor}15`, 
+              borderColor: `${accentColor}35`,
+              color: accentColor 
+            }}
+          >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: accentColor }}></span>
+              <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: accentColor }}></span>
             </span>
-            <span>Plataforma Oficial Agregadora — empleos.atpdev.dev</span>
+            <span>{branding?.hero_badge || "Plataforma Oficial Agregadora — empleos.atpdev.dev"}</span>
           </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold shadow-[0_0_15px_rgba(6,182,212,0.15)]">
@@ -52,10 +65,29 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
         {/* Main Headline */}
         <div className="space-y-4">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-white leading-[1.15]">
-            Encuentra tu próxima <span className="title-neon-glow underline decoration-emerald-400/60 decoration-wavy decoration-2">chamba</span> verificada en Perú
+            {branding?.hero_title_prefix ? (
+              <>
+                {branding.hero_title_prefix}{" "}
+                <span 
+                  className="title-neon-glow underline decoration-wavy decoration-2"
+                  style={{ textDecorationColor: `${accentColor}90` }}
+                >
+                  {branding.hero_title_highlight || "Chamba Pro"}
+                </span>{" "}
+                en Perú
+              </>
+            ) : (
+              <>
+                Encuentra tu próxima <span className="title-neon-glow underline decoration-emerald-400/60 decoration-wavy decoration-2">chamba</span> verificada en Perú
+              </>
+            )}
           </h1>
           <p className="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-light">
-            Consolidamos las mejores convocatorias públicas (<span className="text-amber-300 font-medium">CAS 1057</span>, <span className="text-emerald-300 font-medium">728</span>, <span className="text-cyan-300 font-medium">276</span>) y empresas privadas líderes. Redirección directa y transparente sin intermediarios.
+            {branding?.hero_description || (
+              <>
+                Consolidamos las mejores convocatorias públicas (<span className="text-amber-300 font-medium">CAS 1057</span>, <span className="text-emerald-300 font-medium">728</span>, <span className="text-cyan-300 font-medium">276</span>) y empresas privadas líderes. Redirección directa y transparente sin intermediarios.
+              </>
+            )}
           </p>
         </div>
 
@@ -112,17 +144,17 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
           <button
             type="submit"
             disabled={isPending}
-            className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black font-display text-sm transition-all shadow-[0_0_25px_rgba(16,185,129,0.45)] hover:shadow-[0_0_35px_rgba(16,185,129,0.65)] hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer flex-shrink-0 disabled:opacity-75 disabled:cursor-wait"
+            className="btn-brand-gradient w-full sm:w-auto px-7 py-3 rounded-xl text-white font-black font-display text-sm flex items-center justify-center gap-2 cursor-pointer flex-shrink-0 disabled:opacity-75 disabled:cursor-wait shadow-xl"
           >
             {isPending ? (
               <>
-                <span className="w-4 h-4 rounded-full border-2 border-slate-950 border-t-transparent animate-spin" />
-                <span>Buscando convocatorias...</span>
+                <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                <span className="text-white drop-shadow-sm">Buscando convocatorias...</span>
               </>
             ) : (
               <>
-                <Search size={18} />
-                <span>Buscar Ofertas</span>
+                <Search size={18} className="text-white drop-shadow-sm" />
+                <span className="text-white drop-shadow-sm">Buscar Ofertas</span>
               </>
             )}
           </button>
@@ -155,29 +187,29 @@ export function JobSearchHero({ totalJobs, totalVacancies }: JobSearchHeroProps)
 
         {/* IBM Plex Mono Live Statistics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10">
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-md space-y-1">
+          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
             <div className="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400 flex items-center justify-center gap-1">
               <span>{totalJobs}</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Ofertas Activas</p>
+            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">Ofertas Activas</p>
           </div>
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-md space-y-1">
+          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
             <div className="text-2xl sm:text-3xl font-extrabold font-mono text-amber-400 flex items-center justify-center gap-1">
               <span>{totalVacancies}</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Vacantes Totales</p>
+            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">Vacantes Totales</p>
           </div>
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-md space-y-1">
+          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
             <div className="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-400 flex items-center justify-center gap-1">
               <span>100%</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">RUCs Verificados</p>
+            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">RUCs Verificados</p>
           </div>
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-md space-y-1">
+          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
             <div className="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400 flex items-center justify-center gap-1">
               <span>0 S/</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Costo Postulante</p>
+            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">Costo Postulante</p>
           </div>
         </div>
       </div>

@@ -55,9 +55,9 @@ export default function WhatsAppSubscribeWidget() {
           <div className="w-full sm:w-auto flex items-center gap-2">
             <button
               onClick={handleJoinWhatsApp}
-              className="w-full sm:w-auto px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
+              className="btn-brand-gradient w-full sm:w-auto px-5 py-2.5 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>💬 Canal WhatsApp</span>
+              <span className="text-white drop-shadow-sm font-black">💬 Canal WhatsApp</span>
             </button>
             <button
               onClick={handleJoinTelegram}

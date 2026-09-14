@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2 } from 'lucide-react';
+import { ChambaThemeToggle } from './ChambaThemeToggle';
 
 export function MobileNavMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,13 +46,16 @@ export function MobileNavMenu() {
               </div>
               <span className="font-display font-black text-lg text-white">chamba PRO</span>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white"
-            >
-              <X size={18} />
-            </button>
+            <div className="flex items-center gap-2">
+              <ChambaThemeToggle />
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+            </div>
           </div>
 
           {/* Navigation Items List */}
@@ -193,10 +197,10 @@ export function MobileNavMenu() {
           <Link
             href="/crear-cv-cas"
             onClick={() => setIsOpen(false)}
-            className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-display flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all"
+            className="w-full py-2.5 rounded-xl btn-brand-gradient text-white text-xs font-bold font-display flex items-center justify-center gap-2 shadow-lg transition-all"
           >
-            <FileSpreadsheet size={16} />
-            <span>Generar CV Profesional (PDF/Word)</span>
+            <FileSpreadsheet size={16} className="text-white drop-shadow-sm" />
+            <span className="text-white drop-shadow-sm">Generar CV Profesional (PDF/Word)</span>
           </Link>
         </div>
       </div>

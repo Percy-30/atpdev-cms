@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getJobPostings } from "@atpdev/database";
+import { getJobPostings, getSubdomainConfig } from "@atpdev/database";
 import { JobSearchHero } from "@/components/JobSearchHero";
 import { JobCard } from "@/components/JobCard";
 import { RegionesGrid } from "@/components/RegionesGrid";
@@ -17,16 +17,29 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const jobs = await getJobPostings();
+  const [jobs, config] = await Promise.all([
+    getJobPostings(),
+    getSubdomainConfig("chamba")
+  ]);
   const todayIso = new Date().toISOString().split("T")[0];
 
-  // Solo convocatorias vigentes (no vencidas) en la portada
-  const activeJobs = jobs.filter(j => !j.end_date || j.end_date >= todayIso);
+  // Solo convocatorias vigentes (aprobadas y no vencidas) en la portada
+  const activeJobs = jobs.filter(j => j.status === 'Vigente' && (!j.end_date || j.end_date >= todayIso));
 
-  const featuredJobs = [
-    ...activeJobs.filter(j => j.featured),
-    ...activeJobs.filter(j => !j.featured && j.status === 'Vigente')
-  ].slice(0, 12);
+  // Priorizar convocatorias recién aprobadas / creadas en el CMS y convocatorias destacadas
+  const sortedActive = [...activeJobs].sort((a, b) => {
+    const isCmsA = a.id?.startsWith('job-cms-') || a.id?.startsWith('job-admin-');
+    const isCmsB = b.id?.startsWith('job-cms-') || b.id?.startsWith('job-admin-');
+    if (isCmsA && !isCmsB) return -1;
+    if (!isCmsA && isCmsB) return 1;
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    const dateA = a.created_at || a.start_date || '';
+    const dateB = b.created_at || b.start_date || '';
+    return dateB.localeCompare(dateA);
+  });
+
+  const featuredJobs = sortedActive.slice(0, 12);
 
   const totalVacancies = activeJobs.reduce((acc, curr) => acc + curr.vacancies_count, 0);
 
@@ -36,7 +49,12 @@ export default async function HomePage() {
       <AdLateralRail />
 
       {/* Hero Section */}
-      <JobSearchHero totalJobs={jobs.length} totalVacancies={totalVacancies} />
+      <JobSearchHero 
+        totalJobs={activeJobs.length} 
+        totalVacancies={totalVacancies} 
+        branding={config.branding}
+        accentColor={config.theme?.accent_color}
+      />
 
       {/* Main Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
