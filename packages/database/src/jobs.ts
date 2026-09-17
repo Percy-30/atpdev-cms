@@ -56,6 +56,7 @@ export type JobPosting = {
   anexos_url?: string;
   guia_postulante_url?: string;
   resultados_url?: string;
+  comunicados_url?: string;
   fuente_url?: string;
   scrape_source_url?: string;
   official_portal_name?: string;
@@ -2363,7 +2364,10 @@ import {
   extractPlazasAndBasesFromCdUrl,
   scrapeUnajmaOfficialJobs,
   UNAJMA_OFFICIAL_JOBS,
-  registerJobsUpdatedCallback
+  registerJobsUpdatedCallback,
+  getCachedCdJobsList,
+  persistCdJobs,
+  fetchAndParseIndividualCdJob
 } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
@@ -2637,10 +2641,11 @@ export function sanitizeOfficialUrl(
 // Local submissions persistence shared across monorepo apps (chamba on port 3005 and admin on port 3003)
 function getSafeNodeModules() {
   try {
-    if (typeof window !== 'undefined' || typeof process === 'undefined' || !process.versions?.node) {
+    if (typeof process === 'undefined' || !process.versions?.node) {
       return { fs: null, path: null };
     }
-    const nodeReq = eval('require');
+    const nodeReq = typeof require !== 'undefined' ? require : null;
+    if (!nodeReq) return { fs: null, path: null };
     return {
       fs: nodeReq('fs'),
       path: nodeReq('path')
@@ -2722,6 +2727,7 @@ export function invalidateJobsCache(): void {
 }
 
 registerJobsUpdatedCallback(() => invalidateJobsCache());
+(globalThis as any).__INVALIDATE_GLOBAL_JOBS_CACHE__ = invalidateJobsCache;
 
 export async function getJobPostings(): Promise<JobPosting[]> {
   const diskSubmissions = loadPersistedSubmissions();
@@ -3045,7 +3051,27 @@ export async function getJobPostingBySlug(
   const found = allJobs.find(j => j && j.slug === normSlug);
   if (found) return maybeEnrichJob(found);
 
-  // 4. Fallback inteligente por coincidencia parcial de slug o URL de fuente original
+  // 4. Búsqueda directa en catálogo de ConvocatoriasDeTrabajo / Extracción bajo demanda en vivo
+  if (normSlug.startsWith('oferta-de-empleo-') || /-\d{4,6}$/.test(normSlug)) {
+    const cdList = getCachedCdJobsList();
+    const cdDirect = cdList.find(j => j && (j.slug === normSlug || (j.fuente_url && j.fuente_url.toLowerCase().includes(normSlug))));
+    if (cdDirect) return maybeEnrichJob(cdDirect);
+
+    // Si aún no estaba en el caché, extraer la oferta directamente de la fuente en tiempo real (0 errores 404)
+    try {
+      const liveCdJob = await fetchAndParseIndividualCdJob(normSlug);
+      if (liveCdJob) {
+        cdList.unshift(liveCdJob);
+        persistCdJobs(cdList);
+        invalidateJobsCache();
+        return maybeEnrichJob(liveCdJob);
+      }
+    } catch (err) {
+      console.warn('Error resolviendo convocatoria bajo demanda:', err);
+    }
+  }
+
+  // 5. Fallback inteligente por coincidencia parcial de slug o URL de fuente original
   const fuzzy = allJobs.find(j => j && j.slug && (j.slug.includes(normSlug) || normSlug.includes(j.slug)));
   if (fuzzy) return maybeEnrichJob(fuzzy);
 

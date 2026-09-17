@@ -164,10 +164,11 @@ export const DEFAULT_CHAMBA_CONFIG: SubdomainConfig = {
 
 function getSafeNodeModules() {
   try {
-    if (typeof window !== 'undefined' || typeof process === 'undefined' || !process.versions?.node) {
+    if (typeof process === 'undefined' || !process.versions?.node) {
       return { fs: null, path: null };
     }
-    const nodeReq = eval('require');
+    const nodeReq = typeof require !== 'undefined' ? require : null;
+    if (!nodeReq) return { fs: null, path: null };
     return {
       fs: nodeReq('fs'),
       path: nodeReq('path')
