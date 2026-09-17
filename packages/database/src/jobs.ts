@@ -2367,6 +2367,7 @@ import {
   registerJobsUpdatedCallback,
   getCachedCdJobsList,
   persistCdJobs,
+  persistSingleEnrichedCdJob,
   fetchAndParseIndividualCdJob
 } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
@@ -2463,6 +2464,7 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
   if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('UNIDAD DE GESTION EDUCATIVA') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
   if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
+  if (norm.includes('DRTC HUANUCO') || norm.includes('DRTC HUÁNUCO') || (norm.includes('DRTC') && norm.includes('HUANUCO')) || (norm.includes('TRANSPORTES') && norm.includes('HUANUCO')) || (norm.includes('TRANSPORTES') && norm.includes('HUÁNUCO'))) return 'https://www.drtchco.gob.pe/convocatorias/';
   if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
   if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/juntos';
   if (norm.includes('MIMP') || norm.includes('MUJER') || norm.includes('AURORA')) return 'https://www.gob.pe/mimp';
@@ -2930,7 +2932,27 @@ export async function getJobPostingBySlug(
   const maybeEnrichJob = async (job: JobPosting | null): Promise<JobPosting | null> => {
     if (!job) return null;
     const cdUrl = job.scrape_source_url || (job.fuente_url && job.fuente_url.includes('convocatoriasdetrabajo.com') ? job.fuente_url : undefined);
-    if (!options?.skipRemoteEnrichment && cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && (!job.plazas || job.plazas.length <= 1)) {
+
+    const hasBasesDoc = Boolean(
+      job.bases_pdf_url && 
+      !isCompetitorUrl(job.bases_pdf_url) &&
+      (
+        job.bases_pdf_url.toLowerCase().includes('.pdf') ||
+        job.bases_pdf_url.toLowerCase().includes('drive.google.com') ||
+        job.bases_pdf_url.toLowerCase().includes('docs.google.com') ||
+        job.bases_pdf_url.toLowerCase().includes('.doc')
+      )
+    );
+
+    const hasPlazaDocs = Boolean(
+      job.plazas && 
+      job.plazas.length > 0 &&
+      job.plazas.every(p => p.bases_url && !isCompetitorUrl(p.bases_url))
+    );
+
+    const needsEnrichment = !hasBasesDoc || !hasPlazaDocs || !job.official_documents || job.official_documents.length === 0;
+
+    if (!options?.skipRemoteEnrichment && cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && needsEnrichment) {
       try {
         const enriched = await extractPlazasAndBasesFromCdUrl(cdUrl);
         if (enriched.plazas && enriched.plazas.length > 0) {
@@ -2942,8 +2964,17 @@ export async function getJobPostingBySlug(
         if (enriched.directAnexosUrl) {
           job.anexos_url = enriched.directAnexosUrl;
         }
+        if (enriched.directCronogramaUrl) {
+          job.cronograma_url = enriched.directCronogramaUrl;
+        }
         if (enriched.directResultadosUrl) {
           job.resultados_url = enriched.directResultadosUrl;
+        }
+        if (enriched.directComunicadosUrl) {
+          job.comunicados_url = enriched.directComunicadosUrl;
+        }
+        if (enriched.directApplyUrl) {
+          job.apply_url = enriched.directApplyUrl;
         }
         if (enriched.vacancies_count) {
           job.vacancies_count = enriched.vacancies_count;
@@ -2957,10 +2988,20 @@ export async function getJobPostingBySlug(
     }
 
     // Si aún no tiene PDF directo en bases pero alguna plaza sí lo tiene:
-    if (job.plazas && (!job.bases_pdf_url || (!job.bases_pdf_url.toLowerCase().includes('.pdf') && !job.bases_pdf_url.toLowerCase().includes('drive.google.com')))) {
-      const plazaPdf = job.plazas.find(p => p.bases_url && (p.bases_url.toLowerCase().includes('.pdf') || p.bases_url.toLowerCase().includes('drive.google.com')));
+    if (job.plazas && (!job.bases_pdf_url || (!job.bases_pdf_url.toLowerCase().includes('.pdf') && !job.bases_pdf_url.toLowerCase().includes('drive.google.com') && !job.bases_pdf_url.toLowerCase().includes('docs.google.com')))) {
+      const plazaPdf = job.plazas.find(p => p.bases_url && (p.bases_url.toLowerCase().includes('.pdf') || p.bases_url.toLowerCase().includes('drive.google.com') || p.bases_url.toLowerCase().includes('docs.google.com')));
       if (plazaPdf?.bases_url) {
         job.bases_pdf_url = plazaPdf.bases_url;
+      }
+    }
+
+    // Asegurar que ninguna plaza tenga URLs de competidores o agregadores
+    if (job.plazas) {
+      const fallbackPlazaTarget = job.bases_pdf_url || job.cronograma_url || job.anexos_url || job.resultados_url || job.apply_url;
+      for (const p of job.plazas) {
+        if (!p.bases_url || isCompetitorUrl(p.bases_url)) {
+          p.bases_url = fallbackPlazaTarget;
+        }
       }
     }
 
@@ -3006,6 +3047,10 @@ export async function getJobPostingBySlug(
         p.salary = cleanPlazaSalary(p.salary);
         p.bases_url = sanitizeOfficialUrl(p.bases_url, job.bases_pdf_url || job.apply_url, job.entity_name, job.sector_type);
       });
+    }
+
+    if (job.official_documents && job.official_documents.length > 0) {
+      persistSingleEnrichedCdJob(job);
     }
 
     return job;
