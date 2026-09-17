@@ -196,6 +196,40 @@ export default async function JobDetailPage({
 
   const isSameAction = cleanBasesUrl === cleanApplyUrl;
 
+  // Determinar si la convocatoria ya finalizó (por estado o por fecha vencida)
+  let isDateExpired = false;
+  if (job.end_date) {
+    const cleanDate = job.end_date.trim();
+    let target = 0;
+    if (cleanDate.includes('-')) {
+      const parts = cleanDate.split('-').map(Number);
+      if (parts.length >= 3) {
+        if (parts[0] > 1000) {
+          target = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1, 23, 59, 59).getTime();
+        } else {
+          target = new Date(parts[2], (parts[1] || 1) - 1, parts[0] || 1, 23, 59, 59).getTime();
+        }
+      }
+    } else if (cleanDate.includes('/')) {
+      const parts = cleanDate.split('/').map(Number);
+      if (parts.length >= 3) {
+        if (parts[0] > 1000) {
+          target = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1, 23, 59, 59).getTime();
+        } else {
+          target = new Date(parts[2], (parts[1] || 1) - 1, parts[0] || 1, 23, 59, 59).getTime();
+        }
+      }
+    }
+    if (!target || isNaN(target)) {
+      target = new Date(cleanDate).getTime();
+    }
+    if (target && !isNaN(target) && target < Date.now()) {
+      isDateExpired = true;
+    }
+  }
+
+  const isFinalized = job.status === 'Finalizado' || isDateExpired;
+
   return (
     <>
       {/* Google for Jobs JSON-LD Injection */}
@@ -237,27 +271,35 @@ export default async function JobDetailPage({
           </div>
         )}
 
-        {/* Banner de Convocatoria Finalizada con enlace al CMS */}
-        {job.status === 'Finalizado' && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_30px_rgba(244,63,94,0.15)]">
+        {/* Banner de Convocatoria Finalizada con opciones para el postulante */}
+        {isFinalized && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_0_30px_rgba(244,63,94,0.15)]">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
                 <Clock size={18} />
               </div>
               <div>
                 <strong className="text-white block sm:inline">Convocatoria Finalizada: </strong>
-                <span>El plazo de postulación ha concluido. Puedes revisar otras convocatorias o editar/reactivar esta plaza en el panel de control.</span>
+                <span>El plazo de postulación ha concluido. Te sugerimos explorar otras convocatorias vigentes.</span>
               </div>
             </div>
-            <a
-              href="http://localhost:3003/dashboard/chamba"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-white text-[11px] font-bold tracking-wider shrink-0 uppercase flex items-center gap-1.5 transition-colors"
-            >
-              <span>Editar en CMS</span>
-              <ExternalLink size={11} />
-            </a>
+            <div className="flex flex-wrap items-center gap-2 shrink-0 w-full sm:w-auto">
+              {job.entity_name && (
+                <Link
+                  href={`/empleos?q=${encodeURIComponent(job.entity_name)}`}
+                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-[11px] font-bold tracking-wider uppercase transition-colors"
+                >
+                  Más de {job.entity_name}
+                </Link>
+              )}
+              <Link
+                href="/empleos"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-[11px] font-black tracking-wider uppercase flex items-center gap-1.5 transition-all shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-105"
+              >
+                <span>Explorar convocatorias activas</span>
+                <ChevronRight size={13} />
+              </Link>
+            </div>
           </div>
         )}
 
@@ -283,7 +325,7 @@ export default async function JobDetailPage({
             </div>
 
             <div className="flex items-center gap-2">
-              {job.status === 'Vigente' ? (
+              {!isFinalized && job.status === 'Vigente' ? (
                 <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-mono font-bold animate-pulse">
                   ● CONVOCATORIA VIGENTE
                 </span>
@@ -331,7 +373,7 @@ export default async function JobDetailPage({
           </div>
 
           {/* Large Visual Countdown Clock (Semáforo de Cierre) */}
-          <JobCountdownClock endDate={job.end_date} size="lg" />
+          <JobCountdownClock endDate={job.end_date} status={isFinalized ? 'Finalizado' : job.status} size="lg" />
 
           {/* Social Share & Direct Apply Quick Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">

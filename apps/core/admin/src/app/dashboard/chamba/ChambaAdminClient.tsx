@@ -464,19 +464,33 @@ export default function ChambaAdminClient({ initialJobs, initialConfig }: Chamba
       if (fresh && Array.isArray(fresh)) {
         setJobs(fresh);
       }
-    } catch (err) {
-      console.error('Error refreshing jobs:', err);
+    } catch (err: any) {
+      // Solo reportar error ruidoso si fue una acción manual del usuario,
+      // evitando que el refresco silencioso con build desactualizado (stale) dispare el modal de error de Next.js
+      if (!silent) {
+        console.error('Error refreshing jobs:', err);
+      } else {
+        console.warn('Refresco silencioso omitido (build en recarga o conexión):', err?.message || err);
+      }
     } finally {
       if (!silent) setIsRefreshing(false);
     }
   };
 
   useEffect(() => {
-    refreshJobs(true);
+    // Refrescar automáticamente cuando el usuario regresa a la pestaña del admin
+    const handleFocus = () => refreshJobs(true);
+    window.addEventListener('focus', handleFocus);
+
+    // Intervalo prudencial cada 30 segundos
     const interval = setInterval(() => {
       refreshJobs(true);
-    }, 10000);
-    return () => clearInterval(interval);
+    }, 30000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {

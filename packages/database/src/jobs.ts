@@ -3174,8 +3174,17 @@ export async function toggleJobFeatured(id: string, featured: boolean): Promise<
   if (localJob) {
     localJob.featured = featured;
     LOCAL_DYNAMIC_JOBS.set(localJob.id, localJob);
-    invalidateJobsCache();
   }
+
+  // Persistir actualización en disco para sincronización entre Chamba Pro (port 3005) y ATPDev Admin (port 3003)
+  const currentSubmissions = loadPersistedSubmissions();
+  const subIdx = currentSubmissions.findIndex(j => j.id === id || j.slug === id);
+  if (subIdx !== -1) {
+    currentSubmissions[subIdx].featured = featured;
+    persistSubmissions(currentSubmissions);
+  }
+
+  invalidateJobsCache();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

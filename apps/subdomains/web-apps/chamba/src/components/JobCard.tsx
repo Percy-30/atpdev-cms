@@ -94,7 +94,7 @@ export function JobCard({ job }: JobCardProps) {
       {/* Footer Row with countdown and single clear Details CTA */}
       <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3 text-xs">
         {/* Dynamic Countdown Clock (Green, Orange, Red, Blue) */}
-        <JobCountdownClock endDate={job.end_date} size="sm" />
+        <JobCountdownClock endDate={job.end_date} status={job.status} size="sm" />
 
         {/* Ver Detalles CTA */}
         <Link

@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@atpdev/database": ["../../../packages/database/src/index.ts"]
     }
   },
   "include": [

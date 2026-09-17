@@ -5,11 +5,13 @@ import { Clock, AlertTriangle, Flame, CheckCircle2 } from "lucide-react";
 
 interface JobCountdownClockProps {
   endDate: string; // Formato YYYY-MM-DD
+  status?: string; // 'Vigente' | 'Finalizado' | 'Pendiente' | 'Concluida'
   size?: "sm" | "md" | "lg";
 }
 
 export function JobCountdownClock({
   endDate,
+  status,
   size = "md",
 }: JobCountdownClockProps) {
   // Parse target date assuming Peru end of day (23:59:59)
@@ -70,6 +72,7 @@ export function JobCountdownClock({
   }, [endDate]);
 
   const { days, hours, minutes, isExpired } = timeLeft;
+  const isConcluded = isExpired || status === 'Finalizado' || status === 'Concluida';
 
   // Semáforo de color y estado según requerimiento:
   // 1. Azul: Si ya venció
@@ -87,14 +90,14 @@ export function JobCountdownClock({
     isPulsing: false,
   };
 
-  if (isExpired) {
+  if (isConcluded) {
     theme = {
       badgeBg: "bg-blue-950/40",
       badgeBorder: "border-blue-500/30",
       badgeText: "text-blue-300",
       iconColor: "text-blue-400",
-      label: "Concluida",
-      subtext: "Proceso de postulación cerrado",
+      label: "Proceso Concluido",
+      subtext: "Convocatoria finalizada oficialmente",
       icon: CheckCircle2,
       isPulsing: false,
     };
@@ -148,8 +151,8 @@ export function JobCountdownClock({
       >
         <IconComponent size={13} className={theme.iconColor} />
         <span>
-          {isExpired
-            ? "Cerrada"
+          {isConcluded
+            ? "Concluida"
             : days === 0
             ? `${hours}h restantes`
             : `${days}d restantes`}
@@ -173,7 +176,7 @@ export function JobCountdownClock({
         <div className="flex items-center gap-1.5">
           <span className="font-extrabold">{theme.label}</span>
           <span className="opacity-40">•</span>
-          {isExpired ? (
+          {isConcluded ? (
             <span>Convocatoria finalizada</span>
           ) : days === 0 ? (
             <span className="font-extrabold">{hours}h {minutes}m restantes</span>
@@ -220,7 +223,7 @@ export function JobCountdownClock({
       </div>
 
       {/* Reloj con dígitos segmentados estilo panel tech */}
-      {!isExpired ? (
+      {!isConcluded ? (
         <div className="grid grid-cols-3 gap-2 pt-1 font-mono">
           <div className="bg-black/30 border border-white/5 rounded-xl p-2.5 text-center">
             <span className={`block text-2xl font-black ${theme.badgeText}`}>
