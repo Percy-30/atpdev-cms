@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, Fragment } from "react";
 import { useRouter } from "next/navigation";
-import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette, Check, CheckCircle2 } from "lucide-react";
+import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette, Check, CheckCircle2, QrCode } from "lucide-react";
 import { Project, GithubRepoSummary, slugify } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -158,6 +158,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [appstore, setAppstore] = useState("");
   const [imagePreview, setImagePreview] = useState(""); // screenshot capturado, viaja en input oculto "image"
   const [themeConfig, setThemeConfig] = useState<string>("");
+  const [qrTheme, setQrTheme] = useState<string>("emerald");
+  const [qrBadgeStyle, setQrBadgeStyle] = useState<string>("white");
+  const [qrCardBg, setQrCardBg] = useState<string>("dark");
 
   // Módulos Legales y Subpáginas Dinámicas
   const [hasPrivacy, setHasPrivacy] = useState(true);
@@ -233,6 +236,23 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setPlaystore(editingProject?.playstore || "");
     setAppstore((editingProject as any)?.appstore || "");
     setThemeConfig(editingProject?.theme_config || "");
+    
+    let currentQrTheme = "emerald";
+    let currentQrBadgeStyle = "white";
+    let currentQrCardBg = "dark";
+    if (editingProject?.theme_config) {
+      try {
+        const parsed = JSON.parse(editingProject.theme_config);
+        if (parsed.qr) {
+          if (parsed.qr.theme) currentQrTheme = parsed.qr.theme;
+          if (parsed.qr.badgeStyle) currentQrBadgeStyle = parsed.qr.badgeStyle;
+          if (parsed.qr.cardBg) currentQrCardBg = parsed.qr.cardBg;
+        }
+      } catch (e) {}
+    }
+    setQrTheme(currentQrTheme);
+    setQrBadgeStyle(currentQrBadgeStyle);
+    setQrCardBg(currentQrCardBg);
     
     if (editingProject?.legal_config) {
       try {
@@ -665,7 +685,26 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     formData.set("playstore", playstore);
     formData.set("appstore", appstore);
     formData.set("is_featured", is_featured ? "true" : "false");
-    formData.set("theme_config", themeConfig || "");
+
+    let finalThemeConfig = themeConfig || "{}";
+    try {
+      const parsed = JSON.parse(finalThemeConfig || "{}");
+      parsed.qr = {
+        theme: qrTheme,
+        badgeStyle: qrBadgeStyle,
+        cardBg: qrCardBg,
+      };
+      finalThemeConfig = JSON.stringify(parsed);
+    } catch {
+      finalThemeConfig = JSON.stringify({
+        qr: {
+          theme: qrTheme,
+          badgeStyle: qrBadgeStyle,
+          cardBg: qrCardBg,
+        }
+      });
+    }
+    formData.set("theme_config", finalThemeConfig);
     formData.set("legal_config", JSON.stringify({
       has_privacy: hasPrivacy,
       has_terms: hasTerms,
@@ -1552,6 +1591,99 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
               </button>
             </div>
             <input type="hidden" name="status" value={status} />
+          </div>
+
+          {/* Configuración Oficial del Código QR (Valores por Defecto en Portal) */}
+          <div className="bg-[#151515] p-4 rounded-xl border border-gray-800/80 space-y-3 mt-1">
+            <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+              <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
+                <QrCode size={14} className="text-emerald-400" />
+                Estilo Oficial del Código QR
+              </span>
+              <span className="text-[11px] text-emerald-400 font-mono font-medium">Predeterminado</span>
+            </div>
+
+            {/* Tema de color por defecto */}
+            <div>
+              <label className="text-[11px] text-gray-400 block mb-1.5 font-medium">Color / Tema Predeterminado</label>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  { id: "emerald", label: "ATP Cyber", color: "#10b981" },
+                  { id: "azure", label: "Tech Blue", color: "#38bdf8" },
+                  { id: "purple", label: "Synthwave", color: "#c084fc" },
+                  { id: "amber", label: "Gold Amber", color: "#fbbf24" },
+                  { id: "minimal", label: "Monocromo", color: "#ffffff" },
+                  { id: "print", label: "Impresión", color: "#0f172a" },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setQrTheme(t.id)}
+                    className={`py-1.5 px-2 text-xs rounded-xl border transition-all text-left truncate flex items-center gap-1.5 ${
+                      qrTheme === t.id
+                        ? "bg-emerald-500/20 border-emerald-500/60 text-emerald-300 shadow-sm font-semibold"
+                        : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: t.color }} />
+                    <span className="truncate">{t.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Borde del logo central */}
+            <div>
+              <label className="text-[11px] text-gray-400 block mb-1.5 font-medium">Borde del Logo Central</label>
+              <div className="grid grid-cols-4 gap-1.5">
+                {[
+                  { id: "white", label: "⚪ Blanco" },
+                  { id: "transparent", label: "🏁 Transp." },
+                  { id: "accent", label: "🟢 Neón" },
+                  { id: "dark", label: "⚫ Oscuro" },
+                ].map((b) => (
+                  <button
+                    key={b.id}
+                    type="button"
+                    onClick={() => setQrBadgeStyle(b.id)}
+                    className={`py-1.5 px-1.5 text-xs rounded-xl border transition-all text-center truncate ${
+                      qrBadgeStyle === b.id
+                        ? "bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm font-semibold"
+                        : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:text-white"
+                    }`}
+                    title={b.label}
+                  >
+                    {b.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Fondo de descarga predeterminado */}
+            <div>
+              <label className="text-[11px] text-gray-400 block mb-1.5 font-medium">Fondo de Descarga Predeterminado</label>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  { id: "dark", label: "⚫ Tarjeta Dark" },
+                  { id: "light", label: "⚪ Tarjeta Blanca" },
+                  { id: "transparent", label: "🏁 PNG Transp." },
+                ].map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setQrCardBg(c.id)}
+                    className={`py-1.5 px-2 text-xs rounded-xl border transition-all text-center truncate ${
+                      qrCardBg === c.id
+                        ? "bg-purple-500/20 border-purple-400 text-purple-300 shadow-sm font-semibold"
+                        : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:text-white"
+                    }`}
+                    title={c.label}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <input type="hidden" name="theme_config" value={themeConfig} />

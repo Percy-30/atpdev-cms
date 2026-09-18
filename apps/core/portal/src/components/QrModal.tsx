@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { 
   X, Copy, Check, QrCode, Smartphone, Download, Share2, 
-  Loader2, Palette, Sparkles, Sliders, CopyCheck 
+  Loader2, Palette, Sparkles, Sliders, CopyCheck, Layers, Eye 
 } from "lucide-react";
 import { AnimatedDownloadButton } from "./AnimatedDownloadButton";
 
@@ -112,6 +112,8 @@ export const QR_THEMES: QrTheme[] = [
 ];
 
 export type BadgeType = "app" | "atp" | "none";
+export type BadgeStyle = "white" | "transparent" | "accent" | "dark";
+export type CardBackground = "dark" | "light" | "transparent";
 export type ExportQuality = "1x" | "2x";
 
 interface QrModalProps {
@@ -120,6 +122,9 @@ interface QrModalProps {
   title: string;
   url: string;
   appImage?: string;
+  defaultThemeId?: string;
+  defaultBadgeStyle?: BadgeStyle;
+  defaultCardBg?: CardBackground;
 }
 
 // Dibuja rectángulos redondeados con compatibilidad hacia atrás
@@ -174,6 +179,7 @@ function drawAtpBrandBadge(
   ctx: CanvasRenderingContext2D, 
   centerX: number, 
   centerY: number,
+  badgeStyle: BadgeStyle = "white",
   isLight: boolean = false
 ) {
   const badgeW = 148;
@@ -181,12 +187,14 @@ function drawAtpBrandBadge(
   const badgeX = centerX - badgeW / 2;
   const badgeY = centerY - badgeH / 2;
 
-  ctx.fillStyle = isLight ? "#ffffff" : "#0b0c10";
+  const isWhite = badgeStyle === "white" || isLight;
+
+  ctx.fillStyle = isWhite ? "#ffffff" : "#0b0c10";
   ctx.beginPath();
   drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 18);
   ctx.fill();
 
-  ctx.strokeStyle = isLight ? "#2563eb" : "#3b82f6";
+  ctx.strokeStyle = isWhite ? "#2563eb" : "#3b82f6";
   ctx.lineWidth = 3.5;
   ctx.beginPath();
   drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 18);
@@ -194,43 +202,76 @@ function drawAtpBrandBadge(
 
   ctx.textAlign = "left";
   ctx.font = "bold 30px monospace";
-  ctx.fillStyle = isLight ? "#2563eb" : "#3b82f6";
+  ctx.fillStyle = isWhite ? "#2563eb" : "#3b82f6";
   ctx.fillText(">_", badgeX + 20, badgeY + 43);
 
   ctx.font = "900 24px 'Space Grotesk', system-ui, sans-serif";
-  ctx.fillStyle = isLight ? "#0f172a" : "#ffffff";
+  ctx.fillStyle = isWhite ? "#0f172a" : "#ffffff";
   ctx.fillText("ATP", badgeX + 70, badgeY + 41);
 }
 
-// Dibuja el ícono personalizado del aplicativo con marco y micro-sello ATP
+// Dibuja el ícono personalizado del aplicativo con marco configurable (Blanco, Transparente, Neón u Oscuro)
 function drawAppIconBadge(
   ctx: CanvasRenderingContext2D,
   appImg: HTMLImageElement,
   centerX: number,
   centerY: number,
   accentColor: string,
+  badgeStyle: BadgeStyle = "white",
   isLight: boolean = false
 ) {
-  const containerSize = 100;
+  const containerSize = 104;
   const half = containerSize / 2;
   const containerX = centerX - half;
   const containerY = centerY - half;
 
-  // Fondo contenedor
-  ctx.fillStyle = isLight ? "#ffffff" : "#0b0c10";
-  ctx.beginPath();
-  drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
-  ctx.fill();
+  if (badgeStyle === "white") {
+    // Halo Blanco Nítido (Alto Contraste)
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.fill();
 
-  // Borde temático
-  ctx.strokeStyle = accentColor;
-  ctx.lineWidth = 3.5;
-  ctx.beginPath();
-  drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
-  ctx.stroke();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.stroke();
+  } else if (badgeStyle === "transparent") {
+    // Transparente (sin relleno de fondo)
+    ctx.strokeStyle = isLight ? "#0f172a" : accentColor;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.stroke();
+  } else if (badgeStyle === "accent") {
+    // Neón con color temático
+    ctx.fillStyle = isLight ? "#ffffff" : "#0b0c10";
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.fill();
+
+    ctx.strokeStyle = accentColor;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.stroke();
+  } else {
+    // Dark Glass
+    ctx.fillStyle = "#0b0c10";
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.fill();
+
+    ctx.strokeStyle = isLight ? "#cbd5e1" : "rgba(255, 255, 255, 0.25)";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    drawRoundedRect(ctx, containerX, containerY, containerSize, containerSize, 22);
+    ctx.stroke();
+  }
 
   // Recorte redondeado para la imagen de la app
-  const imgSize = 88;
+  const imgSize = 90;
   const imgHalf = imgSize / 2;
   const imgX = centerX - imgHalf;
   const imgY = centerY - imgHalf;
@@ -248,12 +289,13 @@ function drawAppIconBadge(
   const pillX = centerX - pillW / 2;
   const pillY = containerY + containerSize - 11;
 
-  ctx.fillStyle = isLight ? "#f8fafc" : "#07090e";
+  const isWhiteBadge = badgeStyle === "white";
+  ctx.fillStyle = isWhiteBadge ? "#ffffff" : (isLight ? "#f8fafc" : "#07090e");
   ctx.beginPath();
   drawRoundedRect(ctx, pillX, pillY, pillW, pillH, 11);
   ctx.fill();
 
-  ctx.strokeStyle = isLight ? "#2563eb" : "#3b82f6";
+  ctx.strokeStyle = isWhiteBadge ? "#2563eb" : (isLight ? "#2563eb" : "#3b82f6");
   ctx.lineWidth = 2;
   ctx.beginPath();
   drawRoundedRect(ctx, pillX, pillY, pillW, pillH, 11);
@@ -261,11 +303,20 @@ function drawAppIconBadge(
 
   ctx.textAlign = "center";
   ctx.font = "bold 11px monospace";
-  ctx.fillStyle = isLight ? "#2563eb" : "#60a5fa";
+  ctx.fillStyle = isWhiteBadge ? "#2563eb" : (isLight ? "#2563eb" : "#60a5fa");
   ctx.fillText(">_ ATP", centerX, pillY + 15);
 }
 
-export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps) {
+export function QrModal({ 
+  isOpen, 
+  onClose, 
+  title, 
+  url, 
+  appImage,
+  defaultThemeId,
+  defaultBadgeStyle = "white",
+  defaultCardBg = "dark"
+}: QrModalProps) {
   const [copiedUrl, setCopiedUrl] = useState(false);
   const [copiedImage, setCopiedImage] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -273,9 +324,12 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
   const [isCopyingImage, setIsCopyingImage] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
 
-  // Estados del Estudio de Personalización
-  const [activeTheme, setActiveTheme] = useState<QrTheme>(QR_THEMES[0]);
+  // Estados del Estudio de Personalización con valores por defecto inteligentes
+  const initialTheme = QR_THEMES.find(t => t.id === defaultThemeId) || QR_THEMES[0];
+  const [activeTheme, setActiveTheme] = useState<QrTheme>(initialTheme);
   const [badgeType, setBadgeType] = useState<BadgeType>("app");
+  const [badgeStyle, setBadgeStyle] = useState<BadgeStyle>(defaultBadgeStyle);
+  const [cardBg, setCardBg] = useState<CardBackground>(defaultCardBg);
   const [exportQuality, setExportQuality] = useState<ExportQuality>("1x");
   const [showCustomizer, setShowCustomizer] = useState<boolean>(false);
 
@@ -290,7 +344,7 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
   // ecc=H (High Error Correction: tolera hasta 30% de oclusión central sin perder lectura)
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&data=${encodeURIComponent(url)}&ecc=H&color=${activeTheme.qrColorHex}&bgcolor=${activeTheme.qrBgHex}`;
 
-  // Renderiza el canvas con el QR, el estilo de color elegido y la insignia central
+  // Renderiza el canvas con el QR, el estilo de color, el halo/borde del logo y fondo transparente o sólido
   const generateQrCanvas = async (overrideQuality?: ExportQuality): Promise<HTMLCanvasElement | null> => {
     const quality = overrideQuality || exportQuality;
     const scale = quality === "2x" ? 2 : 1;
@@ -307,18 +361,21 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
       ctx.scale(scale, scale);
     }
 
-    const isLight = !!activeTheme.isLight;
+    const isTransparent = cardBg === "transparent";
+    const isLight = cardBg === "light" || (!isTransparent && !!activeTheme.isLight);
 
-    // 1. Fondo elegante
-    ctx.fillStyle = activeTheme.canvasCardBg;
-    ctx.fillRect(0, 0, baseW, baseH);
+    // 1. Fondo de la tarjeta (si no es transparente)
+    if (!isTransparent) {
+      ctx.fillStyle = cardBg === "light" ? "#ffffff" : activeTheme.canvasCardBg;
+      ctx.fillRect(0, 0, baseW, baseH);
 
-    // Borde exterior
-    ctx.strokeStyle = activeTheme.canvasBorder;
-    ctx.lineWidth = isLight ? 2 : 4;
-    ctx.beginPath();
-    drawRoundedRect(ctx, 16, 16, baseW - 32, baseH - 32, 28);
-    ctx.stroke();
+      // Borde exterior
+      ctx.strokeStyle = cardBg === "light" ? "#cbd5e1" : activeTheme.canvasBorder;
+      ctx.lineWidth = cardBg === "light" ? 2 : 4;
+      ctx.beginPath();
+      drawRoundedRect(ctx, 16, 16, baseW - 32, baseH - 32, 28);
+      ctx.stroke();
+    }
 
     // 2. Cargar y dibujar el código QR
     try {
@@ -329,29 +386,28 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
       return null;
     }
 
-    // 3. Insignia central según badgeType
+    // 3. Insignia central según badgeType y badgeStyle
     if (badgeType === "app" && appImage && !imgError) {
       try {
         const appImg = await loadImage(appImage, 3500);
-        drawAppIconBadge(ctx, appImg, 320, 315, activeTheme.accentColor, isLight);
+        drawAppIconBadge(ctx, appImg, 320, 315, activeTheme.accentColor, badgeStyle, isLight);
       } catch (err) {
         console.warn("Fallo carga de imagen app para canvas, usando marca ATP:", err);
-        drawAtpBrandBadge(ctx, 320, 315, isLight);
+        drawAtpBrandBadge(ctx, 320, 315, badgeStyle, isLight);
       }
     } else if (badgeType === "atp" || (badgeType === "app" && (!appImage || imgError))) {
-      drawAtpBrandBadge(ctx, 320, 315, isLight);
+      drawAtpBrandBadge(ctx, 320, 315, badgeStyle, isLight);
     }
-    // Si badgeType === "none", no se dibuja ninguna insignia central
 
     // 4. Encabezado y Pie de página descriptivo
     ctx.textAlign = "center";
-    ctx.fillStyle = activeTheme.textColor;
+    ctx.fillStyle = isLight ? "#0f172a" : activeTheme.textColor;
     ctx.font = "bold 24px system-ui, -apple-system, sans-serif";
     
     const displayTitle = title.length > 34 ? title.substring(0, 32) + "..." : title;
     ctx.fillText(displayTitle, 320, 625);
 
-    ctx.fillStyle = activeTheme.subtextColor;
+    ctx.fillStyle = isLight ? "#2563eb" : activeTheme.subtextColor;
     ctx.font = "bold 15px monospace";
     ctx.fillText("⚡ Desarrollado por ATP DEV • atpdev.dev", 320, 660);
 
@@ -362,7 +418,7 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
     return canvas;
   };
 
-  // Descargar imagen PNG del QR en alta resolución
+  // Descargar imagen PNG del QR
   const handleDownloadQrImage = async () => {
     setIsDownloadingImage(true);
     try {
@@ -371,7 +427,8 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
       const dataUrl = canvas.toDataURL("image/png");
       const a = document.createElement("a");
       const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, "_");
-      a.download = `QR_${cleanTitle}_${activeTheme.id}_${exportQuality}.png`;
+      const bgTag = cardBg === "transparent" ? "_transparent" : "";
+      a.download = `QR_${cleanTitle}_${activeTheme.id}_${badgeStyle}${bgTag}_${exportQuality}.png`;
       a.href = dataUrl;
       document.body.appendChild(a);
       a.click();
@@ -513,7 +570,7 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
                   ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-300 shadow-md shadow-emerald-500/20" 
                   : "bg-white/5 border-white/10 text-gray-300 hover:text-white hover:bg-white/10"
               }`}
-              title="Personalizar estilo de color, logo y resolución del QR"
+              title="Personalizar estilo de color, borde del logo y fondo de descarga"
             >
               <Palette size={15} />
               <span className="hidden sm:inline">Personalizar</span>
@@ -527,7 +584,7 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
           </div>
         </div>
 
-        {/* Panel de Personalización Interactivo (Expandible o directo) */}
+        {/* Panel de Personalización Interactivo Expandible */}
         {showCustomizer && (
           <div className="mb-4 p-3.5 bg-[#080b12] border border-white/15 rounded-2xl space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
             {/* 1. Selector de Temas / Colores */}
@@ -566,7 +623,68 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
               </div>
             </div>
 
-            {/* 2. Selector de Insignia Central */}
+            {/* 2. Selector de Borde / Fondo del Logo Central */}
+            {badgeType === "app" && (
+              <div>
+                <div className="flex items-center justify-between text-xs font-semibold text-gray-300 mb-2">
+                  <span className="flex items-center gap-1.5">
+                    <Layers size={13} className="text-sky-400" />
+                    Borde / Halo del Logo:
+                  </span>
+                  <span className="text-[10px] text-gray-400">
+                    {badgeStyle === "white" ? "⚪ Halo Blanco (Recomendado)" : badgeStyle === "transparent" ? "🏁 Transparente" : badgeStyle === "accent" ? "🟢 Neón" : "⚫ Oscuro"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 gap-1.5">
+                  <button
+                    onClick={() => setBadgeStyle("white")}
+                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                      badgeStyle === "white"
+                        ? "bg-white/25 border-white text-white shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Halo blanco nítido para máximo contraste sobre el QR"
+                  >
+                    ⚪ Blanco
+                  </button>
+                  <button
+                    onClick={() => setBadgeStyle("transparent")}
+                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                      badgeStyle === "transparent"
+                        ? "bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Sin fondo sólido, deja flotar el icono con recorte limpio"
+                  >
+                    🏁 Transparente
+                  </button>
+                  <button
+                    onClick={() => setBadgeStyle("accent")}
+                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                      badgeStyle === "accent"
+                        ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Borde brillante con el color del tema actual"
+                  >
+                    🟢 Neón
+                  </button>
+                  <button
+                    onClick={() => setBadgeStyle("dark")}
+                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                      badgeStyle === "dark"
+                        ? "bg-slate-700/50 border-slate-400 text-slate-200 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Cápsula oscura con borde sutil"
+                  >
+                    ⚫ Oscuro
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* 3. Selector de Insignia Central */}
             <div>
               <span className="block text-xs font-semibold text-gray-300 mb-2">
                 Insignia Central:
@@ -605,46 +723,90 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
               </div>
             </div>
 
-            {/* 3. Selector de Calidad de Exportación */}
-            <div className="flex items-center justify-between pt-1 border-t border-white/10">
-              <span className="text-xs font-semibold text-gray-300 flex items-center gap-1">
-                <Sliders size={13} className="text-emerald-400" />
-                Calidad de Descarga:
-              </span>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setExportQuality("1x")}
-                  className={`px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
-                    exportQuality === "1x"
-                      ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
-                      : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
-                  }`}
-                >
-                  HD
-                </button>
-                <button
-                  onClick={() => setExportQuality("2x")}
-                  className={`px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all flex items-center gap-1 ${
-                    exportQuality === "2x"
-                      ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-sky-400 text-sky-300"
-                      : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
-                  }`}
-                  title="Resolución 2X Ultra HD (1280x1520 px) para imprenta o folletos"
-                >
-                  <Sparkles size={11} className="text-amber-400" />
-                  Ultra HD 2X
-                </button>
+            {/* 4. Selector de Fondo al Descargar & Calidad */}
+            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/10">
+              {/* Fondo de Descarga */}
+              <div>
+                <span className="text-[11px] font-semibold text-gray-300 block mb-1.5">
+                  Fondo de Descarga:
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setCardBg("dark")}
+                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      cardBg === "dark"
+                        ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Tarjeta oscura estándar"
+                  >
+                    ⚫ Dark
+                  </button>
+                  <button
+                    onClick={() => setCardBg("light")}
+                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      cardBg === "light"
+                        ? "bg-white/20 border-white text-white"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Tarjeta blanca para imprimir en papel"
+                  >
+                    ⚪ Blanca
+                  </button>
+                  <button
+                    onClick={() => setCardBg("transparent")}
+                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      cardBg === "transparent"
+                        ? "bg-purple-500/20 border-purple-400 text-purple-300"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="PNG transparente sin fondo negro, ideal para flyers"
+                  >
+                    🏁 Transp.
+                  </button>
+                </div>
+              </div>
+
+              {/* Calidad de Descarga */}
+              <div>
+                <span className="text-[11px] font-semibold text-gray-300 block mb-1.5">
+                  Resolución PNG:
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setExportQuality("1x")}
+                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      exportQuality === "1x"
+                        ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    HD
+                  </button>
+                  <button
+                    onClick={() => setExportQuality("2x")}
+                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all flex items-center justify-center gap-0.5 ${
+                      exportQuality === "2x"
+                        ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-sky-400 text-sky-300"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Ultra HD 2X (1280x1520 px) para imprenta"
+                  >
+                    <Sparkles size={10} className="text-amber-400" />
+                    Ultra HD
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* QR Code Container con Live Theming */}
+        {/* QR Code Container con Live Theming y Halo Configurable */}
         <div className="flex flex-col items-center justify-center my-2">
           <div 
             className="p-4 rounded-3xl border shadow-inner relative group transition-all duration-300"
             style={{ 
-              backgroundColor: activeTheme.containerBg,
+              backgroundColor: cardBg === "transparent" ? "rgba(255,255,255,0.03)" : activeTheme.containerBg,
               borderColor: activeTheme.accentColor + "4d"
             }}
           >
@@ -657,18 +819,30 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
                 className="rounded-2xl transition-transform duration-300 group-hover:scale-[1.02]"
               />
 
-              {/* Insignia Central Dinámica */}
+              {/* Insignia Central Dinámica con Halo Blanco / Transparente / Neón */}
               {badgeType !== "none" && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   {badgeType === "app" && appImage && !imgError ? (
                     <div className="relative flex flex-col items-center justify-center">
                       <div 
-                        className="p-1 rounded-2xl border-2 flex items-center justify-center backdrop-blur-md shadow-lg"
-                        style={{ 
-                          backgroundColor: activeTheme.isLight ? "#ffffff" : "#0b0c10",
-                          borderColor: activeTheme.accentColor,
-                          boxShadow: `0 0 20px ${activeTheme.accentColor}80`
-                        }}
+                        className={`p-1 rounded-2xl border-2 flex items-center justify-center backdrop-blur-md transition-all duration-200 ${
+                          badgeStyle === "white" 
+                            ? "bg-white border-white shadow-[0_0_20px_rgba(255,255,255,0.5)]" 
+                            : badgeStyle === "transparent"
+                            ? "bg-black/30 border-white/60 shadow-md backdrop-blur-md"
+                            : badgeStyle === "accent"
+                            ? "border-2 shadow-lg"
+                            : "bg-[#0b0c10] border-white/20 shadow-md"
+                        }`}
+                        style={
+                          badgeStyle === "accent" 
+                            ? { 
+                                backgroundColor: activeTheme.isLight ? "#ffffff" : "#0b0c10",
+                                borderColor: activeTheme.accentColor,
+                                boxShadow: `0 0 20px ${activeTheme.accentColor}80`
+                              }
+                            : {}
+                        }
                       >
                         <img 
                           src={appImage} 
@@ -679,29 +853,29 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
                           onError={() => setImgError(true)}
                         />
                       </div>
+
                       {/* Micro-sello de marca ATP DEV */}
                       <div 
-                        className="absolute -bottom-2 border px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md"
-                        style={{ 
-                          backgroundColor: activeTheme.isLight ? "#f8fafc" : "#080b12",
-                          borderColor: activeTheme.isLight ? "#2563eb" : "#3b82f6" 
-                        }}
+                        className={`absolute -bottom-2 border px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md transition-all ${
+                          badgeStyle === "white"
+                            ? "bg-white border-blue-600 text-slate-900"
+                            : "bg-[#080b12] border-blue-500/80 text-white"
+                        }`}
                       >
-                        <span className={`font-mono text-[9px] font-black ${activeTheme.isLight ? "text-blue-600" : "text-blue-400"}`}>&gt;_</span>
-                        <span className={`text-[8px] font-black tracking-wider ${activeTheme.isLight ? "text-slate-900" : "text-white"}`}>ATP</span>
+                        <span className={`font-mono text-[9px] font-black ${badgeStyle === "white" ? "text-blue-600" : "text-blue-400"}`}>&gt;_</span>
+                        <span className={`text-[8px] font-black tracking-wider ${badgeStyle === "white" ? "text-slate-900" : "text-white"}`}>ATP</span>
                       </div>
                     </div>
                   ) : (
                     <div 
-                      className="px-3.5 py-1.5 rounded-xl border-2 flex items-center gap-1.5 backdrop-blur-md shadow-lg"
-                      style={{ 
-                        backgroundColor: activeTheme.isLight ? "#ffffff" : "#0b0c10",
-                        borderColor: activeTheme.isLight ? "#2563eb" : "#3b82f6",
-                        boxShadow: `0 0 20px ${activeTheme.isLight ? "rgba(37,99,235,0.4)" : "rgba(59,130,246,0.6)"}`
-                      }}
+                      className={`px-3.5 py-1.5 rounded-xl border-2 flex items-center gap-1.5 backdrop-blur-md shadow-lg ${
+                        badgeStyle === "white"
+                          ? "bg-white border-blue-600 text-slate-900"
+                          : "bg-[#0b0c10] border-blue-500/80 text-white"
+                      }`}
                     >
-                      <span className={`font-mono text-sm font-black ${activeTheme.isLight ? "text-blue-600" : "text-blue-400"}`}>&gt;_</span>
-                      <span className={`text-xs font-black tracking-widest ${activeTheme.isLight ? "text-slate-900" : "text-white"}`}>ATP</span>
+                      <span className="font-mono text-sm font-black text-blue-600">&gt;_</span>
+                      <span className={`text-xs font-black tracking-widest ${badgeStyle === "white" ? "text-slate-900" : "text-white"}`}>ATP</span>
                     </div>
                   )}
                 </div>
@@ -725,7 +899,7 @@ export function QrModal({ isOpen, onClose, title, url, appImage }: QrModalProps)
               onClick={handleDownloadQrImage}
               disabled={isDownloadingImage}
               className="flex items-center justify-center gap-1 py-2.5 px-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all border border-white/15 hover:border-emerald-500/50 active:scale-95 shadow-sm"
-              title={`Descargar PNG en calidad ${exportQuality === "2x" ? "Ultra HD (1280x1520)" : "HD (640x760)"}`}
+              title={`Descargar PNG con fondo ${cardBg} en ${exportQuality.toUpperCase()}`}
             >
               {isDownloadingImage ? (
                 <Loader2 size={13} className="animate-spin text-emerald-400" />

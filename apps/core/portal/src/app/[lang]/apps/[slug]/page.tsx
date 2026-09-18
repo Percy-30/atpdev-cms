@@ -399,6 +399,7 @@ export default async function ProjectPage({
               title={translatedTitle}
               playstore={project.playstore}
               appstore={appstoreUrl}
+              qrConfig={localTheme?.qr || null}
             />
 
             {/* In-article Google AdSense Slot */}

@@ -15,6 +15,11 @@ interface ProjectArticleViewerProps {
   title: string;
   playstore?: string | null;
   appstore?: string | null;
+  qrConfig?: {
+    theme?: string;
+    badgeStyle?: "white" | "transparent" | "accent" | "dark";
+    cardBg?: "dark" | "light" | "transparent";
+  } | null;
 }
 
 const SUPPORTED_LANGS = [
@@ -34,7 +39,8 @@ export function ProjectArticleViewer({
   image,
   title,
   playstore,
-  appstore
+  appstore,
+  qrConfig
 }: ProjectArticleViewerProps) {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
@@ -278,6 +284,9 @@ export function ProjectArticleViewer({
         title={title}
         url={activeDownloadUrl}
         appImage={image}
+        defaultThemeId={qrConfig?.theme}
+        defaultBadgeStyle={qrConfig?.badgeStyle}
+        defaultCardBg={qrConfig?.cardBg}
       />
     </div>
   );
