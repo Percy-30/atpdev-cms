@@ -4759,9 +4759,8 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-programa-subsectorial-irrigaciones-psi-especialistas-convocatoria-setiembre-2026-89218.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-programa-subsectorial-irrigaciones-psi-especialistas-convocatoria-setiembre-2026-89218.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-programa-subsectorial-irrigaciones-psi-especialistas-convocatoria-setiembre-2026-89218.html",
+    "apply_url": "https://www.gob.pe/servir",
+    "fuente_url": "https://www.gob.pe/servir",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-programa-subsectorial-irrigaciones-psi-especialistas-convocatoria-setiembre-2026-89218.html",
     "official_portal_name": "PROGRAMA SUBSECTORIAL IRRIGACIONES(PSI) - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -4770,7 +4769,80 @@
     "views_count": 4380,
     "clicks_count": 1740,
     "status": "Finalizado",
-    "created_at": "2026-09-18T01:02:26.655Z"
+    "created_at": "2026-09-18T01:02:26.655Z",
+    "plazas": [
+      {
+        "cas_code": "Plaza 1",
+        "title": "ESPECIALISTAS EN OPERACIÓN Y MANTENIMIENTO DE INFRAESTRUCTURA DE RIEGO",
+        "education": "Título profesional en ingeniería agrícola o ingeniería agrónoma o carreras afines, colegiado y habilitado.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 4,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      },
+      {
+        "cas_code": "ESPECIALISTAS EN EXTENSION EN RIEGO",
+        "title": "LA MERCERD DE CHAUTE, LA BANDA, VALLE COLORADO, CARITA",
+        "education": "Título profesional en ingeniería agrícola o ingeniería agrónoma o carreras afines, colegiado y habilitado.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 4,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      },
+      {
+        "cas_code": "ESPECIALISTA EN EXTENSION EN RIEGO",
+        "title": "JUSHM ALTO HUALLAGA - HUANUCO",
+        "education": "Título profesional en ingeniería agrícola o ingeniería agrónoma o carreras afines, colegiado y habilitado.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      },
+      {
+        "cas_code": "ESPECIALISTAS EN FORMULACIÓN DE ESTUDIOS DE PRE INVERSION",
+        "title": "PROYECTO LIMA",
+        "education": "Título profesional en ingeniería agrícola o civil o carreras afines, colegiado y habilitado.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      },
+      {
+        "cas_code": "ESPECIALISTAS EN FORMULACIÓN DE ESTUDIOS DE PRE INVERSION",
+        "title": "PROYECTO HUÁNUCO",
+        "education": "Título profesional en ingeniería agrícola o civil o carreras afines, colegiado y habilitado.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      },
+      {
+        "cas_code": "ESPECIALISTAS EN FORMULACIÓN DE ESTUDIOS DE PRE INVERSION",
+        "title": "PROYECTO HUANCAVELICA",
+        "education": "Título profesional en ingeniería agrícola o civil o carreras afines, colegiado y habilitado.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      },
+      {
+        "cas_code": "ESPECIALISTAS EN FORMULACIÓN DE ESTUDIOS DE PRE INVERSION",
+        "title": "PROYECTO LA LIBERTAD",
+        "education": "Título profesional en ingeniería agrícola o civil o carreras afines, colegiado y habilitado.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci"
+      }
+    ],
+    "resultados_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci",
+    "comunicados_url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci",
+    "official_documents": [
+      {
+        "title": "Sigue AQUÍ los comunicados de las convocatorias de PROGRAMA SUBSECTORIAL IRRIGACIONES(PSI)",
+        "url": "https://www.gob.pe/institucion/psi/colecciones/48235-pnrt-seleccion-de-consultores-individuales-sci",
+        "category": "Comunicados"
+      }
+    ]
   },
   {
     "id": "job-cd-130",
@@ -4907,9 +4979,9 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-atu-lima-callao-solicita-coordinador-organizacion-procesos-convocatoria-setiembre-2026-89213.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-atu-lima-callao-solicita-coordinador-organizacion-procesos-convocatoria-setiembre-2026-89213.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-atu-lima-callao-solicita-coordinador-organizacion-procesos-convocatoria-setiembre-2026-89213.html",
+    "apply_url": "https://portal.atu.gob.pe/ConvocatoriasCAS/",
+    "bases_pdf_url": "https://portal.atu.gob.pe/ConvocatoriasCAS/",
+    "fuente_url": "https://portal.atu.gob.pe/convocatorias/",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-atu-lima-callao-solicita-coordinador-organizacion-procesos-convocatoria-setiembre-2026-89213.html",
     "official_portal_name": "ATU LIMA Y CALLAO - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -4918,7 +4990,32 @@
     "views_count": 4460,
     "clicks_count": 1780,
     "status": "Vigente",
-    "created_at": "2026-09-18T01:02:26.655Z"
+    "created_at": "2026-09-18T01:02:26.655Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 066",
+        "title": "Coordinador de Organización y Procesos",
+        "education": "Titulado universitario en Administración, Economía o Ingeniería Industrial o carreras afines Maestría en Gestión Pública o Administración",
+        "salary": "S/. 12000",
+        "vacancies": 1,
+        "bases_url": "https://portal.atu.gob.pe/ConvocatoriasCAS/"
+      }
+    ],
+    "cronograma_url": "https://transparencia.atu.gob.pe/PTE/filesCAS/CAS-066-2026%20(SUPLENCIAS)[R].pdf",
+    "official_documents": [
+      {
+        "title": "Perfil de puesto",
+        "url": "https://transparencia.atu.gob.pe/PTE/filesCAS/PERFIL-CAS-066-2026.pdf"
+      },
+      {
+        "title": "Cronograma",
+        "url": "https://transparencia.atu.gob.pe/PTE/filesCAS/CAS-066-2026%20(SUPLENCIAS)[R].pdf"
+      },
+      {
+        "title": "Bases",
+        "url": "https://transparencia.atu.gob.pe/PTE/filesCAS/BASE_,CAS_-GENERALES-2026.pdf"
+      }
+    ]
   },
   {
     "id": "job-cd-134",
@@ -4944,9 +5041,8 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-servir-requiere-practicantes-convocatoria-setiembre-2026-89211.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-servir-requiere-practicantes-convocatoria-setiembre-2026-89211.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-servir-requiere-practicantes-convocatoria-setiembre-2026-89211.html",
+    "apply_url": "https://reclutamiento.servir.gob.pe/ConvocatoriasWeb/faces/convocatorias/listado.xhtml",
+    "fuente_url": "https://www.gob.pe/servir",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-servir-requiere-practicantes-convocatoria-setiembre-2026-89211.html",
     "official_portal_name": "SERVIR - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -4955,7 +5051,35 @@
     "views_count": 4480,
     "clicks_count": 1790,
     "status": "Finalizado",
-    "created_at": "2026-09-18T01:02:26.655Z"
+    "created_at": "2026-09-18T01:02:26.655Z",
+    "plazas": [
+      {
+        "cas_code": "N° 022-2026",
+        "title": "Practicante para la Oficina de Recursos Humanos",
+        "education": "Egresado de las carreras universitarias de Administración, Contabilidad, Economía, Ingeniería Industrial o afines por la formación",
+        "salary": "S/. 1,235.00",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/servir/colecciones/34972-procesos-de-seleccion-para-practicas-profesionales-y-preprofesionales-vigentes"
+      },
+      {
+        "cas_code": "N° 023-2026",
+        "title": "Practicante para la Oficina de Recursos Humanos",
+        "education": "Cumplir con los requisitos establecidos en las bases oficiales.",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 1,235.00",
+        "vacancies": 1,
+        "bases_url": "https://www.gob.pe/institucion/servir/colecciones/34972-procesos-de-seleccion-para-practicas-profesionales-y-preprofesionales-vigentes"
+      }
+    ],
+    "resultados_url": "https://www.gob.pe/institucion/servir/colecciones/34972-procesos-de-seleccion-para-practicas-profesionales-y-preprofesionales-vigentes",
+    "comunicados_url": "https://www.gob.pe/institucion/servir/colecciones/34972-procesos-de-seleccion-para-practicas-profesionales-y-preprofesionales-vigentes",
+    "official_documents": [
+      {
+        "title": "Sigue AQUÍ los comunicados de las convocatorias de SERVIR",
+        "url": "https://www.gob.pe/institucion/servir/colecciones/34972-procesos-de-seleccion-para-practicas-profesionales-y-preprofesionales-vigentes",
+        "category": "Comunicados"
+      }
+    ]
   },
   {
     "id": "job-cd-135",
@@ -4981,9 +5105,9 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ofis-requiere-especialista-analista-convocatoria-setiembre-2026-89209.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ofis-requiere-especialista-analista-convocatoria-setiembre-2026-89209.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ofis-requiere-especialista-analista-convocatoria-setiembre-2026-89209.html",
+    "apply_url": "https://forms.gle/MM2A2eL3bBm52wVZ7",
+    "bases_pdf_url": "https://sigof.sisfoh.gob.pe/convocatorias/upload/090920261788922523.pdf",
+    "fuente_url": "https://www.gob.pe/servir",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ofis-requiere-especialista-analista-convocatoria-setiembre-2026-89209.html",
     "official_portal_name": "OFIS - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -4992,7 +5116,46 @@
     "views_count": 4500,
     "clicks_count": 1800,
     "status": "Vigente",
-    "created_at": "2026-09-18T01:02:26.655Z"
+    "created_at": "2026-09-18T01:02:26.655Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 014",
+        "title": "ESPECIALISTA EN DISEÑO Y GESTIÓN DE INFORMACIÓN SOCIAL",
+        "education": "Profesional titulado en Economía o Ingeniería Económica o Ingeniería Industrial o Estadística o Sociología o Ciencia Política o Ingeniería de Sistemas o Ingeniería Informática, otros",
+        "salary": "S/. 10000",
+        "vacancies": 1,
+        "bases_url": "https://sigof.sisfoh.gob.pe/convocatorias/upload/090920261788922523.pdf"
+      },
+      {
+        "cas_code": "CAS N° 015",
+        "title": "ANALISTA EN MEDIOS DIGITALES.",
+        "education": "Título profesional universitario en Ciencias de la Comunicación o Comunicación Social o Marketing o Publicidad",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 6000",
+        "vacancies": 1,
+        "bases_url": "https://sigof.sisfoh.gob.pe/convocatorias/upload/090920261788922523.pdf"
+      }
+    ],
+    "anexos_url": "https://sigof.sisfoh.gob.pe/convocatorias/upload/081820261787070545.docx",
+    "resultados_url": "https://sigof.sisfoh.gob.pe/convocatorias/",
+    "comunicados_url": "https://sigof.sisfoh.gob.pe/convocatorias/",
+    "official_documents": [
+      {
+        "title": "Bases(Convocatoria completa y cronograma)",
+        "url": "https://sigof.sisfoh.gob.pe/convocatorias/upload/090920261788922523.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Descarga aquí Anexos",
+        "url": "https://sigof.sisfoh.gob.pe/convocatorias/upload/081820261787070545.docx",
+        "category": "Anexos"
+      },
+      {
+        "title": "Sigue AQUÍ los comunicados de las convocatorias de OFIS",
+        "url": "https://sigof.sisfoh.gob.pe/convocatorias/",
+        "category": "Comunicados"
+      }
+    ]
   },
   {
     "id": "job-cd-136",
@@ -7349,9 +7512,9 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-ascope-solicita-especialista-contrataciones-convocatoria-setiembre-2026-89139.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-ascope-solicita-especialista-contrataciones-convocatoria-setiembre-2026-89139.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-ascope-solicita-especialista-contrataciones-convocatoria-setiembre-2026-89139.html",
+    "apply_url": "https://www.gob.pe/institucion/muniascope/campa%C3%B1as/",
+    "bases_pdf_url": "https://muniascope.gob.pe/archivos/convocatoria_cas/BASES%20CONVOCATORIA%20CAS%20009-2026.pdf",
+    "fuente_url": "https://www.gob.pe/institucion/muniascope/campa%C3%B1as/",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-ascope-solicita-especialista-contrataciones-convocatoria-setiembre-2026-89139.html",
     "official_portal_name": "MUNICIPALIDAD DE ASCOPE - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -7360,7 +7523,24 @@
     "views_count": 5780,
     "clicks_count": 2440,
     "status": "Vigente",
-    "created_at": "2026-09-18T01:02:26.656Z"
+    "created_at": "2026-09-18T01:02:26.656Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 009",
+        "title": "ESPECIALISTA EN CONTRATACIONES DEL ESTADO",
+        "education": "Título Profesional en las carreras de: ciencias económicas (Contabilidad, Administración, Economista), Ingeniería (Industrial, Agroindustrial o afines), con colegiatura y habilitación vigente para ejercer la profesión.",
+        "salary": "S/. 4000",
+        "vacancies": 1,
+        "bases_url": "https://muniascope.gob.pe/archivos/convocatoria_cas/BASES%20CONVOCATORIA%20CAS%20009-2026.pdf"
+      }
+    ],
+    "anexos_url": "https://muniascope.gob.pe/archivos/convocatoria_cas/BASES%20CONVOCATORIA%20CAS%20009-2026.pdf",
+    "official_documents": [
+      {
+        "title": "Bases (convocatoria completa, cronograma y anexos)",
+        "url": "https://muniascope.gob.pe/archivos/convocatoria_cas/BASES%20CONVOCATORIA%20CAS%20009-2026.pdf"
+      }
+    ]
   },
   {
     "id": "job-cd-200",
@@ -8422,9 +8602,9 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-superintendencia-bienes-estatales-sbn-especialistas-analista-cargos-convocatoria-setiembre-2026-89098.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-superintendencia-bienes-estatales-sbn-especialistas-analista-cargos-convocatoria-setiembre-2026-89098.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-superintendencia-bienes-estatales-sbn-especialistas-analista-cargos-convocatoria-setiembre-2026-89098.html",
+    "apply_url": "https://www.sbn.gob.pe/convocatorias-cas-sbn/2026",
+    "bases_pdf_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf",
+    "fuente_url": "https://www.gob.pe/servir",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-superintendencia-bienes-estatales-sbn-especialistas-analista-cargos-convocatoria-setiembre-2026-89098.html",
     "official_portal_name": "SUPERINTENDENCIA BIENES ESTATALES(SBN) - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -8433,7 +8613,76 @@
     "views_count": 6360,
     "clicks_count": 2730,
     "status": "Vigente",
-    "created_at": "2026-09-18T01:02:26.657Z"
+    "created_at": "2026-09-18T01:02:26.657Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 026",
+        "title": "ESPECIALISTA LEGAL",
+        "education": "Titulado Universitario en Derecho",
+        "salary": "S/. 7000",
+        "vacancies": 1,
+        "bases_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf"
+      },
+      {
+        "cas_code": "CAS N° 027",
+        "title": "ESPECIALISTA EN GESTIÓN DE LA CAPACITACIÓN",
+        "education": "Titulado Universitario en ADMINISTRACIÓN, PSICOLOGÍA O INGENIERÍA INDUSTRIAL",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 5500",
+        "vacancies": 1,
+        "bases_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf"
+      },
+      {
+        "cas_code": "CAS N° 028",
+        "title": "ANALISTA EN BIENES ESTATALES",
+        "education": "Titulado Universitario en Derecho",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 4000",
+        "vacancies": 1,
+        "bases_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf"
+      },
+      {
+        "cas_code": "CAS N° 029",
+        "title": "ADJUNTO/A LEGAL",
+        "education": "Titulado Universitario en Derecho",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 7000",
+        "vacancies": 1,
+        "bases_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf"
+      },
+      {
+        "cas_code": "CAS N° 030",
+        "title": "ESPECIALISTA EN BIENES ESTATALES",
+        "education": "Titulado Universitario en Derecho",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 5000",
+        "vacancies": 1,
+        "bases_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf"
+      },
+      {
+        "cas_code": "CAS N° 031",
+        "title": "TÉCNICO/A EN GEOMÁTICA",
+        "education": "Técnico superior titulado en geomática y/o egresado universitario de la carrera de arquitectura o ingeniería geográfica o ingeniería civil o geografía",
+        "experience": "Acreditar experiencia laboral requerida.",
+        "salary": "S/. 3500",
+        "vacancies": 1,
+        "bases_url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf"
+      }
+    ],
+    "resultados_url": "https://www.sbn.gob.pe/convocatorias-cas-sbn/2026",
+    "comunicados_url": "https://www.sbn.gob.pe/convocatorias-cas-sbn/2026",
+    "official_documents": [
+      {
+        "title": "Bases(Convocatoria completa y cronograma)",
+        "url": "https://www.sbn.gob.pe/Repositorio/convocatoria/cas/bases/2026/026-2026sbn-2026-09-08_0-1788875883.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Sigue AQUÍ los comunicados de las convocatorias de SUPERINTENDENCIA BIENES ESTATALES(SBN)",
+        "url": "https://www.sbn.gob.pe/convocatorias-cas-sbn/2026",
+        "category": "Comunicados"
+      }
+    ]
   },
   {
     "id": "job-cd-229",
@@ -8496,9 +8745,9 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ugel-huancayo-solicita-asistente-servicios-educacion-cultura-convocatoria-setiembre-2026-89096.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ugel-huancayo-solicita-asistente-servicios-educacion-cultura-convocatoria-setiembre-2026-89096.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ugel-huancayo-solicita-asistente-servicios-educacion-cultura-convocatoria-setiembre-2026-89096.html",
+    "apply_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/",
+    "bases_pdf_url": "http://sisdore.regionjunin.gob.pe:4949/tramiteVirtualGRJ/",
+    "fuente_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-ugel-huancayo-solicita-asistente-servicios-educacion-cultura-convocatoria-setiembre-2026-89096.html",
     "official_portal_name": "UGEL HUANCAYO - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -8507,7 +8756,24 @@
     "views_count": 6400,
     "clicks_count": 2750,
     "status": "Vigente",
-    "created_at": "2026-09-18T01:02:26.657Z"
+    "created_at": "2026-09-18T01:02:26.657Z",
+    "plazas": [
+      {
+        "cas_code": "276 N° 004",
+        "title": "Asistente en Servicios de Educación y Cultura I",
+        "education": "Bachiller en Educación, Titulo profesional de educación superior no universitaria o Título profesional afin a la especialidad.",
+        "salary": "S/. NO ESPECIFICA",
+        "vacancies": 1,
+        "bases_url": "http://sisdore.regionjunin.gob.pe:4949/tramiteVirtualGRJ/"
+      }
+    ],
+    "anexos_url": "https://ugelhuancayo.gob.pe/wp-content/uploads/2026/09/Convocatoria-4.pdf",
+    "official_documents": [
+      {
+        "title": "Ver\n                aquí Bases(Convocatoria completa, cronograma y anexos)",
+        "url": "https://ugelhuancayo.gob.pe/wp-content/uploads/2026/09/Convocatoria-4.pdf"
+      }
+    ]
   },
   {
     "id": "job-cd-231",
@@ -8570,9 +8836,9 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-alto-alianza-solicita-sub-gerente-secretaria-general-convocatoria-setiembre-2026-89094.html",
-    "bases_pdf_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-alto-alianza-solicita-sub-gerente-secretaria-general-convocatoria-setiembre-2026-89094.html",
-    "fuente_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-alto-alianza-solicita-sub-gerente-secretaria-general-convocatoria-setiembre-2026-89094.html",
+    "apply_url": "https://www.gob.pe/servir",
+    "bases_pdf_url": "https://web.munialtoalianza.gob.pe/files/convocatorias/1788824282pdf",
+    "fuente_url": "https://www.gob.pe/servir",
     "scrape_source_url": "https://www.convocatoriasdetrabajo.com/oferta-de-empleo-municipalidad-alto-alianza-solicita-sub-gerente-secretaria-general-convocatoria-setiembre-2026-89094.html",
     "official_portal_name": "MUNICIPALIDAD ALTO DE LA ALIANZA - Portal Convocatorias",
     "start_date": "2026-09-18",
@@ -8581,7 +8847,25 @@
     "views_count": 6440,
     "clicks_count": 2770,
     "status": "Vigente",
-    "created_at": "2026-09-18T01:02:26.657Z"
+    "created_at": "2026-09-18T01:02:26.657Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 054",
+        "title": "SUB GERENTE DE SECRETARIA GENERAL",
+        "education": "Título Profesional Universitario en Derecho. requiere colegiatura y habilitación profesional",
+        "salary": "S/. 5000",
+        "vacancies": 1,
+        "bases_url": "https://web.munialtoalianza.gob.pe/files/convocatorias/1788824282pdf"
+      }
+    ],
+    "anexos_url": "https://munialtoalianza.gob.pe/web3/resources/fotoContenido/293_3419_17012023_FORMATOS%20CAS.pdf",
+    "cronograma_url": "https://web.munialtoalianza.gob.pe/files/convocatorias/1788824282pdf",
+    "official_documents": [
+      {
+        "title": "Anexos",
+        "url": "https://munialtoalianza.gob.pe/web3/resources/fotoContenido/293_3419_17012023_FORMATOS%20CAS.pdf"
+      }
+    ]
   },
   {
     "id": "job-cd-233",
