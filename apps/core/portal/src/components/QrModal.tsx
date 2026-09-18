@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { 
   X, Copy, Check, QrCode, Smartphone, Download, Share2, 
-  Loader2, Palette, Sparkles, Sliders, CopyCheck, Layers, Eye 
+  Loader2, Palette, Sparkles, Sliders, CopyCheck, Layers, Square, Circle 
 } from "lucide-react";
 import { AnimatedDownloadButton } from "./AnimatedDownloadButton";
 
@@ -114,6 +114,9 @@ export const QR_THEMES: QrTheme[] = [
 export type BadgeType = "app" | "atp" | "none";
 export type BadgeStyle = "white" | "transparent" | "accent" | "dark";
 export type CardBackground = "dark" | "light" | "transparent";
+export type QrCornerStyle = "rounded" | "squircle" | "square";
+export type QrBorderStyle = "neon" | "white" | "none";
+export type OuterFrameStyle = "neon" | "white" | "subtle" | "none";
 export type ExportQuality = "1x" | "2x";
 
 interface QrModalProps {
@@ -125,6 +128,9 @@ interface QrModalProps {
   defaultThemeId?: string;
   defaultBadgeStyle?: BadgeStyle;
   defaultCardBg?: CardBackground;
+  defaultCornerStyle?: QrCornerStyle;
+  defaultQrBorderStyle?: QrBorderStyle;
+  defaultOuterFrame?: OuterFrameStyle;
 }
 
 // Dibuja rectángulos redondeados con compatibilidad hacia atrás
@@ -136,6 +142,10 @@ function drawRoundedRect(
   h: number,
   r: number
 ) {
+  if (r <= 0) {
+    ctx.rect(x, y, w, h);
+    return;
+  }
   if (typeof ctx.roundRect === "function") {
     ctx.roundRect(x, y, w, h, r);
   } else {
@@ -315,7 +325,10 @@ export function QrModal({
   appImage,
   defaultThemeId,
   defaultBadgeStyle = "white",
-  defaultCardBg = "dark"
+  defaultCardBg = "dark",
+  defaultCornerStyle = "rounded",
+  defaultQrBorderStyle = "neon",
+  defaultOuterFrame = "neon"
 }: QrModalProps) {
   const [copiedUrl, setCopiedUrl] = useState(false);
   const [copiedImage, setCopiedImage] = useState(false);
@@ -330,6 +343,9 @@ export function QrModal({
   const [badgeType, setBadgeType] = useState<BadgeType>("app");
   const [badgeStyle, setBadgeStyle] = useState<BadgeStyle>(defaultBadgeStyle);
   const [cardBg, setCardBg] = useState<CardBackground>(defaultCardBg);
+  const [cornerStyle, setCornerStyle] = useState<QrCornerStyle>(defaultCornerStyle);
+  const [qrBorderStyle, setQrBorderStyle] = useState<QrBorderStyle>(defaultQrBorderStyle);
+  const [outerFrame, setOuterFrame] = useState<OuterFrameStyle>(defaultOuterFrame);
   const [exportQuality, setExportQuality] = useState<ExportQuality>("1x");
   const [showCustomizer, setShowCustomizer] = useState<boolean>(false);
 
@@ -341,10 +357,17 @@ export function QrModal({
     setTimeout(() => setCopiedUrl(false), 2000);
   };
 
+  // Mapeo de radio de curvatura para esquinas del QR en Canvas (base 500x500 px)
+  const cornerRadiusMap: Record<QrCornerStyle, number> = {
+    rounded: 36,
+    squircle: 58,
+    square: 0,
+  };
+
   // ecc=H (High Error Correction: tolera hasta 30% de oclusión central sin perder lectura)
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&data=${encodeURIComponent(url)}&ecc=H&color=${activeTheme.qrColorHex}&bgcolor=${activeTheme.qrBgHex}`;
 
-  // Renderiza el canvas con el QR, el estilo de color, el halo/borde del logo y fondo transparente o sólido
+  // Renderiza el canvas con esquinas redondeadas en el QR, marco exterior elegante, halo y exportación
   const generateQrCanvas = async (overrideQuality?: ExportQuality): Promise<HTMLCanvasElement | null> => {
     const quality = overrideQuality || exportQuality;
     const scale = quality === "2x" ? 2 : 1;
@@ -368,19 +391,55 @@ export function QrModal({
     if (!isTransparent) {
       ctx.fillStyle = cardBg === "light" ? "#ffffff" : activeTheme.canvasCardBg;
       ctx.fillRect(0, 0, baseW, baseH);
+    }
 
-      // Borde exterior
-      ctx.strokeStyle = cardBg === "light" ? "#cbd5e1" : activeTheme.canvasBorder;
-      ctx.lineWidth = cardBg === "light" ? 2 : 4;
+    // Marco exterior con esquinas redondeadas (se dibuja siempre que outerFrame !== 'none', incluso en transparente!)
+    if (outerFrame !== "none") {
+      if (outerFrame === "neon") {
+        ctx.strokeStyle = activeTheme.canvasBorder;
+        ctx.lineWidth = isLight ? 2.5 : 4;
+      } else if (outerFrame === "white") {
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+        ctx.lineWidth = 3.5;
+      } else {
+        // subtle
+        ctx.strokeStyle = isLight ? "#cbd5e1" : "rgba(255, 255, 255, 0.2)";
+        ctx.lineWidth = 2;
+      }
       ctx.beginPath();
       drawRoundedRect(ctx, 16, 16, baseW - 32, baseH - 32, 28);
       ctx.stroke();
     }
 
-    // 2. Cargar y dibujar el código QR
+    // 2. Cargar y dibujar el código QR con esquinas redondeadas y marco
     try {
       const qrImg = await loadImage(qrImageUrl, 6000);
-      ctx.drawImage(qrImg, 70, 65, 500, 500);
+      const qrX = 70;
+      const qrY = 65;
+      const qrSize = 500;
+      const radius = cornerRadiusMap[cornerStyle];
+
+      ctx.save();
+      if (radius > 0) {
+        ctx.beginPath();
+        drawRoundedRect(ctx, qrX, qrY, qrSize, qrSize, radius);
+        ctx.clip();
+      }
+      ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+      ctx.restore();
+
+      // Marco / Borde circundante del propio código QR
+      if (qrBorderStyle !== "none") {
+        ctx.strokeStyle = qrBorderStyle === "white" 
+          ? "#ffffff" 
+          : qrBorderStyle === "neon" 
+          ? activeTheme.accentColor 
+          : "rgba(255, 255, 255, 0.25)";
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        drawRoundedRect(ctx, qrX, qrY, qrSize, qrSize, radius);
+        ctx.stroke();
+      }
     } catch (err) {
       console.error("Error cargando QR para canvas:", err);
       return null;
@@ -428,7 +487,8 @@ export function QrModal({
       const a = document.createElement("a");
       const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, "_");
       const bgTag = cardBg === "transparent" ? "_transparent" : "";
-      a.download = `QR_${cleanTitle}_${activeTheme.id}_${badgeStyle}${bgTag}_${exportQuality}.png`;
+      const frameTag = outerFrame !== "none" ? `_frame-${outerFrame}` : "";
+      a.download = `QR_${cleanTitle}_${activeTheme.id}_${cornerStyle}${bgTag}${frameTag}_${exportQuality}.png`;
       a.href = dataUrl;
       document.body.appendChild(a);
       a.click();
@@ -570,7 +630,7 @@ export function QrModal({
                   ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-300 shadow-md shadow-emerald-500/20" 
                   : "bg-white/5 border-white/10 text-gray-300 hover:text-white hover:bg-white/10"
               }`}
-              title="Personalizar estilo de color, borde del logo y fondo de descarga"
+              title="Personalizar estilo de color, esquinas del QR, marco exterior y halo"
             >
               <Palette size={15} />
               <span className="hidden sm:inline">Personalizar</span>
@@ -623,10 +683,99 @@ export function QrModal({
               </div>
             </div>
 
-            {/* 2. Selector de Borde / Fondo del Logo Central */}
+            {/* 2. Esquinas del QR y Marco Exterior */}
+            <div className="grid grid-cols-2 gap-2.5">
+              {/* Esquinas del Código QR */}
+              <div>
+                <span className="text-xs font-semibold text-gray-300 block mb-1.5 flex items-center gap-1">
+                  <Circle size={12} className="text-emerald-400" />
+                  Esquinas del QR:
+                </span>
+                <div className="grid grid-cols-3 gap-1">
+                  <button
+                    onClick={() => setCornerStyle("rounded")}
+                    className={`py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      cornerStyle === "rounded"
+                        ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Esquinas curvas modernas"
+                  >
+                    Curvo
+                  </button>
+                  <button
+                    onClick={() => setCornerStyle("squircle")}
+                    className={`py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      cornerStyle === "squircle"
+                        ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Esquinas extra suaves estilo iOS"
+                  >
+                    Suave
+                  </button>
+                  <button
+                    onClick={() => setCornerStyle("square")}
+                    className={`py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      cornerStyle === "square"
+                        ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Esquinas rectas clásicas"
+                  >
+                    Recto
+                  </button>
+                </div>
+              </div>
+
+              {/* Marco Exterior de la Tarjeta */}
+              <div>
+                <span className="text-xs font-semibold text-gray-300 block mb-1.5 flex items-center gap-1">
+                  <Square size={12} className="text-sky-400" />
+                  Marco Exterior:
+                </span>
+                <div className="grid grid-cols-3 gap-1">
+                  <button
+                    onClick={() => setOuterFrame("neon")}
+                    className={`py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      outerFrame === "neon"
+                        ? "bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Marco exterior con brillo neón"
+                  >
+                    Neón
+                  </button>
+                  <button
+                    onClick={() => setOuterFrame("white")}
+                    className={`py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      outerFrame === "white"
+                        ? "bg-white/20 border-white text-white shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Marco exterior blanco nítido"
+                  >
+                    Blanco
+                  </button>
+                  <button
+                    onClick={() => setOuterFrame("none")}
+                    className={`py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                      outerFrame === "none"
+                        ? "bg-red-500/20 border-red-400 text-red-300 shadow-sm"
+                        : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                    }`}
+                    title="Sin marco exterior"
+                  >
+                    Ninguno
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Selector de Borde / Halo del Logo Central */}
             {badgeType === "app" && (
               <div>
-                <div className="flex items-center justify-between text-xs font-semibold text-gray-300 mb-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-gray-300 mb-1.5">
                   <span className="flex items-center gap-1.5">
                     <Layers size={13} className="text-sky-400" />
                     Borde / Halo del Logo:
@@ -638,7 +787,7 @@ export function QrModal({
                 <div className="grid grid-cols-4 gap-1.5">
                   <button
                     onClick={() => setBadgeStyle("white")}
-                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                    className={`py-1.5 px-1.5 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
                       badgeStyle === "white"
                         ? "bg-white/25 border-white text-white shadow-sm"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
@@ -649,18 +798,18 @@ export function QrModal({
                   </button>
                   <button
                     onClick={() => setBadgeStyle("transparent")}
-                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                    className={`py-1.5 px-1.5 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
                       badgeStyle === "transparent"
                         ? "bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
                     }`}
-                    title="Sin fondo sólido, deja flotar el icono con recorte limpio"
+                    title="Sin fondo sólido, deja flotar el icono"
                   >
-                    🏁 Transparente
+                    🏁 Transp.
                   </button>
                   <button
                     onClick={() => setBadgeStyle("accent")}
-                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                    className={`py-1.5 px-1.5 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
                       badgeStyle === "accent"
                         ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
@@ -671,7 +820,7 @@ export function QrModal({
                   </button>
                   <button
                     onClick={() => setBadgeStyle("dark")}
-                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
+                    className={`py-1.5 px-1.5 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
                       badgeStyle === "dark"
                         ? "bg-slate-700/50 border-slate-400 text-slate-200 shadow-sm"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
@@ -684,67 +833,28 @@ export function QrModal({
               </div>
             )}
 
-            {/* 3. Selector de Insignia Central */}
-            <div>
-              <span className="block text-xs font-semibold text-gray-300 mb-2">
-                Insignia Central:
-              </span>
-              <div className="grid grid-cols-3 gap-1.5">
-                <button
-                  onClick={() => setBadgeType("app")}
-                  className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
-                    badgeType === "app"
-                      ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm"
-                      : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
-                  }`}
-                >
-                  📱 Ícono App
-                </button>
-                <button
-                  onClick={() => setBadgeType("atp")}
-                  className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
-                    badgeType === "atp"
-                      ? "bg-blue-500/20 border-blue-400 text-blue-300 shadow-sm"
-                      : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
-                  }`}
-                >
-                  ⚡ ATP DEV
-                </button>
-                <button
-                  onClick={() => setBadgeType("none")}
-                  className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold transition-all truncate flex items-center justify-center gap-1 ${
-                    badgeType === "none"
-                      ? "bg-white/20 border-white text-white shadow-sm"
-                      : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
-                  }`}
-                >
-                  ⬛ Sin Logo
-                </button>
-              </div>
-            </div>
-
             {/* 4. Selector de Fondo al Descargar & Calidad */}
-            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/10">
+            <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
               {/* Fondo de Descarga */}
               <div>
                 <span className="text-[11px] font-semibold text-gray-300 block mb-1.5">
-                  Fondo de Descarga:
+                  Fondo de Tarjeta:
                 </span>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => setCardBg("dark")}
-                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                    className={`flex-1 py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
                       cardBg === "dark"
                         ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
                     }`}
-                    title="Tarjeta oscura estándar"
+                    title="Tarjeta oscura con marco"
                   >
                     ⚫ Dark
                   </button>
                   <button
                     onClick={() => setCardBg("light")}
-                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                    className={`flex-1 py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
                       cardBg === "light"
                         ? "bg-white/20 border-white text-white"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
@@ -755,12 +865,12 @@ export function QrModal({
                   </button>
                   <button
                     onClick={() => setCardBg("transparent")}
-                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                    className={`flex-1 py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
                       cardBg === "transparent"
                         ? "bg-purple-500/20 border-purple-400 text-purple-300"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
                     }`}
-                    title="PNG transparente sin fondo negro, ideal para flyers"
+                    title="PNG con fondo transparente (conserva el marco exterior seleccionado)"
                   >
                     🏁 Transp.
                   </button>
@@ -775,7 +885,7 @@ export function QrModal({
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => setExportQuality("1x")}
-                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all text-center ${
+                    className={`flex-1 py-1 px-1 rounded-lg border text-[10px] font-bold transition-all text-center ${
                       exportQuality === "1x"
                         ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
@@ -785,7 +895,7 @@ export function QrModal({
                   </button>
                   <button
                     onClick={() => setExportQuality("2x")}
-                    className={`flex-1 py-1 px-1.5 rounded-lg border text-[10px] font-bold transition-all flex items-center justify-center gap-0.5 ${
+                    className={`flex-1 py-1 px-1 rounded-lg border text-[10px] font-bold transition-all flex items-center justify-center gap-0.5 ${
                       exportQuality === "2x"
                         ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-sky-400 text-sky-300"
                         : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
@@ -801,22 +911,50 @@ export function QrModal({
           </div>
         )}
 
-        {/* QR Code Container con Live Theming y Halo Configurable */}
+        {/* QR Code Container con Live Theming, Esquinas Curvas y Halo Configurable */}
         <div className="flex flex-col items-center justify-center my-2">
           <div 
-            className="p-4 rounded-3xl border shadow-inner relative group transition-all duration-300"
+            className={`p-4 rounded-3xl border shadow-inner relative group transition-all duration-300 ${
+              outerFrame === "none" ? "border-transparent" : ""
+            }`}
             style={{ 
               backgroundColor: cardBg === "transparent" ? "rgba(255,255,255,0.03)" : activeTheme.containerBg,
-              borderColor: activeTheme.accentColor + "4d"
+              borderColor: outerFrame === "white" 
+                ? "rgba(255,255,255,0.7)" 
+                : outerFrame === "neon" 
+                ? `${activeTheme.accentColor}80` 
+                : outerFrame === "subtle"
+                ? "rgba(255,255,255,0.2)"
+                : "transparent"
             }}
           >
-            <div className="relative overflow-hidden rounded-2xl">
+            {/* Contenedor del QR con esquinas redondeadas según cornerStyle */}
+            <div 
+              className={`relative overflow-hidden transition-all duration-300 ${
+                cornerStyle === "rounded" 
+                  ? "rounded-2xl" 
+                  : cornerStyle === "squircle" 
+                  ? "rounded-3xl" 
+                  : "rounded-none"
+              }`}
+              style={{
+                boxShadow: qrBorderStyle === "neon" 
+                  ? `0 0 18px ${activeTheme.accentColor}4d` 
+                  : "none"
+              }}
+            >
               <img 
                 src={qrImageUrl} 
                 alt={`QR Code para ${title}`}
                 width={240}
                 height={240}
-                className="rounded-2xl transition-transform duration-300 group-hover:scale-[1.02]"
+                className={`transition-transform duration-300 group-hover:scale-[1.02] ${
+                  cornerStyle === "rounded" 
+                    ? "rounded-2xl" 
+                    : cornerStyle === "squircle" 
+                    ? "rounded-3xl" 
+                    : "rounded-none"
+                }`}
               />
 
               {/* Insignia Central Dinámica con Halo Blanco / Transparente / Neón */}
@@ -882,10 +1020,19 @@ export function QrModal({
               )}
             </div>
 
-            <div 
-              className="absolute inset-0 rounded-3xl border-2 pointer-events-none transition-colors" 
-              style={{ borderColor: `${activeTheme.accentColor}33` }}
-            />
+            {/* Borde exterior Neón */}
+            {outerFrame !== "none" && (
+              <div 
+                className="absolute inset-0 rounded-3xl border-2 pointer-events-none transition-colors" 
+                style={{ 
+                  borderColor: outerFrame === "white" 
+                    ? "rgba(255,255,255,0.6)" 
+                    : outerFrame === "neon" 
+                    ? `${activeTheme.accentColor}55` 
+                    : "rgba(255,255,255,0.15)"
+                }}
+              />
+            )}
           </div>
 
           <p className="text-xs text-gray-400 mt-2.5 text-center flex items-center gap-1.5">
@@ -899,7 +1046,7 @@ export function QrModal({
               onClick={handleDownloadQrImage}
               disabled={isDownloadingImage}
               className="flex items-center justify-center gap-1 py-2.5 px-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all border border-white/15 hover:border-emerald-500/50 active:scale-95 shadow-sm"
-              title={`Descargar PNG con fondo ${cardBg} en ${exportQuality.toUpperCase()}`}
+              title={`Descargar PNG con esquinas ${cornerStyle} en ${exportQuality.toUpperCase()}`}
             >
               {isDownloadingImage ? (
                 <Loader2 size={13} className="animate-spin text-emerald-400" />

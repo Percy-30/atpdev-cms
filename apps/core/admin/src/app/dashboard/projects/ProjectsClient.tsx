@@ -161,6 +161,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [qrTheme, setQrTheme] = useState<string>("emerald");
   const [qrBadgeStyle, setQrBadgeStyle] = useState<string>("white");
   const [qrCardBg, setQrCardBg] = useState<string>("dark");
+  const [qrCornerStyle, setQrCornerStyle] = useState<string>("rounded");
+  const [qrOuterFrame, setQrOuterFrame] = useState<string>("neon");
+  const [qrBorderStyle, setQrBorderStyle] = useState<string>("neon");
 
   // Módulos Legales y Subpáginas Dinámicas
   const [hasPrivacy, setHasPrivacy] = useState(true);
@@ -240,6 +243,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     let currentQrTheme = "emerald";
     let currentQrBadgeStyle = "white";
     let currentQrCardBg = "dark";
+    let currentQrCornerStyle = "rounded";
+    let currentQrOuterFrame = "neon";
+    let currentQrBorderStyle = "neon";
     if (editingProject?.theme_config) {
       try {
         const parsed = JSON.parse(editingProject.theme_config);
@@ -247,12 +253,18 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           if (parsed.qr.theme) currentQrTheme = parsed.qr.theme;
           if (parsed.qr.badgeStyle) currentQrBadgeStyle = parsed.qr.badgeStyle;
           if (parsed.qr.cardBg) currentQrCardBg = parsed.qr.cardBg;
+          if (parsed.qr.cornerStyle) currentQrCornerStyle = parsed.qr.cornerStyle;
+          if (parsed.qr.outerFrame) currentQrOuterFrame = parsed.qr.outerFrame;
+          if (parsed.qr.qrBorder) currentQrBorderStyle = parsed.qr.qrBorder;
         }
       } catch (e) {}
     }
     setQrTheme(currentQrTheme);
     setQrBadgeStyle(currentQrBadgeStyle);
     setQrCardBg(currentQrCardBg);
+    setQrCornerStyle(currentQrCornerStyle);
+    setQrOuterFrame(currentQrOuterFrame);
+    setQrBorderStyle(currentQrBorderStyle);
     
     if (editingProject?.legal_config) {
       try {
@@ -693,6 +705,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
         theme: qrTheme,
         badgeStyle: qrBadgeStyle,
         cardBg: qrCardBg,
+        cornerStyle: qrCornerStyle,
+        outerFrame: qrOuterFrame,
+        qrBorder: qrBorderStyle,
       };
       finalThemeConfig = JSON.stringify(parsed);
     } catch {
@@ -701,6 +716,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           theme: qrTheme,
           badgeStyle: qrBadgeStyle,
           cardBg: qrCardBg,
+          cornerStyle: qrCornerStyle,
+          outerFrame: qrOuterFrame,
+          qrBorder: qrBorderStyle,
         }
       });
     }
@@ -1656,6 +1674,59 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                     {b.label}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Esquinas del QR y Marco Exterior */}
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-[11px] text-gray-400 block mb-1.5 font-medium">Esquinas del QR</label>
+                <div className="grid grid-cols-3 gap-1">
+                  {[
+                    { id: "rounded", label: "Curvo" },
+                    { id: "squircle", label: "Suave" },
+                    { id: "square", label: "Recto" },
+                  ].map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setQrCornerStyle(s.id)}
+                      className={`py-1.5 px-1 text-xs rounded-xl border transition-all text-center truncate ${
+                        qrCornerStyle === s.id
+                          ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-sm font-semibold"
+                          : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:text-white"
+                      }`}
+                      title={s.label}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[11px] text-gray-400 block mb-1.5 font-medium">Marco Exterior</label>
+                <div className="grid grid-cols-3 gap-1">
+                  {[
+                    { id: "neon", label: "Neón" },
+                    { id: "white", label: "Blanco" },
+                    { id: "none", label: "Sin Marco" },
+                  ].map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => setQrOuterFrame(m.id)}
+                      className={`py-1.5 px-1 text-xs rounded-xl border transition-all text-center truncate ${
+                        qrOuterFrame === m.id
+                          ? "bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm font-semibold"
+                          : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:text-white"
+                      }`}
+                      title={m.label}
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 

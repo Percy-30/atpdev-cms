@@ -19,6 +19,9 @@ interface ProjectArticleViewerProps {
     theme?: string;
     badgeStyle?: "white" | "transparent" | "accent" | "dark";
     cardBg?: "dark" | "light" | "transparent";
+    cornerStyle?: "rounded" | "squircle" | "square";
+    qrBorder?: "neon" | "white" | "none";
+    outerFrame?: "neon" | "white" | "subtle" | "none";
   } | null;
 }
 
@@ -287,6 +290,9 @@ export function ProjectArticleViewer({
         defaultThemeId={qrConfig?.theme}
         defaultBadgeStyle={qrConfig?.badgeStyle}
         defaultCardBg={qrConfig?.cardBg}
+        defaultCornerStyle={qrConfig?.cornerStyle}
+        defaultQrBorderStyle={qrConfig?.qrBorder}
+        defaultOuterFrame={qrConfig?.outerFrame}
       />
     </div>
   );
