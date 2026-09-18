@@ -338,6 +338,32 @@ export async function uploadIpaFile(formData: FormData): Promise<{ error?: strin
   return { ipaUrl };
 }
 
+// Genera una URL prefirmada para subir APK directo a Supabase Storage con streaming y porcentaje en vivo
+export async function getApkSignedUploadUrlAction(fileName: string): Promise<{ error?: string; signedUrl?: string; publicUrl?: string }> {
+  if (!fileName || !fileName.toLowerCase().endsWith(".apk")) {
+    return { error: "El archivo debe ser un .apk válido." };
+  }
+  const { getProjectSignedUploadUrl } = await import("@atpdev/database");
+  const result = await getProjectSignedUploadUrl(fileName, "apks");
+  if ("error" in result) {
+    return { error: result.error };
+  }
+  return { signedUrl: result.signedUrl, publicUrl: result.publicUrl };
+}
+
+// Genera una URL prefirmada para subir IPA directo a Supabase Storage con streaming y porcentaje en vivo
+export async function getIpaSignedUploadUrlAction(fileName: string): Promise<{ error?: string; signedUrl?: string; publicUrl?: string }> {
+  if (!fileName || (!fileName.toLowerCase().endsWith(".ipa") && !fileName.toLowerCase().endsWith(".zip"))) {
+    return { error: "El archivo debe ser un .ipa o .zip válido." };
+  }
+  const { getProjectSignedUploadUrl } = await import("@atpdev/database");
+  const result = await getProjectSignedUploadUrl(fileName, "ipas");
+  if ("error" in result) {
+    return { error: result.error };
+  }
+  return { signedUrl: result.signedUrl, publicUrl: result.publicUrl };
+}
+
 
 export async function createProject(formData: FormData) {
   const domainType = (formData.get("domainType") as string) || "subruta";

@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef, Fragment } from "react";
 import { useRouter } from "next/navigation";
-import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette } from "lucide-react";
+import { FolderKanban, Plus, Trash2, Eye, EyeOff, Pencil, Loader2, Github, Lock, Globe, Search, Camera, ImageOff, Upload, ExternalLink, Palette, Check, CheckCircle2 } from "lucide-react";
 import { Project, GithubRepoSummary, slugify } from "@atpdev/database";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, uploadApkFile, uploadIpaFile, suggestGradientColorsWithAI } from "./actions";
+import { createProject, updateStatus, deleteProject, updateProjectAction, autofillProjectWithAI, getGithubRepos, captureScreenshot, uploadImageFile, uploadApkFile, uploadIpaFile, getApkSignedUploadUrlAction, getIpaSignedUploadUrlAction, suggestGradientColorsWithAI } from "./actions";
 import { ProjectThemeStudio, type ProjectThemeConfig } from "./ProjectThemeStudio";
 
 type UIBlock = { id: string; type: "h2" | "p" | "image"; content: string; alt?: string; url?: string; context?: string };
@@ -182,8 +182,13 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [uploadError, setUploadError] = useState("");
   const [apkUploadState, setApkUploadState] = useState<"idle" | "loading" | "error">("idle");
   const [apkUploadError, setApkUploadError] = useState("");
+  const [apkUploadProgress, setApkUploadProgress] = useState(0);
+  const [apkUploadDetails, setApkUploadDetails] = useState<{ name: string; size: string; loaded: string } | null>(null);
+
   const [ipaUploadState, setIpaUploadState] = useState<"idle" | "loading" | "error">("idle");
   const [ipaUploadError, setIpaUploadError] = useState("");
+  const [ipaUploadProgress, setIpaUploadProgress] = useState(0);
+  const [ipaUploadDetails, setIpaUploadDetails] = useState<{ name: string; size: string; loaded: string } | null>(null);
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "error">("idle");
   const [submitError, setSubmitError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -413,44 +418,160 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setApkUploadState("loading");
-    setApkUploadError("");
-    const fd = new FormData();
-    fd.set("file", file);
-    const result = await uploadApkFile(fd);
-    if ("error" in result && result.error) {
+    if (!file.name.toLowerCase().endsWith(".apk")) {
       setApkUploadState("error");
-      setApkUploadError(result.error);
+      setApkUploadError("El archivo debe tener la extensión .apk");
       e.target.value = "";
       return;
     }
-    if ("apkUrl" in result && result.apkUrl) {
-      setPlaystore(result.apkUrl);
+
+    setApkUploadState("loading");
+    setApkUploadError("");
+    setApkUploadProgress(0);
+    setApkUploadDetails({
+      name: file.name,
+      size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
+      loaded: "0 MB"
+    });
+
+    try {
+      const res = await getApkSignedUploadUrlAction(file.name);
+      if ("error" in res && res.error) {
+        setApkUploadState("error");
+        setApkUploadError(res.error);
+        e.target.value = "";
+        return;
+      }
+
+      if (!res.signedUrl || !res.publicUrl) {
+        setApkUploadState("error");
+        setApkUploadError("No se pudo generar la URL de subida.");
+        e.target.value = "";
+        return;
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", res.signedUrl, true);
+      xhr.setRequestHeader("Content-Type", file.type || "application/vnd.android.package-archive");
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
+          setApkUploadProgress(percent);
+          setApkUploadDetails({
+            name: file.name,
+            size: (event.total / (1024 * 1024)).toFixed(1) + " MB",
+            loaded: (event.loaded / (1024 * 1024)).toFixed(1) + " MB"
+          });
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          setApkUploadProgress(100);
+          setPlaystore(res.publicUrl!);
+          setTimeout(() => {
+            setApkUploadState("idle");
+            setApkUploadDetails(null);
+          }, 3500);
+        } else {
+          setApkUploadState("error");
+          setApkUploadError(`Error de almacenamiento HTTP ${xhr.status}`);
+        }
+      };
+
+      xhr.onerror = () => {
+        setApkUploadState("error");
+        setApkUploadError("Error de conexión durante la subida del APK.");
+      };
+
+      xhr.send(file);
+    } catch (err: any) {
+      setApkUploadState("error");
+      setApkUploadError(err.message || "Error inesperado al subir el APK.");
+    } finally {
+      e.target.value = "";
     }
-    setApkUploadState("idle");
-    e.target.value = "";
   };
 
   const handleIpaFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIpaUploadState("loading");
-    setIpaUploadError("");
-    const fd = new FormData();
-    fd.set("file", file);
-    const result = await uploadIpaFile(fd);
-    if ("error" in result && result.error) {
+    if (!file.name.toLowerCase().endsWith(".ipa") && !file.name.toLowerCase().endsWith(".zip")) {
       setIpaUploadState("error");
-      setIpaUploadError(result.error);
+      setIpaUploadError("El archivo debe tener extensión .ipa o .zip");
       e.target.value = "";
       return;
     }
-    if ("ipaUrl" in result && result.ipaUrl) {
-      setAppstore(result.ipaUrl);
+
+    setIpaUploadState("loading");
+    setIpaUploadError("");
+    setIpaUploadProgress(0);
+    setIpaUploadDetails({
+      name: file.name,
+      size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
+      loaded: "0 MB"
+    });
+
+    try {
+      const res = await getIpaSignedUploadUrlAction(file.name);
+      if ("error" in res && res.error) {
+        setIpaUploadState("error");
+        setIpaUploadError(res.error);
+        e.target.value = "";
+        return;
+      }
+
+      if (!res.signedUrl || !res.publicUrl) {
+        setIpaUploadState("error");
+        setIpaUploadError("No se pudo generar la URL de subida.");
+        e.target.value = "";
+        return;
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", res.signedUrl, true);
+      xhr.setRequestHeader("Content-Type", file.type || "application/x-itunes-ipa");
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
+          setIpaUploadProgress(percent);
+          setIpaUploadDetails({
+            name: file.name,
+            size: (event.total / (1024 * 1024)).toFixed(1) + " MB",
+            loaded: (event.loaded / (1024 * 1024)).toFixed(1) + " MB"
+          });
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          setIpaUploadProgress(100);
+          setAppstore(res.publicUrl!);
+          setTimeout(() => {
+            setIpaUploadState("idle");
+            setIpaUploadDetails(null);
+          }, 3500);
+        } else {
+          setIpaUploadState("error");
+          setIpaUploadError(`Error de almacenamiento HTTP ${xhr.status}`);
+        }
+      };
+
+      xhr.onerror = () => {
+        setIpaUploadState("error");
+        setIpaUploadError("Error de conexión durante la subida del IPA.");
+      };
+
+      xhr.send(file);
+    } catch (err: any) {
+      setIpaUploadState("error");
+      setIpaUploadError(err.message || "Error inesperado al subir el IPA.");
+    } finally {
+      e.target.value = "";
     }
-    setIpaUploadState("idle");
-    e.target.value = "";
   };
 
 
@@ -957,7 +1078,40 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                 onChange={handleApkFileUpload}
                 className="hidden"
               />
-              {apkUploadState === "error" && <p className="text-[11px] text-red-400">{apkUploadError}</p>}
+              {apkUploadState === "loading" && apkUploadDetails && (
+                <div className="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl space-y-2 animate-in fade-in duration-200 shadow-lg shadow-emerald-950/40">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-emerald-400 font-bold truncate max-w-[180px] flex items-center gap-1.5">
+                      <Loader2 size={13} className="animate-spin text-emerald-400 flex-shrink-0" />
+                      <span className="truncate">{apkUploadDetails.name}</span>
+                    </span>
+                    <span className="text-emerald-300 font-mono font-bold bg-emerald-500/20 px-2 py-0.5 rounded-md">
+                      {apkUploadProgress}%
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden p-0.5 border border-emerald-500/30">
+                    <div 
+                      className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 rounded-full transition-all duration-150 relative shadow-[0_0_10px_#10b981]"
+                      style={{ width: `${apkUploadProgress}%` }}
+                    >
+                      <div className="absolute inset-0 bg-white/25 animate-pulse rounded-full" />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-gray-400 font-mono">
+                    <span>{apkUploadDetails.loaded} / {apkUploadDetails.size}</span>
+                    <span className="text-emerald-400 font-medium">
+                      {apkUploadProgress === 100 ? "¡Subida completada!" : "Subiendo a Supabase..."}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {apkUploadState === "idle" && playstore && (playstore.includes(".apk") || playstore.includes("/apks/")) && (
+                <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-lg">
+                  <Check size={13} className="text-emerald-400" />
+                  <span className="truncate">APK vinculado: {playstore.split("/").pop()}</span>
+                </div>
+              )}
+              {apkUploadState === "error" && <p className="text-[11px] text-red-400 bg-red-500/10 border border-red-500/20 p-2 rounded-lg">{apkUploadError}</p>}
             </div>
             <div className="flex-1 flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
@@ -990,7 +1144,40 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                 onChange={handleIpaFileUpload}
                 className="hidden"
               />
-              {ipaUploadState === "error" && <p className="text-[11px] text-red-400">{ipaUploadError}</p>}
+              {ipaUploadState === "loading" && ipaUploadDetails && (
+                <div className="p-3 bg-sky-950/40 border border-sky-500/40 rounded-xl space-y-2 animate-in fade-in duration-200 shadow-lg shadow-sky-950/40">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-sky-400 font-bold truncate max-w-[180px] flex items-center gap-1.5">
+                      <Loader2 size={13} className="animate-spin text-sky-400 flex-shrink-0" />
+                      <span className="truncate">{ipaUploadDetails.name}</span>
+                    </span>
+                    <span className="text-sky-300 font-mono font-bold bg-sky-500/20 px-2 py-0.5 rounded-md">
+                      {ipaUploadProgress}%
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden p-0.5 border border-sky-500/30">
+                    <div 
+                      className="h-full bg-gradient-to-r from-sky-500 via-blue-400 to-indigo-400 rounded-full transition-all duration-150 relative shadow-[0_0_10px_#0284c7]"
+                      style={{ width: `${ipaUploadProgress}%` }}
+                    >
+                      <div className="absolute inset-0 bg-white/25 animate-pulse rounded-full" />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-gray-400 font-mono">
+                    <span>{ipaUploadDetails.loaded} / {ipaUploadDetails.size}</span>
+                    <span className="text-sky-400 font-medium">
+                      {ipaUploadProgress === 100 ? "¡Subida completada!" : "Subiendo a Supabase..."}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {ipaUploadState === "idle" && appstore && (appstore.includes(".ipa") || appstore.includes("/ipas/") || appstore.includes(".zip")) && (
+                <div className="flex items-center gap-1.5 text-[11px] text-sky-400 font-medium bg-sky-500/10 border border-sky-500/20 p-2 rounded-lg">
+                  <Check size={13} className="text-sky-400" />
+                  <span className="truncate">iOS vinculado: {appstore.split("/").pop()}</span>
+                </div>
+              )}
+              {ipaUploadState === "error" && <p className="text-[11px] text-red-400 bg-red-500/10 border border-red-500/20 p-2 rounded-lg">{ipaUploadError}</p>}
             </div>
           </div>
 

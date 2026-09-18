@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { Project, AIModelData } from "@atpdev/database";
 import { ICONS_MAP } from "@/components/AIModelsSection";
+import { AnimatedDownloadButton } from "@/components/AnimatedDownloadButton";
 
 const GooglePlay2022Icon = ({ size = 20 }: { size?: number }) => (
   <svg viewBox="0 0 512 512" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
@@ -271,33 +272,31 @@ export default function Portfolio({
                           </a>
                         )}
                         {p.playstore && (
-                          <a 
-                            href={p.playstore} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-2xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] active:scale-95 group bg-[#0e1714] hover:bg-[#14231e] border border-emerald-500/40 hover:border-emerald-400 shadow-emerald-950/30 neon-border"
-                          >
-                            {p.playstore.toLowerCase().includes('.apk') || p.playstore.includes('/apks/') ? (
-                              <><Download size={19} className="transition-transform duration-300 group-hover:scale-110 text-emerald-400" /> <span>Descargar APK Directo</span></>
-                            ) : (
-                              <><GooglePlay2022Icon size={20} /> <span className="tracking-wide">Play Store</span></>
-                            )}
-                          </a>
+                          <AnimatedDownloadButton
+                            url={p.playstore}
+                            type="apk"
+                            defaultLabel={
+                              p.playstore.toLowerCase().includes('.apk') || p.playstore.includes('/apks/')
+                                ? "Descargar APK Directo"
+                                : "Play Store"
+                            }
+                            className="!px-7 !py-3.5 !rounded-2xl !text-sm"
+                            iconSize={20}
+                          />
                         )}
 
                         {(p as any).appstore && (
-                          <a 
-                            href={(p as any).appstore} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-2xl shadow-lg transition-all duration-300 font-bold hover:scale-[1.03] active:scale-95 group bg-[#121620] hover:bg-[#191f2d] border border-sky-500/40 hover:border-sky-400 shadow-sky-950/30 neon-border"
-                          >
-                            {(p as any).appstore.toLowerCase().includes('.ipa') || (p as any).appstore.includes('/ipas/') ? (
-                              <><Download size={19} className="transition-transform duration-300 group-hover:scale-110 text-sky-400" /> <span>Descargar IPA Directo (iOS)</span></>
-                            ) : (
-                              <><AppleStoreIcon size={20} /> <span className="tracking-wide">App Store</span></>
-                            )}
-                          </a>
+                          <AnimatedDownloadButton
+                            url={(p as any).appstore}
+                            type="ipa"
+                            defaultLabel={
+                              (p as any).appstore.toLowerCase().includes('.ipa') || (p as any).appstore.includes('/ipas/')
+                                ? "Descargar IPA Directo (iOS)"
+                                : "App Store"
+                            }
+                            className="!px-7 !py-3.5 !rounded-2xl !text-sm"
+                            iconSize={20}
+                          />
                         )}
                       </div>
                     </div>

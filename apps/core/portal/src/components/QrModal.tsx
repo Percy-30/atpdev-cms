@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { X, Copy, Check, QrCode, ExternalLink, Smartphone } from "lucide-react";
 import Image from "next/image";
 
+import { AnimatedDownloadButton } from "./AnimatedDownloadButton";
+
 interface QrModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -77,15 +79,24 @@ export function QrModal({ isOpen, onClose, title, url }: QrModalProps) {
             <span className="truncate flex-1 font-mono">{url}</span>
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold transition-all flex-shrink-0"
+              className="flex items-center gap-1 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg font-bold transition-all flex-shrink-0"
             >
               {copied ? (
-                <><Check size={14} /> Copiado</>
+                <><Check size={14} className="text-emerald-400" /> Copiado</>
               ) : (
                 <><Copy size={14} /> Copiar</>
               )}
             </button>
           </div>
+
+          {(url.includes(".apk") || url.includes("/apks/") || url.includes(".ipa") || url.includes("/ipas/")) && (
+            <AnimatedDownloadButton
+              url={url}
+              defaultLabel={url.includes(".apk") || url.includes("/apks/") ? "Descargar APK en este dispositivo" : "Descargar IPA en este dispositivo"}
+              className="!py-3 !text-xs !rounded-xl"
+              iconSize={16}
+            />
+          )}
         </div>
       </div>
     </div>

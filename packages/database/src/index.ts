@@ -579,6 +579,39 @@ export async function uploadProjectIpa(
   }
 }
 
+// Genera una URL firmada para subir archivos pesados (APK, IPA) directamente desde el navegador con progreso en vivo
+export async function getProjectSignedUploadUrl(
+  fileName: string,
+  folder: 'apks' | 'ipas' = 'apks'
+): Promise<{ signedUrl: string; publicUrl: string; path: string } | { error: string }> {
+  try {
+    const cleanName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `${folder}/${Date.now()}-${cleanName}`;
+
+    const { data, error } = await adminSupabase.storage
+      .from(PROJECT_IMAGES_BUCKET)
+      .createSignedUploadUrl(path);
+
+    if (error || !data?.signedUrl) {
+      console.error('Error creando signed upload URL:', error);
+      return { error: error?.message || 'No se pudo generar la URL de subida.' };
+    }
+
+    const { data: pubData } = adminSupabase.storage
+      .from(PROJECT_IMAGES_BUCKET)
+      .getPublicUrl(path);
+
+    return {
+      signedUrl: data.signedUrl,
+      publicUrl: pubData.publicUrl,
+      path
+    };
+  } catch (err: any) {
+    console.error('Error en getProjectSignedUploadUrl:', err);
+    return { error: err.message || 'Error inesperado generando URL de subida.' };
+  }
+}
+
 
 // =====================================================
 // Screenshot real del sitio en vivo (tipo Vercel), NO del repo de GitHub

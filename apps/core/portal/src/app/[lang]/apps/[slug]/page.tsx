@@ -13,6 +13,7 @@ import { GlowWrapper } from "@/components/GlowWrapper";
 import { AdSenseBanner } from "@/components/AdSenseBanner";
 import { ProjectArticleViewer } from "@/components/ProjectArticleViewer";
 import { FaqAccordion } from "@/components/FaqAccordion";
+import { AnimatedDownloadButton } from "@/components/AnimatedDownloadButton";
 
 const GooglePlay2022Icon = ({ size = 24 }: { size?: number }) => (
   <svg viewBox="0 0 512 512" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
@@ -463,32 +464,26 @@ export default async function ProjectPage({
                 );
               })()}
               {project.playstore && (
-                <a 
-                  href={project.playstore} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-[#0e1714] hover:bg-[#14231e] text-white rounded-2xl font-bold transition-all border border-emerald-500/40 hover:border-emerald-400 magnetic-element hover:scale-[1.02] shadow-xl shadow-emerald-950/40 group neon-border"
-                >
-                  {project.playstore.toLowerCase().includes('.apk') || project.playstore.includes('/apks/') ? (
-                    <><GooglePlay2022Icon size={22} /> <span>{texts.downloadApk}</span></>
-                  ) : (
-                    <><GooglePlay2022Icon size={24} /> <span className="text-base tracking-wide">{texts.playstore}</span></>
-                  )}
-                </a>
+                <AnimatedDownloadButton
+                  url={project.playstore}
+                  defaultLabel={
+                    project.playstore.toLowerCase().includes('.apk') || project.playstore.includes('/apks/')
+                      ? texts.downloadApk
+                      : texts.playstore
+                  }
+                  type="apk"
+                />
               )}
               {appstoreUrl && (
-                <a 
-                  href={appstoreUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-[#121620] hover:bg-[#191f2d] text-white rounded-2xl font-bold transition-all border border-sky-500/40 hover:border-sky-400 magnetic-element hover:scale-[1.02] shadow-xl shadow-sky-950/40 group neon-border"
-                >
-                  {appstoreUrl.toLowerCase().includes('.ipa') || appstoreUrl.includes('/ipas/') ? (
-                    <><AppleStoreIcon size={22} /> <span>{texts.downloadIpa}</span></>
-                  ) : (
-                    <><AppleStoreIcon size={24} /> <span className="text-base tracking-wide">{texts.appstore}</span></>
-                  )}
-                </a>
+                <AnimatedDownloadButton
+                  url={appstoreUrl}
+                  defaultLabel={
+                    appstoreUrl.toLowerCase().includes('.ipa') || appstoreUrl.includes('/ipas/')
+                      ? texts.downloadIpa
+                      : texts.appstore
+                  }
+                  type="ipa"
+                />
               )}
             </div>
           </div>
