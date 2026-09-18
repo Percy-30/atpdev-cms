@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Building2, Search, Briefcase, Users, ShieldCheck, ExternalLink, Sparkles, Filter, CheckCircle2, ChevronRight } from 'lucide-react';
 import { getOrganizations, OrganizationItem, OrganizationCategory } from '@atpdev/database';
 import OrganizationsClient from './OrganizationsClient';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const revalidate = 1800; // 30 minutos
 
@@ -110,8 +111,14 @@ export default async function OrganizacionesPage() {
           </div>
         </header>
 
+        {/* Top Banner AdSlot */}
+        <AdBannerSlot type="leaderboard" className="my-6" />
+
         {/* Interactive Client Search & Filter Component */}
         <OrganizationsClient initialOrganizations={organizations} />
+
+        {/* Mid-page Billboard AdSlot */}
+        <AdBannerSlot type="billboard" className="my-8" />
 
         {/* Informational Guidance Section (E-E-A-T) */}
         <section className="mt-16 rounded-3xl bg-slate-900/50 border border-white/10 p-6 sm:p-10 space-y-6">

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronRight, Bot, Sparkles } from 'lucide-react';
 import { AiInterviewSimulator } from '@/components/AiInterviewSimulator';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
   title: 'Simulador de Entrevista de Trabajo con IA Perú 2026 | chamba pro',
@@ -48,8 +49,14 @@ export default function AiInterviewPage() {
         </p>
       </div>
 
+      {/* Top Banner AdSlot */}
+      <AdBannerSlot type="leaderboard" className="my-4" />
+
       {/* Interactive AI Component */}
       <AiInterviewSimulator />
+
+      {/* Bottom Billboard AdSlot */}
+      <AdBannerSlot type="billboard" className="mt-8" />
     </div>
   );
 }

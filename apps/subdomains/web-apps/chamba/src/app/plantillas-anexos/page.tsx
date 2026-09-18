@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight, FileText, Copy, Check, Download, Sparkles, ShieldCheck, FileCode, CheckCircle2 } from 'lucide-react';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 const PLANTILLAS = [
   {
@@ -128,64 +129,75 @@ export default function PlantillasAnexosPage() {
         </p>
       </div>
 
+      {/* Top Banner AdSlot */}
+      <AdBannerSlot type="leaderboard" className="my-4" />
+
       {/* Templates List */}
       <div className="space-y-8">
-        {PLANTILLAS.map((plantilla) => (
-          <div key={plantilla.id} className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/15 bg-gradient-to-b from-slate-900 to-[#0b0f19]">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
-              <div>
-                <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[11px] font-mono font-bold border border-emerald-500/30">
-                  {plantilla.category}
-                </span>
-                <h2 className="text-xl font-bold font-display text-white mt-2">
-                  {plantilla.title}
-                </h2>
-                <p className="text-xs text-slate-400 mt-1">{plantilla.description}</p>
+        {PLANTILLAS.map((plantilla, idx) => (
+          <React.Fragment key={plantilla.id}>
+            <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/15 bg-gradient-to-b from-slate-900 to-[#0b0f19]">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+                <div>
+                  <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[11px] font-mono font-bold border border-emerald-500/30">
+                    {plantilla.category}
+                  </span>
+                  <h2 className="text-xl font-bold font-display text-white mt-2">
+                    {plantilla.title}
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-1">{plantilla.description}</p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleDownload(plantilla.id, plantilla.title, plantilla.content)}
+                    className="px-4 py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 font-mono text-xs font-bold transition-all border border-cyan-500/40 flex items-center gap-2 cursor-pointer"
+                  >
+                    <Download size={16} />
+                    <span>Descargar .TXT</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(plantilla.id, plantilla.content)}
+                    className={`px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
+                      copiedId === plantilla.id
+                        ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/30'
+                        : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                    }`}
+                  >
+                    {copiedId === plantilla.id ? (
+                      <>
+                        <Check size={16} />
+                        <span>¡TEXTO COPIADO!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={16} />
+                        <span>Copiar Formato</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleDownload(plantilla.id, plantilla.title, plantilla.content)}
-                  className="px-4 py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 font-mono text-xs font-bold transition-all border border-cyan-500/40 flex items-center gap-2 cursor-pointer"
-                >
-                  <Download size={16} />
-                  <span>Descargar .TXT</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleCopy(plantilla.id, plantilla.content)}
-                  className={`px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
-                    copiedId === plantilla.id
-                      ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/30'
-                      : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                  }`}
-                >
-                  {copiedId === plantilla.id ? (
-                    <>
-                      <Check size={16} />
-                      <span>¡TEXTO COPIADO!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={16} />
-                      <span>Copiar Formato</span>
-                    </>
-                  )}
-                </button>
+              {/* Formatted Code / Text Preview */}
+              <div className="relative">
+                <pre className="p-4 sm:p-6 rounded-2xl bg-slate-950/90 border border-white/10 text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
+                  {plantilla.content}
+                </pre>
               </div>
             </div>
 
-            {/* Formatted Code / Text Preview */}
-            <div className="relative">
-              <pre className="p-4 sm:p-6 rounded-2xl bg-slate-950/90 border border-white/10 text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
-                {plantilla.content}
-              </pre>
-            </div>
-          </div>
+            {/* In-feed ad banner between templates */}
+            {idx === 1 && <AdBannerSlot type="in-feed" className="my-6" />}
+          </React.Fragment>
         ))}
       </div>
+
+      {/* Bottom Billboard AdSlot */}
+      <AdBannerSlot type="billboard" className="mt-8" />
     </div>
   );
 }

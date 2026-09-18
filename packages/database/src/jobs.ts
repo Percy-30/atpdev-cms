@@ -2396,6 +2396,18 @@ export const AGGREGATOR_AND_COMPETITOR_DOMAINS = [
 export function isCompetitorUrl(url?: string): boolean {
   if (!url) return false;
   const low = url.toLowerCase().trim();
+
+  // Enlaces directos a vacantes en plataformas donde las entidades publican oficialmente (Bumeran, Computrabajo, HiringRoom)
+  if (
+    (low.includes('bumeran.com.pe/empleos/') || 
+     low.includes('computrabajo.com.pe/ofertas-de-trabajo/') || 
+     low.includes('hiringroom.com/jobs/')) &&
+    !low.includes('convocatoriasdetrabajo') &&
+    !low.includes('portaltrabajos')
+  ) {
+    return false;
+  }
+
   return AGGREGATOR_AND_COMPETITOR_DOMAINS.some(domain => low.includes(domain));
 }
 
@@ -2467,8 +2479,12 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('DRTC HUANUCO') || norm.includes('DRTC HUÁNUCO') || (norm.includes('DRTC') && norm.includes('HUANUCO')) || (norm.includes('TRANSPORTES') && norm.includes('HUANUCO')) || (norm.includes('TRANSPORTES') && norm.includes('HUÁNUCO'))) return 'https://www.drtchco.gob.pe/convocatorias/';
   if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
   if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/juntos';
-  if (norm.includes('MIMP') || norm.includes('MUJER') || norm.includes('AURORA')) return 'https://www.gob.pe/mimp';
-  if (norm.includes('MININTER') || norm.includes('POLICIA') || norm.includes('POLICÍA') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
+  // Caja de Pensiones Militar Policial
+  if (norm.includes('CAJA DE PENSIONES') || norm.includes('CPMP') || (norm.includes('PENSIONES') && norm.includes('MILITAR')) || norm.includes('PENSIONES MILITAR POLICIAL')) {
+    return 'https://www.cpmp.com.pe/';
+  }
+
+  if (norm.includes('MININTER') || /\bPOLIC[IÍ]A\b/i.test(norm) || norm.includes('POLICIA NACIONAL') || norm.includes('POLICÍA NACIONAL') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
   if (norm.includes('MINDEF') || norm.includes('DEFENSA') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
   if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
   if (norm.includes('ANIN')) return 'https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo';

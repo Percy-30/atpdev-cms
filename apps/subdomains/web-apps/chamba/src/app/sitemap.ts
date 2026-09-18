@@ -20,6 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/plantillas-anexos',
     '/preguntas-entrevista-cas',
     '/simulador-entrevista-ia',
+    '/organizaciones',
+    '/publicar-empleo',
     '/quienes-somos',
     '/politica-de-privacidad',
     '/terminos-y-condiciones',

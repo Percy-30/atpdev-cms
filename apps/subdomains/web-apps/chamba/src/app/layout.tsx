@@ -170,6 +170,50 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
         )}
+        {/* Google Sitelinks Searchbox & WebSite Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "chamba pro",
+              alternateName: "Chamba Pro Perú",
+              url: "https://empleos.atpdev.dev",
+              description: "Buscador de convocatorias CAS 1057, D.L. 728, 276 y sector privado en Perú con enlace directo a fuentes oficiales.",
+              inLanguage: "es-PE",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate: "https://empleos.atpdev.dev/empleos?q={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+        {/* Organization Schema (E-E-A-T & Google Knowledge Graph) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "chamba pro",
+              legalName: "ATP DEV",
+              url: "https://empleos.atpdev.dev",
+              logo: "https://empleos.atpdev.dev/icon.svg",
+              sameAs: ["https://atpdev.dev"],
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer support",
+                email: "contacto@atpdev.dev",
+                availableLanguage: ["Spanish"],
+              },
+            }),
+          }}
+        />
       </head>
       <body data-interaction={glowStyle} className="bg-[#070a12] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-400 selection:text-slate-950">
         <ChambaThemeListener />
@@ -395,11 +439,6 @@ export default function RootLayout({
                     <Link href="/empleos?regimen=CAS" className="hover:text-emerald-400 transition-colors">
                       Convocatorias del Estado (CAS)
                     </Link>
-                  </li>
-                  <li>
-                    <a href="/rss.xml" target="_blank" className="hover:text-emerald-400 transition-colors font-mono flex items-center gap-1.5">
-                      <span>📡 Feed RSS Convocatorias</span>
-                    </a>
                   </li>
                 </ul>
               </div>

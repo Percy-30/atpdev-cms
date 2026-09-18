@@ -1050,11 +1050,11 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         if (!directBasesUrl && (lowText.includes('base') || lowText.includes('convocatoria') || lowText.includes('cronograma'))) {
           directBasesUrl = lUrl;
         }
-      } else if (isOfficialDomain) {
-        if (!directBasesUrl || lowText.includes('postula') || lowText.includes('base') || lowText.includes('convocatoria')) {
+      } else if (isOfficialDomain || lowUrl.includes('bumeran.com.pe/empleos/') || lowUrl.includes('computrabajo.com.pe/ofertas-de-trabajo/') || lowUrl.includes('hiringroom.com/jobs/')) {
+        if (!directBasesUrl || lowText.includes('postul') || lowText.includes('base') || lowText.includes('convocatoria')) {
           directBasesUrl = lUrl;
         }
-        if (!directApplyUrl && (lowText.includes('postula') || lowText.includes('inscr') || lowText.includes('registro'))) {
+        if (!directApplyUrl && (lowText.includes('postul') || lowText.includes('inscr') || lowText.includes('registro'))) {
           directApplyUrl = lUrl;
         }
       }
@@ -1090,14 +1090,15 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         opUrl = `https://www.convocatoriasdetrabajo.com/${opUrl.replace(/^\//, '')}`;
       }
 
-      const reqMatch = content.match(/<span>\s*(?:Formaci[oó]n|Se\s*requiere)[^:]*:\s*<\/span>\s*([^<]+)/i);
+      const reqMatch = content.match(/<span>\s*(?:Formaci[oó]n|Se\s*requiere|Pueden\s*postular|Perfil|Grado|Nivel|Estudios)[^:]*:\s*<\/span>\s*([^<]+)/i);
       const education = reqMatch ? reqMatch[1].trim() : 'Cumplir con los requisitos establecidos en las bases oficiales.';
 
-      const expMatch = content.match(/<span>\s*Experiencia[^:]*:\s*<\/span>\s*([^<]+)/i);
+      const expMatch = content.match(/<span>\s*(?:Experiencia|Requisitos|Funciones)[^:]*:\s*<\/span>\s*([^<]+)/i);
       const experience = expMatch ? expMatch[1].trim() : 'Acreditar experiencia laboral requerida.';
 
-      const remMatch = content.match(/<span>\s*Remuneraci[oó]n:\s*<\/span>\s*([^<]+)/i);
-      const salary = remMatch ? `S/. ${remMatch[1].trim()}` : '';
+      const remMatch = content.match(/<span>\s*Remuneraci[oó]n:\s*<\/span>\s*([^<]+)/i) ||
+                       html.match(/<span>\s*Remuneraci[oó]n:\s*<\/span>\s*([^<]+)/i);
+      const salary = remMatch ? `S/. ${remMatch[1].trim().replace(/^S\/\.?\s*/i, '')}` : '';
 
       // Si el título contiene múltiples vacantes y puestos e.g. (14,018) APLICADORES Y (3,220) ORIENTADORES
       const multiMatches = [...rawTitle.matchAll(/\((\d[\d,.]*)\)\s*([A-Za-zÁÉÍÓÚáéíóúñÑ\s]+)/g)];
@@ -1127,6 +1128,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       }
 
       const vacMatch = content.match(/<span>\s*N[°º]\s*de\s*vacantes:\s*<\/span>\s*(\d+)/i) ||
+                       content.match(/<span>\s*Vacantes:\s*<\/span>\s*(\d+)/i) ||
                        content.match(/(\d+)\s*(?:plazas|vacantes)/i);
       const vacancies = vacMatch ? parseInt(vacMatch[1], 10) : 1;
 
@@ -1219,7 +1221,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
               lowHref.includes('.mil.pe');
 
             // Enlace oficial de postulación o portal institucional
-            if (!directApplyUrl && (lowText.includes('postula') || lowText.includes('inscr') || lowText.includes('registro')) && (isOfficialPortalDomain || !lowHref.includes('google.com'))) {
+            if (!directApplyUrl && (lowText.includes('postul') || lowText.includes('inscr') || lowText.includes('registro')) && (isOfficialPortalDomain || !lowHref.includes('google.com'))) {
               directApplyUrl = rawHref;
             }
 
@@ -1266,8 +1268,8 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
             }
 
             // Comunicados
-            if (lowText.includes('comunicado') || lowText.includes('fe de errata')) {
-              if (!directComunicadosUrl && (isOfficialPortalDomain || isDriveOrDoc)) {
+            if ((lowText.includes('comunicado') || lowText.includes('fe de errata')) && (isOfficialPortalDomain || isDriveOrDoc)) {
+              if (!directComunicadosUrl) {
                 directComunicadosUrl = rawHref;
               }
               if (!official_documents.some(d => d.url === rawHref)) {
@@ -1280,8 +1282,8 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
             }
 
             // Resultados
-            if (lowText.includes('resultado') || lowText.includes('m[eé]rito')) {
-              if (!directResultadosUrl && (isOfficialPortalDomain || isDriveOrDoc)) {
+            if ((lowText.includes('resultado') || lowText.includes('m[eé]rito')) && (isOfficialPortalDomain || isDriveOrDoc)) {
+              if (!directResultadosUrl) {
                 directResultadosUrl = rawHref;
               }
               if (!official_documents.some(d => d.url === rawHref)) {
@@ -1304,6 +1306,16 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
                 });
               }
             }
+          }
+
+          // Enriquecer requisitos de la plaza desde la subpágina si eran genéricos
+          const subReqMatch = opHtml.match(/<span>\s*(?:Formaci[oó]n|Se\s*requiere|Pueden\s*postular|Perfil|Grado|Nivel|Estudios)[^:]*:\s*<\/span>\s*([^<]+)/i);
+          if (subReqMatch && (!p.education || p.education.includes('bases oficiales'))) {
+            p.education = subReqMatch[1].trim();
+          }
+          const subExpMatch = opHtml.match(/<span>\s*(?:Experiencia|Requisitos|Funciones)[^:]*:\s*<\/span>\s*([^<]+)/i);
+          if (subExpMatch && (!p.experience || p.experience.includes('experiencia laboral requerida'))) {
+            p.experience = subExpMatch[1].trim();
           }
 
           // Si la plaza aún no tiene bases_url asignado con doc:

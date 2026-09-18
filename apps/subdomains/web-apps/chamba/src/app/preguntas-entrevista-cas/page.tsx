@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronRight, HelpCircle, Sparkles, BookOpen, ShieldCheck } from 'lucide-react';
 import { PreguntasCasSimulator } from '@/components/PreguntasCasSimulator';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
   title: 'Banco de Preguntas y Examen CAS Perú 2026 | chamba pro',
@@ -49,8 +50,14 @@ export default function PreguntasCasPage() {
         </p>
       </div>
 
+      {/* Top Banner AdSlot */}
+      <AdBannerSlot type="leaderboard" className="my-4" />
+
       {/* Interactive Questions Simulator */}
       <PreguntasCasSimulator />
+
+      {/* Bottom Billboard AdSlot */}
+      <AdBannerSlot type="billboard" className="mt-8" />
     </div>
   );
 }

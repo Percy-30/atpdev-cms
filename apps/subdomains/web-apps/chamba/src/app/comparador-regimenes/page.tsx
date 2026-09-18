@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronRight, Scale, Sparkles } from 'lucide-react';
 import { ComparadorRegimenes } from '@/components/ComparadorRegimenes';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
   title: 'Comparador de Regímenes Laborales Perú 2026 | chamba pro',
@@ -48,8 +49,14 @@ export default function ComparadorPage() {
         </p>
       </div>
 
+      {/* Top Banner AdSlot */}
+      <AdBannerSlot type="leaderboard" className="my-4" />
+
       {/* Interactive Matrix */}
       <ComparadorRegimenes />
+
+      {/* Bottom Billboard AdSlot */}
+      <AdBannerSlot type="billboard" className="mt-8" />
     </div>
   );
 }

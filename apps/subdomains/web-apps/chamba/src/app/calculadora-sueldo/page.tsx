@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { ChevronRight, Calculator, ShieldCheck, Sparkles, HelpCircle } from 'lucide-react';
 import { CalculadoraSueldo } from '@/components/CalculadoraSueldo';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
   title: 'Calculadora de Sueldo Neto CAS 1057 & 728 Perú 2026 | chamba pro',
@@ -105,8 +106,14 @@ export default function CalculadoraSueldoPage() {
         </p>
       </div>
 
+      {/* Top Banner AdSlot */}
+      <AdBannerSlot type="leaderboard" className="my-4" />
+
       {/* Calculator Interactive Component */}
       <CalculadoraSueldo />
+
+      {/* In-feed / Billboard AdSlot */}
+      <AdBannerSlot type="billboard" className="my-6" />
 
       {/* Informative FAQ / Educational Section */}
       <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-white/10">

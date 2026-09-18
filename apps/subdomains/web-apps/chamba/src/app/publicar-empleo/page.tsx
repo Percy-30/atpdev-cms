@@ -14,6 +14,7 @@ import {
   Sparkles 
 } from 'lucide-react';
 import PublicarFormClient from './PublicarFormClient';
+import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
   title: 'Publicar Convocatoria u Oferta de Trabajo Oficial | chamba pro',
@@ -100,8 +101,14 @@ export default function PublicarEmpleoPage() {
           </div>
         </header>
 
+        {/* Top Banner AdSlot */}
+        <AdBannerSlot type="leaderboard" className="my-6" />
+
         {/* Formulario Principal */}
         <PublicarFormClient />
+
+        {/* Mid Billboard AdSlot */}
+        <AdBannerSlot type="billboard" className="my-8" />
 
         {/* Canal Alternativo de Envío Directo (Vía Rápida OGRH) */}
         <section className="rounded-3xl bg-gradient-to-r from-slate-900/90 via-emerald-950/30 to-slate-900/90 border border-emerald-500/20 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">

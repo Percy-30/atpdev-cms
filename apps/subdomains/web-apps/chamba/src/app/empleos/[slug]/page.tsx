@@ -32,6 +32,7 @@ export async function generateMetadata({
   if (!job) return {};
 
   const pageUrl = `https://empleos.atpdev.dev/empleos/${slug}`;
+  const ogImage = job.entity_logo || "https://empleos.atpdev.dev/opengraph-image";
 
   const rawTitle = `${job.title} — ${job.entity_name}`;
   const title = rawTitle.length > 56
@@ -47,6 +48,16 @@ export async function generateMetadata({
   return {
     title,
     description,
+    keywords: [
+      job.title,
+      job.entity_name,
+      job.region,
+      job.sector_type,
+      "convocatorias cas 2026",
+      "trabajo peru",
+      "bases oficiales",
+      "chamba pro",
+    ],
     alternates: {
       canonical: pageUrl,
     },
@@ -55,6 +66,22 @@ export async function generateMetadata({
       description,
       url: pageUrl,
       type: "article",
+      siteName: "chamba pro",
+      locale: "es_PE",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${job.title} — ${job.entity_name}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
     },
   };
 }
@@ -78,39 +105,77 @@ export default async function JobDetailPage({
     .filter(j => j.id !== job.id && (j.category === job.category || j.sector_type === job.sector_type))
     .slice(0, 3);
 
+  // Mapeo canónico según especificación estricta de Google Search Central
+  let employmentType: "FULL_TIME" | "PART_TIME" | "CONTRACTOR" | "TEMPORARY" | "INTERN" | "OTHER" = "FULL_TIME";
+  if (job.sector_type === "CAS 1057" || job.sector_type === "Locación / FAG") {
+    employmentType = "CONTRACTOR";
+  } else if (job.sector_type === "Prácticas") {
+    employmentType = "INTERN";
+  } else {
+    employmentType = "FULL_TIME";
+  }
+
+  // Formato ISO 8601 estricto para fechas
+  const isoDatePosted = job.start_date
+    ? (job.start_date.includes("T") ? job.start_date : `${job.start_date}T00:00:00.000Z`)
+    : new Date(job.created_at || Date.now()).toISOString();
+
+  const isoValidThrough = job.end_date
+    ? (job.end_date.includes("T") ? job.end_date : `${job.end_date}T23:59:59.000Z`)
+    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  // Descripción formateada en HTML estructurado para tarjetas enriquecidas de Google for Jobs
+  const reqListHtml = (job.requirements && job.requirements.length > 0)
+    ? `<h3>Requisitos del puesto:</h3><ul>${job.requirements.map(r => `<li>${r.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}</ul>`
+    : '';
+  const plazasHtml = (job.plazas && job.plazas.length > 0)
+    ? `<h3>Plazas disponibles:</h3><ul>${job.plazas.slice(0, 8).map(p => `<li><strong>${p.title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</strong>${p.education ? ` - ${p.education.replace(/</g, '&lt;').replace(/>/g, '&gt;')}` : ''} (${p.vacancies || 1} vacante(s))</li>`).join('')}</ul>`
+    : '';
+  const benefitsHtml = (job.benefits && job.benefits.length > 0)
+    ? `<h3>Beneficios:</h3><ul>${job.benefits.map(b => `<li>${b.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}</ul>`
+    : '';
+  const formattedHtmlDescription = `<p>${(job.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n+/g, '<br/>')}</p>${plazasHtml}${reqListHtml}${benefitsHtml}<p><strong>Régimen:</strong> ${job.sector_type} | <strong>Remuneración:</strong> ${job.salary_text} | <strong>Ubicación:</strong> ${job.region}, Perú</p><p>Consulte bases y cronograma oficial en Chamba Pro (empleos.atpdev.dev).</p>`;
+
   // Google for Jobs JSON-LD Schema
   const jsonLd = {
     "@context": "https://schema.org/",
     "@type": "JobPosting",
     title: job.title,
-    description: `${job.description}\n\nRequisitos del puesto:\n${job.requirements.join("\n")}`,
+    description: formattedHtmlDescription,
     identifier: {
       "@type": "PropertyValue",
       name: job.entity_name,
       value: job.id,
     },
-    datePosted: job.start_date,
-    validThrough: job.end_date,
-    employmentType: job.sector_type === "CAS 1057" ? "CONTRACT" : "FULL_TIME",
+    datePosted: isoDatePosted,
+    validThrough: isoValidThrough,
+    employmentType,
     directApply: true,
     hiringOrganization: {
       "@type": "Organization",
       name: job.entity_name,
       sameAs: job.apply_url,
+      logo: job.entity_logo || "https://empleos.atpdev.dev/icon.svg",
     },
     jobLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
         addressLocality: job.region,
+        addressRegion: job.region,
         addressCountry: "PE",
       },
+    },
+    applicantLocationRequirements: {
+      "@type": "Country",
+      name: "PE",
     },
     baseSalary: job.salary_min ? {
       "@type": "MonetaryAmount",
       currency: "PEN",
       value: {
         "@type": "QuantitativeValue",
+        value: job.salary_min,
         minValue: job.salary_min,
         maxValue: job.salary_max || job.salary_min,
         unitText: "MONTH",
@@ -232,15 +297,13 @@ export default async function JobDetailPage({
 
   return (
     <>
-      {/* Google for Jobs JSON-LD Injection */}
-      <Script
-        id="job-posting-jsonld"
+      {/* Google for Jobs JSON-LD Direct Server-Side Injection */}
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* BreadcrumbList JSON-LD Injection */}
-      <Script
-        id="breadcrumb-jsonld"
+      {/* BreadcrumbList JSON-LD Direct Server-Side Injection */}
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
@@ -919,7 +982,11 @@ export default async function JobDetailPage({
                           className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
                         >
                           <ExternalLink size={16} />
-                          <span>VER BASES EN PORTAL OFICIAL</span>
+                          <span>
+                            {lowUrl.includes('bumeran') || lowUrl.includes('computrabajo') || lowUrl.includes('postul')
+                              ? 'POSTULAR EN PORTAL OFICIAL'
+                              : 'VER CONVOCATORIA EN PORTAL OFICIAL'}
+                          </span>
                         </a>
                       )}
 
