@@ -277,6 +277,7 @@ export function ProjectArticleViewer({
         onClose={() => setShowQrModal(false)}
         title={title}
         url={activeDownloadUrl}
+        appImage={image}
       />
     </div>
   );
