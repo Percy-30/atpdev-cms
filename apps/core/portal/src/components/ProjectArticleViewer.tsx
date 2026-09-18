@@ -22,6 +22,7 @@ interface ProjectArticleViewerProps {
     cornerStyle?: "rounded" | "squircle" | "square";
     qrBorder?: "neon" | "white" | "none";
     outerFrame?: "neon" | "white" | "subtle" | "none";
+    textTone?: "auto" | "dark" | "light";
   } | null;
 }
 
@@ -293,6 +294,7 @@ export function ProjectArticleViewer({
         defaultCornerStyle={qrConfig?.cornerStyle}
         defaultQrBorderStyle={qrConfig?.qrBorder}
         defaultOuterFrame={qrConfig?.outerFrame}
+        defaultTextTone={qrConfig?.textTone}
       />
     </div>
   );

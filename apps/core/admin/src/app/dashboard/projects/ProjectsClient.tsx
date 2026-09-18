@@ -164,6 +164,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [qrCornerStyle, setQrCornerStyle] = useState<string>("rounded");
   const [qrOuterFrame, setQrOuterFrame] = useState<string>("neon");
   const [qrBorderStyle, setQrBorderStyle] = useState<string>("neon");
+  const [qrTextTone, setQrTextTone] = useState<string>("auto");
 
   // Módulos Legales y Subpáginas Dinámicas
   const [hasPrivacy, setHasPrivacy] = useState(true);
@@ -246,6 +247,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     let currentQrCornerStyle = "rounded";
     let currentQrOuterFrame = "neon";
     let currentQrBorderStyle = "neon";
+    let currentQrTextTone = "auto";
     if (editingProject?.theme_config) {
       try {
         const parsed = JSON.parse(editingProject.theme_config);
@@ -256,6 +258,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           if (parsed.qr.cornerStyle) currentQrCornerStyle = parsed.qr.cornerStyle;
           if (parsed.qr.outerFrame) currentQrOuterFrame = parsed.qr.outerFrame;
           if (parsed.qr.qrBorder) currentQrBorderStyle = parsed.qr.qrBorder;
+          if (parsed.qr.textTone) currentQrTextTone = parsed.qr.textTone;
         }
       } catch (e) {}
     }
@@ -265,6 +268,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
     setQrCornerStyle(currentQrCornerStyle);
     setQrOuterFrame(currentQrOuterFrame);
     setQrBorderStyle(currentQrBorderStyle);
+    setQrTextTone(currentQrTextTone);
     
     if (editingProject?.legal_config) {
       try {
@@ -708,6 +712,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
         cornerStyle: qrCornerStyle,
         outerFrame: qrOuterFrame,
         qrBorder: qrBorderStyle,
+        textTone: qrTextTone,
       };
       finalThemeConfig = JSON.stringify(parsed);
     } catch {
@@ -719,6 +724,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           cornerStyle: qrCornerStyle,
           outerFrame: qrOuterFrame,
           qrBorder: qrBorderStyle,
+          textTone: qrTextTone,
         }
       });
     }
@@ -1751,6 +1757,32 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                     title={c.label}
                   >
                     {c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Tono de texto del QR predeterminado */}
+            <div>
+              <label className="text-[11px] text-gray-400 block mb-1.5 font-medium">Color de Título del QR (Predeterminado)</label>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  { id: "auto", label: "🎨 Auto (Inteligente)" },
+                  { id: "dark", label: "⬛ Oscuro (#0f172a)" },
+                  { id: "light", label: "⬜ Claro (#ffffff)" },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setQrTextTone(t.id)}
+                    className={`py-1.5 px-2 text-xs rounded-xl border transition-all text-center truncate ${
+                      qrTextTone === t.id
+                        ? "bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm font-semibold"
+                        : "bg-[#1A1A1A] border-gray-800 text-gray-400 hover:text-white"
+                    }`}
+                    title={t.label}
+                  >
+                    {t.label}
                   </button>
                 ))}
               </div>
