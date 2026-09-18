@@ -206,12 +206,12 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 
 const STATIC_CHAMBA_PROJECT: Project = {
   id: 9991,
-  title: "chamba pro - Agregador de Empleos Perú Nivel Dios",
+  title: "chamba pro — Agregador Informativo de Empleos y Convocatorias Perú",
   slug: "chamba-pro",
   category: "Web & SaaS Platform",
   metrics: "⚡ FTS & Google for Jobs",
   description: "Plataforma agregadora de ofertas laborales y convocatorias CAS 1057, 728, 276 y Sector Privado en el Perú con derivación 100% oficial y verificación RUC.",
-  long_description: `# 💼 chamba pro — Agregador Informativo de Empleos y Convocatorias Perú Nivel Dios
+  long_description: `# 💼 chamba pro — Agregador Informativo de Empleos y Convocatorias Perú
 
 > **Plataforma Web Agregadora de Ofertas Laborales (empleos.atpdev.dev)** construida con Next.js 16 App Router, TypeScript, Tailwind CSS y arquitectura de derivación 100% oficial y transparente.
 
@@ -227,7 +227,7 @@ Cada oferta laboral o convocatoria publicada es verificada previamente y redirig
 
 ## 🚀 2. Características Clave frente a la Competencia
 
-| Función | Agregadores Tradicionales | **chamba pro (Nivel Dios)** |
+| Función | Agregadores Tradicionales | **chamba pro** |
 | :--- | :--- | :--- |
 | **Experiencia de Usuario** | Directorios estáticos lentos con publicidad invasiva. | **Glassmorphic Dark Tech & Clean Light**, 60fps responsive. |
 | **Buscador & Filtros** | Búsqueda básica por texto sin combinación de criterios. | **Buscador Instantáneo Multi-Faceta** (Región, Régimen CAS/728/276, Salario, Nivel Educativo). |

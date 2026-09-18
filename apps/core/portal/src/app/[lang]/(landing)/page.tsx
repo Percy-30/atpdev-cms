@@ -14,6 +14,8 @@ import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import { GlowWrapper } from "@/components/GlowWrapper";
 
+export const revalidate = 0;
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const BASE_URL = "https://www.atpdev.dev";
