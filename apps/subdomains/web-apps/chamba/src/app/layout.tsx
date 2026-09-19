@@ -125,6 +125,7 @@ export const metadata: Metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     other: {
       "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
+      "google-adsense-account": "ca-pub-5414009811868137",
     },
   },
 };
