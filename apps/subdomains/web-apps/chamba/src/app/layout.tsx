@@ -378,11 +378,12 @@ export default function RootLayout({
                 <p className="text-slate-400 text-xs leading-relaxed max-w-md">
                   Chamba Pro es una iniciativa tecnológica independiente desarrollada por <strong>ATP DEV</strong>. Nuestro objetivo es acercar las convocatorias de trabajo transparentes a todo el Perú, combatiendo fraudes y redirigiendo 100% a las fuentes oficiales de SERVIR y empresas verificadas.
                 </p>
-                <div className="flex flex-wrap gap-2 text-[11px] font-mono text-emerald-400">
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">CAS 1057</span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">D.L. 728</span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">D.L. 276</span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">Locación / FAG</span>
+                <div className="flex flex-wrap gap-2 text-[11px] font-mono">
+                  <Link href="/convocatorias/cas" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">CAS 1057</Link>
+                  <Link href="/convocatorias/728" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">D.L. 728</Link>
+                  <Link href="/convocatorias/privado" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">Sector Privado</Link>
+                  <Link href="/convocatorias/practicas" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">Prácticas</Link>
+                  <Link href="/convocatorias/locacion" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">Locación</Link>
                 </div>
               </div>
 
@@ -475,6 +476,69 @@ export default function RootLayout({
                 </ul>
               </div>
 
+            </div>
+
+            {/* Regional Linking Hub for Programmatic SEO */}
+            <div className="border-t border-slate-900/80 pt-6 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-wider">
+                  Chamba y Convocatorias por Región en Perú
+                </span>
+                <Link href="/empleos" className="text-[11px] text-emerald-400 hover:underline">
+                  Ver todas las ofertas →
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] text-slate-400">
+                <Link href="/empleos/en/lima" className="hover:text-emerald-400 transition-colors">Lima</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/arequipa" className="hover:text-emerald-400 transition-colors">Arequipa</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/callao" className="hover:text-emerald-400 transition-colors">Callao</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/cusco" className="hover:text-emerald-400 transition-colors">Cusco</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/la-libertad" className="hover:text-emerald-400 transition-colors">La Libertad (Trujillo)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/piura" className="hover:text-emerald-400 transition-colors">Piura</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/lambayeque" className="hover:text-emerald-400 transition-colors">Lambayeque (Chiclayo)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/junin" className="hover:text-emerald-400 transition-colors">Junín (Huancayo)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/ancash" className="hover:text-emerald-400 transition-colors">Áncash (Chimbote/Huaraz)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/ica" className="hover:text-emerald-400 transition-colors">Ica</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/cajamarca" className="hover:text-emerald-400 transition-colors">Cajamarca</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/puno" className="hover:text-emerald-400 transition-colors">Puno</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/san-martin" className="hover:text-emerald-400 transition-colors">San Martín (Tarapoto)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/loreto" className="hover:text-emerald-400 transition-colors">Loreto (Iquitos)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/huanuco" className="hover:text-emerald-400 transition-colors">Huánuco</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/ayacucho" className="hover:text-emerald-400 transition-colors">Ayacucho</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/tacna" className="hover:text-emerald-400 transition-colors">Tacna</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/moquegua" className="hover:text-emerald-400 transition-colors">Moquegua</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/tumbes" className="hover:text-emerald-400 transition-colors">Tumbes</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/ucayali" className="hover:text-emerald-400 transition-colors">Ucayali (Pucallpa)</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/pasco" className="hover:text-emerald-400 transition-colors">Pasco</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/amazonas" className="hover:text-emerald-400 transition-colors">Amazonas</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/apurimac" className="hover:text-emerald-400 transition-colors">Apurímac</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/huancavelica" className="hover:text-emerald-400 transition-colors">Huancavelica</Link>
+                <span className="text-slate-700">•</span>
+                <Link href="/empleos/en/madre-de-dios" className="hover:text-emerald-400 transition-colors">Madre de Dios</Link>
+              </div>
             </div>
 
             {/* Bottom Bar: Disclaimer Legal No Gubernamental */}
