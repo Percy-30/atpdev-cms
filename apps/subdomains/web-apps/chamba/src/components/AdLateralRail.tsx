@@ -11,7 +11,7 @@ interface AdLateralRailProps {
 export function AdLateralRail({ leftSlotId, rightSlotId }: AdLateralRailProps) {
   const [showLeft, setShowLeft] = useState(true);
   const [showRight, setShowRight] = useState(true);
-  const clientPublisherId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const clientPublisherId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-5414009811868137';
 
   useEffect(() => {
     if (clientPublisherId && typeof window !== 'undefined') {

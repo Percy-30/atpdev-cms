@@ -136,7 +136,7 @@ export default function RootLayout({
 }>) {
   const config = getSubdomainConfig("chamba");
   const theme = config.theme || ({} as any);
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-5414009811868137";
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const accentHex = theme.accent_color || theme.primary_color || "#10b981";
   const glowStyle = theme.glow_style || "spotlight-border";

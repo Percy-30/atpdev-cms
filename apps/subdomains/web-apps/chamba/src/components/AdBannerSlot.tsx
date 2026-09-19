@@ -13,7 +13,7 @@ interface AdBannerSlotProps {
 
 export function AdBannerSlot({ type, slotId, className = '' }: AdBannerSlotProps) {
   const adRef = useRef<HTMLDivElement>(null);
-  const clientPublisherId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const clientPublisherId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-5414009811868137';
 
   useEffect(() => {
     if (clientPublisherId && slotId && typeof window !== 'undefined') {
