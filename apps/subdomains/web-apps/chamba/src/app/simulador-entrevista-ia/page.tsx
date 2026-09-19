@@ -5,7 +5,7 @@ import { AiInterviewSimulator } from '@/components/AiInterviewSimulator';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
-  title: 'Simulador de Entrevista de Trabajo con IA Perú 2026 | chamba pro',
+  title: 'Simulador de Entrevista de Trabajo con IA Perú 2026',
   description: 'Entrena tu entrevista personal y evaluación técnica CAS con Inteligencia Artificial para SUNAT, MINEDU, BCRP, EsSalud y el Poder Judicial.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/simulador-entrevista-ia',

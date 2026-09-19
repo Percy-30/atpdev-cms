@@ -3,7 +3,7 @@ import { ShieldCheck, Scale, AlertTriangle, CheckCircle2, ArrowLeft, ExternalLin
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Términos y Condiciones de Uso — Chamba Pro',
+  title: 'Términos y Condiciones de Uso',
   description: 'Términos y condiciones de uso de Chamba Pro. Descargo de responsabilidad, naturaleza informativa no gubernamental y política de uso 100% gratuito.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/terminos-y-condiciones',

@@ -9,7 +9,7 @@ import { AdBannerSlot } from '@/components/AdBannerSlot';
 export const revalidate = 1800; // 30 minutos
 
 export const metadata: Metadata = {
-  title: 'Directorio de Entidades Públicas y Organizaciones del Estado | chamba pro',
+  title: 'Directorio de Entidades Públicas y Organizaciones del Estado',
   description: 'Explora más de 120 instituciones públicas, ministerios, municipalidades y organismos autónomos de Perú con convocatorias CAS, 728 y prácticas vigentes.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/organizaciones',

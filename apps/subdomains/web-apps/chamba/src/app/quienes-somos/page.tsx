@@ -6,7 +6,7 @@ import { ShieldCheck, CheckCircle2, Award, ExternalLink, Zap, Users, Lock } from
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Quiénes Somos & Garantía de Transparencia — Chamba Pro',
+  title: 'Quiénes Somos & Garantía de Transparencia',
   description: 'Misión de Chamba Pro: agregador nacional de empleo en Perú con enlace directo a fuentes oficiales del Estado, sin cobros y con total transparencia.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/quienes-somos',

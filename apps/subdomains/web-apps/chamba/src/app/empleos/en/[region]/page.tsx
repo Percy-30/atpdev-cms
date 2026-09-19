@@ -151,7 +151,7 @@ export async function generateMetadata({
   const regionInfo = REGIONES_MAP[region.toLowerCase()];
   if (!regionInfo) return {};
 
-  const title = `Chamba en ${regionInfo.name} 2026 — Ofertas de Trabajo y Convocatorias | chamba pro`;
+  const title = `Chamba en ${regionInfo.name} 2026 — Ofertas de Trabajo y Convocatorias`;
   const description = `Encuentra chamba y convocatorias de trabajo vigentes en ${regionInfo.name}, Perú. Convocatorias del Estado (CAS 1057, 728) y sector privado con bases oficiales en PDF.`;
   const canonicalUrl = `https://empleos.atpdev.dev/empleos/en/${region}`;
 

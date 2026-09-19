@@ -3,7 +3,7 @@ import { ShieldCheck, Lock, Cookie, Eye, CheckCircle2, ArrowLeft, ExternalLink, 
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Política de Privacidad & Protección de Datos — Chamba Pro',
+  title: 'Política de Privacidad & Protección de Datos',
   description: 'Política de privacidad de Chamba Pro conforme a la Ley 29733 de Protección de Datos Personales y políticas de cookies de terceros de Google AdSense.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/politica-de-privacidad',

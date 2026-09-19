@@ -9,7 +9,7 @@ import { Search, Filter, Briefcase } from "lucide-react";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Buscador de Convocatorias de Trabajo Perú 2026 | chamba pro",
+  title: "Buscador de Convocatorias de Trabajo Perú 2026",
   description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en ministerios, municipalidades y entidades públicas.",
   alternates: {
     canonical: "https://empleos.atpdev.dev/empleos",

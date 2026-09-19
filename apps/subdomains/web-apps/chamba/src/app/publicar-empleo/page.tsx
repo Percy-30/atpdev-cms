@@ -17,7 +17,7 @@ import PublicarFormClient from './PublicarFormClient';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
-  title: 'Publicar Convocatoria u Oferta de Trabajo Oficial | chamba pro',
+  title: 'Publicar Convocatoria u Oferta de Trabajo Oficial',
   description: 'Publica gratuitamente ofertas laborales y convocatorias CAS 1057, 728, 276 para instituciones del Estado y empresas privadas en Perú.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/publicar-empleo',

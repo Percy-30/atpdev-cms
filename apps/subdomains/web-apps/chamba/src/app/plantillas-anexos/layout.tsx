@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Formatos y Anexos SERVIR CAS Editables 2026 | chamba pro',
+  title: 'Formatos y Anexos SERVIR CAS Editables 2026',
   description: 'Descarga gratis plantillas y formatos oficiales de Declaraciones Juradas, Anexo 1, 2, 3 y 4 para convocatorias CAS del Estado Peruano.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/plantillas-anexos',

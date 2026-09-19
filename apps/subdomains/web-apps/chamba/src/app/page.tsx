@@ -10,7 +10,9 @@ import { AdLateralRail } from "@/components/AdLateralRail";
 import { ShieldCheck, Sparkles, Building2, MapPin, ArrowRight, CheckCircle2, Calculator, HelpCircle, FileText, Bot, FileSpreadsheet, Scale, ChevronDown } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
+  title: {
+    absolute: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
+  },
   description: "Buscador líder de convocatorias de trabajo y chamba verificada en Perú: CAS 1057, D.L. 728, 276 y sector privado. Consulta bases oficiales, requisitos y salarios vigentes.",
   alternates: {
     canonical: "https://empleos.atpdev.dev",

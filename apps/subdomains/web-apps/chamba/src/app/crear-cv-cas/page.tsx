@@ -8,7 +8,7 @@ import { CvCasGenerator } from '@/components/CvCasGenerator';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
-  title: 'Generador de CV SERVIR CAS y ATS 2026 | chamba pro',
+  title: 'Generador de CV SERVIR CAS y ATS 2026',
   description: 'Crea y descarga gratis tu CV SERVIR CAS y ATS Harvard en PDF A4 editable. Plantillas oficiales para convocatorias de trabajo en el Estado Peruano.',
   keywords: [
     'generador cv cas servir',

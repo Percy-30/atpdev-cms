@@ -91,7 +91,7 @@ export async function generateMetadata({
   const catInfo = CATEGORIAS_MAP[categoria.toLowerCase()];
   if (!catInfo) return {};
 
-  const title = `Convocatorias ${catInfo.name} 2026 — Empleos y Trabajo en Perú | chamba pro`;
+  const title = `Convocatorias ${catInfo.name} 2026 — Empleos y Trabajo en Perú`;
   const description = `Consulta convocatorias vigentes de ${catInfo.name} en el Estado Peruano y sector privado. Bases oficiales en PDF, requisitos, cronograma y salarios.`;
   const canonicalUrl = `https://empleos.atpdev.dev/convocatorias/${categoria}`;
 

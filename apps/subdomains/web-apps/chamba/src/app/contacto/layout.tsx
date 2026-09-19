@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contacto y Atención al Usuario | chamba pro',
+  title: 'Contacto y Atención al Usuario',
   description: 'Canal de atención al postulante, verificación de convocatorias, reporte de fraudes y consultas de soporte editorial de Chamba Pro.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/contacto',

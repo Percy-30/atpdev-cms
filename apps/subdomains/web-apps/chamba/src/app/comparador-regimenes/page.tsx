@@ -5,7 +5,7 @@ import { ComparadorRegimenes } from '@/components/ComparadorRegimenes';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
 
 export const metadata: Metadata = {
-  title: 'Comparador de Regímenes Laborales Perú 2026 | chamba pro',
+  title: 'Comparador de Regímenes Laborales Perú 2026',
   description: 'Compara derechos laborales, gratificaciones, CTS y vacaciones entre regímenes CAS 1057, D.L. 728, D.L. 276 y Locación de Servicios (RHO) en Perú.',
   alternates: {
     canonical: 'https://empleos.atpdev.dev/comparador-regimenes',

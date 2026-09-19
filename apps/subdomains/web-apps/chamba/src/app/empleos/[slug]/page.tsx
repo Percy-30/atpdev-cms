@@ -36,8 +36,8 @@ export async function generateMetadata({
 
   const rawTitle = `${job.title} — ${job.entity_name}`;
   const title = rawTitle.length > 56
-    ? `${rawTitle.slice(0, 53).trim()}... | chamba pro`
-    : `${rawTitle} | chamba pro`;
+    ? `${rawTitle.slice(0, 53).trim()}...`
+    : rawTitle;
 
   const fallbackDesc = `Convocatoria de ${job.title} en ${job.entity_name}. Consulta bases oficiales, requisitos y remuneración en Chamba Pro.`;
   const rawDesc = job.description?.replace(/[\r\n\t]+/g, ' ').trim() || fallbackDesc;
