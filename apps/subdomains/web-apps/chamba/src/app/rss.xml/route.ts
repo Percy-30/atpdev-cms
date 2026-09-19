@@ -4,8 +4,9 @@ import { getJobPostings } from '@atpdev/database';
 export const dynamic = 'force-dynamic';
 export const revalidate = 1800; // 30 minutes
 
-function escapeXml(unsafe: string): string {
-  return unsafe.replace(/[<>&'"]/g, (c) => {
+function escapeXml(unsafe?: string | null): string {
+  if (!unsafe) return '';
+  return String(unsafe).replace(/[<>&'"]/g, (c) => {
     switch (c) {
       case '<': return '&lt;';
       case '>': return '&gt;';

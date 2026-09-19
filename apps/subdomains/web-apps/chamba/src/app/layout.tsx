@@ -147,6 +147,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${theme.theme_mode === 'light' ? 'light' : 'dark'} ${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
       <head>
+        {/* Core Web Vitals Resource Hints */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
         {/* Dynamic Subdomain Theme Custom Properties */}
         <style dangerouslySetInnerHTML={{
           __html: `

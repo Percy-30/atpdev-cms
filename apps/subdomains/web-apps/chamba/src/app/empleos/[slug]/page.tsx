@@ -475,6 +475,22 @@ export default async function JobDetailPage({
               >
                 Facebook
               </a>
+              <a
+                href={`https://t.me/share/url?url=${encodeURIComponent(`https://empleos.atpdev.dev/empleos/${job.slug}`)}&text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 transition-all font-semibold hover:scale-105"
+              >
+                Telegram
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://empleos.atpdev.dev/empleos/${job.slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-blue-600/10 hover:bg-blue-600/20 text-blue-300 border border-blue-600/30 transition-all font-semibold hover:scale-105"
+              >
+                LinkedIn
+              </a>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">

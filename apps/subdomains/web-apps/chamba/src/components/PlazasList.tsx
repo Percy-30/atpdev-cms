@@ -1,8 +1,22 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { JobPlaza, isCompetitorUrl } from '@atpdev/database';
+import type { JobPlaza } from '@atpdev/database';
 import { FileText, ExternalLink, Search, GraduationCap, Briefcase, Banknote, ShieldCheck, Eye } from 'lucide-react';
+
+const COMPETITOR_DOMAINS = [
+  'convocatoriasdetrabajo',
+  'portaltrabajos',
+  'chamba.pe',
+  'empleosperu.pe',
+  'trabajaperu.pe',
+];
+
+function isCompetitorUrl(url?: string): boolean {
+  if (!url) return false;
+  const low = url.toLowerCase().trim();
+  return COMPETITOR_DOMAINS.some((d) => low.includes(d));
+}
 
 interface PlazasListProps {
   plazas: JobPlaza[];

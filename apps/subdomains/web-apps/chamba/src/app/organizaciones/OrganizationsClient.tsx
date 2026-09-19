@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Building2, Briefcase, Users, Filter, ArrowRight, Sparkles, MapPin } from 'lucide-react';
-import { OrganizationItem, OrganizationCategory } from '@atpdev/database';
+import type { OrganizationItem, OrganizationCategory } from '@atpdev/database';
 
 const CATEGORIES: OrganizationCategory[] = [
   'Todos',
