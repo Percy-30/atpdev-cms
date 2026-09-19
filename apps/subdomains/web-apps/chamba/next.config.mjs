@@ -12,6 +12,11 @@ const nextConfig = {
       '@atpdev/database': './packages/database/src/index.ts',
     },
   },
+  webpack: (config) => {
+    config.resolve.alias = config.resolve.alias || {};
+    config.resolve.alias['@atpdev/database'] = path.resolve(__dirname, '../../../../packages/database/src/index.ts');
+    return config;
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
