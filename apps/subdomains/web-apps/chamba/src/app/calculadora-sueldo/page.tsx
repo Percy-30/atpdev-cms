@@ -8,6 +8,9 @@ import { AdBannerSlot } from '@/components/AdBannerSlot';
 export const metadata: Metadata = {
   title: 'Calculadora de Sueldo Neto CAS 1057 & 728 Perú 2026 | chamba pro',
   description: 'Calcula gratis tu sueldo líquido neto, descuentos de AFP/ONP e impuesto a la renta para convocatorias laborales en el Estado y Sector Privado en Perú.',
+  alternates: {
+    canonical: 'https://empleos.atpdev.dev/calculadora-sueldo',
+  },
   keywords: [
     'calculadora sueldo cas 1057',
     'cuanto gana cas 1057 neto',

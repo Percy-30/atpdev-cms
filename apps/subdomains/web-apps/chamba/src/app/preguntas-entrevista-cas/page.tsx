@@ -26,15 +26,66 @@ export const metadata: Metadata = {
   ],
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: "https://empleos.atpdev.dev",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Banco de Preguntas CAS",
+      item: "https://empleos.atpdev.dev/preguntas-entrevista-cas",
+    },
+  ],
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Qué temas entran en el examen de conocimientos de una convocatoria CAS?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Los temas más evaluados en convocatorias del Estado Peruano incluyen la Ley N° 27444 (Ley del Procedimiento Administrativo General), la Ley N° 30225 (Ley de Contrataciones del Estado), Código de Ética de la Función Pública y conocimientos técnicos específicos según el perfil del puesto.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cuál es el puntaje mínimo aprobatorio en una evaluación técnica CAS?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Por lo general, las bases oficiales establecen un puntaje mínimo aprobatorio de entre 12 y 14 sobre 20 en la evaluación de conocimientos o técnica para pasar a la etapa de entrevista personal.",
+      },
+    },
+  ],
+};
+
 export default function PreguntasCasPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
-        <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
-        <ChevronRight size={12} />
-        <span className="text-slate-200 font-semibold">Simulador de Preguntas CAS</span>
-      </nav>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
+          <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
+          <ChevronRight size={12} />
+          <span className="text-slate-200 font-semibold">Simulador de Preguntas CAS</span>
+        </nav>
 
       {/* Main Header */}
       <div className="space-y-3 text-center sm:text-left">
@@ -59,5 +110,6 @@ export default function PreguntasCasPage() {
       {/* Bottom Billboard AdSlot */}
       <AdBannerSlot type="billboard" className="mt-8" />
     </div>
+    </>
   );
 }

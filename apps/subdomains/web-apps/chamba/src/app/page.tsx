@@ -7,11 +7,14 @@ import { RegionesGrid } from "@/components/RegionesGrid";
 import WhatsAppSubscribeWidget from "@/components/WhatsAppSubscribeWidget";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { AdLateralRail } from "@/components/AdLateralRail";
-import { ShieldCheck, Sparkles, Building2, MapPin, ArrowRight, CheckCircle2, Calculator, HelpCircle, FileText, Bot, FileSpreadsheet, Scale } from "lucide-react";
+import { ShieldCheck, Sparkles, Building2, MapPin, ArrowRight, CheckCircle2, Calculator, HelpCircle, FileText, Bot, FileSpreadsheet, Scale, ChevronDown } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "chamba pro — Agregador de Convocatorias de Trabajo y Empleos Perú 2026",
-  description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
+  title: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
+  description: "Buscador líder de convocatorias de trabajo y chamba verificada en Perú: CAS 1057, D.L. 728, 276 y sector privado. Consulta bases oficiales, requisitos y salarios vigentes.",
+  alternates: {
+    canonical: "https://empleos.atpdev.dev",
+  },
 };
 
 export const dynamic = "force-dynamic";
@@ -82,7 +85,7 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Link
-              href="/empleos?regimen=CAS"
+              href="/convocatorias/cas"
               className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-amber-500/20 hover:border-amber-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.25)] relative overflow-hidden"
             >
               <div className="flex items-center justify-between">
@@ -102,7 +105,7 @@ export default async function HomePage() {
             </Link>
 
             <Link
-              href="/empleos?regimen=728"
+              href="/convocatorias/728"
               className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-emerald-500/20 hover:border-emerald-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(16,185,129,0.25)] relative overflow-hidden"
             >
               <div className="flex items-center justify-between">
@@ -122,7 +125,7 @@ export default async function HomePage() {
             </Link>
 
             <Link
-              href="/empleos?regimen=Privado"
+              href="/convocatorias/privado"
               className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-cyan-500/20 hover:border-cyan-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(6,182,212,0.25)] relative overflow-hidden"
             >
               <div className="flex items-center justify-between">
@@ -142,7 +145,7 @@ export default async function HomePage() {
             </Link>
 
             <Link
-              href="/empleos?region=Lima"
+              href="/empleos/en/lima"
               className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group border-purple-500/20 hover:border-purple-500/50 shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(168,85,247,0.25)] relative overflow-hidden"
             >
               <div className="flex items-center justify-between">
@@ -385,7 +388,125 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* Semantic FAQ Section for SEO & AdSense Content Quality */}
+        <section className="space-y-6">
+          <div className="border-b border-white/10 pb-4">
+            <span className="text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+              <HelpCircle size={13} />
+              <span>Preguntas Frecuentes de Postulantes</span>
+            </span>
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-white tracking-tight mt-1">
+              Todo lo que necesitas saber sobre convocatorias y chamba en Perú
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 mt-1">
+              Respuestas oficiales sobre el proceso de postulación, regímenes laborales del Estado y uso de nuestras herramientas gratuitas.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-6 rounded-3xl bg-slate-900/80 border border-white/10 space-y-2">
+              <h3 className="font-display font-bold text-sm sm:text-base text-white flex items-start gap-2">
+                <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                <span>¿Dónde encontrar convocatorias de trabajo y chamba formal en el Estado?</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-6">
+                En chamba pro reunimos diariamente las convocatorias públicas vigentes reguladas por la Autoridad Nacional del Servicio Civil (SERVIR), Ministerios, Municipalidades y Gobiernos Regionales, así como vacantes de empresas privadas verificadas, con enlaces directos a las bases oficiales en PDF.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-slate-900/80 border border-white/10 space-y-2">
+              <h3 className="font-display font-bold text-sm sm:text-base text-white flex items-start gap-2">
+                <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                <span>¿Cuál es la diferencia entre un contrato CAS 1057 y D.L. 728?</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-6">
+                El régimen CAS (D.L. 1057) es el contrato más extendido en el Estado con aguinaldos fijos en julio/diciembre. El régimen 728 es el de la actividad privada con gratificaciones completas (1 sueldo en julio y diciembre) y depósito de CTS. Puedes compararlos al detalle en nuestro <Link href="/comparador-regimenes" className="text-emerald-400 hover:underline">Comparador de Regímenes Laborales</Link>.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-slate-900/80 border border-white/10 space-y-2">
+              <h3 className="font-display font-bold text-sm sm:text-base text-white flex items-start gap-2">
+                <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                <span>¿Es gratuito postular a los empleos mostrados en chamba pro?</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-6">
+                Sí, el acceso y la postulación son 100% gratuitos y sin cobros sorpresa. Chamba Pro no cobra por consultar bases oficiales ni exige registros obligatorios; te conectamos directamente al portal institucional de la entidad (SUNAT, MINEDU, Poder Judicial, etc.).
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-slate-900/80 border border-white/10 space-y-2">
+              <h3 className="font-display font-bold text-sm sm:text-base text-white flex items-start gap-2">
+                <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                <span>¿Cómo preparar mi CV y declaraciones juradas para convocatorias públicas?</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-6">
+                Para postular al Estado debes presentar tu Ficha Resumen de Hoja de Vida y Anexos según el formato exigido en las bases. Puedes generar tu documento en minutos con nuestro <Link href="/crear-cv-cas" className="text-emerald-400 hover:underline">Generador de CV Formato CAS</Link> y descargar declaraciones juradas en <Link href="/plantillas-anexos" className="text-emerald-400 hover:underline">Plantillas de Anexos</Link>.
+              </p>
+            </div>
+          </div>
+        </section>
+
       </div>
+
+      {/* Structured Data: ItemList Schema & FAQPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: featuredJobs.map((job, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: `${job.title} — ${job.entity_name}`,
+              url: `https://empleos.atpdev.dev/empleos/${job.slug}`,
+            })),
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "¿Dónde encontrar convocatorias de trabajo y chamba formal en el Estado?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "En chamba pro reunimos diariamente las convocatorias públicas vigentes reguladas por la Autoridad Nacional del Servicio Civil (SERVIR), Ministerios, Municipalidades y Gobiernos Regionales, con enlaces directos a las bases oficiales.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "¿Cuál es la diferencia entre un contrato CAS 1057 y D.L. 728?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "El régimen CAS (D.L. 1057) otorga aguinaldos y seguro social en el sector público, mientras que el D.L. 728 concede gratificaciones legales completas y depósito semestral de CTS según el régimen laboral de la actividad privada.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "¿Es gratuito postular a los empleos mostrados en chamba pro?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Sí, el acceso y la postulación son 100% gratuitos. Chamba Pro no solicita registros obligatorios ni cobra tarifas; cada convocatoria te redirige al portal oficial de la entidad convocante.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "¿Cómo preparar mi CV y declaraciones juradas para convocatorias públicas?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Puedes utilizar de manera gratuita nuestro Generador de CV formato SERVIR y la sección de Plantillas de Anexos para descargar formatos editables de declaraciones juradas exigidas por las entidades del Estado.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

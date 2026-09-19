@@ -25,15 +25,60 @@ export const metadata: Metadata = {
   ],
 };
 
+const appSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Simulador de Entrevista Laboral con IA para el Estado Peruano",
+  "operatingSystem": "All",
+  "applicationCategory": "EducationalApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "PEN"
+  }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cómo evalúa el simulador de entrevista con IA de Chamba Pro?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El simulador evalúa competencias blandas, coherencia comunicativa, ética pública y dominio técnico según los estándares de evaluación de SERVIR y el marco de contrataciones del Estado Peruano."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué tipo de preguntas formula el Comité de Selección en una entrevista CAS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las entrevistas CAS abordan preguntas situacionales (resolución de conflictos y trabajo bajo presión), motivación para ingresar al servicio civil, conocimiento de la Ley 27444 y funciones específicas del puesto."
+      }
+    }
+  ]
+};
+
 export default function AiInterviewPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
-        <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
-        <ChevronRight size={12} />
-        <span className="text-slate-200 font-semibold">Simulador de Entrevista IA</span>
-      </nav>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
+          <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
+          <ChevronRight size={12} />
+          <span className="text-slate-200 font-semibold">Simulador de Entrevista IA</span>
+        </nav>
 
       {/* Main Header */}
       <div className="space-y-3 text-center sm:text-left">
@@ -58,5 +103,6 @@ export default function AiInterviewPage() {
       {/* Bottom Billboard AdSlot */}
       <AdBannerSlot type="billboard" className="mt-8" />
     </div>
+    </>
   );
 }

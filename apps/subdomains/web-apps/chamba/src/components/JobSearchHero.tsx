@@ -78,14 +78,14 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
               </>
             ) : (
               <>
-                Encuentra tu próxima <span className="title-neon-glow underline decoration-emerald-400/60 decoration-wavy decoration-2">chamba</span> verificada en Perú
+                Encuentra tu próxima <span className="title-neon-glow underline decoration-emerald-400/60 decoration-wavy decoration-2">chamba</span>, ofertas de trabajo y empleos en Perú
               </>
             )}
           </h1>
           <p className="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-light">
             {branding?.hero_description || (
               <>
-                Consolidamos las mejores convocatorias públicas (<span className="text-amber-300 font-medium">CAS 1057</span>, <span className="text-emerald-300 font-medium">728</span>, <span className="text-cyan-300 font-medium">276</span>) y empresas privadas líderes. Redirección directa y transparente sin intermediarios.
+                Bolsa de trabajo líder en convocatorias del Estado (<span className="text-amber-300 font-medium">CAS 1057</span>, <span className="text-emerald-300 font-medium">D.L. 728</span>, <span className="text-cyan-300 font-medium">276</span>) y sector privado en las 25 regiones del Perú. Postulación directa sin intermediarios con bases oficiales.
               </>
             )}
           </p>

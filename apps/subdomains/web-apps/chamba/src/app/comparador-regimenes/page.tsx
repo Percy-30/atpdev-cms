@@ -25,15 +25,66 @@ export const metadata: Metadata = {
   ],
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: "https://empleos.atpdev.dev",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Comparador de Regímenes",
+      item: "https://empleos.atpdev.dev/comparador-regimenes",
+    },
+  ],
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Cuál es el régimen laboral con mayores beneficios en el Estado Peruano?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "El régimen del D.L. 728 (actividad privada) otorga gratificaciones completas (1 sueldo en julio y diciembre) y depósito semestral de CTS. El régimen CAS (D.L. 1057) ofrece 30 días de vacaciones pero cuenta con aguinaldos fijados por ley de presupuesto.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿La Locación de Servicios (RHO) otorga beneficios laborales?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. La locación de servicios es un contrato de naturaleza civil regulado por el Código Civil. No genera vínculo laboral ni otorga vacaciones, CTS ni seguro pagado por la entidad.",
+      },
+    },
+  ],
+};
+
 export default function ComparadorPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
-        <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
-        <ChevronRight size={12} />
-        <span className="text-slate-200 font-semibold">Comparador de Regímenes</span>
-      </nav>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
+          <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
+          <ChevronRight size={12} />
+          <span className="text-slate-200 font-semibold">Comparador de Regímenes</span>
+        </nav>
 
       {/* Main Header */}
       <div className="space-y-3 text-center sm:text-left">
@@ -58,5 +109,6 @@ export default function ComparadorPage() {
       {/* Bottom Billboard AdSlot */}
       <AdBannerSlot type="billboard" className="mt-8" />
     </div>
+    </>
   );
 }

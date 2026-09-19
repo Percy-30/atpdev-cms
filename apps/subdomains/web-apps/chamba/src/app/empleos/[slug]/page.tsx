@@ -116,13 +116,19 @@ export default async function JobDetailPage({
   }
 
   // Formato ISO 8601 estricto para fechas
+  // Formato ISO 8601 estricto para fechas y cálculo de expiración
   const isoDatePosted = job.start_date
     ? (job.start_date.includes("T") ? job.start_date : `${job.start_date}T00:00:00.000Z`)
     : new Date(job.created_at || Date.now()).toISOString();
 
-  const isoValidThrough = job.end_date
+  // Si la convocatoria fue marcada como finalizada o la fecha ya pasó, validThrough DEBE estar en el pasado
+  let isoValidThrough = job.end_date
     ? (job.end_date.includes("T") ? job.end_date : `${job.end_date}T23:59:59.000Z`)
     : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  if (job.status === 'Finalizado') {
+    isoValidThrough = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  }
 
   // Descripción formateada en HTML estructurado para tarjetas enriquecidas de Google for Jobs
   const reqListHtml = (job.requirements && job.requirements.length > 0)
@@ -170,6 +176,11 @@ export default async function JobDetailPage({
       "@type": "Country",
       name: "PE",
     },
+    industry: job.category || (job.sector_type?.includes("CAS") ? "Administración Pública y Estado" : "Servicios"),
+    educationRequirements: job.education_level ? {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: job.education_level,
+    } : undefined,
     baseSalary: job.salary_min ? {
       "@type": "MonetaryAmount",
       currency: "PEN",
@@ -294,6 +305,12 @@ export default async function JobDetailPage({
   }
 
   const isFinalized = job.status === 'Finalizado' || isDateExpired;
+
+  if (isFinalized && jsonLd) {
+    jsonLd.validThrough = (job.end_date && isDateExpired)
+      ? (job.end_date.includes("T") ? job.end_date : `${job.end_date}T23:59:59.000Z`)
+      : new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  }
 
   return (
     <>

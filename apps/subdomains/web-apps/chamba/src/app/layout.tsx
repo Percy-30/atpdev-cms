@@ -45,14 +45,21 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://empleos.atpdev.dev"),
   title: {
-    default: "chamba pro — Buscador de Empleos y Convocatorias de Trabajo Perú",
+    default: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
     template: "%s | chamba pro",
   },
   description:
-    "El buscador de convocatorias CAS 1057, D.L. 728, 276 y sector privado en Perú. Revisa bases oficiales, requisitos, salarios y postula directamente en portales institucionales del Estado.",
+    "Buscador oficial de convocatorias de trabajo, empleos y chamba en Perú 2026. Convocatorias vigentes en el Estado (CAS 1057, D.L. 728, 276) y sector privado con bases oficiales.",
   keywords: [
-    "convocatorias de trabajo",
+    "chamba",
+    "chamba peru",
+    "empleos",
     "empleos peru",
+    "trabajo",
+    "trabajo peru",
+    "bolsa de trabajo",
+    "convocatorias de trabajo",
+    "convocatorias de trabajo 2026",
     "trabajo en el estado",
     "convocatorias cas 2026",
     "portal de empleo peru",
@@ -61,6 +68,7 @@ export const metadata: Metadata = {
     "minedu convocatorias",
     "essalud convocatorias",
     "empleos lima",
+    "trabajo lima",
     "trabajo remoto peru",
     "ofertas laborales peru",
     "chamba pro"
@@ -81,7 +89,7 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "chamba pro — Agregador de Convocatorias y Empleos Perú",
+    title: "chamba pro — Buscador de Convocatorias, Empleos y Trabajo en Perú",
     description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
     url: "https://empleos.atpdev.dev",
     siteName: "chamba pro",
@@ -92,14 +100,14 @@ export const metadata: Metadata = {
         url: "https://empleos.atpdev.dev/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "chamba pro — Convocatorias de Trabajo y Empleos Perú",
+        alt: "chamba pro — Convocatorias de Trabajo, Empleos y Chamba en Perú",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "chamba pro — Buscador de Ofertas Laborales en Perú",
-    description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
+    title: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
+    description: "Encuentra chamba verificada y convocatorias CAS 1057, 728 y sector privado en Perú con enlace a bases oficiales.",
     images: ["https://empleos.atpdev.dev/opengraph-image"],
   },
   robots: {
@@ -115,6 +123,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
+    },
   },
 };
 
@@ -126,6 +137,7 @@ export default function RootLayout({
   const config = getSubdomainConfig("chamba");
   const theme = config.theme || ({} as any);
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const accentHex = theme.accent_color || theme.primary_color || "#10b981";
   const glowStyle = theme.glow_style || "spotlight-border";
   const neonThickness = theme.neon_thickness || "4px";
@@ -160,6 +172,26 @@ export default function RootLayout({
             rel="stylesheet"
             href={`https://fonts.googleapis.com/css2?${[theme.font_headline, theme.font_body, theme.font_label].filter((f): f is string => Boolean(f)).map((f: string) => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700;800;900`).join('&')}&display=swap`}
           />
+        )}
+        {/* Google Analytics 4 (GA4) */}
+        {gaId && (
+          <>
+            <Script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
         )}
         {/* Google AdSense Script Inyección Oficial */}
         {adsenseId && (

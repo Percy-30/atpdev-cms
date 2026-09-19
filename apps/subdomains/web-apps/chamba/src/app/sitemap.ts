@@ -33,6 +33,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route.includes('politica') || route.includes('terminos') ? 0.6 : 0.95,
   }));
 
+  const regionUrls = [
+    'lima', 'arequipa', 'cusco', 'la-libertad', 'piura', 'junin', 'puno',
+    'lambayeque', 'san-martin', 'ancash', 'ica', 'cajamarca', 'loreto',
+    'ayacucho', 'huanuco', 'tacna', 'ucayali', 'apurimac', 'amazonas',
+    'huancavelica', 'moquegua', 'pasco', 'tumbes', 'madre-de-dios', 'remoto'
+  ].map((region) => ({
+    url: `${baseUrl}/empleos/en/${region}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 0.85,
+  }));
+
+  const categoriaUrls = [
+    'cas', '728', 'privado', 'practicas', 'locacion'
+  ].map((cat) => ({
+    url: `${baseUrl}/convocatorias/${cat}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 0.85,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -41,6 +62,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     ...toolUrls,
+    ...regionUrls,
+    ...categoriaUrls,
     ...jobUrls,
   ];
 }
