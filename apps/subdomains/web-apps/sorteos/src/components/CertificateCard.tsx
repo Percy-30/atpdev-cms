@@ -105,7 +105,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = (props) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left pt-2 text-xs font-mono">
           <div className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-0.5">
             <span className="text-zinc-400 text-[10px] block">Fecha y Hora de Emisión:</span>
-            <span className="text-white font-semibold">{formattedDate}</span>
+            <span className="text-white font-semibold" suppressHydrationWarning>{formattedDate}</span>
           </div>
           <div className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-0.5">
             <span className="text-zinc-400 text-[10px] block">Algoritmo de Selección:</span>

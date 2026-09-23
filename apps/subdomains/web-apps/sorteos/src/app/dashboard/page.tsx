@@ -373,7 +373,7 @@ export default function DashboardPage() {
                     >
                       {g.status === 'completed' || g.status === 'finished' ? 'Finalizado' : 'Borrador'}
                     </span>
-                    <span className="text-[11px] font-mono text-zinc-500">
+                    <span className="text-[11px] font-mono text-zinc-500" suppressHydrationWarning>
                       {new Date(g.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </span>
                   </div>

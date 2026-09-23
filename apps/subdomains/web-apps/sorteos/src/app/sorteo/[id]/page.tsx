@@ -163,7 +163,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             </span>
           </div>
 
-          <div className="text-xs font-mono text-zinc-400 flex items-center gap-1.5">
+          <div className="text-xs font-mono text-zinc-400 flex items-center gap-1.5" suppressHydrationWarning>
             <Calendar className="w-3.5 h-3.5" />
             <span>{new Date(giveaway.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
           </div>

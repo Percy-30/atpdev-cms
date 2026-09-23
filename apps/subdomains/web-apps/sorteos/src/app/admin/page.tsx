@@ -224,8 +224,8 @@ export default function AdminPage() {
                 <span>Ingreso Recurrente Mensual (MRR)</span>
                 <DollarSign className="w-4 h-4 text-emerald-400" />
               </div>
-              <div className="text-2xl sm:text-3xl font-black font-display text-emerald-400 font-mono-num">
-                ${metrics.mrr.toLocaleString()}
+              <div className="text-2xl sm:text-3xl font-black font-display text-emerald-400 font-mono-num" suppressHydrationWarning>
+                ${metrics.mrr.toLocaleString('en-US')}
               </div>
               <div className="text-[11px] text-zinc-500 font-mono">+18.4% vs mes anterior</div>
             </div>
@@ -356,7 +356,7 @@ export default function AdminPage() {
                       </span>
                     </td>
                     <td className="py-3.5 px-3 text-zinc-400">
-                      <div>{user.commentsConsumed.toLocaleString()} comentarios</div>
+                      <div suppressHydrationWarning>{user.commentsConsumed.toLocaleString('en-US')} comentarios</div>
                       <div className="text-[10px] text-zinc-500">{user.giveawaysCount} sorteos</div>
                     </td>
                     <td className="py-3.5 px-3">
