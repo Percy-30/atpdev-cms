@@ -100,15 +100,29 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <Link 
-              href="/blog" 
-              className="px-3.5 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+              href="/dashboard" 
+              className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors flex items-center gap-1.5"
             >
-              Guías & Blog
+              <span>Mi Panel</span>
+            </Link>
+
+            <Link 
+              href="/admin" 
+              className="px-2.5 py-1 text-[11px] font-mono font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg transition-colors"
+            >
+              Super-Admin
             </Link>
           </nav>
 
           {/* Right Actions */}
           <div className="hidden sm:flex items-center gap-3">
+            <Link
+              href="/login"
+              className="px-3.5 py-2 text-xs font-mono font-bold text-zinc-300 hover:text-white transition-colors"
+            >
+              Iniciar Sesión
+            </Link>
+
             <Link
               href="/sorteos/nuevo"
               className="relative group overflow-hidden rounded-xl p-px font-semibold text-sm shadow-lg shadow-violet-500/25 transition-all hover:scale-[1.02]"

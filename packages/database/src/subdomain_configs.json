@@ -71,5 +71,75 @@
       "support_url": "https://empleos.atpdev.dev/contacto"
     },
     "updated_at": "2026-09-14T20:39:52.157Z"
+  },
+  "sorteos": {
+    "id": "sorteos",
+    "name": "Sorteos Pro",
+    "slug": "sorteos",
+    "subdomain": "sorteos",
+    "full_domain": "sorteos.atpdev.pe",
+    "devPort": 3006,
+    "category": "Sorteos & Promociones SaaS Multi-Red",
+    "status": "active",
+    "theme": {
+      "accent_color": "#8b5cf6",
+      "accent_name": "neon-violet",
+      "theme_mode": "dark",
+      "radius_style": "rounded-3xl",
+      "radius_scale": "full",
+      "seed_color": "#8b5cf6",
+      "color_theme": "neon",
+      "primary_color": "#8b5cf6",
+      "secondary_color": "#ec4899",
+      "tertiary_color": "#f59e0b",
+      "neutral_color": "#070a12",
+      "font_headline": "Space Grotesk",
+      "font_body": "Inter",
+      "font_label": "IBM Plex Mono",
+      "glow_style": "full-border",
+      "neon_thickness": "4px",
+      "cursor_effect": "cursor-default",
+      "global_background_image": ""
+    },
+    "branding": {
+      "site_title": "sorteos pro",
+      "site_tagline": "Plataforma SaaS de Sorteos Verificables en Redes Sociales",
+      "hero_badge": "Certificación Criptográfica SHA-256 • CSPRNG",
+      "hero_title_prefix": "Sorteos Transparentes en Redes Sociales con",
+      "hero_title_highlight": "Sorteos Pro",
+      "hero_description": "Crea sorteos verificables en Instagram, Facebook y YouTube en menos de 3 minutos. Algoritmo no manipulable y 6 herramientas interactivas gratis.",
+      "logo_url": "/icon.svg",
+      "favicon_url": "/icon.svg",
+      "announcement_text": "🎉 Sorteos ilimitados con Ruleta, Dados, Moneda, Equipos y Números 100% gratis.",
+      "announcement_enabled": true
+    },
+    "seo": {
+      "meta_title": "Sorteos Pro — Plataforma SaaS de Sorteos Verificables en Redes Sociales",
+      "meta_description": "Crea sorteos transparentes y certificados en Instagram, Facebook y YouTube. Herramientas gratis de ruleta, lista de nombres, dados y monedas con hash criptográfico anti-fraude.",
+      "keywords": [
+        "sorteos instagram",
+        "sorteo instagram comentarios",
+        "sorteos facebook",
+        "ruleta aleatoria",
+        "sorteo certificado",
+        "sorteos online"
+      ],
+      "canonical_url": "https://sorteos.atpdev.pe"
+    },
+    "modules": {
+      "instagram_giveaways_enabled": true,
+      "facebook_giveaways_enabled": true,
+      "youtube_giveaways_enabled": true,
+      "standalone_tools_enabled": true,
+      "public_certificates_enabled": true,
+      "billing_stripe_enabled": true,
+      "superadmin_enabled": true
+    },
+    "contact": {
+      "email": "soporte@atpdev.pe",
+      "whatsapp": "+51987654321",
+      "support_url": "https://sorteos.atpdev.pe/planes"
+    },
+    "updated_at": "2026-09-22T20:30:00.000Z"
   }
 }
