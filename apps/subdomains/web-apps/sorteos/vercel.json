@@ -1,0 +1,4 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "cd ../../../.. && npm run build --workspace=apps/subdomains/web-apps/sorteos"
+}

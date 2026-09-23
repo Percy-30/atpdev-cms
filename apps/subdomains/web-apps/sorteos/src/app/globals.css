@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #070a12;
+    --text-main: #f8fafc;
+    --card-bg: rgba(15, 23, 42, 0.72);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --accent-gold: #f59e0b;
+    --accent-emerald: #10b981;
+    --accent-cyan: #06b6d4;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    background-image: 
+      radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      radial-gradient(ellipse 90% 60% at 50% -20%, rgba(139, 92, 246, 0.18), transparent 70%),
+      radial-gradient(ellipse 70% 40% at 100% 30%, rgba(236, 72, 153, 0.12), transparent 60%);
+    background-size: 28px 28px, 100% 100%, 100% 100%;
+    background-attachment: fixed;
+    color: var(--text-main);
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Custom Slim Dark Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #070a12;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.6);
+  }
+}
+
+.font-display {
+  font-family: var(--font-space), var(--font-inter), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-mono-num {
+  font-family: var(--font-mono), monospace;
+}
+
+/* Glassmorphism Pro Elite */
+.glass-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%), rgba(11, 15, 25, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-card-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(17, 24, 39, 0.95);
+  border-color: rgba(139, 92, 246, 0.45);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px -12px rgba(139, 92, 246, 0.25), 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+/* Gradients Text */
+.title-neon-glow {
+  background: linear-gradient(135deg, #ffffff 0%, #c084fc 45%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-neon-glow {
+  background: linear-gradient(135deg, #ffffff 0%, #fbbf24 50%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Badges with Glow */
+.purple-gradient-badge {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #c084fc;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.15);
+}
+
+.gold-gradient-badge {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+}
+
+.emerald-gradient-badge {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+/* Coin 3D flip animation */
+@keyframes coinFlip {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(1800deg); }
+}
+
+.animate-coin-spin {
+  animation: coinFlip 1.5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+/* Dice roll shake */
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(20deg) scale(1.1); }
+  50% { transform: rotate(-20deg) scale(1.15); }
+  75% { transform: rotate(15deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.animate-dice-shake {
+  animation: diceRoll 0.6s ease-in-out;
+}

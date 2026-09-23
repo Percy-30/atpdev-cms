@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none">
+  <defs>
+    <linearGradient id="sorteosGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="50%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="6" fill="#0b0f19"/>
+  <path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7" stroke="url(#sorteosGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M4 12h16" stroke="url(#sorteosGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 21V12" stroke="url(#sorteosGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 12H7.5a2.5 2.5 0 0 1 0-5C11 7 12 12 12 12z" stroke="url(#sorteosGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 12h4.5a2.5 2.5 0 0 0 0-5C13 7 12 12 12 12z" stroke="url(#sorteosGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
