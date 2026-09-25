@@ -1074,4 +1074,6 @@ export * from './jobs';
 export * from './scraper';
 export * from './aiModels';
 export * from './analytics';
-export * from './subdomains';
+export * from './subdomains';
+export * from './sorteos';
+

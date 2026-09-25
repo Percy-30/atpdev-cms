@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Gift, ArrowRight, Lock, Mail, User, ShieldCheck } from 'lucide-react';
 import { PRICING_PLANS } from '@/lib/types';
+import { api, setToken } from '@/lib/api';
 
 function RegistroContent() {
   const router = useRouter();
@@ -16,14 +17,24 @@ function RegistroContent() {
   const [password, setPassword] = useState('');
   const [selectedPlan, setSelectedPlan] = useState(initialPlan);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    try {
+      const data = await api<{ token: string }>('/api/v1/auth/register', {
+        method: 'POST',
+        body: { name, email, password },
+        auth: false,
+      });
+      setToken(data.token);
       router.push('/dashboard');
-    }, 600);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al registrar');
+      setLoading(false);
+    }
   };
 
   return (
@@ -118,6 +129,11 @@ function RegistroContent() {
             </div>
 
             <div className="pt-2">
+              {error && (
+                <div className="mb-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-mono">
+                  {error}
+                </div>
+              )}
               <button
                 type="submit"
                 disabled={loading}

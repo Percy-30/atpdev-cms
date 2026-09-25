@@ -3,19 +3,32 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Gift, ArrowLeft, Mail, CheckCircle2, ArrowRight } from 'lucide-react';
+import { api } from '@/lib/api';
 
 export default function RecuperarPasswordPage() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [devToken, setDevToken] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    try {
+      const data = await api<{ resetToken?: string }>('/api/v1/auth/recover', {
+        method: 'POST',
+        body: { email },
+        auth: false,
+      });
+      if (data.resetToken) setDevToken(data.resetToken);
       setSubmitted(true);
-    }, 600);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al enviar');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,6 +61,18 @@ export default function RecuperarPasswordPage() {
               <p className="text-xs text-zinc-400">
                 Hemos enviado las instrucciones para restablecer tu contraseña a <strong className="text-white font-mono">{email}</strong>.
               </p>
+              {devToken && (
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-left">
+                  <p className="text-[11px] font-mono text-zinc-500 mb-1">Modo desarrollo — token de recuperación:</p>
+                  <p className="text-[11px] font-mono text-amber-300 break-all">{devToken}</p>
+                  <Link
+                    href={`/restablecer-password?token=${devToken}`}
+                    className="text-[11px] font-mono text-purple-400 hover:text-purple-300 font-bold"
+                  >
+                    Restablecer ahora →
+                  </Link>
+                </div>
+              )}
               <div className="pt-2">
                 <Link
                   href="/login"
@@ -60,6 +85,11 @@ export default function RecuperarPasswordPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-mono">
+                  {error}
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-mono text-zinc-400 mb-1.5">Correo Electrónico:</label>
                 <div className="relative">

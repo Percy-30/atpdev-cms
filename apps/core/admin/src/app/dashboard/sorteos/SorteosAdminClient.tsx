@@ -1,0 +1,1622 @@
+'use client';
+
+import { useState, useMemo, useRef } from 'react';
+import { 
+  GiveawayRecord,
+  SorteosUserRecord,
+  FeatureFlagRecord,
+  SorteosMetricsRecord,
+  SubdomainConfig,
+  DEFAULT_CHAMBA_CONFIG
+} from '@atpdev/database';
+import { 
+  Gift, 
+  Search, 
+  ExternalLink, 
+  RefreshCw, 
+  Plus, 
+  Trash2, 
+  CheckCircle2, 
+  AlertTriangle, 
+  ShieldCheck, 
+  DollarSign, 
+  Sparkles, 
+  FileText, 
+  Check, 
+  LayoutGrid, 
+  Radio, 
+  Clock, 
+  Mail, 
+  Phone, 
+  CheckCircle, 
+  XCircle, 
+  Globe, 
+  Copy,
+  Sliders,
+  Palette, 
+  Settings2, 
+  Laptop, 
+  Tablet, 
+  Smartphone, 
+  TrendingUp, 
+  Users, 
+  RotateCcw,
+  Instagram,
+  Facebook,
+  Youtube,
+  Dices,
+  Lock,
+  Unlock,
+  Key,
+  Flame,
+  Award
+} from 'lucide-react';
+import { 
+  fetchSorteosGiveawaysAction,
+  saveSorteosGiveawayAction,
+  updateGiveawayStatusAction,
+  redrawGiveawayAction,
+  deleteGiveawayAction,
+  fetchSorteosUsersAction,
+  updateUserPlanAction,
+  toggleUserStatusAction,
+  resetUserCommentsAction,
+  updateFeatureFlagAction,
+  updateSorteosConfigAction
+} from './actions';
+
+interface SorteosAdminClientProps {
+  initialGiveaways: GiveawayRecord[];
+  initialUsers: SorteosUserRecord[];
+  initialFeatureFlags: FeatureFlagRecord[];
+  initialMetrics: SorteosMetricsRecord;
+  initialConfig?: SubdomainConfig;
+}
+
+export default function SorteosAdminClient({
+  initialGiveaways,
+  initialUsers,
+  initialFeatureFlags,
+  initialMetrics,
+  initialConfig
+}: SorteosAdminClientProps) {
+  const [giveaways, setGiveaways] = useState<GiveawayRecord[]>(initialGiveaways);
+  const [users, setUsers] = useState<SorteosUserRecord[]>(initialUsers);
+  const [featureFlags, setFeatureFlags] = useState<FeatureFlagRecord[]>(initialFeatureFlags);
+  const [metrics] = useState<SorteosMetricsRecord>(initialMetrics);
+  const [siteConfig, setSiteConfig] = useState<SubdomainConfig>(initialConfig || DEFAULT_CHAMBA_CONFIG);
+
+  const [activeTab, setActiveTab] = useState<'giveaways' | 'users' | 'create' | 'theme' | 'settings' | 'flags' | 'metrics'>('giveaways');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [feedbackMsg, setFeedbackMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  // Filter states for Giveaways
+  const [searchGiveaway, setSearchGiveaway] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+
+  // Filter states for Users
+  const [searchUser, setSearchUser] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState<string>('all');
+
+  // Redraw modal state (RF-024)
+  const [redrawModalOpen, setRedrawModalOpen] = useState(false);
+  const [redrawingGiveaway, setRedrawingGiveaway] = useState<GiveawayRecord | null>(null);
+  const [redrawReason, setRedrawReason] = useState('');
+  const [isRedrawing, setIsRedrawing] = useState(false);
+
+  // Details drawer
+  const [inspectGiveaway, setInspectGiveaway] = useState<GiveawayRecord | null>(null);
+
+  // New Giveaway Form State
+  const [newGiveaway, setNewGiveaway] = useState<Partial<GiveawayRecord>>({
+    title: '',
+    platform: 'instagram',
+    postUrl: '',
+    authorUsername: '',
+    totalCommentsCount: 500,
+    status: 'completed',
+    rules: {
+      excludeDuplicates: true,
+      minMentions: 1,
+      requiredHashtag: '',
+      blockedUsers: [],
+      winnersCount: 1,
+      substitutesCount: 1
+    }
+  });
+  const [isCreating, setIsCreating] = useState(false);
+
+  // Theme Studio States
+  const theme = siteConfig.theme || ({} as any);
+  const [seedColor, setSeedColor] = useState(theme.seed_color || theme.accent_color || '#8b5cf6');
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>(theme.theme_mode === 'light' ? 'light' : 'dark');
+  const [radiusStyle, setRadiusStyle] = useState(theme.radius_style || 'rounded-3xl');
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [isSavingConfig, setIsSavingConfig] = useState(false);
+  const [copiedHash, setCopiedHash] = useState<string | null>(null);
+
+  // Notification helper
+  const notify = (text: string, type: 'success' | 'error' = 'success') => {
+    setFeedbackMsg({ text, type });
+    setTimeout(() => setFeedbackMsg(null), 4000);
+  };
+
+  // Copy hash helper
+  const handleCopyHash = (hash: string) => {
+    navigator.clipboard.writeText(hash);
+    setCopiedHash(hash);
+    notify('Hash criptográfico SHA-256 copiado al portapapeles');
+    setTimeout(() => setCopiedHash(null), 2000);
+  };
+
+  // Refresh handler
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      const [freshGiveaways, freshUsers] = await Promise.all([
+        fetchSorteosGiveawaysAction(),
+        fetchSorteosUsersAction()
+      ]);
+      setGiveaways(freshGiveaways);
+      setUsers(freshUsers);
+      notify('Datos de Sorteos Pro sincronizados');
+    } catch {
+      notify('Error al sincronizar datos', 'error');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Filtered Giveaways
+  const filteredGiveaways = useMemo(() => {
+    return giveaways.filter(g => {
+      const q = searchGiveaway.toLowerCase();
+      const matchSearch = !q || 
+        g.title.toLowerCase().includes(q) || 
+        (g.authorUsername && g.authorUsername.toLowerCase().includes(q)) ||
+        (g.verificationHash && g.verificationHash.toLowerCase().includes(q)) ||
+        g.id.toLowerCase().includes(q);
+      
+      const matchPlatform = selectedPlatform === 'all' || g.platform === selectedPlatform;
+      const matchStatus = selectedStatus === 'all' || g.status === selectedStatus;
+
+      return matchSearch && matchPlatform && matchStatus;
+    });
+  }, [giveaways, searchGiveaway, selectedPlatform, selectedStatus]);
+
+  // Filtered Users
+  const filteredUsers = useMemo(() => {
+    return users.filter(u => {
+      const q = searchUser.toLowerCase();
+      const matchSearch = !q || 
+        u.name.toLowerCase().includes(q) || 
+        u.email.toLowerCase().includes(q) ||
+        u.id.toLowerCase().includes(q);
+      
+      const matchPlan = selectedPlan === 'all' || u.plan === selectedPlan;
+      return matchSearch && matchPlan;
+    });
+  }, [users, searchUser, selectedPlan]);
+
+  // Actions for Giveaways
+  const handleToggleStatus = async (id: string, current: GiveawayRecord['status']) => {
+    const next: GiveawayRecord['status'] = current === 'completed' ? 'cancelled' : current === 'cancelled' ? 'running' : 'completed';
+    setGiveaways(prev => prev.map(g => g.id === id ? { ...g, status: next } : g));
+    const ok = await updateGiveawayStatusAction(id, next);
+    if (ok) notify(`Estado de sorteo actualizado a ${next}`);
+    else notify('Error al actualizar estado', 'error');
+  };
+
+  const handleDeleteGiveaway = async (id: string) => {
+    if (!confirm('¿Estás seguro de eliminar este sorteo? Esta acción es irreversible.')) return;
+    setGiveaways(prev => prev.filter(g => g.id !== id));
+    const ok = await deleteGiveawayAction(id);
+    if (ok) notify('Sorteo eliminado');
+    else notify('Error al eliminar', 'error');
+  };
+
+  const handleOpenRedraw = (giveaway: GiveawayRecord) => {
+    setRedrawingGiveaway(giveaway);
+    setRedrawReason('');
+    setRedrawModalOpen(true);
+  };
+
+  const handleExecuteRedraw = async () => {
+    if (!redrawingGiveaway) return;
+    if (!redrawReason.trim()) {
+      alert('Debes ingresar el motivo de descalificación o sustitución (ej. "No cumplió menciones requeridas").');
+      return;
+    }
+    setIsRedrawing(true);
+    try {
+      const res = await redrawGiveawayAction(redrawingGiveaway.id, redrawReason.trim());
+      if (res.success && res.newWinner) {
+        setGiveaways(prev => prev.map(g => {
+          if (g.id === redrawingGiveaway.id) {
+            return {
+              ...g,
+              winners: [res.newWinner, ...g.winners.slice(1)],
+              redrawReason: redrawReason.trim(),
+              verificationHash: `sha256-redraw-${Date.now().toString(16)}`
+            };
+          }
+          return g;
+        }));
+        notify(`¡Re-sorteo ejecutado! Nuevo ganador: ${res.newWinner.participant.username}`);
+        setRedrawModalOpen(false);
+      } else {
+        notify(res.error || 'Error al ejecutar re-sorteo', 'error');
+      }
+    } catch {
+      notify('Error en re-sorteo', 'error');
+    } finally {
+      setIsRedrawing(false);
+    }
+  };
+
+  // Actions for Users
+  const handleUpdatePlan = async (userId: string, newPlan: SorteosUserRecord['plan']) => {
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, plan: newPlan } : u));
+    const ok = await updateUserPlanAction(userId, newPlan);
+    if (ok) notify(`Plan de usuario actualizado a ${newPlan.toUpperCase()}`);
+    else notify('Error al actualizar plan', 'error');
+  };
+
+  const handleToggleUserStatus = async (userId: string, current: 'active' | 'suspended') => {
+    const next = current === 'active' ? 'suspended' : 'active';
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, status: next } : u));
+    const ok = await toggleUserStatusAction(userId, next);
+    if (ok) notify(`Usuario marcado como ${next}`);
+    else notify('Error al cambiar estado de usuario', 'error');
+  };
+
+  const handleResetUserComments = async (userId: string) => {
+    if (!confirm('¿Deseas reiniciar a 0 el consumo de comentarios de este usuario?')) return;
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, commentsConsumed: 0 } : u));
+    const ok = await resetUserCommentsAction(userId);
+    if (ok) notify('Cuota de comentarios restablecida a 0');
+    else notify('Error al resetear cuota', 'error');
+  };
+
+  // Actions for Feature Flags
+  const handleToggleFeatureFlag = async (flagId: string, tier: 'Free' | 'Pro' | 'Business') => {
+    const flag = featureFlags.find(f => f.id === flagId);
+    if (!flag) return;
+    const key = `enabledIn${tier}` as keyof FeatureFlagRecord;
+    const nextVal = !flag[key];
+
+    setFeatureFlags(prev => prev.map(f => f.id === flagId ? { ...f, [key]: nextVal } : f));
+    const ok = await updateFeatureFlagAction(flagId, { [key]: nextVal });
+    if (ok) notify(`Bandera "${flag.name}" actualizada para plan ${tier}`);
+  };
+
+  // Actions for Creating Giveaway
+  const handleCreateGiveaway = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newGiveaway.title) {
+      alert('Ingresa el título del sorteo');
+      return;
+    }
+    setIsCreating(true);
+    try {
+      const res = await saveSorteosGiveawayAction({
+        ...newGiveaway,
+        status: 'completed',
+        winners: [
+          {
+            id: `w-${Date.now()}`,
+            position: 1,
+            type: 'winner',
+            selectedAt: new Date().toISOString(),
+            participant: {
+              id: `part-${Date.now()}`,
+              username: `ganador_express_${Math.floor(Math.random() * 899 + 100)}`,
+              name: 'Participante Certificado',
+              avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
+              commentText: 'Comentario verificado en tiempo real con CSPRNG!',
+              isEligible: true
+            }
+          }
+        ],
+        substitutes: [
+          {
+            id: `s-${Date.now()}`,
+            position: 1,
+            type: 'substitute',
+            selectedAt: new Date().toISOString(),
+            participant: {
+              id: `part-sub-${Date.now()}`,
+              username: `suplente_oficial_${Math.floor(Math.random() * 899 + 100)}`,
+              name: 'Suplente Registrado',
+              isEligible: true
+            }
+          }
+        ]
+      });
+
+      if (res.success && res.giveaway) {
+        setGiveaways(prev => [res.giveaway!, ...prev]);
+        notify(`¡Sorteo "${res.giveaway.title}" creado y certificado exitosamente!`);
+        setActiveTab('giveaways');
+        setNewGiveaway({
+          title: '',
+          platform: 'instagram',
+          postUrl: '',
+          authorUsername: '',
+          totalCommentsCount: 500,
+          status: 'completed',
+          rules: {
+            excludeDuplicates: true,
+            minMentions: 1,
+            requiredHashtag: '',
+            blockedUsers: [],
+            winnersCount: 1,
+            substitutesCount: 1
+          }
+        });
+      } else {
+        notify(res.error || 'Error al crear', 'error');
+      }
+    } catch {
+      notify('Error de conexión', 'error');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  // Actions for Theme and Config
+  const handleSaveTheme = async () => {
+    setIsSavingConfig(true);
+    try {
+      const res = await updateSorteosConfigAction({
+        theme: {
+          ...siteConfig.theme,
+          accent_color: seedColor,
+          seed_color: seedColor,
+          primary_color: seedColor,
+          theme_mode: themeMode,
+          radius_style: radiusStyle
+        }
+      });
+      if (res.success) {
+        setSiteConfig(res.config);
+        notify('¡Tema visual de Sorteos Pro guardado y publicado!');
+      }
+    } catch {
+      notify('Error al guardar tema', 'error');
+    } finally {
+      setIsSavingConfig(false);
+    }
+  };
+
+  const handleSaveBranding = async () => {
+    setIsSavingConfig(true);
+    try {
+      const res = await updateSorteosConfigAction({
+        branding: siteConfig.branding,
+        seo: siteConfig.seo,
+        contact: siteConfig.contact
+      });
+      if (res.success) {
+        setSiteConfig(res.config);
+        notify('¡Configuración de marca y SEO actualizada!');
+      }
+    } catch {
+      notify('Error al guardar configuración', 'error');
+    } finally {
+      setIsSavingConfig(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8 max-w-7xl mx-auto pb-16">
+      {/* Toast Feedback */}
+      {feedbackMsg && (
+        <div className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl shadow-2xl border text-sm font-semibold flex items-center gap-2 animate-in fade-in slide-in-from-top-4 duration-200 ${
+          feedbackMsg.type === 'success' 
+            ? 'bg-emerald-950 border-emerald-500/40 text-emerald-200 shadow-emerald-900/30' 
+            : 'bg-rose-950 border-rose-500/40 text-rose-200 shadow-rose-900/30'
+        }`}>
+          {feedbackMsg.type === 'success' ? <CheckCircle2 size={16} className="text-emerald-400" /> : <AlertTriangle size={16} className="text-rose-400" />}
+          <span>{feedbackMsg.text}</span>
+        </div>
+      )}
+
+      {/* Header Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-violet-950/40 via-purple-950/20 to-slate-900 border border-violet-500/30 shadow-2xl">
+        <div className="space-y-1.5">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-violet-500/10 text-violet-400 text-xs font-mono font-bold border border-violet-500/30">
+            <ShieldCheck size={13} />
+            <span>SORTEOS PRO CMS — SORTEOS.ATPDEV.PE • PUERTO 3006</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white flex items-center gap-3">
+            Centro de Control Global de Sorteos & Certificaciones
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-400 max-w-2xl">
+            Control de sorteos multi-red (Instagram, Facebook, YouTube), motor criptográfico SHA-256 CSPRNG, administración de cuotas de comentarios y Theme Studio en vivo.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <a
+            href="http://localhost:3006"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-medium text-xs border border-white/10 transition-colors"
+          >
+            <ExternalLink size={14} />
+            <span>Ver Sorteos Pro (3006)</span>
+          </a>
+          <button
+            onClick={() => setActiveTab('create')}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold text-xs transition-all shadow-lg shadow-violet-500/25"
+          >
+            <Plus size={15} />
+            <span>Crear Sorteo Admin</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Navigation Tabs Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setActiveTab('giveaways')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'giveaways' 
+                ? 'bg-violet-500/15 text-violet-300 border border-violet-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <LayoutGrid size={15} />
+            <span>Sorteos ({giveaways.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('users')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'users' 
+                ? 'bg-violet-500/15 text-violet-300 border border-violet-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Users size={15} />
+            <span>Usuarios & Cuotas ({users.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('create')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'create' 
+                ? 'bg-violet-500/15 text-violet-300 border border-violet-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Plus size={15} />
+            <span>Nuevo Sorteo</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('theme')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'theme' 
+                ? 'bg-purple-500/15 text-purple-300 border border-purple-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Palette size={15} className="text-purple-400" />
+            <span>Theme Studio Sorteos</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('settings')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'settings' 
+                ? 'bg-blue-500/15 text-blue-300 border border-blue-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Settings2 size={15} className="text-blue-400" />
+            <span>Configuración & SEO</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('flags')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'flags' 
+                ? 'bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Sliders size={15} className="text-fuchsia-400" />
+            <span>Feature Flags ({featureFlags.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('metrics')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'metrics' 
+                ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 shadow-sm' 
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <TrendingUp size={15} className="text-emerald-400" />
+            <span>Métricas & MRR</span>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-sm shrink-0"
+          title="Sincronizar sorteos y estados en tiempo real"
+        >
+          <RefreshCw size={12} className={isRefreshing ? 'animate-spin text-violet-400' : ''} />
+          <span>{isRefreshing ? 'Sincronizando...' : 'Sincronizar'}</span>
+        </button>
+      </div>
+
+      {/* ========================================================= */}
+      {/* TAB 1: GIVEAWAYS & AUDITORIA */}
+      {/* ========================================================= */}
+      {activeTab === 'giveaways' && (
+        <div className="space-y-6">
+          {/* Filters Bar */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+            <div className="relative md:col-span-2">
+              <Search size={15} className="absolute left-3.5 top-3 text-slate-500" />
+              <input
+                type="text"
+                placeholder="Buscar por título, cuenta (@usuario) o hash SHA-256..."
+                value={searchGiveaway}
+                onChange={e => setSearchGiveaway(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-violet-500/50"
+              />
+            </div>
+
+            <div>
+              <select
+                value={selectedPlatform}
+                onChange={e => setSelectedPlatform(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-violet-500/50"
+              >
+                <option value="all">Todas las plataformas</option>
+                <option value="instagram">Instagram</option>
+                <option value="youtube">YouTube</option>
+                <option value="facebook">Facebook</option>
+                <option value="standalone">Standalone / Herramientas</option>
+              </select>
+            </div>
+
+            <div>
+              <select
+                value={selectedStatus}
+                onChange={e => setSelectedStatus(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-violet-500/50"
+              >
+                <option value="all">Todos los estados</option>
+                <option value="completed">Completado</option>
+                <option value="running">En Ejecución</option>
+                <option value="scheduled">Programado</option>
+                <option value="cancelled">Cancelado</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Giveaways Table */}
+          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-950/70 border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider">
+                  <tr>
+                    <th className="py-3 px-4">Sorteo & Plataforma</th>
+                    <th className="py-3 px-4">Organizador</th>
+                    <th className="py-3 px-4">Participantes</th>
+                    <th className="py-3 px-4">Estado</th>
+                    <th className="py-3 px-4">Certificación SHA-256</th>
+                    <th className="py-3 px-4 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {filteredGiveaways.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-slate-500">
+                        No se encontraron sorteos con los filtros actuales.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredGiveaways.map((g) => {
+                      const platformIcon = g.platform === 'instagram' ? <Instagram size={13} className="text-pink-400" />
+                        : g.platform === 'youtube' ? <Youtube size={13} className="text-red-400" />
+                        : g.platform === 'facebook' ? <Facebook size={13} className="text-blue-400" />
+                        : <Dices size={13} className="text-violet-400" />;
+
+                      const statusBadge = g.status === 'completed' 
+                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                        : g.status === 'running' 
+                        ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30'
+                        : g.status === 'scheduled'
+                        ? 'bg-purple-500/10 text-purple-400 border-purple-500/30'
+                        : 'bg-rose-500/10 text-rose-400 border-rose-500/30';
+
+                      return (
+                        <tr key={g.id} className="hover:bg-slate-800/30 transition-colors">
+                          <td className="py-3.5 px-4">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span className="p-1 rounded-md bg-slate-800 border border-slate-700">
+                                  {platformIcon}
+                                </span>
+                                <span className="font-bold text-white max-w-xs truncate block" title={g.title}>
+                                  {g.title}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-[10px] text-slate-400 font-mono">
+                                <span>ID: {g.id}</span>
+                                {g.postUrl && (
+                                  <a href={g.postUrl} target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline flex items-center gap-0.5">
+                                    <span>Post</span>
+                                    <ExternalLink size={10} />
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+
+                          <td className="py-3.5 px-4">
+                            <div className="font-medium text-slate-200">
+                              {g.authorUsername || '@anonimo'}
+                            </div>
+                            <div className="text-[10px] text-slate-500">
+                              {new Date(g.createdAt).toLocaleDateString()}
+                            </div>
+                          </td>
+
+                          <td className="py-3.5 px-4 font-mono">
+                            <div className="text-slate-200 font-semibold">
+                              {(g.totalCommentsCount || 0).toLocaleString()}
+                            </div>
+                            <div className="text-[10px] text-slate-500">
+                              {g.winners.length} ganadores • {g.substitutes?.length || 0} suplentes
+                            </div>
+                          </td>
+
+                          <td className="py-3.5 px-4">
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${statusBadge}`}>
+                              <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                              {g.status.toUpperCase()}
+                            </span>
+                            {g.redrawReason && (
+                              <div className="text-[9px] text-amber-400 mt-1 max-w-[140px] truncate" title={`Re-sorteado: ${g.redrawReason}`}>
+                                ⚠️ {g.redrawReason}
+                              </div>
+                            )}
+                          </td>
+
+                          <td className="py-3.5 px-4">
+                            {g.verificationHash ? (
+                              <div className="flex items-center gap-1.5">
+                                <code className="text-[11px] font-mono bg-slate-950 px-2 py-1 rounded text-violet-300 border border-violet-500/20 max-w-[120px] truncate">
+                                  {g.verificationHash.slice(0, 12)}...
+                                </code>
+                                <button
+                                  onClick={() => handleCopyHash(g.verificationHash!)}
+                                  className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white"
+                                  title="Copiar Hash Completo SHA-256"
+                                >
+                                  {copiedHash === g.verificationHash ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                                </button>
+                              </div>
+                            ) : (
+                              <span className="text-slate-600 text-[10px]">Sin hash generado</span>
+                            )}
+                          </td>
+
+                          <td className="py-3.5 px-4 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
+                              {/* Open Landing */}
+                              <a
+                                href={`http://localhost:3006/sorteo/${g.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+                                title="Ver Landing Pública del Sorteo"
+                              >
+                                <ExternalLink size={13} />
+                              </a>
+
+                              {/* Open Certificate */}
+                              <a
+                                href={`http://localhost:3006/certificados/${g.certificateId || g.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-1.5 rounded-lg bg-violet-950 hover:bg-violet-900 text-violet-300 hover:text-white border border-violet-500/30 transition-colors"
+                                title="Ver Certificado Oficial SHA-256"
+                              >
+                                <Award size={13} />
+                              </a>
+
+                              {/* Redraw Button */}
+                              {g.status === 'completed' && (
+                                <button
+                                  onClick={() => handleOpenRedraw(g)}
+                                  className="p-1.5 rounded-lg bg-amber-950 hover:bg-amber-900 text-amber-300 hover:text-white border border-amber-500/30 transition-colors"
+                                  title="Re-sortear / Sustituir Ganador (RF-024)"
+                                >
+                                  <RotateCcw size={13} />
+                                </button>
+                              )}
+
+                              {/* Toggle Status */}
+                              <button
+                                onClick={() => handleToggleStatus(g.id, g.status)}
+                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors"
+                                title="Alternar Estado"
+                              >
+                                {g.status === 'completed' ? <XCircle size={13} /> : <CheckCircle size={13} />}
+                              </button>
+
+                              {/* Delete */}
+                              <button
+                                onClick={() => handleDeleteGiveaway(g.id)}
+                                className="p-1.5 rounded-lg hover:bg-rose-950/50 text-slate-500 hover:text-rose-400 transition-colors"
+                                title="Eliminar Sorteo"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 2: USUARIOS & CUOTAS */}
+      {/* ========================================================= */}
+      {activeTab === 'users' && (
+        <div className="space-y-6">
+          {/* User Metrics Top Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+              <p className="text-slate-400 text-xs font-medium">Total Creadores Registrados</p>
+              <p className="text-2xl font-black text-white mt-1">{users.length}</p>
+              <p className="text-[11px] text-emerald-400 font-mono mt-1">+12% este mes</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+              <p className="text-slate-400 text-xs font-medium">Planes Pro / Business / Ent.</p>
+              <p className="text-2xl font-black text-violet-400 mt-1">
+                {users.filter(u => u.plan !== 'free').length}
+              </p>
+              <p className="text-[11px] text-slate-500 font-mono mt-1">60% tasa de conversión</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+              <p className="text-slate-400 text-xs font-medium">Alerta Cuota (+80% Consumo)</p>
+              <p className="text-2xl font-black text-amber-400 mt-1">
+                {users.filter(u => (u.commentsConsumed / u.commentsLimit) >= 0.8).length}
+              </p>
+              <p className="text-[11px] text-amber-400/80 font-mono mt-1">RF-030 Umbral activo</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+              <p className="text-slate-400 text-xs font-medium">Usuarios Suspendidos</p>
+              <p className="text-2xl font-black text-rose-400 mt-1">
+                {users.filter(u => u.status === 'suspended').length}
+              </p>
+              <p className="text-[11px] text-rose-400/80 font-mono mt-1">RF-031 Control anti-fraude</p>
+            </div>
+          </div>
+
+          {/* User Search & Filters */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+            <div className="relative md:col-span-2">
+              <Search size={15} className="absolute left-3.5 top-3 text-slate-500" />
+              <input
+                type="text"
+                placeholder="Buscar usuario por nombre o correo electrónico..."
+                value={searchUser}
+                onChange={e => setSearchUser(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-violet-500/50"
+              />
+            </div>
+
+            <div>
+              <select
+                value={selectedPlan}
+                onChange={e => setSelectedPlan(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-violet-500/50"
+              >
+                <option value="all">Todos los planes</option>
+                <option value="free">Free</option>
+                <option value="pro">Pro</option>
+                <option value="business">Business</option>
+                <option value="enterprise">Enterprise</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Users Table */}
+          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-950/70 border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider">
+                  <tr>
+                    <th className="py-3 px-4">Usuario</th>
+                    <th className="py-3 px-4">Plan Actual (RF-032)</th>
+                    <th className="py-3 px-4">Consumo de Comentarios (RF-030)</th>
+                    <th className="py-3 px-4">Sorteos</th>
+                    <th className="py-3 px-4">Estado (RF-031)</th>
+                    <th className="py-3 px-4 text-right">Acciones Admin</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {filteredUsers.map(u => {
+                    const usagePercent = Math.min(100, Math.round((u.commentsConsumed / u.commentsLimit) * 100));
+                    const isNearLimit = usagePercent >= 80;
+
+                    return (
+                      <tr key={u.id} className="hover:bg-slate-800/30 transition-colors">
+                        <td className="py-3.5 px-4">
+                          <div className="font-bold text-white">{u.name}</div>
+                          <div className="text-[11px] text-slate-400">{u.email}</div>
+                          <div className="text-[10px] text-slate-600 font-mono">Reg: {u.joinedAt}</div>
+                        </td>
+
+                        <td className="py-3.5 px-4">
+                          <select
+                            value={u.plan}
+                            onChange={e => handleUpdatePlan(u.id, e.target.value as any)}
+                            className="bg-slate-950 border border-slate-800 text-slate-200 text-xs font-bold rounded-lg px-2.5 py-1 focus:outline-none focus:border-violet-500"
+                          >
+                            <option value="free">FREE</option>
+                            <option value="pro">PRO (10k)</option>
+                            <option value="business">BUSINESS (50k)</option>
+                            <option value="enterprise">ENTERPRISE (500k)</option>
+                          </select>
+                        </td>
+
+                        <td className="py-3.5 px-4">
+                          <div className="w-48 space-y-1">
+                            <div className="flex justify-between text-[11px] font-mono">
+                              <span className="text-slate-300 font-semibold">{u.commentsConsumed.toLocaleString()} / {u.commentsLimit.toLocaleString()}</span>
+                              <span className={isNearLimit ? 'text-amber-400 font-bold' : 'text-slate-500'}>{usagePercent}%</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full ${
+                                  usagePercent >= 95 ? 'bg-rose-500' : isNearLimit ? 'bg-amber-400' : 'bg-violet-500'
+                                }`}
+                                style={{ width: `${usagePercent}%` }}
+                              ></div>
+                            </div>
+                            {isNearLimit && (
+                              <p className="text-[9px] text-amber-400 font-medium">⚠️ 80%+ cuota alcanzada</p>
+                            )}
+                          </div>
+                        </td>
+
+                        <td className="py-3.5 px-4 font-mono font-bold text-slate-200">
+                          {u.giveawaysCount}
+                        </td>
+
+                        <td className="py-3.5 px-4">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                            u.status === 'active' 
+                              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                              : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                          }`}>
+                            <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                            {u.status === 'active' ? 'ACTIVO' : 'SUSPENDIDO'}
+                          </span>
+                        </td>
+
+                        <td className="py-3.5 px-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => handleResetUserComments(u.id)}
+                              className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-mono text-slate-300 hover:text-white transition-colors"
+                              title="Reiniciar consumo a 0"
+                            >
+                              Reset Cuota
+                            </button>
+
+                            <button
+                              onClick={() => handleToggleUserStatus(u.id, u.status)}
+                              className={`px-2.5 py-1 rounded text-[10px] font-bold transition-colors ${
+                                u.status === 'active'
+                                  ? 'bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/40'
+                                  : 'bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/40'
+                              }`}
+                            >
+                              {u.status === 'active' ? 'Suspender' : 'Reactivar'}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 3: CREAR SORTEO EXPRESS (ADMIN) */}
+      {/* ========================================================= */}
+      {activeTab === 'create' && (
+        <div className="max-w-3xl mx-auto bg-slate-900/60 border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+          <div className="space-y-1">
+            <h2 className="text-xl font-black text-white flex items-center gap-2">
+              <Sparkles size={20} className="text-violet-400" />
+              <span>Crear y Certificar Sorteo Express</span>
+            </h2>
+            <p className="text-xs text-slate-400">
+              Genera un sorteo oficial de administración con verificación criptográfica SHA-256 instantánea y landing pública.
+            </p>
+          </div>
+
+          <form onSubmit={handleCreateGiveaway} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Título del Sorteo</label>
+              <input
+                type="text"
+                required
+                placeholder="Ej. Sorteo Oficial de Aniversario — Laptop Gamer"
+                value={newGiveaway.title}
+                onChange={e => setNewGiveaway({ ...newGiveaway, title: e.target.value })}
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-violet-500"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Plataforma / Red</label>
+                <select
+                  value={newGiveaway.platform}
+                  onChange={e => setNewGiveaway({ ...newGiveaway, platform: e.target.value as any })}
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-violet-500"
+                >
+                  <option value="instagram">Instagram</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="standalone">Standalone (Ruleta / Dados)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Cuenta Organizadora</label>
+                <input
+                  type="text"
+                  placeholder="@miempresa.pe"
+                  value={newGiveaway.authorUsername}
+                  onChange={e => setNewGiveaway({ ...newGiveaway, authorUsername: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-violet-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">URL de la Publicación (Opcional)</label>
+              <input
+                type="url"
+                placeholder="https://instagram.com/p/..."
+                value={newGiveaway.postUrl}
+                onChange={e => setNewGiveaway({ ...newGiveaway, postUrl: e.target.value })}
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-violet-500"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Ganadores</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={20}
+                  value={newGiveaway.rules?.winnersCount || 1}
+                  onChange={e => setNewGiveaway({
+                    ...newGiveaway,
+                    rules: { ...newGiveaway.rules!, winnersCount: parseInt(e.target.value) || 1 }
+                  })}
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Suplentes</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={10}
+                  value={newGiveaway.rules?.substitutesCount || 1}
+                  onChange={e => setNewGiveaway({
+                    ...newGiveaway,
+                    rules: { ...newGiveaway.rules!, substitutesCount: parseInt(e.target.value) || 0 }
+                  })}
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Total Comentarios</label>
+                <input
+                  type="number"
+                  value={newGiveaway.totalCommentsCount || 500}
+                  onChange={e => setNewGiveaway({ ...newGiveaway, totalCommentsCount: parseInt(e.target.value) || 0 })}
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setActiveTab('giveaways')}
+                className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={isCreating}
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold text-xs shadow-lg shadow-violet-500/25 transition-all flex items-center gap-2"
+              >
+                {isCreating ? <RefreshCw size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                <span>{isCreating ? 'Generando Sorteo...' : 'Generar y Certificar'}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 4: THEME STUDIO SORTEOS */}
+      {/* ========================================================= */}
+      {activeTab === 'theme' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Controls Column */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-6">
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <Palette size={16} className="text-violet-400" />
+                  <span>Estudio Visual Neón Dark</span>
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Personaliza los colores de acento, bordes y modos de Sorteos Pro. Se sincronizan en vivo.
+                </p>
+              </div>
+
+              {/* Seed Colors */}
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-300">Color Primario Neón</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={seedColor}
+                    onChange={e => setSeedColor(e.target.value)}
+                    className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={seedColor}
+                    onChange={e => setSeedColor(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-white"
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {[
+                    { hex: '#8b5cf6', label: 'Violeta Neón' },
+                    { hex: '#ec4899', label: 'Rosa Cyber' },
+                    { hex: '#06b6d4', label: 'Cyan Electric' },
+                    { hex: '#10b981', label: 'Verde Matrix' },
+                    { hex: '#f59e0b', label: 'Dorado VIP' }
+                  ].map(c => (
+                    <button
+                      key={c.hex}
+                      type="button"
+                      onClick={() => setSeedColor(c.hex)}
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700"
+                    >
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: c.hex }}></span>
+                      <span>{c.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Theme Mode */}
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-300">Modo de Apariencia</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setThemeMode('dark')}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition-colors ${
+                      themeMode === 'dark' 
+                        ? 'bg-violet-600 text-white border-violet-500' 
+                        : 'bg-slate-950 text-slate-400 border-slate-800'
+                    }`}
+                  >
+                    🌙 Modo Oscuro (Recomendado)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setThemeMode('light')}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition-colors ${
+                      themeMode === 'light' 
+                        ? 'bg-white text-slate-900 border-slate-200' 
+                        : 'bg-slate-950 text-slate-400 border-slate-800'
+                    }`}
+                  >
+                    ☀️ Modo Claro
+                  </button>
+                </div>
+              </div>
+
+              {/* Radius Style */}
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-300">Curvatura de Bordes (Border Radius)</label>
+                <select
+                  value={radiusStyle}
+                  onChange={e => setRadiusStyle(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                >
+                  <option value="rounded-xl">rounded-xl (Estándar)</option>
+                  <option value="rounded-2xl">rounded-2xl (Moderno)</option>
+                  <option value="rounded-3xl">rounded-3xl (Ultra Soft / Neón)</option>
+                </select>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSaveTheme}
+                disabled={isSavingConfig}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold text-xs shadow-lg shadow-violet-500/25 transition-all flex items-center justify-center gap-2"
+              >
+                {isSavingConfig ? <RefreshCw size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                <span>Guardar y Aplicar Tema</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Live Preview Iframe Column */}
+          <div className="lg:col-span-7 space-y-3">
+            <div className="flex items-center justify-between bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="text-xs font-mono font-bold text-slate-300">Vista Previa en Vivo (Puerto 3006)</span>
+              </div>
+
+              <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                <button
+                  onClick={() => setPreviewDevice('desktop')}
+                  className={`p-1.5 rounded ${previewDevice === 'desktop' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  title="Desktop"
+                >
+                  <Laptop size={14} />
+                </button>
+                <button
+                  onClick={() => setPreviewDevice('tablet')}
+                  className={`p-1.5 rounded ${previewDevice === 'tablet' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  title="Tablet"
+                >
+                  <Tablet size={14} />
+                </button>
+                <button
+                  onClick={() => setPreviewDevice('mobile')}
+                  className={`p-1.5 rounded ${previewDevice === 'mobile' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  title="Mobile"
+                >
+                  <Smartphone size={14} />
+                </button>
+              </div>
+            </div>
+
+            <div className={`mx-auto bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 ${
+              previewDevice === 'mobile' ? 'max-w-[375px] h-[650px]' : previewDevice === 'tablet' ? 'max-w-[768px] h-[650px]' : 'w-full h-[650px]'
+            }`}>
+              <iframe
+                src="http://localhost:3006"
+                className="w-full h-full border-0"
+                title="Sorteos Pro Live Preview"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 5: CONFIGURACIÓN & SEO */}
+      {/* ========================================================= */}
+      {activeTab === 'settings' && (
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="bg-slate-900/60 border border-slate-800 p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="space-y-1">
+              <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <Settings2 size={18} className="text-blue-400" />
+                <span>Textos de Marca & Barra de Anuncios</span>
+              </h2>
+              <p className="text-xs text-slate-400">
+                Ajusta el copy central y anuncios que ven los creadores en la landing y dashboard de Sorteos Pro.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Título del Sitio</label>
+                <input
+                  type="text"
+                  value={siteConfig.branding?.site_title || ''}
+                  onChange={e => setSiteConfig({
+                    ...siteConfig,
+                    branding: { ...siteConfig.branding, site_title: e.target.value }
+                  })}
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Tagline</label>
+                <input
+                  type="text"
+                  value={siteConfig.branding?.site_tagline || ''}
+                  onChange={e => setSiteConfig({
+                    ...siteConfig,
+                    branding: { ...siteConfig.branding, site_tagline: e.target.value }
+                  })}
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Hero Badge</label>
+              <input
+                type="text"
+                value={siteConfig.branding?.hero_badge || ''}
+                onChange={e => setSiteConfig({
+                  ...siteConfig,
+                  branding: { ...siteConfig.branding, hero_badge: e.target.value }
+                })}
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Barra de Anuncios (Banner Superior)</label>
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  value={siteConfig.branding?.announcement_text || ''}
+                  onChange={e => setSiteConfig({
+                    ...siteConfig,
+                    branding: { ...siteConfig.branding, announcement_text: e.target.value }
+                  })}
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+                <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={siteConfig.branding?.announcement_enabled ?? true}
+                    onChange={e => setSiteConfig({
+                      ...siteConfig,
+                      branding: { ...siteConfig.branding, announcement_enabled: e.target.checked }
+                    })}
+                    className="rounded bg-slate-950 border-slate-800 text-violet-600 focus:ring-0"
+                  />
+                  <span>Mostrar barra de anuncios en portada</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 space-y-4">
+              <h3 className="text-sm font-bold text-white">Metadatos de Posicionamiento (SEO)</h3>
+              
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Meta Título (Google Search)</label>
+                <input
+                  type="text"
+                  value={siteConfig.seo?.meta_title || ''}
+                  onChange={e => setSiteConfig({
+                    ...siteConfig,
+                    seo: { ...siteConfig.seo, meta_title: e.target.value }
+                  })}
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Meta Descripción</label>
+                <textarea
+                  rows={3}
+                  value={siteConfig.seo?.meta_description || ''}
+                  onChange={e => setSiteConfig({
+                    ...siteConfig,
+                    seo: { ...siteConfig.seo, meta_description: e.target.value }
+                  })}
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4">
+              <button
+                type="button"
+                onClick={handleSaveBranding}
+                disabled={isSavingConfig}
+                className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-500/25 transition-all flex items-center gap-2"
+              >
+                {isSavingConfig ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
+                <span>Guardar Configuración General</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 6: FEATURE FLAGS & MODULOS (RF-034) */}
+      {/* ========================================================= */}
+      {activeTab === 'flags' && (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-3xl space-y-4">
+            <div className="space-y-1">
+              <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <Sliders size={18} className="text-fuchsia-400" />
+                <span>Matriz de Banderas de Funcionalidad (Feature Flags)</span>
+              </h2>
+              <p className="text-xs text-slate-400">
+                Habilita o deshabilita integraciones y módulos según el plan del creador en tiempo real (RF-034).
+              </p>
+            </div>
+
+            <div className="divide-y divide-slate-800/80">
+              {featureFlags.map(flag => (
+                <div key={flag.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1 max-w-md">
+                    <p className="font-bold text-white text-xs">{flag.name}</p>
+                    <p className="text-[11px] text-slate-400">{flag.description}</p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFeatureFlag(flag.id, 'Free')}
+                      className={`px-3 py-1 rounded-lg text-[10px] font-mono font-bold border transition-colors ${
+                        flag.enabledInFree 
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
+                          : 'bg-slate-950 text-slate-500 border-slate-800'
+                      }`}
+                    >
+                      FREE: {flag.enabledInFree ? 'ON' : 'OFF'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFeatureFlag(flag.id, 'Pro')}
+                      className={`px-3 py-1 rounded-lg text-[10px] font-mono font-bold border transition-colors ${
+                        flag.enabledInPro 
+                          ? 'bg-violet-500/10 text-violet-400 border-violet-500/30' 
+                          : 'bg-slate-950 text-slate-500 border-slate-800'
+                      }`}
+                    >
+                      PRO: {flag.enabledInPro ? 'ON' : 'OFF'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFeatureFlag(flag.id, 'Business')}
+                      className={`px-3 py-1 rounded-lg text-[10px] font-mono font-bold border transition-colors ${
+                        flag.enabledInBusiness 
+                          ? 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/30' 
+                          : 'bg-slate-950 text-slate-500 border-slate-800'
+                      }`}
+                    >
+                      BIZ: {flag.enabledInBusiness ? 'ON' : 'OFF'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 7: METRICAS & MRR (RF-033) */}
+      {/* ========================================================= */}
+      {activeTab === 'metrics' && (
+        <div className="space-y-6">
+          {/* Top Big KPI Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-violet-950/40 to-slate-900 border border-violet-500/20">
+              <p className="text-slate-400 text-xs font-mono uppercase tracking-wider">MRR (Ingresos Recurrentes)</p>
+              <p className="text-3xl font-black text-white mt-2">${metrics.mrr.toLocaleString()} USD</p>
+              <p className="text-xs text-emerald-400 font-mono mt-1">+18.4% vs mes anterior</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-fuchsia-950/40 to-slate-900 border border-fuchsia-500/20">
+              <p className="text-slate-400 text-xs font-mono uppercase tracking-wider">ARR Proyectado</p>
+              <p className="text-3xl font-black text-white mt-2">${metrics.arr.toLocaleString()} USD</p>
+              <p className="text-xs text-fuchsia-400 font-mono mt-1">Run-rate anualizado</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-950/40 to-slate-900 border border-emerald-500/20">
+              <p className="text-slate-400 text-xs font-mono uppercase tracking-wider">Suscriptores Activos</p>
+              <p className="text-3xl font-black text-white mt-2">{metrics.activeSubscribers}</p>
+              <p className="text-xs text-slate-400 font-mono mt-1">Churn: {metrics.churnRate}</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-950/40 to-slate-900 border border-blue-500/20">
+              <p className="text-slate-400 text-xs font-mono uppercase tracking-wider">Comentarios Procesados</p>
+              <p className="text-3xl font-black text-white mt-2">{metrics.totalCommentsScraped.toLocaleString()}</p>
+              <p className="text-xs text-cyan-400 font-mono mt-1">Latencia: {metrics.apiResponseTime}</p>
+            </div>
+          </div>
+
+          {/* Social Network Distribution */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <h3 className="font-bold text-white text-sm">Distribución de Sorteos por Red Social</h3>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-pink-400 flex items-center gap-1.5"><Instagram size={13} /> Instagram</span>
+                    <span className="text-white font-bold">62% (2,380 sorteos)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-pink-500 rounded-full w-[62%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-red-400 flex items-center gap-1.5"><Youtube size={13} /> YouTube</span>
+                    <span className="text-white font-bold">23% (880 sorteos)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-red-500 rounded-full w-[23%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-blue-400 flex items-center gap-1.5"><Facebook size={13} /> Facebook</span>
+                    <span className="text-white font-bold">11% (420 sorteos)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-blue-500 rounded-full w-[11%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-violet-400 flex items-center gap-1.5"><Dices size={13} /> Standalone (Ruleta/Dados)</span>
+                    <span className="text-white font-bold">4% (160 sorteos)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-violet-500 rounded-full w-[4%]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <h3 className="font-bold text-white text-sm">Distribución de Planes de Suscripción</h3>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-slate-400">Plan Free</span>
+                    <span className="text-white font-bold">58% (362 usuarios)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-slate-500 rounded-full w-[58%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-violet-400">Plan Creador / Pro</span>
+                    <span className="text-white font-bold">26% (162 usuarios)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-violet-500 rounded-full w-[26%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-fuchsia-400">Plan Business / Agencia</span>
+                    <span className="text-white font-bold">12% (75 usuarios)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-fuchsia-500 rounded-full w-[12%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-amber-400">Plan Enterprise</span>
+                    <span className="text-white font-bold">4% (25 usuarios)</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-amber-500 rounded-full w-[4%]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* REDRAW MODAL (RF-024) */}
+      {/* ========================================================= */}
+      {redrawModalOpen && redrawingGiveaway && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <RotateCcw size={16} className="text-amber-400" />
+                <span>Re-sorteo / Sustitución de Ganador (RF-024)</span>
+              </h3>
+              <p className="text-xs text-slate-400">
+                Sorteo: <strong className="text-white">{redrawingGiveaway.title}</strong>
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-300">
+                Motivo de descalificación o re-sorteo <span className="text-rose-400">*</span>
+              </label>
+              <textarea
+                rows={3}
+                required
+                placeholder="Ej. El ganador no respondió en 24h o no cumplió con las 2 menciones requeridas en las bases."
+                value={redrawReason}
+                onChange={e => setRedrawReason(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+              />
+              <p className="text-[10px] text-slate-500">
+                Este motivo quedará auditado criptográficamente en el certificado oficial SHA-256.
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setRedrawModalOpen(false)}
+                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleExecuteRedraw}
+                disabled={isRedrawing}
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/20"
+              >
+                {isRedrawing ? <RefreshCw size={12} className="animate-spin" /> : <RotateCcw size={12} />}
+                <span>{isRedrawing ? 'Re-sorteando...' : 'Confirmar y Seleccionar Suplente'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,318 @@
+{
+  "giveaways": [
+    {
+      "id": "gw-ig-001",
+      "title": "Gran Sorteo Tech 2026 — iPhone 16 Pro Max",
+      "platform": "instagram",
+      "network": "instagram",
+      "postUrl": "https://instagram.com/p/C-tech-giveaway-2026",
+      "authorUsername": "@techstoreperu",
+      "totalCommentsCount": 1845,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 2,
+        "requiredHashtag": "#TechStoreSorteo",
+        "blockedUsers": ["@spambot1", "@troll99"],
+        "winnersCount": 1,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "w-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-09-22T18:30:00.000Z",
+          "participant": {
+            "id": "part-892",
+            "username": "lucia_ramirez_dev",
+            "name": "Lucía Ramírez",
+            "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+            "commentText": "Participando con @carlos_m y @ana_valle! Éxitos a todos #TechStoreSorteo 🚀",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "s-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-09-22T18:30:00.000Z",
+          "participant": {
+            "id": "part-411",
+            "username": "jorge_alvarez99",
+            "name": "Jorge Álvarez",
+            "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+            "commentText": "Vamos con todo @marcos_dev @claudia_t #TechStoreSorteo",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "s-2",
+          "position": 2,
+          "type": "substitute",
+          "selectedAt": "2026-09-22T18:30:00.000Z",
+          "participant": {
+            "id": "part-1204",
+            "username": "karla_castro",
+            "name": "Karla Castro",
+            "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop",
+            "commentText": "Quiero ganar ese celular @pablo_f @sofia_m #TechStoreSorteo",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-gw-ig-001",
+      "verificationHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scheduledAt": "2026-09-22T18:00:00.000Z",
+      "executedAt": "2026-09-22T18:30:00.000Z",
+      "createdAt": "2026-09-20T10:15:00.000Z"
+    },
+    {
+      "id": "gw-yt-002",
+      "title": "Sorteo Suscriptores 50K — Setup Gamer y Teclado Mecánico",
+      "platform": "youtube",
+      "network": "youtube",
+      "postUrl": "https://youtube.com/watch?v=dQw4w9WgXcQ",
+      "authorUsername": "PixelGames Peru",
+      "totalCommentsCount": 4210,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 0,
+        "requiredHashtag": "#Pixel50K",
+        "blockedUsers": [],
+        "winnersCount": 2,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "w-201",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-09-21T21:00:00.000Z",
+          "participant": {
+            "id": "part-yt-55",
+            "username": "miguel_gamer_pe",
+            "name": "Miguel Ángel",
+            "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+            "commentText": "Felicidades por los 50K cracks! Aguante el setup #Pixel50K",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "w-202",
+          "position": 2,
+          "type": "winner",
+          "selectedAt": "2026-09-21T21:00:00.000Z",
+          "participant": {
+            "id": "part-yt-912",
+            "username": "diana_torres_art",
+            "name": "Diana Torres",
+            "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+            "commentText": "Excelente canal, viendo sus videos desde el 2024 #Pixel50K",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "s-201",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-09-21T21:00:00.000Z",
+          "participant": {
+            "id": "part-yt-111",
+            "username": "gamer_lima_central",
+            "name": "Gamer Lima",
+            "commentText": "Ojalá gane #Pixel50K",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-gw-yt-002",
+      "verificationHash": "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+      "scheduledAt": "2026-09-21T20:00:00.000Z",
+      "executedAt": "2026-09-21T21:00:00.000Z",
+      "createdAt": "2026-09-18T14:20:00.000Z"
+    },
+    {
+      "id": "gw-fb-003",
+      "title": "Sorteo Día de la Madre — Vale de Consumo S/. 1,000",
+      "platform": "facebook",
+      "network": "facebook",
+      "postUrl": "https://facebook.com/tiendasperu/posts/1029384756",
+      "authorUsername": "Supermercados El Ahorro",
+      "totalCommentsCount": 8920,
+      "status": "running",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 3,
+        "requiredHashtag": "#MamaFeliz2026",
+        "blockedUsers": [],
+        "winnersCount": 3,
+        "substitutesCount": 3
+      },
+      "winners": [],
+      "substitutes": [],
+      "certificateId": "",
+      "verificationHash": "",
+      "scheduledAt": "2026-09-25T19:00:00.000Z",
+      "createdAt": "2026-09-22T08:00:00.000Z"
+    },
+    {
+      "id": "gw-sta-004",
+      "title": "Ruleta de Premios En Vivo — Twitch Streamers Expo",
+      "platform": "standalone",
+      "network": "standalone",
+      "postUrl": "",
+      "authorUsername": "Comunidad Gaming PE",
+      "totalCommentsCount": 120,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": false,
+        "minMentions": 0,
+        "blockedUsers": [],
+        "winnersCount": 1,
+        "substitutesCount": 0
+      },
+      "winners": [
+        {
+          "id": "w-401",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-09-22T15:45:00.000Z",
+          "participant": {
+            "id": "part-r-12",
+            "username": "Silla Gamer Ergonómica",
+            "name": "Premio Mayor Ruleta",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [],
+      "certificateId": "cert-gw-sta-004",
+      "verificationHash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      "executedAt": "2026-09-22T15:45:00.000Z",
+      "createdAt": "2026-09-22T15:00:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "usr-1",
+      "name": "Agencia Digital Lima",
+      "email": "contacto@agenciadigital.pe",
+      "plan": "business",
+      "status": "active",
+      "giveawaysCount": 42,
+      "commentsConsumed": 12400,
+      "commentsLimit": 50000,
+      "joinedAt": "2026-08-10"
+    },
+    {
+      "id": "usr-2",
+      "name": "Valeria Gómez",
+      "email": "valeria.g@gmail.com",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 8,
+      "commentsConsumed": 8200,
+      "commentsLimit": 10000,
+      "joinedAt": "2026-09-01"
+    },
+    {
+      "id": "usr-3",
+      "name": "Spam Bot Network",
+      "email": "spambot99@disposable.com",
+      "plan": "free",
+      "status": "suspended",
+      "giveawaysCount": 1,
+      "commentsConsumed": 50,
+      "commentsLimit": 250,
+      "joinedAt": "2026-09-18"
+    },
+    {
+      "id": "usr-4",
+      "name": "Retail Corporativo Perú",
+      "email": "marketing@retailcorp.pe",
+      "plan": "enterprise",
+      "status": "active",
+      "giveawaysCount": 156,
+      "commentsConsumed": 89400,
+      "commentsLimit": 500000,
+      "joinedAt": "2026-06-15"
+    },
+    {
+      "id": "usr-5",
+      "name": "Carlos Mendoza Creator",
+      "email": "carlos.mendoza@creators.pe",
+      "plan": "free",
+      "status": "active",
+      "giveawaysCount": 3,
+      "commentsConsumed": 210,
+      "commentsLimit": 250,
+      "joinedAt": "2026-09-20"
+    }
+  ],
+  "featureFlags": [
+    {
+      "id": "ff-instagram",
+      "name": "Integración Instagram Graph API",
+      "description": "Permite importar comentarios de posts y reels de Instagram vía Meta API",
+      "enabledInFree": true,
+      "enabledInPro": true,
+      "enabledInBusiness": true
+    },
+    {
+      "id": "ff-facebook",
+      "name": "Integración Facebook Graph API",
+      "description": "Permite seleccionar posts de páginas de Facebook para sorteos",
+      "enabledInFree": true,
+      "enabledInPro": true,
+      "enabledInBusiness": true
+    },
+    {
+      "id": "ff-youtube",
+      "name": "Integración YouTube Data API v3",
+      "description": "Scraping y verificación de comentarios en videos públicos de YouTube",
+      "enabledInFree": false,
+      "enabledInPro": true,
+      "enabledInBusiness": true
+    },
+    {
+      "id": "ff-multicount",
+      "name": "Multi-Cuenta Social Conectada",
+      "description": "Conectar hasta 10 perfiles sociales simultáneamente en el creador",
+      "enabledInFree": false,
+      "enabledInPro": false,
+      "enabledInBusiness": true
+    },
+    {
+      "id": "ff-custom-branding",
+      "name": "Certificados con Marca Blanca",
+      "description": "Remover el logo de Sorteos Pro en certificados oficiales PDF y Web",
+      "enabledInFree": false,
+      "enabledInPro": true,
+      "enabledInBusiness": true
+    },
+    {
+      "id": "ff-standalone-tools",
+      "name": "Herramientas Gratuitas Standalone",
+      "description": "Ruleta, Dados, Moneda, Lista de Nombres, Números y Equipos",
+      "enabledInFree": true,
+      "enabledInPro": true,
+      "enabledInBusiness": true
+    }
+  ],
+  "metrics": {
+    "mrr": 14850,
+    "arr": 178200,
+    "activeSubscribers": 624,
+    "churnRate": "2.1%",
+    "totalGiveawaysThisMonth": 3840,
+    "totalCommentsScraped": 1420500,
+    "apiResponseTime": "185ms",
+    "errorRate": "0.04%"
+  }
+}

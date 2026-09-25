@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { api, getToken } from '@/lib/api';
 import { 
   ShieldCheck, 
   Users, 
@@ -51,49 +52,50 @@ export default function AdminPage() {
     errorRate: '0.04%',
   };
 
-  // RF-031 & RF-032: Gestión de usuarios y cambio manual de planes
-  const [users, setUsers] = useState<ManagedUser[]>([
-    {
-      id: 'usr-1',
-      name: 'Agencia Digital Lima',
-      email: 'contacto@agenciadigital.pe',
-      plan: 'business',
-      status: 'active',
-      giveawaysCount: 42,
-      commentsConsumed: 12400,
-      joinedAt: '2026-08-10'
-    },
-    {
-      id: 'usr-2',
-      name: 'Valeria Gómez',
-      email: 'valeria.g@gmail.com',
-      plan: 'pro',
-      status: 'active',
-      giveawaysCount: 8,
-      commentsConsumed: 2150,
-      joinedAt: '2026-09-01'
-    },
-    {
-      id: 'usr-3',
-      name: 'Spam Bot Network',
-      email: 'spambot99@disposable.com',
-      plan: 'free',
-      status: 'suspended',
-      giveawaysCount: 1,
-      commentsConsumed: 50,
-      joinedAt: '2026-09-18'
-    },
-    {
-      id: 'usr-4',
-      name: 'Retail Corporativo Perú',
-      email: 'marketing@retailcorp.pe',
-      plan: 'enterprise',
-      status: 'active',
-      giveawaysCount: 156,
-      commentsConsumed: 89400,
-      joinedAt: '2026-06-15'
-    }
-  ]);
+  const [users, setUsers] = useState<ManagedUser[]>([]);
+  const [apiOnline, setApiOnline] = useState(false);
+
+  // Carga real desde /api/v1/admin/users (requiere login super-admin).
+  // Sin sesión: muestra guía de acceso en lugar de datos mock.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!getToken()) return;
+      try {
+        const data = await api<{ users: ManagedUser[]; metrics: { mrr: number } }>('/api/v1/admin/users');
+        if (cancelled) return;
+        setUsers(
+          data.users.map((u) => ({
+            id: u.id, name: u.name, email: u.email, plan: u.plan,
+            status: (u.status === 'active' ? 'active' : 'suspended') as ManagedUser['status'],
+            giveawaysCount: u.giveawaysCount, commentsConsumed: u.commentsConsumed, joinedAt: '',
+          }))
+        );
+        setApiOnline(true);
+        if (typeof data.metrics?.mrr === 'number') {
+          setLiveMrr(data.metrics.mrr);
+        }
+        const f = await api<{ flags: Record<string, Record<string, boolean>> }>('/api/v1/admin/flags').catch(() => null);
+        if (f && !cancelled) {
+          setFeatureFlags((prev) =>
+            prev.map((ff) => ({
+              ...ff,
+              enabledInFree: f.flags[ff.id]?.free ?? ff.enabledInFree,
+              enabledInPro: f.flags[ff.id]?.pro ?? ff.enabledInPro,
+              enabledInBusiness: f.flags[ff.id]?.business ?? ff.enabledInBusiness,
+            }))
+          );
+        }
+      } catch {
+        // sin acceso super-admin: se mantiene guía de login
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const [liveMrr, setLiveMrr] = useState<number | null>(null);
 
   // RF-034: Feature flags por plan
   const [featureFlags, setFeatureFlags] = useState<FeatureFlag[]>([
@@ -131,31 +133,36 @@ export default function AdminPage() {
     }
   ]);
 
-  const toggleUserStatus = (userId: string) => {
-    setUsers(users.map((u) => {
-      if (u.id === userId) {
-        return { ...u, status: u.status === 'active' ? 'suspended' : 'active' };
-      }
-      return u;
-    }));
+  const toggleUserStatus = async (userId: string) => {
+    const target = users.find((u) => u.id === userId);
+    const next = target?.status === 'active' ? 'suspended' : 'active';
+    setUsers(users.map((u) => (u.id === userId ? { ...u, status: next as ManagedUser['status'] } : u)));
+    try {
+      await api('/api/v1/admin/users', { method: 'PATCH', body: { userId, status: next } });
+    } catch {
+      // rollback visual si falla
+      setUsers(users.map((u) => (u.id === userId ? u : u)));
+    }
   };
 
-  const changeUserPlan = (userId: string, newPlan: 'free' | 'pro' | 'business' | 'enterprise') => {
-    setUsers(users.map((u) => {
-      if (u.id === userId) {
-        return { ...u, plan: newPlan };
-      }
-      return u;
-    }));
+  const changeUserPlan = async (userId: string, newPlan: 'free' | 'pro' | 'business' | 'enterprise') => {
+    setUsers(users.map((u) => (u.id === userId ? { ...u, plan: newPlan } : u)));
+    try {
+      await api('/api/v1/admin/users', { method: 'PATCH', body: { userId, plan: newPlan } });
+    } catch {
+      // noop: se mantiene cambio optimista en demo
+    }
   };
 
-  const toggleFeature = (flagId: string, plan: 'enabledInFree' | 'enabledInPro' | 'enabledInBusiness') => {
-    setFeatureFlags(featureFlags.map((ff) => {
-      if (ff.id === flagId) {
-        return { ...ff, [plan]: !ff[plan] };
-      }
-      return ff;
-    }));
+  const toggleFeature = async (flagId: string, plan: 'enabledInFree' | 'enabledInPro' | 'enabledInBusiness') => {
+    const map = { enabledInFree: 'free', enabledInPro: 'pro', enabledInBusiness: 'business' } as const;
+    const current = featureFlags.find((f) => f.id === flagId)?.[plan] ?? false;
+    setFeatureFlags(featureFlags.map((ff) => (ff.id === flagId ? { ...ff, [plan]: !ff[plan] } : ff)));
+    try {
+      await api('/api/v1/admin/flags', { method: 'PATCH', body: { flagId, plan: map[plan], enabled: !current } });
+    } catch {
+      // noop demo
+    }
   };
 
   const filteredUsers = users.filter((u) => 
@@ -178,6 +185,11 @@ export default function AdminPage() {
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             Control de usuarios, asignación manual de suscripciones, observabilidad de métricas y feature flags.
           </p>
+          {!apiOnline && (
+            <p className="mt-2 text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2">
+              Modo demo: inicia sesión como super-admin (admin@sorteos.pro) para operar usuarios y flags reales vía API.
+            </p>
+          )}
         </div>
 
         {/* Tab Switcher */}
@@ -225,7 +237,7 @@ export default function AdminPage() {
                 <DollarSign className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="text-2xl sm:text-3xl font-black font-display text-emerald-400 font-mono-num" suppressHydrationWarning>
-                ${metrics.mrr.toLocaleString('en-US')}
+                ${(liveMrr ?? metrics.mrr).toLocaleString('en-US')}
               </div>
               <div className="text-[11px] text-zinc-500 font-mono">+18.4% vs mes anterior</div>
             </div>

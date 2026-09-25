@@ -18,6 +18,7 @@ import {
   Menu,
   User2,
   Briefcase,
+  Gift,
   Sun,
   Moon
 } from "lucide-react";
@@ -116,6 +117,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           icon: <Briefcase size={17} />, 
           href: "/dashboard/chamba",
           badge: "3005"
+        },
+        { 
+          label: "Sorteos Pro", 
+          icon: <Gift size={17} />, 
+          href: "/dashboard/sorteos",
+          badge: "3006"
         },
       ]
     },

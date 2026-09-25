@@ -5,20 +5,40 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Gift, Sparkles, ArrowRight, Lock, Mail, ShieldCheck } from 'lucide-react';
 import { FacebookIcon } from '@/components/SocialIcons';
+import { api, setToken } from '@/lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    try {
+      const data = await api<{ token: string }>('/api/v1/auth/login', {
+        method: 'POST',
+        body: { email, password },
+        auth: false,
+      });
+      setToken(data.token);
       router.push('/dashboard');
-    }, 600);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
+      setLoading(false);
+    }
+  };
+
+  const handleOAuth = async (provider: 'google' | 'facebook') => {
+    try {
+      const data = await api<{ authorizeUrl: string }>(`/api/v1/auth/oauth/${provider}`, { auth: false });
+      window.location.href = data.authorizeUrl;
+    } catch {
+      router.push('/dashboard');
+    }
   };
 
   return (
@@ -46,7 +66,7 @@ export default function LoginPage() {
           <div className="space-y-3">
             <button
               type="button"
-              onClick={() => router.push('/dashboard')}
+              onClick={() => handleOAuth('google')}
               className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-200 transition-colors flex items-center justify-center gap-2 font-bold"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -60,7 +80,7 @@ export default function LoginPage() {
 
             <button
               type="button"
-              onClick={() => router.push('/dashboard')}
+              onClick={() => handleOAuth('facebook')}
               className="w-full py-3 rounded-xl bg-blue-600/10 hover:bg-blue-600/20 border border-blue-500/20 text-xs font-mono text-blue-300 transition-colors flex items-center justify-center gap-2 font-bold"
             >
               <FacebookIcon className="w-4 h-4 text-blue-400" />
@@ -113,6 +133,12 @@ export default function LoginPage() {
                 />
               </div>
             </div>
+
+            {error && (
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-mono">
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"

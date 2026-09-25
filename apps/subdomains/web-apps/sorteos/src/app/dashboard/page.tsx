@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
 import { Giveaway } from '@/lib/types';
+import { api, setToken, getToken } from '@/lib/api';
 
 interface SocialAccount {
   id: string;
@@ -36,12 +37,12 @@ interface SocialAccount {
 export default function DashboardPage() {
   const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [usage, setUsage] = useState({ used: 0, limit: 2500, percent: 0, warn80: false });
+  const [planName, setPlanName] = useState('Pro Creador');
 
-  // RF-029 & RF-030: Consumo de comentarios vs límite del plan
-  const planName = "Pro Creador";
-  const commentLimit = 2500;
-  const commentsUsed = 2150; // 86% -> Dispara alerta RF-030
-  const usagePercent = Math.round((commentsUsed / commentLimit) * 100);
+  const commentLimit = usage.limit;
+  const commentsUsed = usage.used;
+  const usagePercent = usage.percent;
 
   // RF-005 a RF-009: Cuentas sociales conectadas
   const [socialAccounts, setSocialAccounts] = useState<SocialAccount[]>([
@@ -71,60 +72,78 @@ export default function DashboardPage() {
     }
   ]);
 
-  // Cargar sorteos guardados de localStorage o demos
+  // Cargar sorteos + cuentas + cuota desde la API real (fallback a demo local)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
-      const list: Giveaway[] = Object.values(stored);
-      
-      if (list.length > 0) {
-        // Filtrar duplicados por id
-        const unique = Array.from(new Map(list.map((item) => [item.id, item])).values());
-        setGiveaways(unique);
-      } else {
-        // Lista demo inicial para visualizar
-        setGiveaways([
-          {
-            id: 'sorteo-aniversario-2026',
-            title: 'Sorteo Oficial de Aniversario ATP Dev',
-            network: 'instagram',
-            postUrl: 'https://www.instagram.com/p/DBa_9XYZ123/',
-            authorUsername: 'atpdev_oficial',
-            totalCommentsCount: 1420,
-            status: 'completed',
-            createdAt: '2026-09-22T14:30:00.000Z',
-            rules: {
-              excludeDuplicates: true,
-              minMentions: 1,
-              requiredHashtag: '#sorteopro',
-              blockedUsers: [],
-              winnersCount: 1,
-              substitutesCount: 2
-            },
-            winners: [
-              {
-                id: 'win-1',
-                participant: { id: 'p-1', username: 'valeria.gomez', isEligible: true, commentText: 'Gran sorteo!' },
-                type: 'winner',
-                position: 1,
-                selectedAt: '2026-09-22T14:30:00.000Z'
-              }
-            ],
-            substitutes: [
-              {
-                id: 'sub-1',
-                participant: { id: 'p-2', username: 'diego_martinez99', isEligible: true },
-                type: 'substitute',
-                position: 1,
-                selectedAt: '2026-09-22T14:30:00.000Z'
-              }
-            ],
-            certificateId: 'CERT-SP-98A41E8D',
-            verificationHash: '98a41e8dc34f6782b3a2e1d0987fa421990c8b23f54316a7e029d5b4129e160a'
-          }
-        ]);
+      const params = new URLSearchParams(window.location.search);
+      const oauthToken = params.get('token');
+      if (oauthToken) {
+        setToken(oauthToken);
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+      const payment = params.get('payment');
+      const plan = params.get('plan');
+      const sessionId = params.get('session_id');
+      if (payment === 'success' && plan) {
+        api('/api/v1/billing/confirm', {
+          method: 'POST',
+          body: { planId: plan, sessionId },
+        }).catch(() => undefined);
       }
     }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [gRes, sRes, uRes, meRes] = await Promise.all([
+          api<{ data: Giveaway[] }>('/api/v1/giveaways').catch(() => null),
+          api<{ data: SocialAccount[] }>('/api/v1/social-accounts').catch(() => null),
+          api<{ used: number; limit: number; percent: number; warn80: boolean }>('/api/v1/billing/usage').catch(() => null),
+          api<{ user: { plan: string } }>('/api/v1/me').catch(() => null),
+        ]);
+        if (cancelled) return;
+        if (gRes && Array.isArray(gRes.data)) {
+          setGiveaways(gRes.data as Giveaway[]);
+        }
+        if (sRes && Array.isArray(sRes.data)) {
+          setSocialAccounts(
+            (sRes.data as unknown as Array<Record<string, string>>).map((a) => ({
+              id: String(a.id),
+              network: (a.platform || a.network || 'instagram') as SocialAccount['network'],
+              name: String(a.name || ''),
+              handle: String(a.handle || ''),
+              status: (a.status === 'connected' ? 'connected' : a.status === 'expired' ? 'expired' : 'revoked') as SocialAccount['status'],
+              expiresInDays: Math.max(0, Math.round((Date.parse(String(a.expiresAt || Date.now())) - Date.now()) / 86400000)),
+            }))
+          );
+        }
+        if (uRes) setUsage({ used: uRes.used, limit: uRes.limit, percent: uRes.percent, warn80: uRes.warn80 });
+        if (meRes?.user?.plan) {
+          const labels: Record<string, string> = { free: 'Free', pro: 'Pro Creador', business: 'Business', enterprise: 'Enterprise' };
+          setPlanName(labels[meRes.user.plan] || meRes.user.plan);
+        }
+      } catch {
+        // fallback silencioso a datos demo locales
+      }
+      // Merge con sorteos locales (herramienta standalone guarda en localStorage)
+      if (typeof window !== 'undefined' && !cancelled) {
+        try {
+          const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
+          const local: Giveaway[] = Object.values(stored);
+          if (local.length > 0) {
+            setGiveaways((prev) => {
+              const ids = new Set(prev.map((p) => p.id));
+              return [...prev, ...local.filter((l) => !ids.has(l.id))];
+            });
+          }
+        } catch {
+          // noop
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCopyLink = (id: string) => {
@@ -136,40 +155,46 @@ export default function DashboardPage() {
     }
   };
 
-  // RF-018: Duplicar sorteo como plantilla
-  const handleDuplicate = (g: Giveaway) => {
-    const duplicated: Giveaway = {
-      ...g,
-      id: `sorteo-${Date.now().toString(36)}`,
-      title: `${g.title} (Copia)`,
-      status: 'draft',
-      createdAt: new Date().toISOString(),
-      winners: [],
-      substitutes: [],
-      verificationHash: undefined,
-      certificateId: undefined
-    };
-
-    if (typeof window !== 'undefined') {
-      const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
-      stored[duplicated.id] = duplicated;
-      localStorage.setItem('sorteos_pro_db', JSON.stringify(stored));
+  // RF-018: Duplicar sorteo como plantilla (vía API + fallback local)
+  const handleDuplicate = async (g: Giveaway) => {
+    try {
+      const data = await api<{ giveaway: Giveaway }>(`/api/v1/giveaways/${g.id}/duplicate`, { method: 'POST' });
+      setGiveaways([data.giveaway, ...giveaways]);
+    } catch {
+      const duplicated: Giveaway = {
+        ...g,
+        id: `sorteo-${Date.now().toString(36)}`,
+        title: `${g.title} (Copia)`,
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+        winners: [],
+        substitutes: [],
+        verificationHash: undefined,
+        certificateId: undefined
+      };
+      if (typeof window !== 'undefined') {
+        const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
+        stored[duplicated.id] = duplicated;
+        localStorage.setItem('sorteos_pro_db', JSON.stringify(stored));
+      }
+      setGiveaways([duplicated, ...giveaways]);
     }
-    setGiveaways([duplicated, ...giveaways]);
-    alert('Sorteo duplicado como plantilla con éxito.');
   };
 
-  // RF-008: Desconectar cuenta social
-  const handleToggleAccount = (id: string) => {
-    setSocialAccounts(
-      socialAccounts.map((acc) => {
-        if (acc.id === id) {
-          const nextStatus = acc.status === 'connected' ? 'revoked' : 'connected';
-          return { ...acc, status: nextStatus };
-        }
-        return acc;
-      })
-    );
+  // RF-008: Desconectar/reconectar cuenta social (vía API + fallback local)
+  const handleToggleAccount = async (id: string) => {
+    const acc = socialAccounts.find((a) => a.id === id);
+    const nextStatus = acc?.status === 'connected' ? 'revoked' : 'connected';
+    setSocialAccounts(socialAccounts.map((a) => (a.id === id ? { ...a, status: nextStatus as typeof a.status } : a)));
+    try {
+      if (nextStatus === 'revoked') {
+        await api(`/api/v1/social-accounts/${id}`, { method: 'DELETE' });
+      } else {
+        await api(`/api/v1/social-accounts/${id}/refresh`, { method: 'POST' });
+      }
+    } catch {
+      // fallback local ya aplicado
+    }
   };
 
   return (
