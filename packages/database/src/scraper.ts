@@ -589,8 +589,6 @@ function getCdCacheFilePath(): string | null {
 
     const cwd = typeof process !== 'undefined' && process.cwd ? process.cwd() : '.';
     const candidates = [
-      'D:\\PROYECTOS\\atpdev-web\\packages\\database\\src\\scraped_cd_jobs.json',
-      'd:/PROYECTOS/atpdev-web/packages/database/src/scraped_cd_jobs.json',
       pathMod.resolve(cwd, 'packages/database/src/scraped_cd_jobs.json'),
       pathMod.resolve(cwd, '../packages/database/src/scraped_cd_jobs.json'),
       pathMod.resolve(cwd, '../../packages/database/src/scraped_cd_jobs.json'),

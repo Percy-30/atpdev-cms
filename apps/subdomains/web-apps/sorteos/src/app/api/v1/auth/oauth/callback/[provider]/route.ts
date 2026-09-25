@@ -5,17 +5,22 @@ import { audit, fail, logEvent, ok } from '@/lib/server/http';
 
 /**
  * GET /api/v1/auth/oauth/callback/:provider?code=… — RF-002.
- * V1: sin credenciales de App Review, valida el `code` como pendiente y
- * crea/vincula usuario en modo mock-verified con auditoría completa.
- * Con `GOOGLE_CLIENT_ID`/`META_APP_ID` configurados, aquí se intercambia
- * el code por access_token en server-side (no implementado hasta Sprint 0).
+ * Con GOOGLE_CLIENT_SECRET/META_APP_SECRET: intercambia el code en server-side
+ * y vincula el email real. Sin secretos: modo mock-verified con auditoría completa.
  */
 export async function GET(req: NextRequest, { params }: { params: Promise<{ provider: string }> }) {
   const { provider } = await params;
+  if (!['google', 'facebook'].includes(provider)) return fail('Proveedor no soportado.', 400);
   const code = new URL(req.url).searchParams.get('code');
   if (!code) return fail('Código OAuth ausente.', 400);
 
-  const email = `oauth_${provider}_${code.slice(0, 8).toLowerCase()}@oauth.sorteos.local`;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3006';
+  const redirectUri = `${appUrl}/api/v1/auth/oauth/callback/${provider}`;
+  const { exchangeOAuthCode } = await import('@/lib/server/socialProviders');
+  const live = await exchangeOAuthCode(provider === 'google' ? 'google' : 'meta', code, redirectUri);
+  const mode = live ? 'live' : 'mock-verified';
+
+  const email = (live?.email || `oauth_${provider}_${code.slice(0, 8).toLowerCase()}@oauth.sorteos.local`).toLowerCase();
   let id = db.usersByEmail.get(email);
   if (!id) {
     id = uid('usr');
@@ -29,10 +34,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
     db.usersByEmail.set(email, id);
   }
   const user = db.users.get(id)!;
-  audit(id, 'user.oauth_login', 'user', id, { provider, mode: 'mock-verified' });
-  logEvent('auth.oauth', { provider, userId: id });
+  if (live?.name && user.name.startsWith('Usuario ')) user.name = live.name;
+  audit(id, 'user.oauth_login', 'user', id, { provider, mode });
+  logEvent('auth.oauth', { provider, userId: id, mode });
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3006';
   const token = signJwt(user.id, user.email, user.role);
   // Redirige al dashboard con sesión (el cliente la guarda en localStorage)
   return NextResponse.redirect(`${appUrl}/dashboard?oauth=${provider}&token=${token}`);

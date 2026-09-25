@@ -2680,8 +2680,6 @@ function getSubmissionsFilePath(): string | null {
 
     const cwd = process.cwd();
     const candidates = [
-      'D:\\PROYECTOS\\atpdev-web\\packages\\database\\src\\user_submissions.json',
-      'd:/PROYECTOS/atpdev-web/packages/database/src/user_submissions.json',
       pathMod.resolve(cwd, 'packages/database/src/user_submissions.json'),
       pathMod.resolve(cwd, '../packages/database/src/user_submissions.json'),
       pathMod.resolve(cwd, '../../packages/database/src/user_submissions.json'),

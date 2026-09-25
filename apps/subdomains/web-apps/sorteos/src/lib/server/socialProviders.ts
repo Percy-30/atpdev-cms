@@ -59,24 +59,149 @@ function mockComments(platform: string, seed: string): Participant[] {
   }));
 }
 
+function extractYoutubeId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : null;
+}
+
+async function fetchYoutubeLive(videoId: string): Promise<Participant[] | null> {
+  const key = process.env.YOUTUBE_API_KEY;
+  if (!key) return null;
+  try {
+    const out: Participant[] = [];
+    let page = '';
+    for (let i = 0; i < 5 && out.length < 500; i++) {
+      const u = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${encodeURIComponent(videoId)}&maxResults=100&pageToken=${page}&key=${encodeURIComponent(key)}&textFormat=plainText`;
+      const res = await fetch(u);
+      if (!res.ok) return null;
+      const json = (await res.json()) as {
+        items?: Array<{ id: string; snippet?: { topLevelComment?: { snippet?: { authorDisplayName?: string; textDisplay?: string; publishedAt?: string } } } }>;
+        nextPageToken?: string;
+      };
+      for (const it of json.items || []) {
+        const s = it.snippet?.topLevelComment?.snippet;
+        if (!s?.authorDisplayName) continue;
+        out.push({
+          id: `yt-${it.id}`,
+          username: s.authorDisplayName,
+          commentText: s.textDisplay || '',
+          isEligible: true,
+          timestamp: s.publishedAt || new Date().toISOString(),
+        });
+      }
+      page = json.nextPageToken || '';
+      if (!page) break;
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchMetaLive(platform: 'instagram' | 'facebook', postUrl: string): Promise<Participant[] | null> {
+  const token = process.env.META_ACCESS_TOKEN;
+  if (!token) return null;
+  try {
+    // Mejor esfuerzo: el ID del objeto se resuelve si la URL trae fbid/media-id.
+    const m = postUrl.match(/(\d{8,})/);
+    if (!m) return null;
+    const out: Participant[] = [];
+    let url: string | null =
+      `https://graph.facebook.com/v19.0/${m[1]}/comments?fields=from{name,username},message,created_time&limit=100&access_token=${encodeURIComponent(token)}`;
+    for (let i = 0; i < 5 && url && out.length < 500; i++) {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const json = (await res.json()) as {
+        data?: Array<{ id: string; from?: { name?: string; username?: string }; message?: string; created_time?: string }>;
+        paging?: { next?: string };
+      };
+      for (const c of json.data || []) {
+        out.push({
+          id: `${platform}-${c.id}`,
+          username: c.from?.username || c.from?.name || 'desconocido',
+          commentText: c.message || '',
+          isEligible: true,
+          timestamp: c.created_time || new Date().toISOString(),
+        });
+      }
+      url = json.paging?.next || null;
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
 class MockAdapter implements SocialProviderAdapter {
   constructor(public platform: 'instagram' | 'facebook' | 'youtube') {}
   async fetchComments(postUrl: string): Promise<FetchResult> {
     const t0 = Date.now();
+    // Vía live cuando hay credenciales; cualquier fallo cae a mock-verified auditable.
+    let liveComments: Participant[] | null = null;
+    if (this.platform === 'youtube') {
+      const vid = extractYoutubeId(postUrl);
+      if (vid) liveComments = await fetchYoutubeLive(vid);
+    } else {
+      liveComments = await fetchMetaLive(this.platform, postUrl);
+    }
+    const latencyMs = Date.now() - t0;
+    if (liveComments) {
+      logEvent('social.fetch', { provider: this.platform, latencyMs, mode: 'live', postUrl, count: liveComments.length });
+      return { comments: liveComments, latencyMs, provider: this.platform, mode: 'live' };
+    }
     // Simula latencia de red externa (observabilidad por proveedor, SAD §24)
     await new Promise((r) => setTimeout(r, 120 + Math.floor(Math.random() * 120)));
-    const latencyMs = Date.now() - t0;
-    const live =
-      (this.platform !== 'youtube' && !!process.env.META_ACCESS_TOKEN) ||
-      (this.platform === 'youtube' && !!process.env.YOUTUBE_API_KEY);
-    logEvent('social.fetch', { provider: this.platform, latencyMs, mode: live ? 'live' : 'mock-verified', postUrl });
-    return { comments: mockComments(this.platform, postUrl), latencyMs, provider: this.platform, mode: live ? 'live' : 'mock-verified' };
+    const totalMs = Date.now() - t0;
+    logEvent('social.fetch', { provider: this.platform, latencyMs: totalMs, mode: 'mock-verified', postUrl });
+    return { comments: mockComments(this.platform, postUrl), latencyMs: totalMs, provider: this.platform, mode: 'mock-verified' };
   }
 }
 
 export function getAdapter(platform: string): SocialProviderAdapter {
   const p = platform === 'facebook' ? 'facebook' : platform === 'youtube' ? 'youtube' : 'instagram';
   return new MockAdapter(p);
+}
+
+/** Intercambia `code` por tokens en server-side. Retorna null si no hay secretos (modo mock). */
+export async function exchangeOAuthCode(
+  kind: 'google' | 'meta',
+  code: string,
+  redirectUri: string
+): Promise<{ accessToken: string; email?: string; name?: string } | null> {
+  try {
+    if (kind === 'google') {
+      const cid = process.env.GOOGLE_CLIENT_ID;
+      const csec = process.env.GOOGLE_CLIENT_SECRET;
+      if (!cid || !csec || cid === 'GOOGLE_CLIENT_ID_PENDIENTE') return null;
+      const res = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ code, client_id: cid, client_secret: csec, redirect_uri: redirectUri, grant_type: 'authorization_code' }).toString(),
+      });
+      if (!res.ok) return null;
+      const tok = (await res.json()) as { access_token?: string };
+      if (!tok.access_token) return null;
+      const me = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${tok.access_token}` },
+      });
+      const info = (await me.json().catch(() => ({}))) as { email?: string; name?: string };
+      return { accessToken: tok.access_token, email: info.email, name: info.name };
+    }
+    const mid = process.env.META_APP_ID;
+    const msec = process.env.META_APP_SECRET;
+    if (!mid || !msec || mid === 'META_APP_ID_PENDIENTE') return null;
+    const res = await fetch(
+      `https://graph.facebook.com/v19.0/oauth/access_token?client_id=${encodeURIComponent(mid)}&client_secret=${encodeURIComponent(msec)}&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(code)}`
+    );
+    if (!res.ok) return null;
+    const tok = (await res.json()) as { access_token?: string };
+    if (!tok.access_token) return null;
+    const me = await fetch(`https://graph.facebook.com/v19.0/me?fields=email,name&access_token=${encodeURIComponent(tok.access_token)}`);
+    const info = (await me.json().catch(() => ({}))) as { email?: string; name?: string };
+    return { accessToken: tok.access_token, email: info.email, name: info.name };
+  } catch {
+    return null;
+  }
 }
 
 /** OAuth URLs oficiales (el intercambio code→token ocurre en el callback server-side). */

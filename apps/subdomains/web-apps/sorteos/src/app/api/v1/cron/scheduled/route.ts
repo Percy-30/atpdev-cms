@@ -12,7 +12,13 @@ import { quotaCheck } from '@/lib/server/billing';
  */
 export async function POST(req: NextRequest) {
   const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get('x-cron-secret') !== secret) {
+  if (process.env.NODE_ENV === 'production' && !secret) {
+    return fail('CRON_SECRET no configurado.', 503);
+  }
+  const header = req.headers.get('x-cron-secret');
+  const authHeader = req.headers.get('authorization');
+  const bearerOk = secret && authHeader === `Bearer ${secret}`;
+  if (secret && header !== secret && !bearerOk) {
     return fail('No autorizado.', 401);
   }
   const now = Date.now();

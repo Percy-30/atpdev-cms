@@ -2,8 +2,8 @@
  * Facturación y cuotas (RF-027 a RF-030, OE-003).
  * Límites sincronizados con `PRICING_PLANS` en `@/lib/types`.
  */
-import { PRICING_PLANS } from '@/lib/types';
-import { db, monthKey, type PlanId } from './store';
+import { PRICING_PLANS } from '../types.ts';
+import { db, monthKey, type PlanId } from './store.ts';
 
 export function planOf(userId: string): PlanId {
   return db.users.get(userId)?.plan || 'free';

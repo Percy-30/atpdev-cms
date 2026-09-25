@@ -7,9 +7,25 @@
  */
 import { createCipheriv, createDecipheriv, createHmac, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 
-const JWT_SECRET = process.env.SORTEOS_JWT_SECRET || process.env.JWT_SECRET || 'dev-only-sorteos-secret-change-me';
-const TOKEN_KEY_RAW = process.env.SORTEOS_TOKEN_KEY || 'dev-only-32-byte-token-key-01234567';
-const TOKEN_KEY = Buffer.from(TOKEN_KEY_RAW.padEnd(32, '0').slice(0, 32));
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+function requiredEnv(name: string, fallback: string): string {
+  const v = process.env[name];
+  if (v && v.length > 0) return v;
+  if (IS_PROD) {
+    throw new Error(`[sorteos] Falta variable de entorno ${name} en producción.`);
+  }
+  return fallback;
+}
+
+function getJwtSecret(): string {
+  return requiredEnv('SORTEOS_JWT_SECRET', process.env.JWT_SECRET || 'dev-only-sorteos-secret-change-me');
+}
+
+function getTokenKey(): Buffer {
+  const raw = requiredEnv('SORTEOS_TOKEN_KEY', 'dev-only-32-byte-token-key-01234567');
+  return Buffer.from(raw.padEnd(32, '0').slice(0, 32));
+}
 
 export function hashPassword(password: string, salt?: string): { hash: string; salt: string } {
   const s = salt || randomBytes(16).toString('hex');
@@ -51,7 +67,7 @@ export function signJwt(userId: string, email: string, role: string, ttlHours = 
   const now = Math.floor(Date.now() / 1000);
   const payload: JwtPayload = { sub: userId, email, role, iat: now, exp: now + ttl * 3600 };
   const body = b64url(JSON.stringify(payload));
-  const sig = b64url(createHmac('sha256', JWT_SECRET).update(`${header}.${body}`).digest());
+  const sig = b64url(createHmac('sha256', getJwtSecret()).update(`${header}.${body}`).digest());
   return `${header}.${body}.${sig}`;
 }
 
@@ -59,7 +75,7 @@ export function verifyJwt(token: string): JwtPayload | null {
   try {
     const [h, b, s] = token.split('.');
     if (!h || !b || !s) return null;
-    const expected = b64url(createHmac('sha256', JWT_SECRET).update(`${h}.${b}`).digest());
+    const expected = b64url(createHmac('sha256', getJwtSecret()).update(`${h}.${b}`).digest());
     const a = Buffer.from(s);
     const c = Buffer.from(expected);
     if (a.length !== c.length || !timingSafeEqual(a, c)) return null;
@@ -74,7 +90,7 @@ export function verifyJwt(token: string): JwtPayload | null {
 /** Cifra token OAuth para reposo (AES-256-GCM). Retorna iv:tag:cipher en base64. */
 export function encryptToken(plain: string): string {
   const iv = randomBytes(12);
-  const cipher = createCipheriv('aes-256-gcm', TOKEN_KEY, iv);
+  const cipher = createCipheriv('aes-256-gcm', getTokenKey(), iv);
   const enc = Buffer.concat([cipher.update(plain, 'utf8'), cipher.final()]);
   const tag = cipher.getAuthTag();
   return Buffer.concat([iv, tag, enc]).toString('base64');
@@ -85,7 +101,7 @@ export function decryptToken(payload: string): string {
   const iv = buf.subarray(0, 12);
   const tag = buf.subarray(12, 28);
   const enc = buf.subarray(28);
-  const decipher = createDecipheriv('aes-256-gcm', TOKEN_KEY, iv);
+  const decipher = createDecipheriv('aes-256-gcm', getTokenKey(), iv);
   decipher.setAuthTag(tag);
   return Buffer.concat([decipher.update(enc), decipher.final()]).toString('utf8');
 }

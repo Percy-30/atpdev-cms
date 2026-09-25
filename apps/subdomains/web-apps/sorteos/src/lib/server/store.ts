@@ -193,6 +193,9 @@ export function seedIfEmpty() {
         updatedAt: now,
       });
       db.usersByEmail.set('admin@sorteos.pro', adminId);
+      if (process.env.NODE_ENV === 'production') {
+        console.warn('[sorteos] Seed super-admin activo en producción: cambia admin@sorteos.pro de inmediato.');
+      }
     }
   } catch {
     // Sin crypto disponible: se creará al primer login demo

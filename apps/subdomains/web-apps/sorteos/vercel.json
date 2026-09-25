@@ -1,4 +1,10 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd ../../../.. && npm run build --workspace=apps/subdomains/web-apps/sorteos"
+  "buildCommand": "cd ../../../.. && npm run build --workspace=apps/subdomains/web-apps/sorteos",
+  "crons": [
+    {
+      "path": "/api/v1/cron/scheduled",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }

@@ -185,8 +185,6 @@ function getConfigFilePath(): string | null {
 
     const cwd = process.cwd();
     const possiblePaths = [
-      'D:\\PROYECTOS\\atpdev-web\\packages\\database\\src\\subdomain_configs.json',
-      'd:/PROYECTOS/atpdev-web/packages/database/src/subdomain_configs.json',
       pathMod.resolve(cwd, 'packages/database/src/subdomain_configs.json'),
       pathMod.resolve(cwd, '../packages/database/src/subdomain_configs.json'),
       pathMod.resolve(cwd, '../../packages/database/src/subdomain_configs.json'),
