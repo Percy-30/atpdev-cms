@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     logoUrl: logoUrl || undefined, brandColor: brandColor || undefined, customText: customText || undefined,
     issuedAt: new Date().toISOString(),
   };
-  db.certificates.set(id, cert);
+  db.certificates.set(cert);
   g.certificateId = id;
   audit(auth.userId, 'certificate.issue', 'certificate', id, { giveawayId });
   return ok({ certificate: cert }, 201);

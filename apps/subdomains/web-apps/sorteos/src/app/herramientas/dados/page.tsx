@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Dices, RefreshCw, RotateCcw, Trophy, Sparkles } from 'lucide-react';
 import { rollDice } from '@/lib/randomEngine';
+import { ToolSwitcher } from '@/components/ToolSwitcher';
 
 export default function DadosPage() {
   const [diceCount, setDiceCount] = useState<number>(2);
@@ -88,7 +89,8 @@ export default function DadosPage() {
   const totalSum = diceValues.reduce((a, b) => a + b, 0);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <ToolSwitcher />
       {/* Header */}
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
@@ -145,7 +147,9 @@ export default function DadosPage() {
             type="button"
             disabled={isRolling}
             onClick={handleRoll}
-            className="px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 text-white font-bold font-display text-base shadow-xl shadow-orange-500/25 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+            className={`btn-pro-gold text-base sm:text-lg py-4 px-12 rounded-2xl ${
+              isRolling ? 'opacity-60 cursor-not-allowed !transform-none' : ''
+            }`}
           >
             <RefreshCw className={`w-5 h-5 ${isRolling ? 'animate-spin' : ''}`} />
             <span>{isRolling ? 'Lanzando dados...' : '🎲 ¡Tirar Dados!'}</span>

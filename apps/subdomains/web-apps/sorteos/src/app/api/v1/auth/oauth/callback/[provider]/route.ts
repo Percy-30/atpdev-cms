@@ -26,8 +26,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
     id = uid('usr');
     const { hash, salt } = hashPassword(`oauth-${provider}-${code}-${Date.now()}`);
     const now = new Date().toISOString();
-    db.users.set(id, {
-      id, name: `Usuario ${provider}`, email, passwordHash: hash, salt,
+    db.users.set({ id, name: `Usuario ${provider}`, email, passwordHash: hash, salt,
       role: 'user', status: 'active', plan: 'free', language: 'es',
       createdAt: now, updatedAt: now,
     });

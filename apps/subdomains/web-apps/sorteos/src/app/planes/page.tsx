@@ -137,8 +137,8 @@ export default function PlanesPage() {
                   href={plan.priceMonthly === 0 ? '/sorteos/nuevo' : `/sorteos/nuevo?plan=${plan.id}`}
                   className={`w-full py-3.5 rounded-xl font-bold font-display text-xs text-center transition-all flex items-center justify-center gap-2 ${
                     plan.isPopular
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-600/30 hover:opacity-95'
-                      : 'bg-white/5 hover:bg-white/10 text-white border border-white/10'
+                      ? 'btn-pro-primary w-full py-3.5 text-xs'
+                      : 'bg-white/10 hover:bg-white/20 text-white border border-white/15'
                   }`}
                 >
                   <span>{plan.ctaLabel}</span>

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Disc, Sparkles, Plus, Trash2, Trophy, RotateCcw, Check } from 'lucide-react';
 import { RouletteCanvas } from '@/components/RouletteCanvas';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
+import { ToolSwitcher } from '@/components/ToolSwitcher';
 
 export default function RuletaPage() {
   const [options, setOptions] = useState<string[]>([
@@ -42,7 +43,8 @@ export default function RuletaPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <ToolSwitcher />
       <ConfettiEffect active={winner !== null && !isSpinning} />
 
       {/* Header */}

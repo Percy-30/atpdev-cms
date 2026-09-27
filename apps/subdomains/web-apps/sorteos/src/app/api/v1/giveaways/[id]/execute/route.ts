@@ -35,7 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (raw.length === 0) {
     const platform = String(g.platform || g.network || 'instagram');
     if (['instagram', 'facebook', 'youtube'].includes(platform)) {
-      const connected = [...db.socialAccounts.values()].find(
+      const connected = db.socialAccounts.list().find(
         (a) => a.userId === auth.userId && a.platform === platform && a.status === 'connected'
       );
       if (!connected) {
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     createdAt: new Date().toISOString(),
     monthKey: monthKey(),
   });
-  db.certificates.set(g.certificateId, {
+  db.certificates.set({
     id: g.certificateId,
     giveawayId: id,
     userId: auth.userId,

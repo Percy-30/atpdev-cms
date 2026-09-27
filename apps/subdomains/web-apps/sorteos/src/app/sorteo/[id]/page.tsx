@@ -306,6 +306,25 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           <span className="text-emerald-400 break-all">{giveaway.verificationHash}</span>
         </div>
       </div>
+
+      {/* Bottom Pro Actions */}
+      <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+        <Link
+          href={`/certificados/${giveaway.certificateId || 'CERT-SP-98A41E8D'}`}
+          className="btn-pro-gold py-4 px-8 text-sm flex items-center gap-2"
+        >
+          <ShieldCheck className="w-4 h-4 text-amber-950" />
+          <span>Ver Certificado Oficial Criptográfico</span>
+        </Link>
+
+        <Link
+          href="/sorteos/nuevo"
+          className="btn-pro-primary py-4 px-8 text-sm flex items-center gap-2"
+        >
+          <Sparkles className="w-4 h-4 text-pink-200" />
+          <span>Crear Tu Propio Sorteo Gratis</span>
+        </Link>
+      </div>
     </div>
   );
 }

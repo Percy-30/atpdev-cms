@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { db } from '@/lib/server/store';
+import type { FeatureFlagsSnapshot } from '@/lib/server/store';
 import { audit, fail, getAuth, ok } from '@/lib/server/http';
 
 /**
@@ -20,10 +21,12 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json().catch(() => ({} as Record<string, unknown>));
   const flagId = String(body.flagId || '');
   const plan = String(body.plan || '');
-  if (!db.flags[flagId] || !['free', 'pro', 'business', 'enterprise'].includes(plan)) {
+  if (!db.flags.has(flagId) || !['free', 'pro', 'business', 'enterprise'].includes(plan)) {
     return fail('flagId o plan inválido.', 400);
   }
-  db.flags[flagId][plan as 'free'] = Boolean(body.enabled);
+  const current = db.flags.get(flagId) ?? ({ free: false, pro: false, business: false, enterprise: false } as FeatureFlagsSnapshot);
+  current[plan as keyof FeatureFlagsSnapshot] = Boolean(body.enabled);
+  db.flags.set(flagId, current);
   audit(u.id, 'admin.flag', 'feature_flag', flagId, { plan, enabled: Boolean(body.enabled) });
   return ok({ flags: db.flags });
 }

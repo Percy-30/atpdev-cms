@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     status: (cleanStr(body.status, 20) === 'published' ? 'published' : 'draft') as 'draft' | 'published',
     updatedAt: now,
   };
-  db.cms.set(post.id, post);
+  db.cms.set(post);
   audit(auth.userId, 'cms.upsert', 'cms_post', post.id, { slug, status: post.status });
   return ok({ post }, existing ? 200 : 201);
 }

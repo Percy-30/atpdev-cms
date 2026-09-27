@@ -34,8 +34,7 @@ describe('usageThisMonth', () => {
 
   it('suma eventos del mes actual', () => {
     const uid = 'test-usage-1';
-    db.users.set(uid, {
-      id: uid, name: 'T', email: `${uid}@t.local`, passwordHash: 'x', salt: 'y',
+    db.users.set({ id: uid, name: 'T', email: `${uid}@t.local`, passwordHash: 'x', salt: 'y',
       role: 'user', status: 'active', plan: 'free', language: 'es',
       createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
     });
@@ -46,7 +45,7 @@ describe('usageThisMonth', () => {
     });
     const u = usageThisMonth(uid);
     assert.equal(u.used, 40);
+    db.usage.deleteEvent('u1');
     db.users.delete(uid);
-    db.usage.splice(db.usage.findIndex((x) => x.id === 'u1'), 1);
   });
 });

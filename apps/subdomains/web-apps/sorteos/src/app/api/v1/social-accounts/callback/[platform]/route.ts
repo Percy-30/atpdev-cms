@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ plat
     ownerId = `usr_demo_${userId.replace(/[^a-z0-9]/gi, '').toLowerCase() || 'default'}`;
     if (!db.users.has(ownerId)) {
       const now = new Date().toISOString();
-      db.users.set(ownerId, {
+      db.users.set({
         id: ownerId, name: 'Creador Demo', email: demoEmail,
         passwordHash: 'demo', salt: 'demo', role: 'user', status: 'active',
         plan: 'pro', language: 'es', createdAt: now, updatedAt: now,
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ plat
   const mode = live ? 'live' : 'mock-verified';
   const id = uid('acc');
   const now = new Date().toISOString();
-  db.socialAccounts.set(id, {
+  db.socialAccounts.set({
     id,
     userId: ownerId,
     platform: (['instagram', 'facebook', 'youtube'].includes(platform) ? platform : 'instagram') as 'instagram' | 'facebook' | 'youtube',

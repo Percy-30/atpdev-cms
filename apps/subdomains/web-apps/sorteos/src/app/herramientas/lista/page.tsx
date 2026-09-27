@@ -6,6 +6,7 @@ import {
   Copy, Check, Share2, Award, UserCheck, Shuffle
 } from 'lucide-react';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
+import { ToolSwitcher } from '@/components/ToolSwitcher';
 import { shuffleArray, getSecureRandomInt, generateSha256Hash } from '@/lib/randomEngine';
 
 export default function ListaPage() {
@@ -78,7 +79,8 @@ export default function ListaPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <ToolSwitcher />
       <ConfettiEffect active={winners.length > 0 && !isDrawing} />
 
       {/* Header */}
@@ -167,10 +169,10 @@ export default function ListaPage() {
               type="button"
               disabled={participants.length === 0 || isDrawing}
               onClick={handleStartDraw}
-              className={`w-full py-4 rounded-2xl font-bold font-display text-base transition-all flex items-center justify-center gap-2 shadow-xl ${
+              className={`w-full py-4 text-base sm:text-lg btn-pro-primary rounded-2xl ${
                 participants.length === 0 || isDrawing
-                  ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-violet-600 via-pink-500 to-amber-400 text-white hover:scale-[1.02] shadow-violet-500/25 active:scale-95'
+                  ? '!bg-zinc-800 !text-zinc-500 !cursor-not-allowed !shadow-none !transform-none opacity-60'
+                  : ''
               }`}
             >
               {isDrawing ? (

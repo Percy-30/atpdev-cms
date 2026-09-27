@@ -12,7 +12,7 @@ import { cleanStr } from '@/lib/server/validators';
  */
 export async function GET(req: NextRequest) {
   const auth = getAuthOrDemo(req);
-  const data = [...db.socialAccounts.values()]
+  const data = db.socialAccounts.list()
     .filter((a) => a.userId === auth.userId)
     .map(({ encryptedToken: _t, ...pub }) => ({
       ...pub,
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     ];
     for (const [pfx, platform, name, handle] of seed) {
       const id = `${pfx}_${auth.userId.slice(-6)}`;
-      db.socialAccounts.set(id, {
+      db.socialAccounts.set({
         id, userId: auth.userId, platform, name, handle,
         encryptedToken: encryptToken(`demo-token-${platform}`),
         status: 'connected',
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
   // Con código (o mock): conecta la cuenta con token cifrado (RF-005..007, RF-009 base)
   const id = uid('acc');
   const now = new Date().toISOString();
-  db.socialAccounts.set(id, {
+  db.socialAccounts.set({
     id,
     userId: auth.userId,
     platform: platform as 'instagram' | 'facebook' | 'youtube',
@@ -79,6 +79,6 @@ export async function POST(req: NextRequest) {
     expiresAt: new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString(),
   });
   audit(auth.userId, 'social.connect', 'social_account', id, { platform });
-  const { encryptedToken: _t, ...pub } = db.socialAccounts.get(id)!;
+  const { encryptedToken: _t, ...pub } = db.socialAccounts.get(id) ?? ({} as any);
   return ok({ message: `Cuenta de ${platform} conectada vía OAuth 2.0.`, account: pub });
 }

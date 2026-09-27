@@ -26,7 +26,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     updatedAt: now,
     auditLog: [...g.auditLog, `${now} duplicado desde ${id}`],
   };
-  db.giveaways.set(copyId, copy);
+  db.giveaways.set(copy);
   audit(auth.userId, 'giveaway.duplicate', 'giveaway', copyId, { from: id });
   return ok({ message: 'Sorteo duplicado como plantilla (RF-018).', giveaway: copy }, 201);
 }

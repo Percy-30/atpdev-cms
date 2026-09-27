@@ -315,7 +315,9 @@ export default function NuevoSorteoPage() {
               type="button"
               disabled={isLoadingComments || !postUrl}
               onClick={handleImportComments}
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold font-display text-sm shadow-xl shadow-purple-600/25 hover:opacity-95 transition-all flex items-center gap-2"
+              className={`btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl ${
+                isLoadingComments || !postUrl ? 'opacity-50 cursor-not-allowed !transform-none' : ''
+              }`}
             >
               <RefreshCw className={`w-4 h-4 ${isLoadingComments ? 'animate-spin' : ''}`} />
               <span>{isLoadingComments ? 'Extrayendo comentarios...' : 'Continuar a Comentarios'}</span>
@@ -365,7 +367,7 @@ export default function NuevoSorteoPage() {
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-zinc-300 transition-colors flex items-center gap-2"
+              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Atrás</span>
@@ -374,7 +376,7 @@ export default function NuevoSorteoPage() {
             <button
               type="button"
               onClick={handleApplyRules}
-              className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold font-display text-sm shadow-xl shadow-purple-600/25 hover:opacity-95 transition-all flex items-center gap-2"
+              className="btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl flex items-center gap-2"
             >
               <span>Configurar Reglas y Filtros</span>
               <ArrowRight className="w-4 h-4" />
@@ -502,7 +504,7 @@ export default function NuevoSorteoPage() {
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-zinc-300 transition-colors flex items-center gap-2"
+              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Atrás</span>
@@ -512,9 +514,11 @@ export default function NuevoSorteoPage() {
               type="button"
               disabled={isDrawing || filteredEligible.length === 0}
               onClick={handleExecuteDraw}
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 text-white font-bold font-display text-sm shadow-xl shadow-orange-500/25 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+              className={`btn-pro-gold text-base py-4 px-10 rounded-2xl flex items-center gap-2 ${
+                isDrawing || filteredEligible.length === 0 ? 'opacity-60 cursor-not-allowed !transform-none' : ''
+              }`}
             >
-              <RefreshCw className={`w-4 h-4 ${isDrawing ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-5 h-5 ${isDrawing ? 'animate-spin' : ''}`} />
               <span>{isDrawing ? 'Sorteando con CSPRNG...' : '🎲 ¡Realizar Sorteo Oficial!'}</span>
             </button>
           </div>
@@ -582,7 +586,7 @@ export default function NuevoSorteoPage() {
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <button
               onClick={() => router.push(`/sorteo/${finishedGiveaway.id}`)}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold font-display text-xs shadow-lg shadow-purple-600/30 hover:opacity-95 transition-all flex items-center gap-2"
+              className="btn-pro-primary py-4 px-8 text-sm flex items-center gap-2"
             >
               <ExternalLink className="w-4 h-4" />
               <span>Ver Página Pública del Sorteo</span>
@@ -590,7 +594,7 @@ export default function NuevoSorteoPage() {
 
             <button
               onClick={() => router.push(`/certificados/${finishedGiveaway.certificateId}`)}
-              className="px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-bold font-display text-xs transition-colors flex items-center gap-2"
+              className="btn-pro-secondary py-4 px-8 text-sm flex items-center gap-2"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span>Ver Certificado Oficial</span>

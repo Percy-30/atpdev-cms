@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Users, Sparkles, Shuffle, Copy, Check, UserPlus, ShieldAlert, Trophy, ShieldCheck } from 'lucide-react';
 import { divideIntoTeams, generateSha256Hash } from '@/lib/randomEngine';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import { ToolSwitcher } from '@/components/ToolSwitcher';
 
 const TEAM_NAMES_PRESETS = [
   ['🔴 Titanes Rojos', '🔵 Centinelas Azules', '🟢 Dragones Verdes', '🟡 Fénix Dorados', '🟣 Halcones Violetas', '⚪ Lobos Blancos'],
@@ -85,7 +86,8 @@ export default function EquiposPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <ToolSwitcher />
       {showConfetti && <ConfettiEffect />}
 
       {/* Header */}
@@ -206,10 +208,12 @@ export default function EquiposPage() {
             type="button"
             disabled={isGenerating}
             onClick={handleGenerate}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold font-display text-base shadow-xl shadow-purple-600/25 hover:opacity-95 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+            className={`w-full py-4 text-base sm:text-lg btn-pro-primary rounded-2xl ${
+              isGenerating ? '!bg-zinc-800 !text-zinc-500 !cursor-not-allowed !shadow-none !transform-none opacity-60' : ''
+            }`}
           >
             <Shuffle className={`w-5 h-5 ${isGenerating ? 'animate-spin' : ''}`} />
-            <span>{isGenerating ? 'Distribuyendo participantes...' : '✨ ¡Armar Equipos!'}</span>
+            <span>{isGenerating ? 'Distribuyendo participantes...' : '✨ ¡Armar Equipos Ahora!'}</span>
           </button>
         </div>
       </div>

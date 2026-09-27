@@ -16,8 +16,7 @@ function defaultRules(): GiveawayRules {
  */
 export async function GET(req: NextRequest) {
   const auth = getAuthOrDemo(req);
-  const list = [...db.giveaways.values()]
-    .filter((g) => g.userId === auth.userId)
+  const list = db.giveaways.list().filter((g) => g.userId === auth.userId)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .map((g) => ({
       id: g.id, title: g.title, platform: g.platform, network: g.network,
@@ -81,7 +80,7 @@ export async function POST(req: NextRequest) {
     updatedAt: now,
     auditLog: [`${now} creado`],
   };
-  db.giveaways.set(id, giveaway);
+  db.giveaways.set(giveaway);
   audit(auth.userId, 'giveaway.create', 'giveaway', id, { platform });
   logEvent('giveaway.create', { userId: auth.userId, giveawayId: id, platform });
   return ok({ message: 'Sorteo creado exitosamente.', giveaway }, 201);

@@ -20,10 +20,10 @@ function requireSuper(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const chk = requireSuper(req);
   if ('error' in chk) return chk.error;
-  const users = [...db.users.values()].map((u) => {
+  const users = db.users.list().map((u) => {
     const { passwordHash: _p, salt: _s, ...pub } = u;
-    const consumed = db.usage.filter((x) => x.userId === u.id).reduce((a, b) => a + b.commentsProcessed, 0);
-    const giveaways = [...db.giveaways.values()].filter((x) => x.userId === u.id).length;
+    const consumed = db.usage.byUser(u.id).reduce((a, b) => a + b.commentsProcessed, 0);
+    const giveaways = db.giveaways.getByUser(u.id)?.length ?? 0;
     return { ...pub, commentsConsumed: consumed, giveawaysCount: giveaways };
   });
   const mrr = users.reduce((a, u) => a + ({ free: 0, pro: 9.99, business: 24.99, enterprise: 79.99 } as Record<string, number>)[u.plan], 0);

@@ -132,12 +132,12 @@ export const CertificateCard: React.FC<CertificateCardProps> = (props) => {
       </div>
 
       {/* Botones de acción */}
-      <div className="flex flex-wrap items-center justify-center gap-3 print:hidden">
+      <div className="flex flex-wrap items-center justify-center gap-4 pt-2 print:hidden">
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-sm transition-all border border-white/10 hover:border-white/20"
+          className="btn-pro-gold py-3.5 px-6 text-sm flex items-center gap-2"
         >
-          <Download className="w-4 h-4 text-amber-400" />
+          <Download className="w-4 h-4 text-amber-950" />
           <span>Descargar / Imprimir Certificado</span>
         </button>
         <button
@@ -152,9 +152,9 @@ export const CertificateCard: React.FC<CertificateCardProps> = (props) => {
               handleCopyHash();
             }
           }}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-pink-600 text-white font-semibold text-sm transition-all shadow-md hover:scale-105"
+          className="btn-pro-primary py-3.5 px-6 text-sm flex items-center gap-2"
         >
-          <Share2 className="w-4 h-4" />
+          <Share2 className="w-4 h-4 text-pink-200" />
           <span>Compartir en Redes</span>
         </button>
       </div>

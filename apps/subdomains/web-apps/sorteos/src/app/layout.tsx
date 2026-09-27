@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -49,6 +50,9 @@ export const metadata: Metadata = {
     "sorteo certificado",
     "sorteos online"
   ],
+  other: {
+    "google-adsense-account": "ca-pub-5414009811868137",
+  },
   icons: {
     icon: "/icon.svg",
   },
@@ -61,6 +65,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="dark">
+      <head>
+        <Script
+          id="google-adsense"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414009811868137"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable} min-h-screen flex flex-col bg-[#070a12] text-zinc-100 antialiased selection:bg-pink-500 selection:text-white`}
       >

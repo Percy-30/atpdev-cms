@@ -27,8 +27,7 @@ export async function POST(req: NextRequest) {
   const { hash, salt } = hashPassword(password);
   const id = uid('usr');
   const now = new Date().toISOString();
-  db.users.set(id, {
-    id, name, email, passwordHash: hash, salt,
+  db.users.set({ id, name, email, passwordHash: hash, salt,
     role: 'user', status: 'active', plan: 'free',
     language, createdAt: now, updatedAt: now,
   });

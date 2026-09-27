@@ -43,8 +43,8 @@ export function getAuthOrDemo(req: NextRequest): AuthContext {
   let id = db.usersByEmail.get(email);
   if (!id) {
     id = `usr_demo_${demoKey.replace(/[^a-z0-9]/gi, '').toLowerCase() || 'default'}`;
-    db.users.set(id, {
-      id,
+    db.users.set({
+      id: `usr_demo_${demoKey.replace(/[^a-z0-9]/gi, '').toLowerCase() || 'default'}`,
       name: 'Creador Demo',
       email,
       passwordHash: 'demo',

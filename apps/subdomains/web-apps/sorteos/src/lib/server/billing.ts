@@ -15,7 +15,7 @@ export function commentLimitOf(plan: PlanId): number {
 
 export function usageThisMonth(userId: string): { used: number; limit: number; percent: number; month: string } {
   const mk = monthKey();
-  const used = db.usage.filter((u) => u.userId === userId && u.monthKey === mk).reduce((a, b) => a + b.commentsProcessed, 0);
+  const used = db.usage.filterUser(userId).reduce((a, b) => a + b.commentsProcessed, 0);
   const limit = commentLimitOf(planOf(userId));
   return { used, limit, percent: limit ? Math.round((used / limit) * 100) : 0, month: mk };
 }

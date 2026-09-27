@@ -6,49 +6,55 @@ import {
   Hash, Users2, Lock, Award, Flame, Zap, Check, HelpCircle
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
+import { HomeHashVerifier } from '@/components/HomeHashVerifier';
 import { PRICING_PLANS } from '@/lib/types';
 
 export default function HomePage() {
   const standaloneTools = [
     {
       title: 'Sorteo por Lista de Nombres',
-      desc: 'Pega una lista de participantes, elimina duplicados automáticamente y elige ganadores y suplentes al instante.',
+      desc: 'Pega una lista de participantes, elimina duplicados automáticamente y elige ganadores y suplentes con certificación inmutable.',
       href: '/herramientas/lista',
       icon: ListOrdered,
       color: 'from-violet-500 to-purple-600',
-      badge: 'Más Popular'
+      badge: 'Más Usado',
+      action: 'Abrir Lista'
     },
     {
       title: 'Ruleta Aleatoria Digital',
-      desc: 'Personaliza los gajos, colores y nombres. Gira la ruleta interactiva con física realista y sonido de celebración.',
+      desc: 'Personaliza los gajos, premios o nombres y gira la ruleta interactiva con física realista y algoritmo CSPRNG.',
       href: '/herramientas/ruleta',
       icon: Disc,
       color: 'from-pink-500 to-rose-600',
-      badge: 'Interactivo'
+      badge: 'Interactivo',
+      action: 'Girar Ruleta'
     },
     {
       title: 'Tirar Dados 3D',
-      desc: 'Lanza entre 1 y 6 dados simultáneos para juegos de mesa, decisiones rápidas o dinámicas grupales con suma total.',
+      desc: 'Lanza entre 1 y 6 dados simultáneos con física visual y cálculo automático de la suma total para juegos o decisiones.',
       href: '/herramientas/dados',
       icon: Dices,
       color: 'from-amber-500 to-orange-600',
-      badge: 'Instantáneo'
+      badge: 'Instantáneo',
+      action: 'Lanzar Dados'
     },
     {
-      title: 'Lanzar Moneda Cara o Cruz',
-      desc: 'Simulación de lanzamiento de moneda con giro 3D fluido y contador de rachas y probabilidades estadísticas.',
+      title: 'Lanzar Moneda (Cara o Cruz)',
+      desc: 'Simulación de volado de moneda con giro 3D de alta precisión y estadísticas criptográficas sin sesgos.',
       href: '/herramientas/moneda',
       icon: CircleDollarSign,
       color: 'from-emerald-500 to-teal-600',
-      badge: 'Criptográfico'
+      badge: 'Criptográfico',
+      action: 'Lanzar Moneda'
     },
     {
       title: 'Generador de Números',
-      desc: 'Elige números aleatorios entre un mínimo y un máximo. Ideal para rifas, loterías, bingos y números de la suerte.',
+      desc: 'Elige números aleatorios entre un mínimo y un máximo sin repetición para rifas, loterías y bingos.',
       href: '/herramientas/numeros',
       icon: Hash,
       color: 'from-cyan-500 to-blue-600',
-      badge: 'Rifas & Bingos'
+      badge: 'Rifas & Bingos',
+      action: 'Generar Números'
     },
     {
       title: 'Generador de Equipos',
@@ -56,15 +62,16 @@ export default function HomePage() {
       href: '/herramientas/equipos',
       icon: Users2,
       color: 'from-indigo-500 to-violet-600',
-      badge: 'Equilibrado'
+      badge: 'Balanceado',
+      action: 'Armar Equipos'
     },
   ];
 
   return (
-    <div className="space-y-24 pb-20 overflow-hidden">
+    <div className="space-y-24 pb-24 overflow-hidden">
       
-      {/* ─── HERO SECTION ─────────────────────────────────────────────── */}
-      <section className="relative pt-12 sm:pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center space-y-8">
+      {/* ─── HERO SECTION CENTRADO ───────────────────────────────────────── */}
+      <section className="relative pt-12 sm:pt-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-8">
         
         {/* Glowing Top Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full purple-gradient-badge text-xs font-mono font-semibold uppercase tracking-wider animate-pulse">
@@ -79,31 +86,49 @@ export default function HomePage() {
             <span className="title-neon-glow">100% Transparentes y Verificables</span>
           </h1>
           <p className="text-base sm:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed">
-            Importa comentarios de <span className="text-pink-400 font-semibold">Instagram</span>, <span className="text-blue-400 font-semibold">Facebook</span> y <span className="text-red-400 font-semibold">YouTube</span> en segundos. Aplica filtros anti-fraude y genera un certificado con validez criptográfica SHA-256.
+            Importa comentarios de <span className="text-pink-400 font-semibold">Instagram</span>, <span className="text-blue-400 font-semibold">Facebook</span> y <span className="text-red-400 font-semibold">YouTube</span>. Aplica filtros anti-fraude y genera un certificado con validez criptográfica SHA-256.
           </p>
         </div>
 
-        {/* CTA Buttons */}
+        {/* Big Pro CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <Link
             href="/sorteos/nuevo"
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 via-pink-500 to-amber-400 text-white font-bold font-display text-base shadow-xl shadow-violet-500/25 hover:scale-105 transition-all flex items-center justify-center gap-2"
+            className="btn-pro-primary w-full sm:w-auto text-base sm:text-lg py-4 px-8"
           >
             <Gift className="w-5 h-5 text-amber-200" />
             <span>Crear Sorteo de Redes Sociales</span>
-            <ArrowRight className="w-4 h-4 text-pink-200" />
+            <ArrowRight className="w-5 h-5 text-pink-200" />
           </Link>
 
           <Link
             href="/herramientas/ruleta"
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl glass-card text-white font-bold font-display text-base hover:bg-white/10 transition-all border border-white/15 flex items-center justify-center gap-2"
+            className="btn-pro-secondary w-full sm:w-auto text-base sm:text-lg py-4 px-8"
           >
             <Disc className="w-5 h-5 text-pink-400" />
             <span>Probar Ruleta Interactiva Gratis</span>
           </Link>
         </div>
 
-        {/* Social Platforms Pills */}
+        {/* Quick Access Tools Pills */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
+          <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider mr-2">Herramientas instantáneas:</span>
+          {standaloneTools.map((t) => {
+            const Icon = t.icon;
+            return (
+              <Link
+                key={t.href}
+                href={t.href}
+                className="tool-switcher-pill hover:scale-105 active:scale-95"
+              >
+                <Icon className="w-3.5 h-3.5 text-violet-400" />
+                <span>{t.title.split(' ')[0]} {t.title.split(' ')[1] || ''}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Trust Pills */}
         <div className="pt-6 flex flex-wrap items-center justify-center gap-3 text-xs font-mono text-zinc-400">
           <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/5">
             <InstagramIcon className="w-4 h-4 text-pink-400" /> Instagram Posts & Reels
@@ -142,7 +167,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── STANDALONE TOOLS GRID (LEAD MAGNET / OE-002) ───────────────── */}
+      {/* ─── PUBLIC HASH VERIFIER WIDGET ───────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <HomeHashVerifier />
+      </section>
+
+      {/* ─── STANDALONE TOOLS GRID ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
           <span className="text-xs font-mono font-bold text-pink-400 uppercase tracking-wider flex items-center justify-center gap-1.5">
@@ -161,9 +191,8 @@ export default function HomePage() {
           {standaloneTools.map((tool) => {
             const Icon = tool.icon;
             return (
-              <Link
+              <div
                 key={tool.href}
-                href={tool.href}
                 className="glass-card glass-card-hover rounded-3xl p-6 sm:p-7 flex flex-col justify-between gap-6 border border-white/10 group relative overflow-hidden"
               >
                 <div className="space-y-4">
@@ -186,11 +215,14 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 text-xs font-bold font-mono text-pink-400 group-hover:text-pink-300 transition-colors pt-2">
-                  <span>Probar herramienta gratis</span>
+                <Link
+                  href={tool.href}
+                  className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 hover:border-violet-500/40 text-white font-bold font-display text-xs text-center flex items-center justify-center gap-2 transition-all shadow-sm group-hover:bg-gradient-to-r group-hover:from-violet-600 group-hover:to-pink-600 group-hover:border-transparent"
+                >
+                  <span>{tool.action}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
+                </Link>
+              </div>
             );
           })}
         </div>
@@ -300,9 +332,9 @@ export default function HomePage() {
 
               <Link
                 href={plan.id === 'free' ? '/sorteos/nuevo' : '/planes'}
-                className={`w-full py-3 rounded-xl font-bold text-xs text-center transition-all ${
+                className={`w-full py-3.5 rounded-xl font-bold font-display text-xs text-center transition-all ${
                   plan.isPopular
-                    ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg hover:brightness-110'
+                    ? 'btn-pro-primary py-3.5 w-full text-xs'
                     : 'bg-white/10 text-white hover:bg-white/15'
                 }`}
               >

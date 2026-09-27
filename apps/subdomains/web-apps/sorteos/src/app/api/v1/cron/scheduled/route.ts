@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     return fail('No autorizado.', 401);
   }
   const now = Date.now();
-  const due = [...db.giveaways.values()].filter(
+  const due = db.giveaways.list().filter(
     (g) => g.status === 'scheduled' && g.scheduledAt && Date.parse(g.scheduledAt) <= now
   );
   const results: Array<Record<string, unknown>> = [];

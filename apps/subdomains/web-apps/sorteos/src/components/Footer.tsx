@@ -62,8 +62,8 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs">
               <li><Link href="/terminos-y-condiciones" className="hover:text-zinc-200 transition-colors">Términos del Servicio</Link></li>
               <li><Link href="/politica-de-privacidad" className="hover:text-zinc-200 transition-colors">Política de Privacidad</Link></li>
-              <li><span className="text-zinc-500">Aviso Legal de Sorteos</span></li>
-              <li><span className="text-zinc-500">Cifrado AES-256 en Reposo</span></li>
+              <li><Link href="/certificados/CERT-SP-98A41E8D" className="text-emerald-400 hover:text-emerald-300 transition-colors">Verificar Certificado</Link></li>
+              <li><Link href="/admin" className="text-zinc-600 hover:text-zinc-400 transition-colors">Consola Admin</Link></li>
             </ul>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Coins, RotateCw, History, Trophy, Sparkles, CheckCircle2 } from 'lucide-react';
 import { flipCoin, generateSha256Hash } from '@/lib/randomEngine';
+import { ToolSwitcher } from '@/components/ToolSwitcher';
 
 export default function MonedaPage() {
   const [result, setResult] = useState<'cara' | 'cruz' | null>('cara');
@@ -37,7 +38,8 @@ export default function MonedaPage() {
   const caraPercent = totalFlips > 0 ? Math.round((caraCount / totalFlips) * 100) : 50;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <ToolSwitcher />
       {/* Header */}
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
@@ -107,10 +109,12 @@ export default function MonedaPage() {
             type="button"
             disabled={isFlipping}
             onClick={handleFlip}
-            className="px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-zinc-950 font-black font-display text-base shadow-xl shadow-amber-500/25 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+            className={`btn-pro-gold text-base sm:text-lg py-4 px-12 rounded-2xl ${
+              isFlipping ? 'opacity-60 cursor-not-allowed !transform-none' : ''
+            }`}
           >
             <RotateCw className={`w-5 h-5 ${isFlipping ? 'animate-spin' : ''}`} />
-            <span>{isFlipping ? 'Lanzando moneda...' : '🪙 ¡Lanzar Moneda!'}</span>
+            <span>{isFlipping ? 'Lanzando moneda...' : '🪙 ¡Lanzar Moneda Ahora!'}</span>
           </button>
         </div>
 

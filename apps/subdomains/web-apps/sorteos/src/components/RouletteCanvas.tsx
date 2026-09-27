@@ -170,13 +170,20 @@ export const RouletteCanvas: React.FC<RouletteCanvasProps> = ({
         type="button"
         disabled={isSpinning || options.length === 0}
         onClick={spin}
-        className={`px-8 py-3.5 rounded-2xl font-bold font-display text-base transition-all shadow-xl ${
+        className={`btn-pro-primary text-lg py-4 px-10 rounded-2xl ${
           isSpinning || options.length === 0
-            ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
-            : 'bg-gradient-to-r from-violet-600 via-pink-500 to-amber-400 text-white hover:scale-105 shadow-violet-500/25 active:scale-95'
+            ? '!bg-zinc-800 !text-zinc-500 !cursor-not-allowed !shadow-none !transform-none opacity-60'
+            : ''
         }`}
       >
-        {isSpinning ? '¡Girando la ruleta...!' : '🎯 ¡Girar Ruleta!'}
+        {isSpinning ? (
+          <>
+            <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            <span>Girando la Ruleta...</span>
+          </>
+        ) : (
+          <span>🎯 ¡Girar Ruleta Ahora!</span>
+        )}
       </button>
     </div>
   );

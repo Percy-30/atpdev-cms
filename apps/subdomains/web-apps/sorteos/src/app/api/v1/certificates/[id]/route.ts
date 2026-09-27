@@ -7,7 +7,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const { id } = await params;
   const cert = db.certificates.get(id);
   if (!cert) {
-    const g = [...db.giveaways.values()].find((x) => x.certificateId === id);
+    const g = db.giveaways.list().find((x) => String(x.certificateId) === id);
     if (!g) return fail('Certificado no encontrado.', 404);
     return ok(
       { certificate: { id, giveawayId: g.id, title: g.title, verificationHash: g.verificationHash, issuedAt: g.executedAt } },
