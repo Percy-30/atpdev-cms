@@ -15,17 +15,18 @@ import {
 } from 'lucide-react';
 import PublicarFormClient from './PublicarFormClient';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Publicar Convocatoria u Oferta de Trabajo Oficial',
   description: 'Publica gratuitamente ofertas laborales y convocatorias CAS 1057, 728, 276 para instituciones del Estado y empresas privadas en Perú.',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/publicar-empleo',
+    canonical: `${SITE_URL}/publicar-empleo`,
   },
   openGraph: {
     title: 'Publicar Convocatoria de Trabajo en Perú | chamba pro',
     description: 'Difusión oficial para entidades públicas, municipalidades, ministerios y empresas en chamba pro.',
-    url: 'https://empleos.atpdev.dev/publicar-empleo',
+    url: `${SITE_URL}/publicar-empleo`,
     siteName: 'chamba pro',
     locale: 'es_PE',
     type: 'website',

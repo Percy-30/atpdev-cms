@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Formatos y Anexos SERVIR CAS Editables 2026',
   description: 'Descarga gratis plantillas y formatos oficiales de Declaraciones Juradas, Anexo 1, 2, 3 y 4 para convocatorias CAS del Estado Peruano.',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/plantillas-anexos',
+    canonical: `${SITE_URL}/plantillas-anexos`,
   },
   openGraph: {
     title: 'Formatos y Anexos SERVIR CAS Editables 2026 | chamba pro',
     description: 'Descarga gratis plantillas oficiales de Declaraciones Juradas para convocatorias CAS del Estado Peruano.',
-    url: 'https://empleos.atpdev.dev/plantillas-anexos',
+    url: `${SITE_URL}/plantillas-anexos`,
     type: 'website',
   },
 };

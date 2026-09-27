@@ -12,6 +12,7 @@ import { JobCard } from "@/components/JobCard";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { PlazasList } from "@/components/PlazasList";
 import { JobCountdownClock } from "@/components/JobCountdownClock";
+import { SITE_URL } from "@/lib/siteConfig";
 
 export const dynamicParams = true;
 export const revalidate = 60;
@@ -31,8 +32,8 @@ export async function generateMetadata({
   const job = await getJobPostingBySlug(decodedSlug) || await getJobPostingBySlug(slug);
   if (!job) return {};
 
-  const pageUrl = `https://empleos.atpdev.dev/empleos/${slug}`;
-  const ogImage = job.entity_logo || "https://empleos.atpdev.dev/opengraph-image";
+  const pageUrl = `${SITE_URL}/empleos/${slug}`;
+  const ogImage = job.entity_logo || `${SITE_URL}/opengraph-image`;
 
   const rawTitle = `${job.title} — ${job.entity_name}`;
   const title = rawTitle.length > 56
@@ -140,7 +141,7 @@ export default async function JobDetailPage({
   const benefitsHtml = (job.benefits && job.benefits.length > 0)
     ? `<h3>Beneficios:</h3><ul>${job.benefits.map(b => `<li>${b.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}</ul>`
     : '';
-  const formattedHtmlDescription = `<p>${(job.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n+/g, '<br/>')}</p>${plazasHtml}${reqListHtml}${benefitsHtml}<p><strong>Régimen:</strong> ${job.sector_type} | <strong>Remuneración:</strong> ${job.salary_text} | <strong>Ubicación:</strong> ${job.region}, Perú</p><p>Consulte bases y cronograma oficial en Chamba Pro (empleos.atpdev.dev).</p>`;
+  const formattedHtmlDescription = `<p>${(job.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n+/g, '<br/>')}</p>${plazasHtml}${reqListHtml}${benefitsHtml}<p><strong>Régimen:</strong> ${job.sector_type} | <strong>Remuneración:</strong> ${job.salary_text} | <strong>Ubicación:</strong> ${job.region}, Perú</p><p>Consulte bases y cronograma oficial en Chamba Pro (atpdev.dev).</p>`;
 
   // Google for Jobs JSON-LD Schema
   const jsonLd = {
@@ -161,7 +162,7 @@ export default async function JobDetailPage({
       "@type": "Organization",
       name: job.entity_name,
       sameAs: job.apply_url,
-      logo: job.entity_logo || "https://empleos.atpdev.dev/icon.svg",
+      logo: job.entity_logo || `${SITE_URL}/icon.svg`,
     },
     jobLocation: {
       "@type": "Place",
@@ -203,19 +204,19 @@ export default async function JobDetailPage({
         "@type": "ListItem",
         position: 1,
         name: "Inicio",
-        item: "https://empleos.atpdev.dev",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Convocatorias",
-        item: "https://empleos.atpdev.dev/empleos",
+        item: `${SITE_URL}/empleos`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: job.title,
-        item: `https://empleos.atpdev.dev/empleos/${job.slug}`,
+        item: `${SITE_URL}/empleos/${job.slug}`,
       },
     ],
   };
@@ -460,7 +461,7 @@ export default async function JobDetailPage({
             <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
               <span>Compartir:</span>
               <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro: https://empleos.atpdev.dev/empleos/${job.slug}`)}`}
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro: ${SITE_URL}/empleos/${job.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all font-semibold hover:scale-105"
@@ -468,7 +469,7 @@ export default async function JobDetailPage({
                 WhatsApp
               </a>
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://empleos.atpdev.dev/empleos/${job.slug}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_URL}/empleos/${job.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 transition-all font-semibold hover:scale-105"
@@ -476,7 +477,7 @@ export default async function JobDetailPage({
                 Facebook
               </a>
               <a
-                href={`https://t.me/share/url?url=${encodeURIComponent(`https://empleos.atpdev.dev/empleos/${job.slug}`)}&text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro`)}`}
+                href={`https://t.me/share/url?url=${encodeURIComponent(`${SITE_URL}/empleos/${job.slug}`)}&text=${encodeURIComponent(`${job.title} - ${job.entity_name} en Chamba Pro`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 transition-all font-semibold hover:scale-105"
@@ -484,7 +485,7 @@ export default async function JobDetailPage({
                 Telegram
               </a>
               <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://empleos.atpdev.dev/empleos/${job.slug}`)}`}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/empleos/${job.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-xl bg-blue-600/10 hover:bg-blue-600/20 text-blue-300 border border-blue-600/30 transition-all font-semibold hover:scale-105"

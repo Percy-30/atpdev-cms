@@ -3,17 +3,18 @@ import Link from 'next/link';
 import { ChevronRight, HelpCircle, Sparkles, BookOpen, ShieldCheck } from 'lucide-react';
 import { PreguntasCasSimulator } from '@/components/PreguntasCasSimulator';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Banco de Preguntas y Examen CAS Perú 2026',
   description: 'Simulador gratuito de examen de conocimientos y entrevista de evaluación técnica para convocatorias CAS en el Estado (Ley 27444, Ley 30225 y Ética).',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/preguntas-entrevista-cas',
+    canonical: `${SITE_URL}/preguntas-entrevista-cas`,
   },
   openGraph: {
     title: 'Banco de Preguntas & Examen de Entrevista CAS Perú 2026 | chamba pro',
     description: 'Simulador gratuito de examen de conocimientos y entrevista de evaluación técnica CAS.',
-    url: 'https://empleos.atpdev.dev/preguntas-entrevista-cas',
+    url: `${SITE_URL}/preguntas-entrevista-cas`,
     type: 'website',
   },
   keywords: [

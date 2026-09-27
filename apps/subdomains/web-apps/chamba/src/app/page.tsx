@@ -7,7 +7,9 @@ import { RegionesGrid } from "@/components/RegionesGrid";
 import WhatsAppSubscribeWidget from "@/components/WhatsAppSubscribeWidget";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { AdLateralRail } from "@/components/AdLateralRail";
-import { ShieldCheck, Sparkles, Building2, MapPin, ArrowRight, CheckCircle2, Calculator, HelpCircle, FileText, Bot, FileSpreadsheet, Scale, ChevronDown } from "lucide-react";
+import { ShieldCheck, Sparkles, Building2, MapPin, ArrowRight, CheckCircle2, Calculator, HelpCircle, FileText, Bot, FileSpreadsheet, Scale, ChevronDown, BookOpen, Clock } from "lucide-react";
+import { SITE_URL } from "@/lib/siteConfig";
+import { getAllGuias } from "@/data/guias";
 
 export const metadata: Metadata = {
   title: {
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
   },
   description: "Buscador líder de convocatorias de trabajo y chamba verificada en Perú: CAS 1057, D.L. 728, 276 y sector privado. Consulta bases oficiales, requisitos y salarios vigentes.",
   alternates: {
-    canonical: "https://empleos.atpdev.dev",
+    canonical: SITE_URL,
   },
 };
 
@@ -390,6 +392,67 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* Featured Guías Laborales Section (E-E-A-T & High Quality Content) */}
+        <section className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
+            <div>
+              <span className="text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <BookOpen size={13} />
+                <span>Centro Editorial y Guías Oficiales</span>
+              </span>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-white tracking-tight mt-1">
+                Guías de Postulación y Normatividad Laboral Perú
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                Manuales elaborados conforme a directrices de SERVIR y la legislación laboral pública (D.L. 1057, 728 y 276).
+              </p>
+            </div>
+            <Link
+              href="/guias"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-400 hover:text-emerald-300 font-bold shrink-0 hover:translate-x-1 transition-all"
+            >
+              <span>Ver todas las guías</span>
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {getAllGuias().slice(0, 3).map((guia) => (
+              <article
+                key={guia.slug}
+                className="group relative flex flex-col justify-between rounded-3xl border border-white/10 bg-slate-900/70 p-5 backdrop-blur-md hover:border-emerald-500/40 hover:bg-slate-900/90 transition-all shadow-md"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-[11px] font-mono">
+                    <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
+                      {guia.category}
+                    </span>
+                    <span className="flex items-center gap-1 text-slate-400">
+                      <Clock size={11} />
+                      {guia.readTime}
+                    </span>
+                  </div>
+                  <h3 className="font-display font-bold text-sm sm:text-base text-white group-hover:text-emerald-400 transition-colors leading-snug">
+                    <Link href={`/guias/${guia.slug}`}>
+                      <span className="absolute inset-0" aria-hidden="true" />
+                      {guia.title}
+                    </Link>
+                  </h3>
+                  <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                    {guia.description}
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400 font-mono">
+                  <span>Actualizado {guia.updatedAt}</span>
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                    Leer <ArrowRight size={11} />
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
         {/* Semantic FAQ Section for SEO & AdSense Content Quality */}
         <section className="space-y-6">
           <div className="border-b border-white/10 pb-4">
@@ -461,7 +524,7 @@ export default async function HomePage() {
               "@type": "ListItem",
               position: index + 1,
               name: `${job.title} — ${job.entity_name}`,
-              url: `https://empleos.atpdev.dev/empleos/${job.slug}`,
+              url: `${SITE_URL}/empleos/${job.slug}`,
             })),
           }),
         }}

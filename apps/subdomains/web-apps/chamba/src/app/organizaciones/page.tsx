@@ -5,6 +5,7 @@ import { Building2, Search, Briefcase, Users, ShieldCheck, ExternalLink, Sparkle
 import { getOrganizations, OrganizationItem, OrganizationCategory } from '@atpdev/database';
 import OrganizationsClient from './OrganizationsClient';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const revalidate = 1800; // 30 minutos
 
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
   title: 'Directorio de Entidades Públicas y Organizaciones del Estado',
   description: 'Explora más de 120 instituciones públicas, ministerios, municipalidades y organismos autónomos de Perú con convocatorias CAS, 728 y prácticas vigentes.',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/organizaciones',
+    canonical: `${SITE_URL}/organizaciones`,
   },
   openGraph: {
     title: 'Directorio de Organizaciones y Entidades del Estado Perú | chamba pro',
     description: 'Encuentra convocatorias vigentes en INEI, SUNAT, MINEDU, ESSALUD, Poder Judicial, ONPE y más de 120 entidades públicas verificadas.',
-    url: 'https://empleos.atpdev.dev/organizaciones',
+    url: `${SITE_URL}/organizaciones`,
     siteName: 'chamba pro',
     locale: 'es_PE',
     type: 'website',

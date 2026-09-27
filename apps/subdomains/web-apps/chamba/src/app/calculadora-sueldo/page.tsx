@@ -5,11 +5,13 @@ import { ChevronRight, Calculator, ShieldCheck, Sparkles, HelpCircle } from 'luc
 import { CalculadoraSueldo } from '@/components/CalculadoraSueldo';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
 
+import { SITE_URL } from '@/lib/siteConfig';
+
 export const metadata: Metadata = {
   title: 'Calculadora de Sueldo Neto CAS 1057 & 728 Perú 2026',
   description: 'Calcula gratis tu sueldo líquido neto, descuentos de AFP/ONP e impuesto a la renta para convocatorias laborales en el Estado y Sector Privado en Perú.',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/calculadora-sueldo',
+    canonical: `${SITE_URL}/calculadora-sueldo`,
   },
   keywords: [
     'calculadora sueldo cas 1057',

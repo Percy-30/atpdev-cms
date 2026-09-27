@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2 } from 'lucide-react';
+import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2, BookOpen } from 'lucide-react';
 import { ChambaThemeToggle } from './ChambaThemeToggle';
 
 export function MobileNavMenu() {
@@ -68,6 +68,15 @@ export function MobileNavMenu() {
             >
               <Search size={18} className="text-emerald-400" />
               <span>Buscar Convocatorias</span>
+            </Link>
+
+            <Link
+              href="/guias"
+              onClick={() => setIsOpen(false)}
+              className="drawer-nav-item-highlight flex items-center gap-3 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 hover:border-emerald-500/40 text-emerald-300 hover:text-emerald-200 transition-colors"
+            >
+              <BookOpen size={18} className="text-emerald-400" />
+              <span className="font-bold">Guías Laborales CAS</span>
             </Link>
 
             <Link

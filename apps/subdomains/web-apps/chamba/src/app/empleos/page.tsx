@@ -5,6 +5,7 @@ import { JobFilterClient } from "@/components/JobFilterClient";
 import WhatsAppSubscribeWidget from "@/components/WhatsAppSubscribeWidget";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { Search, Filter, Briefcase } from "lucide-react";
+import { SITE_URL } from "@/lib/siteConfig";
 
 export const revalidate = 0;
 
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
   title: "Buscador de Convocatorias de Trabajo Perú 2026",
   description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en ministerios, municipalidades y entidades públicas.",
   alternates: {
-    canonical: "https://empleos.atpdev.dev/empleos",
+    canonical: `${SITE_URL}/empleos`,
   },
   openGraph: {
     title: "Buscador de Convocatorias de Trabajo Perú 2026 | chamba pro",
     description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en el Estado.",
-    url: "https://empleos.atpdev.dev/empleos",
+    url: `${SITE_URL}/empleos`,
     type: "website",
   },
 };

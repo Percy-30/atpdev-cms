@@ -5,6 +5,7 @@ import { getJobPostings } from "@atpdev/database";
 import { JobCard } from "@/components/JobCard";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { Briefcase, ChevronRight, Scale, ArrowLeft, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { SITE_URL } from "@/lib/siteConfig";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -93,7 +94,7 @@ export async function generateMetadata({
 
   const title = `Convocatorias ${catInfo.name} 2026 — Empleos y Trabajo en Perú`;
   const description = `Consulta convocatorias vigentes de ${catInfo.name} en el Estado Peruano y sector privado. Bases oficiales en PDF, requisitos, cronograma y salarios.`;
-  const canonicalUrl = `https://empleos.atpdev.dev/convocatorias/${categoria}`;
+  const canonicalUrl = `${SITE_URL}/convocatorias/${categoria}`;
 
   return {
     title,
@@ -119,7 +120,7 @@ export async function generateMetadata({
       locale: "es_PE",
       images: [
         {
-          url: "https://empleos.atpdev.dev/opengraph-image",
+          url: `${SITE_URL}/opengraph-image`,
           width: 1200,
           height: 630,
           alt: `Convocatorias de Trabajo ${catInfo.name} Perú`,
@@ -130,7 +131,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: ["https://empleos.atpdev.dev/opengraph-image"],
+      images: [`${SITE_URL}/opengraph-image`],
     },
   };
 }
@@ -169,19 +170,19 @@ export default async function ConvocatoriaCategoriaPage({
         "@type": "ListItem",
         position: 1,
         name: "Inicio",
-        item: "https://empleos.atpdev.dev",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Convocatorias",
-        item: "https://empleos.atpdev.dev/empleos",
+        item: `${SITE_URL}/empleos`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: catInfo.name,
-        item: `https://empleos.atpdev.dev/convocatorias/${categoria}`,
+        item: `${SITE_URL}/convocatorias/${categoria}`,
       },
     ],
   };
@@ -195,7 +196,7 @@ export default async function ConvocatoriaCategoriaPage({
       "@type": "ListItem",
       position: index + 1,
       name: `${job.title} — ${job.entity_name}`,
-      url: `https://empleos.atpdev.dev/empleos/${job.slug}`,
+      url: `${SITE_URL}/empleos/${job.slug}`,
     })),
   };
 

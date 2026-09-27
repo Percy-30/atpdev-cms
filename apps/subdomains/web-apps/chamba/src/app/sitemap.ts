@@ -1,9 +1,12 @@
 import { MetadataRoute } from 'next';
 import { getJobPostings } from '@atpdev/database';
+import { SITE_URL } from '@/lib/siteConfig';
+import { getAllGuias } from '@/data/guias';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const jobs = await getJobPostings();
-  const baseUrl = 'https://empleos.atpdev.dev';
+  const guias = getAllGuias();
+  const baseUrl = SITE_URL;
 
   const jobUrls = jobs.map((job) => ({
     url: `${baseUrl}/empleos/${job.slug}`,
@@ -12,8 +15,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
+  const guiasUrls = guias.map((guia) => ({
+    url: `${baseUrl}/guias/${guia.slug}`,
+    lastModified: new Date(guia.updatedAt),
+    changeFrequency: 'weekly' as const,
+    priority: 0.95,
+  }));
+
   const toolUrls = [
     '/empleos',
+    '/guias',
     '/calculadora-sueldo',
     '/comparador-regimenes',
     '/crear-cv-cas',
@@ -62,6 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     ...toolUrls,
+    ...guiasUrls,
     ...regionUrls,
     ...categoriaUrls,
     ...jobUrls,

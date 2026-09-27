@@ -12,7 +12,7 @@ import Script from "next/script";
 import { 
   Briefcase, ShieldCheck, Search, PlusCircle, Globe, Award, 
   Calculator, FileText, HelpCircle, Bot, FileSpreadsheet, Scale,
-  Mail, ExternalLink, Lock, Building2, Compass
+  Mail, ExternalLink, Lock, Building2, Compass, BookOpen
 } from "lucide-react";
 import { MobileNavMenu } from "@/components/MobileNavMenu";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
@@ -21,6 +21,7 @@ import { ChambaGlowWrapper } from "@/components/ChambaGlowWrapper";
 import { ChambaCustomCursor } from "@/components/ChambaCustomCursor";
 import { ChambaThemeToggle } from "@/components/ChambaThemeToggle";
 import { getSubdomainConfig } from "@atpdev/database";
+import { SITE_URL } from "@/lib/siteConfig";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -43,7 +44,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://empleos.atpdev.dev"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
     template: "%s | chamba pro",
@@ -74,9 +75,9 @@ export const metadata: Metadata = {
     "chamba pro"
   ],
   alternates: {
-    canonical: "https://empleos.atpdev.dev",
+    canonical: SITE_URL,
     types: {
-      "application/rss+xml": "https://empleos.atpdev.dev/rss.xml",
+      "application/rss+xml": `${SITE_URL}/rss.xml`,
     },
   },
   icons: {
@@ -91,13 +92,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "chamba pro — Buscador de Convocatorias, Empleos y Trabajo en Perú",
     description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
-    url: "https://empleos.atpdev.dev",
+    url: SITE_URL,
     siteName: "chamba pro",
     locale: "es_PE",
     type: "website",
     images: [
       {
-        url: "https://empleos.atpdev.dev/opengraph-image",
+        url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: "chamba pro — Convocatorias de Trabajo, Empleos y Chamba en Perú",
@@ -108,7 +109,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
     description: "Encuentra chamba verificada y convocatorias CAS 1057, 728 y sector privado en Perú con enlace a bases oficiales.",
-    images: ["https://empleos.atpdev.dev/opengraph-image"],
+    images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {
     index: true,
@@ -219,14 +220,14 @@ export default function RootLayout({
               "@type": "WebSite",
               name: "chamba pro",
               alternateName: "Chamba Pro Perú",
-              url: "https://empleos.atpdev.dev",
+              url: SITE_URL,
               description: "Buscador de convocatorias CAS 1057, D.L. 728, 276 y sector privado en Perú con enlace directo a fuentes oficiales.",
               inLanguage: "es-PE",
               potentialAction: {
                 "@type": "SearchAction",
                 target: {
                   "@type": "EntryPoint",
-                  urlTemplate: "https://empleos.atpdev.dev/empleos?q={search_term_string}",
+                  urlTemplate: `${SITE_URL}/empleos?q={search_term_string}`,
                 },
                 "query-input": "required name=search_term_string",
               },
@@ -242,8 +243,8 @@ export default function RootLayout({
               "@type": "Organization",
               name: "chamba pro",
               legalName: "ATP DEV",
-              url: "https://empleos.atpdev.dev",
-              logo: "https://empleos.atpdev.dev/icon.svg",
+              url: SITE_URL,
+              logo: `${SITE_URL}/icon.svg`,
               sameAs: ["https://atpdev.dev"],
               contactPoint: {
                 "@type": "ContactPoint",
@@ -311,6 +312,10 @@ export default function RootLayout({
               <Link href="/empleos" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
                 <Search size={14} className="text-emerald-400" />
                 <span>Buscador</span>
+              </Link>
+              <Link href="/guias" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10 text-emerald-300 font-bold">
+                <BookOpen size={14} className="text-emerald-400" />
+                <span>Guías CAS</span>
               </Link>
               <Link href="/organizaciones" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
                 <Building2 size={14} className="text-emerald-400" />
@@ -401,6 +406,12 @@ export default function RootLayout({
                   Herramientas Gratuitas
                 </h4>
                 <ul className="space-y-2 text-slate-400">
+                  <li>
+                    <Link href="/guias" className="hover:text-emerald-400 transition-colors font-bold text-emerald-300 flex items-center gap-1.5">
+                      <BookOpen size={12} className="text-emerald-400" />
+                      <span>Guías Laborales y Manuales CAS</span>
+                    </Link>
+                  </li>
                   <li>
                     <Link href="/calculadora-sueldo" className="hover:text-emerald-400 transition-colors">
                       Calculadora de Sueldo Neto CAS

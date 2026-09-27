@@ -1,17 +1,18 @@
 import Link from 'next/link';
 import { ShieldCheck, Lock, Cookie, Eye, CheckCircle2, ArrowLeft, ExternalLink, HelpCircle } from 'lucide-react';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidad & Protección de Datos',
   description: 'Política de privacidad de Chamba Pro conforme a la Ley 29733 de Protección de Datos Personales y políticas de cookies de terceros de Google AdSense.',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/politica-de-privacidad',
+    canonical: `${SITE_URL}/politica-de-privacidad`,
   },
   openGraph: {
     title: 'Política de Privacidad & Protección de Datos — Chamba Pro',
     description: 'Política de privacidad y cookies de Chamba Pro conforme a la Ley 29733.',
-    url: 'https://empleos.atpdev.dev/politica-de-privacidad',
+    url: `${SITE_URL}/politica-de-privacidad`,
     type: 'website',
   },
 };

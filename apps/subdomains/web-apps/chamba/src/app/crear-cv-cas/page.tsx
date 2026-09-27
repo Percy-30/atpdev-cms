@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { CvCasGenerator } from '@/components/CvCasGenerator';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Generador de CV SERVIR CAS y ATS 2026',
@@ -23,18 +24,18 @@ export const metadata: Metadata = {
     'curriculum vitae peru word editable'
   ],
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/crear-cv-cas',
+    canonical: `${SITE_URL}/crear-cv-cas`,
   },
   openGraph: {
     title: 'Generador de CV SERVIR CAS y ATS 2026 | chamba pro',
     description: 'Crea y descarga gratis tu CV SERVIR CAS y ATS Harvard en PDF A4 editable. Plantillas oficiales para convocatorias de trabajo en el Estado Peruano.',
-    url: 'https://empleos.atpdev.dev/crear-cv-cas',
+    url: `${SITE_URL}/crear-cv-cas`,
     siteName: 'chamba pro',
     locale: 'es_PE',
     type: 'website',
     images: [
       {
-        url: 'https://empleos.atpdev.dev/opengraph-image',
+        url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: 'Generador de CV SERVIR CAS y ATS 2026',

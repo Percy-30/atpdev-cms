@@ -4,17 +4,18 @@ import { getSubdomainConfig } from '@atpdev/database';
 import { ShieldCheck, CheckCircle2, Award, ExternalLink, Zap, Users, Lock } from 'lucide-react';
 
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Quiénes Somos & Garantía de Transparencia',
   description: 'Misión de Chamba Pro: agregador nacional de empleo en Perú con enlace directo a fuentes oficiales del Estado, sin cobros y con total transparencia.',
   alternates: {
-    canonical: 'https://empleos.atpdev.dev/quienes-somos',
+    canonical: `${SITE_URL}/quienes-somos`,
   },
   openGraph: {
     title: 'Quiénes Somos & Garantía de Transparencia — Chamba Pro',
     description: 'Conoce la misión y valores de transparencia de Chamba Pro.',
-    url: 'https://empleos.atpdev.dev/quienes-somos',
+    url: `${SITE_URL}/quienes-somos`,
     type: 'website',
   },
 };

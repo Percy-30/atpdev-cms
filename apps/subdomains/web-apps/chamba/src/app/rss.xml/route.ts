@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getJobPostings } from '@atpdev/database';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 1800; // 30 minutes
@@ -20,7 +21,7 @@ function escapeXml(unsafe?: string | null): string {
 
 export async function GET() {
   const jobs = await getJobPostings();
-  const baseUrl = 'https://empleos.atpdev.dev';
+  const baseUrl = SITE_URL;
 
   const itemsXml = jobs
     .slice(0, 100)
