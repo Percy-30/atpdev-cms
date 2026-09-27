@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Printer, Copy, Check, Download, Upload, RotateCcw, Trash2, 
-  Sparkles, Eye, ZoomIn, ZoomOut, Maximize2, ShieldCheck, FileText, Info, ArrowRight
+  Sparkles, Eye, ZoomIn, ZoomOut, Maximize2, ShieldCheck, FileText, Info, ArrowRight, X
 } from 'lucide-react';
 import { CvData, CvTemplateId } from './cv/types';
 import { SAMPLE_CV_DATA } from './cv/sampleData';
@@ -29,7 +29,25 @@ export function CvCasGenerator() {
   const [isPrinting, setIsPrinting] = useState(false);
   const [mobileTab, setMobileTab] = useState<'editor' | 'preview'>('editor');
   const [showClearModal, setShowClearModal] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [toast, setToast] = useState<{ message: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const showToast = (message: string) => {
+    setToast({ message });
+    setTimeout(() => {
+      setToast(null);
+    }, 2800);
+  };
+
+  // Close full screen on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsFullscreen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Remove zoom scale during print events
   useEffect(() => {
@@ -86,10 +104,12 @@ export function CvCasGenerator() {
     const text = generatePlainResumeText(data);
     navigator.clipboard.writeText(text);
     setCopied(true);
+    showToast('✓ Texto plano copiado al portapapeles');
     setTimeout(() => setCopied(false), 2500);
   };
 
   const handleDownloadWord = () => {
+    showToast('✓ Generando documento Word (.doc)...');
     downloadCvAsWord(data, templateId);
   };
 
@@ -111,6 +131,7 @@ export function CvCasGenerator() {
       )
     ) {
       handleDataChange(SAMPLE_CV_DATA);
+      showToast('✓ Modelo de ejemplo cargado con éxito');
     }
   };
 
@@ -142,6 +163,7 @@ export function CvCasGenerator() {
     };
     handleDataChange(emptyData);
     setShowClearModal(false);
+    showToast('✓ Formulario vaciado para nuevo CV');
   };
 
   const handleExportJson = () => {
@@ -153,6 +175,7 @@ export function CvCasGenerator() {
     a.download = `CV_CHAMBA_PRO_${data.personal.dni || 'BORRADOR'}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    showToast('✓ Respaldo JSON descargado');
   };
 
   const handleImportJson = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +189,7 @@ export function CvCasGenerator() {
         if (parsed.data) {
           handleDataChange(parsed.data);
           if (parsed.templateId) handleTemplateChange(parsed.templateId);
-          alert('¡Borrador de CV importado exitosamente!');
+          showToast('✓ Respaldo JSON cargado exitosamente');
         }
       } catch (err) {
         alert('Archivo JSON no válido.');
@@ -427,6 +450,15 @@ export function CvCasGenerator() {
                 <ZoomIn size={13} />
               </button>
 
+              <button
+                type="button"
+                onClick={() => setIsFullscreen(true)}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                title="Vista previa inmersiva a pantalla completa"
+              >
+                <Maximize2 size={13} />
+              </button>
+
               <div className="h-4 w-px bg-white/10 mx-0.5 hidden sm:block" />
 
               <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
@@ -679,6 +711,107 @@ export function CvCasGenerator() {
           </button>
         </div>
       </div>
+
+      {/* Fullscreen Zen Preview Modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col print:hidden animate-in fade-in duration-200">
+          {/* Top Floating Control Bar */}
+          <div className="h-16 px-4 sm:px-6 bg-slate-900/90 border-b border-white/10 flex items-center justify-between gap-4 shrink-0 shadow-xl">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div>
+                <h3 className="font-bold text-white text-sm font-display truncate">
+                  Vista Previa A4 Inmersiva
+                </h3>
+                <p className="text-[11px] font-mono text-slate-400 truncate">
+                  {templateId === 'servir-cas'
+                    ? 'Ficha Resumen SERVIR'
+                    : templateId === 'modern-executive'
+                    ? 'Moderno Ejecutivo'
+                    : templateId === 'minimal-ats'
+                    ? 'Harvard ATS-Friendly'
+                    : 'Tech & Contemporáneo'} • {data.personal.fullName || 'Nuevo CV'}
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Actions in Zen View */}
+            <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-1 font-mono text-[11px] mr-2">
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel(Math.max(40, zoomLevel - 10))}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                  title="Alejar vista"
+                >
+                  <ZoomOut size={13} />
+                </button>
+                <span className="px-2 text-slate-300 text-xs font-bold">{zoomLevel}%</span>
+                <button
+                  type="button"
+                  onClick={() => setZoomLevel(Math.min(120, zoomLevel + 10))}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                  title="Acercar vista"
+                >
+                  <ZoomIn size={13} />
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleDownloadWord}
+                className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+                title="Descargar Word (.DOC) editable"
+              >
+                <FileText size={13} />
+                <span className="hidden sm:inline">Word (.DOC)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handlePrint}
+                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+                title="Guardar o imprimir en PDF A4"
+              >
+                <Printer size={13} className="stroke-[2.5]" />
+                <span>PDF A4</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsFullscreen(false)}
+                className="p-2 rounded-xl bg-slate-800 hover:bg-rose-950/50 hover:text-rose-300 text-slate-300 transition-colors ml-2 cursor-pointer"
+                title="Cerrar vista inmersiva (Esc)"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* Centered Scrollable Stage */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-8 flex justify-center items-start bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px]">
+            <div
+              style={{
+                transform: `scale(${zoomLevel / 100})`,
+                transformOrigin: 'top center',
+              }}
+              className="w-full max-w-[820px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] rounded-sm my-4"
+            >
+              {renderTemplate()}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Micro-Toast Feedback */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-3 duration-300 pointer-events-none">
+          <div className="px-4 py-2.5 rounded-2xl bg-slate-900/95 border border-emerald-500/40 text-white font-medium text-xs shadow-2xl shadow-emerald-950/60 flex items-center gap-2.5 backdrop-blur-xl">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="font-display font-bold">{toast.message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
