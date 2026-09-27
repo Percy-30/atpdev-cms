@@ -46,10 +46,10 @@ export default async function OrganizacionesPage() {
           <span className="text-emerald-400">Organizaciones</span>
         </nav>
 
-        {/* Hero Banner */}
-        <header className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-slate-950/90 border border-white/10 p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl">
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold tracking-wider uppercase">
+        {/* Hero Banner (Centered & Clean) */}
+        <header className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-slate-950/90 border border-white/10 p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl text-center">
+          <div className="max-w-3xl mx-auto space-y-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold tracking-wider uppercase shadow-sm">
               <Building2 size={14} className="animate-pulse" />
               <span>Directorio Oficial de Empleadores Públicos • Perú 2026</span>
             </div>
@@ -58,16 +58,15 @@ export default async function OrganizacionesPage() {
               Instituciones y Organizaciones con <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Convocatorias Vigentes</span>
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              Explora las convocatorias activas de los principales ministerios, organismos constitucionales autónomos,
-              cortes de justicia, municipalidades y empresas estatales. Postulación 100% directa y verificada en sus portales oficiales.
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+              Explora las convocatorias activas de ministerios, cortes de justicia, municipalidades y entidades del Estado con postulación directa y oficial.
             </p>
 
             {/* Quick Action: Publicar Convocatoria */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="pt-2 flex items-center justify-center gap-3">
               <Link
                 href="/publicar-empleo"
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs font-bold text-white transition-all flex items-center gap-2"
+                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs font-bold text-white transition-all flex items-center gap-2 shadow-sm cursor-pointer hover:scale-[1.02] active:scale-98"
               >
                 <span>¿Eres de Recursos Humanos? Publica tu convocatoria</span>
                 <ChevronRight size={14} className="text-emerald-400" />
@@ -76,7 +75,7 @@ export default async function OrganizacionesPage() {
           </div>
 
           {/* Key Metrics Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-8 pt-8 border-t border-white/10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-8 pt-8 border-t border-white/10 max-w-4xl mx-auto text-left">
             <div className="bg-slate-950/60 rounded-2xl p-4 border border-white/10">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono">
                 <Building2 size={14} className="text-emerald-400" />

@@ -195,52 +195,36 @@ export default function CrearCvCasPage() {
       />
 
       <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4">
-        {/* Top Breadcrumb & Status Pill (Print hidden) */}
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-slate-400 print:hidden">
-          <nav className="flex items-center gap-1.5" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
-            <ChevronRight size={12} className="text-slate-600" />
-            <span className="text-slate-300 font-semibold">Generador de CV</span>
-            <ChevronRight size={12} className="text-slate-600" />
-            <span className="text-emerald-400 font-bold">Studio Pro 2026</span>
-          </nav>
-          
-          <div className="hidden sm:flex items-center gap-3 text-[11px] font-mono text-slate-400">
-            <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Calibración A4 Exacta
-            </span>
-            <span className="text-slate-700">•</span>
-            <span>Formatos Oficiales SERVIR (Ley 27444) & Privado</span>
-            <span className="text-slate-700">•</span>
-            <span className="text-slate-300">100% Gratuito sin registro</span>
+        {/* Centered Hero Header — Professional, High-Impact & Clean */}
+        <header className="print:hidden text-center space-y-3 pt-2 pb-5 max-w-4xl mx-auto">
+          {/* Centered Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-sm">
+            <Sparkles size={14} />
+            <span>Formatos Oficiales SERVIR CAS & Sector Privado</span>
           </div>
-        </div>
 
-        {/* Semantic H1 Title & Executive Intro (Print hidden) */}
-        <header className="print:hidden space-y-1.5 pt-1 pb-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-white tracking-tight">
-              Generador de CV Profesional Perú 2026
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 block sm:inline">
-                {' '}— Formatos Oficiales SERVIR CAS y Sector Privado
-              </span>
-            </h1>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-4xl leading-relaxed">
-            Diseña tu hoja de vida con los estándares oficiales de contratación en Perú. Selecciona el modelo que necesitas (Estado CAS 1057, 728, 276 o Sector Corporativo ATS), edita tus datos con autoguardado seguro y expórtalo de inmediato en <strong>formato PDF A4 exacto</strong> o <strong>Word (.DOC) editable</strong> sin marcas de agua.
+          {/* Centered H1 Title */}
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black font-display text-white tracking-tight leading-tight">
+            Generador de CV Profesional{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+              Perú 2026
+            </span>
+          </h1>
+
+          {/* Centered Short Subtitle */}
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            Diseña y descarga gratis tu hoja de vida en <strong>PDF A4 exacto</strong> o <strong>Word (.DOC) editable</strong> con las plantillas oficiales exigidas por el Estado y empresas.
           </p>
-          <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-mono text-slate-400">
-            <span className="px-2 py-0.5 rounded-md bg-slate-900 border border-white/10 text-emerald-300">
-              ✓ Directiva SERVIR N° 004-2021
+
+          {/* Centered Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-mono text-slate-300">
+            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-emerald-300 flex items-center gap-1.5 shadow-sm">
+              ✓ Ficha Resumen SERVIR
             </span>
-            <span className="px-2 py-0.5 rounded-md bg-slate-900 border border-white/10 text-slate-300">
-              ✓ Ley N° 27444 (Declaración Jurada)
+            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-blue-300 flex items-center gap-1.5 shadow-sm">
+              ✓ Formato Harvard ATS
             </span>
-            <span className="px-2 py-0.5 rounded-md bg-slate-900 border border-white/10 text-blue-300">
-              ✓ Formato Harvard ATS Friendly
-            </span>
-            <span className="px-2 py-0.5 rounded-md bg-slate-900 border border-white/10 text-emerald-400 font-bold">
+            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 flex items-center gap-1.5 shadow-sm">
               ✓ 100% Gratuito y Privado
             </span>
           </div>

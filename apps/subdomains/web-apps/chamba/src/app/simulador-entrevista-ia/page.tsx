@@ -81,17 +81,17 @@ export default function AiInterviewPage() {
           <span className="text-slate-200 font-semibold">Simulador de Entrevista IA</span>
         </nav>
 
-      {/* Main Header */}
-      <div className="space-y-3 text-center sm:text-left">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
+      {/* Main Header (Centered & Professional) */}
+      <div className="space-y-3 text-center max-w-3xl mx-auto pt-2 pb-2">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-sm">
           <Sparkles size={14} />
           <span>Exclusivo Chamba Pro — IA Entrenada con Parámetros SERVIR & PCM</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
           Simulador de Entrevista de Trabajo con IA
         </h1>
-        <p className="text-sm text-slate-400 max-w-2xl">
-          Practica tus respuestas en tiempo real frente al Comité de Selección Virtual. Obtén un puntaje de 0 a 100% y recomendaciones de base legal para asegurar tu vacante CAS en el Estado.
+        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Practica tus respuestas en tiempo real ante el Comité Virtual y obtén retroalimentación técnica inmediata para asegurar tu vacante en el Estado.
         </p>
       </div>
 

@@ -115,17 +115,17 @@ export default function PlantillasAnexosPage() {
         <span className="text-slate-200 font-semibold">Centro de Plantillas & Anexos CAS</span>
       </nav>
 
-      {/* Main Header */}
-      <div className="space-y-3 text-center sm:text-left">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-semibold">
+      {/* Main Header (Centered & Professional) */}
+      <div className="space-y-3 text-center max-w-3xl mx-auto pt-2 pb-2">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold shadow-sm">
           <Sparkles size={14} />
           <span>Formatos Gratuitos Listos para Copiar y Descargar</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
-          Centro de Plantillas y Anexos CAS para Convocatorias del Estado
+          Plantillas y Anexos Oficiales CAS
         </h1>
-        <p className="text-sm text-slate-400 max-w-2xl">
-          Copia o descarga gratuitamente los formatos oficiales de Declaraciones Juradas, Fichas de Inscripción y Anexos requeridos obligatoriamente en las postulaciones de instituciones del Gobierno Peruano.
+        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Descarga o copia declaraciones juradas y fichas de inscripción oficiales obligatorias para postular a entidades del Estado.
         </p>
       </div>
 

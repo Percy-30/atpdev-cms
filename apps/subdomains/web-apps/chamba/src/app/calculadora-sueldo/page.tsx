@@ -97,17 +97,17 @@ export default function CalculadoraSueldoPage() {
         <span className="text-slate-200 font-semibold">Calculadora de Sueldo CAS & 728</span>
       </nav>
 
-      {/* Main Hero Header */}
-      <div className="space-y-3 text-center sm:text-left">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
+      {/* Main Hero Header (Centered & Professional) */}
+      <div className="space-y-3 text-center max-w-3xl mx-auto pt-2 pb-2">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-sm">
           <Sparkles size={14} />
           <span>Herramienta Oficial Gratuita — Legislación Laboral Peruana 2026</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
           Calculadora de Sueldo Neto & Descuentos de Ley
         </h1>
-        <p className="text-sm text-slate-400 max-w-2xl">
-          Simula en tiempo real tu remuneración mensual líquida al banco, retenciones de AFP/ONP, Impuesto a la Renta de 5ta Categoría y desglose de aguinaldos o CTS según tu régimen laboral.
+        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Simula en tiempo real tu remuneración líquida al banco, descuentos de AFP/ONP y Quinta Categoría según tu régimen laboral.
         </p>
       </div>
 
