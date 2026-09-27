@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Bot, Sparkles, CheckCircle2, AlertTriangle, XCircle, Building2, RotateCcw } from 'lucide-react';
+import { Bot, Sparkles, CheckCircle2, AlertTriangle, XCircle, Building2, RotateCcw, ArrowRight } from 'lucide-react';
 
 interface QuestionTemplate {
   entity: string;
@@ -203,60 +203,76 @@ export function AiInterviewSimulator() {
   return (
     <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-b from-slate-900 via-slate-900 to-[#0b0f19] space-y-6">
       
-      {/* Step Selector Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+      {/* Header and Entity Selector Tabs */}
+      <div className="space-y-4 border-b border-white/10 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30 mb-2">
-            <Bot size={14} className="text-emerald-400" />
+            <Bot size={15} className="text-emerald-400" />
             <span>Asistente de Inteligencia Artificial para Postulantes</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold font-display text-white">
+          <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight">
             Simulador de Entrevista de Selección CAS / Estado
           </h2>
+          <p className="text-xs sm:text-sm text-slate-300 mt-1">
+            Entrénate con preguntas técnicas y dilemas reales formulados por comités evaluadores de las principales entidades públicas del Perú.
+          </p>
         </div>
 
-        {/* Entity Selector Pills */}
-        <div className="flex flex-wrap gap-2">
-          {TEMPLATES.map(t => (
-            <button
-              key={t.entity}
-              type="button"
-              onClick={() => {
-                setSelectedEntity(t.entity);
-                handleReset();
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                selectedEntity === t.entity
-                  ? 'bg-emerald-500 text-slate-950 shadow-[0_0_12px_rgba(16,185,129,0.4)]'
-                  : 'bg-slate-950 text-slate-400 border border-white/10 hover:text-white'
-              }`}
-            >
-              {t.entity}
-            </button>
-          ))}
+        {/* Entity Selector Tabs (Large, Clear, High-Contrast) */}
+        <div>
+          <label className="block text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+            1. Selecciona la Institución para tu Simulación:
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {TEMPLATES.map(t => (
+              <button
+                key={t.entity}
+                type="button"
+                onClick={() => {
+                  setSelectedEntity(t.entity);
+                  handleReset();
+                }}
+                className={`p-3.5 rounded-2xl text-left transition-all cursor-pointer border flex flex-col justify-between gap-1.5 ${
+                  selectedEntity === t.entity
+                    ? 'bg-emerald-500 text-slate-950 font-black border-emerald-400 shadow-[0_4px_20px_rgba(16,185,129,0.35)] scale-[1.02]'
+                    : 'bg-slate-900/90 text-slate-200 border-white/10 hover:border-white/25 hover:bg-slate-800'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-mono font-black uppercase tracking-wider ${selectedEntity === t.entity ? 'text-slate-950' : 'text-emerald-400'}`}>
+                    {t.entity}
+                  </span>
+                  <Building2 size={16} className={selectedEntity === t.entity ? 'text-slate-950' : 'text-slate-500'} />
+                </div>
+                <span className={`text-xs font-semibold truncate ${selectedEntity === t.entity ? 'text-slate-900' : 'text-slate-300'}`}>
+                  {t.role}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* AI Generated Question Box */}
-      <div className="p-5 rounded-2xl bg-slate-950 border border-white/15 space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5">
-            <Building2 size={14} />
-            <span>Comité de Evaluación {currentTemplate.entity} — {currentTemplate.role}</span>
+      <div className="p-6 rounded-3xl bg-slate-950 border border-white/15 space-y-3.5 shadow-xl">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <span className="text-xs sm:text-sm font-mono font-bold text-amber-400 flex items-center gap-2">
+            <Building2 size={16} />
+            <span>Comité Evaluador: {currentTemplate.entity} — {currentTemplate.role}</span>
           </span>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-            Pregunta Tipo CAS 2026
+          <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
+            ⚡ Pregunta Oficial Tipo CAS 2026
           </span>
         </div>
 
-        <p className="text-base font-bold font-display text-white leading-relaxed">
+        <p className="text-base sm:text-lg font-bold font-display text-white leading-relaxed">
           "{currentTemplate.question}"
         </p>
 
-        <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-mono text-slate-400">
-          <span className="text-slate-300 font-bold">Criterios a evaluar:</span>
+        <div className="pt-2 flex flex-wrap items-center gap-2.5 text-xs font-mono text-slate-400">
+          <span className="text-slate-200 font-bold">Criterios requeridos por el Jurado:</span>
           {currentTemplate.evaluationCriteria.map((c, i) => (
-            <span key={i} className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-slate-300">
+            <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-200">
               ✓ {c}
             </span>
           ))}
@@ -264,56 +280,60 @@ export function AiInterviewSimulator() {
       </div>
 
       {/* User Response Area */}
-      <div className="space-y-3">
-        <label className="block text-xs font-mono font-bold text-slate-300">
-          📝 Escribe tu respuesta como si estuvieras respondiendo al Jurado de la Entrevista:
+      <div className="space-y-4">
+        <label className="block text-xs sm:text-sm font-mono font-bold text-slate-200">
+          📝 2. Escribe tu respuesta como si estuvieras frente al Jurado Evaluador:
         </label>
         <textarea
-          rows={4}
+          rows={5}
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
-          placeholder="Escribe aquí tu respuesta sustentada..."
-          className="w-full p-4 rounded-2xl bg-slate-950 border border-white/15 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 font-sans leading-relaxed"
+          placeholder="Escribe aquí tu respuesta sustentada con base legal, procedimientos y enfoque al ciudadano..."
+          className="w-full p-4 sm:p-5 rounded-2xl bg-slate-950 border border-white/15 text-sm sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 font-sans leading-relaxed shadow-inner"
         />
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <button
             type="button"
             onClick={() => setUserAnswer(currentTemplate.sampleModelAnswer)}
-            className="text-xs font-mono text-emerald-400 hover:underline cursor-pointer flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
           >
             <span>💡 Cargar Respuesta Modelo de Prueba ({currentTemplate.entity})</span>
           </button>
 
-          <div className="flex items-center justify-end gap-2">
-            {userAnswer && (
-              <button
-                type="button"
-                onClick={handleReset}
-                className="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white text-xs font-mono transition-colors border border-white/10"
-              >
-                Limpiar
-              </button>
-            )}
+          {userAnswer && (
             <button
               type="button"
-              onClick={handleRunEvaluation}
-              disabled={!userAnswer.trim() || isAnalyzing}
-              className="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+              onClick={handleReset}
+              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 text-xs font-mono transition-colors border border-rose-500/20 flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              {isAnalyzing ? (
-                <>
-                  <Sparkles size={16} className="animate-spin" />
-                  <span>Analizando con IA...</span>
-                </>
-              ) : (
-                <>
-                  <Bot size={16} />
-                  <span>Evaluar Respuesta con IA</span>
-                </>
-              )}
+              <RotateCcw size={14} />
+              <span>Limpiar Respuesta</span>
             </button>
-          </div>
+          )}
+        </div>
+
+        {/* Massive Primary Action Button (iLovePDF High-Impact Style) */}
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={handleRunEvaluation}
+            disabled={!userAnswer.trim() || isAnalyzing}
+            className="w-full h-15 sm:h-16 px-8 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-base sm:text-lg transition-all shadow-[0_10px_35px_rgba(16,185,129,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.01] active:scale-[0.99] group border border-emerald-300/60"
+          >
+            {isAnalyzing ? (
+              <>
+                <Sparkles size={22} className="animate-spin text-slate-950" />
+                <span className="tracking-tight">Analizando y Calificando con Inteligencia Artificial...</span>
+              </>
+            ) : (
+              <>
+                <Bot size={22} className="stroke-[2.5]" />
+                <span className="tracking-tight">Evaluar mi Respuesta con Inteligencia Artificial</span>
+                <ArrowRight size={20} className="stroke-[2.5] group-hover:translate-x-1.5 transition-transform" />
+              </>
+            )}
+          </button>
         </div>
       </div>
 

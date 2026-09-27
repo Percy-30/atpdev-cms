@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Printer, Copy, Check, Download, Upload, RotateCcw, Trash2, 
-  Sparkles, Eye, ZoomIn, ZoomOut, Maximize2, ShieldCheck, FileText, Info
+  Sparkles, Eye, ZoomIn, ZoomOut, Maximize2, ShieldCheck, FileText, Info, ArrowRight
 } from 'lucide-react';
 import { CvData, CvTemplateId } from './cv/types';
 import { SAMPLE_CV_DATA } from './cv/sampleData';
@@ -204,121 +204,145 @@ export function CvCasGenerator() {
       />
 
       {/* Executive Command Header Bar (Print hidden) */}
-      <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl print:hidden space-y-4">
-        {/* Top Row: Title, live status & primary action hub */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25 shrink-0">
-              <Sparkles size={20} className="stroke-[2.5]" />
+      <div className="p-5 sm:p-6 rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl print:hidden space-y-5">
+        {/* Top Row: Title, live status & secondary actions */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25 shrink-0">
+              <Sparkles size={24} className="stroke-[2.5]" />
             </div>
             <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-base sm:text-lg font-black font-display text-white tracking-tight">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <h2 className="text-lg sm:text-xl font-black font-display text-white tracking-tight">
                   Editor de CV Profesional
                 </h2>
-                <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-[10.5px] font-bold">
-                  ⚡ Calibrado A4
+                <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold">
+                  ⚡ Calibrado A4 Oficial
                 </span>
               </div>
-              <p className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-                <span className="inline-flex items-center gap-1 text-emerald-400 font-mono text-[11px]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <p className="text-xs text-slate-400 flex items-center gap-2 mt-1">
+                <span className="inline-flex items-center gap-1.5 text-emerald-400 font-mono text-xs font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   Auto-guardado activo
                 </span>
                 <span className="text-slate-600 hidden sm:inline">•</span>
-                <span className="text-slate-400 font-mono text-[11px] truncate max-w-[280px] hidden sm:inline">
+                <span className="text-slate-300 font-mono text-xs truncate max-w-[280px] hidden sm:inline">
                   {data.personal.fullName || 'Nuevo CV'}
                 </span>
               </p>
             </div>
           </div>
-             {/* Primary Action Buttons Hub */}
+
+          {/* Secondary Actions Hub */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             {/* Ver Plantilla Llenada */}
             <button
               type="button"
               onClick={handleLoadFilledExample}
-              className="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-emerald-300 font-bold text-xs transition-all border border-emerald-500/40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+              className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-emerald-300 font-bold text-xs sm:text-sm transition-all border border-emerald-500/40 flex items-center gap-2 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
               title="Cargar modelo de ejemplo con datos completos para ver el diseño terminado"
             >
-              <Sparkles size={14} className="text-emerald-400 animate-pulse" />
+              <Sparkles size={16} className="text-emerald-400 animate-pulse" />
               <span>Ver Ejemplo Llenado</span>
             </button>
 
-            {/* Limpiar Formulario con modal seguro */}
+            {/* Limpiar Formulario */}
             <button
               type="button"
               onClick={() => setShowClearModal(true)}
-              className="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-rose-950/40 text-rose-300 hover:text-rose-200 font-bold text-xs transition-all border border-rose-500/30 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
+              className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-rose-950/40 text-rose-300 hover:text-rose-200 font-bold text-xs sm:text-sm transition-all border border-rose-500/30 flex items-center gap-2 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-98"
               title="Limpiar todos los campos del CV de manera segura con confirmación"
             >
-              <RotateCcw size={14} className="text-rose-400" />
+              <RotateCcw size={16} className="text-rose-400" />
               <span>Limpiar Formulario</span>
             </button>
 
-            {/* Descargar en Word (.DOC) */}
-            <button
-              type="button"
-              onClick={handleDownloadWord}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs transition-all shadow-[0_4px_16px_rgba(37,99,235,0.4)] flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-98 border border-blue-400/40"
-              title="Descargar en formato Word (.doc) 100% editable con tablas y membrete"
-            >
-              <FileText size={15} />
-              <span>Descargar Word (.DOC)</span>
-            </button>
-
-            {/* Guardar / Imprimir PDF (Flagship Primary Action) */}
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="px-4.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs transition-all shadow-[0_4px_20px_rgba(16,185,129,0.45)] ring-2 ring-emerald-400/40 flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-98 border border-emerald-300/60"
-              title="Abre el diálogo para guardar como PDF o imprimir en papel A4"
-            >
-              <Printer size={16} className="stroke-[2.5]" />
-              <span>Guardar / Imprimir PDF</span>
-            </button>
-
-            {/* Segmented Utility Pill Group */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-800/90 border border-white/10">
+            {/* Utility Group */}
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
               <button
                 type="button"
                 onClick={handleCopyText}
-                className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                className="p-2 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
                 title="Copiar texto plano para mesas de partes virtuales"
               >
-                {copied ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
+                {copied ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
               </button>
 
               <button
                 type="button"
                 onClick={handleExportJson}
-                className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                className="p-2 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
                 title="Exportar respaldo de datos en archivo JSON"
               >
-                <Download size={15} />
+                <Download size={16} />
               </button>
 
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                className="p-2 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
                 title="Importar respaldo desde archivo JSON"
               >
-                <Upload size={15} />
+                <Upload size={16} />
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowPrintTips(!showPrintTips)}
-                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  showPrintTips ? 'bg-amber-500/20 text-amber-300' : 'hover:bg-slate-700 text-slate-400 hover:text-amber-300'
+                className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                  showPrintTips ? 'bg-amber-500/20 text-amber-300' : 'hover:bg-white/10 text-slate-400 hover:text-amber-300'
                 }`}
                 title="Instrucciones para exportar en PDF perfecto sin esperas"
               >
-                <Info size={15} />
+                <Info size={16} />
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Primary Action Buttons Bar (Large, High-Impact & Prominent like iLovePDF) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+          {/* Descargar Word (.DOC) */}
+          <button
+            type="button"
+            onClick={handleDownloadWord}
+            className="w-full h-14 sm:h-16 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-sm sm:text-base transition-all shadow-[0_8px_25px_rgba(37,99,235,0.4)] flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.02] active:scale-[0.98] border border-blue-400/40 group"
+            title="Descargar en formato Word (.doc) 100% editable con tablas y membrete"
+          >
+            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <FileText size={20} className="text-white" />
+            </div>
+            <div className="text-left">
+              <span className="block font-display font-black leading-tight text-white sm:text-base">
+                Descargar Word (.DOC)
+              </span>
+              <span className="block text-[11px] font-mono text-blue-100 font-normal leading-tight">
+                Formato editable con tablas oficiales
+              </span>
+            </div>
+            <Download size={18} className="ml-auto opacity-75 group-hover:translate-y-0.5 transition-transform hidden sm:block" />
+          </button>
+
+          {/* Guardar / Imprimir PDF */}
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="w-full h-14 sm:h-16 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm sm:text-base transition-all shadow-[0_8px_30px_rgba(16,185,129,0.45)] ring-2 ring-emerald-300/60 flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.02] active:scale-[0.98] group"
+            title="Abre el diálogo para guardar como PDF o imprimir en papel A4"
+          >
+            <div className="w-9 h-9 rounded-xl bg-slate-950/20 flex items-center justify-center shrink-0">
+              <Printer size={20} className="text-slate-950 stroke-[2.5]" />
+            </div>
+            <div className="text-left">
+              <span className="block font-display font-black leading-tight text-slate-950 sm:text-base">
+                Guardar / Imprimir PDF
+              </span>
+              <span className="block text-[11px] font-mono text-slate-800 font-bold leading-tight">
+                Calibrado A4 exacto para SERVIR / CAS
+              </span>
+            </div>
+            <ArrowRight size={20} className="ml-auto text-slate-950 stroke-[2.5] group-hover:translate-x-1 transition-transform hidden sm:block" />
+          </button>
         </div>
 
         {/* Template Selector Section */}
@@ -601,6 +625,45 @@ export function CvCasGenerator() {
           </div>
         </div>
       )}
+
+      {/* Bottom Conversion Banner (iLovePDF High-Impact Style, Print Hidden) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-white/10 shadow-2xl print:hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-1.5 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
+              Documento Calibrado & Verificado
+            </span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight">
+            ¿Tu CV está listo para postular?
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+            Genera de inmediato tu archivo en formato oficial para adjuntar a las convocatorias de SERVIR, ministerios o el sector corporativo.
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full md:w-auto shrink-0">
+          <button
+            type="button"
+            onClick={handleDownloadWord}
+            className="w-full sm:w-auto h-14 px-7 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black text-sm transition-all shadow-[0_8px_25px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.02] active:scale-[0.98] border border-blue-400/40"
+          >
+            <FileText size={18} />
+            <span>Descargar Word (.DOC)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm sm:text-base transition-all shadow-[0_8px_30px_rgba(16,185,129,0.45)] ring-2 ring-emerald-300/60 flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Printer size={20} className="stroke-[2.5]" />
+            <span>Guardar / Imprimir PDF (A4)</span>
+            <ArrowRight size={18} className="stroke-[2.5]" />
+          </button>
+        </div>
+      </div>
 
       {/* Barra Flotante Inferior en Móviles */}
       <div className="lg:hidden fixed bottom-3 left-3 right-3 z-40 bg-slate-900/95 backdrop-blur-xl border border-white/15 p-2 rounded-2xl shadow-2xl flex items-center justify-between gap-2 print:hidden">

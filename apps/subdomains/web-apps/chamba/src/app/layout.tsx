@@ -14,12 +14,11 @@ import {
   Calculator, FileText, HelpCircle, Bot, FileSpreadsheet, Scale,
   Mail, ExternalLink, Lock, Building2, Compass, BookOpen
 } from "lucide-react";
-import { MobileNavMenu } from "@/components/MobileNavMenu";
+import { HeaderNav } from "@/components/HeaderNav";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { ChambaThemeListener } from "@/components/ChambaThemeListener";
 import { ChambaGlowWrapper } from "@/components/ChambaGlowWrapper";
 import { ChambaCustomCursor } from "@/components/ChambaCustomCursor";
-import { ChambaThemeToggle } from "@/components/ChambaThemeToggle";
 import { getSubdomainConfig } from "@atpdev/database";
 import { SITE_URL } from "@/lib/siteConfig";
 import "./globals.css";
@@ -286,88 +285,8 @@ export default function RootLayout({
           </div>
         )}
 
-        {/* Global Navigation Header with Ultra-Refined Glassmorphism */}
-        <header className="sticky top-0 z-40 bg-[#070a12]/85 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-2xl blur-sm opacity-50 group-hover:opacity-100 transition duration-500 group-hover:duration-200" />
-                <div className="relative w-11 h-11 rounded-xl bg-slate-950 border border-white/15 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                  <Briefcase className="text-emerald-400 font-bold" size={22} />
-                </div>
-              </div>
-              <div>
-                <span className="font-display font-black text-2xl tracking-tight text-white flex items-center gap-1.5">
-                  chamba <span className="text-emerald-400 font-mono text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.3)]">pro</span>
-                </span>
-                <span className="text-[10px] text-slate-400 font-mono block -mt-1 tracking-widest uppercase">
-                  Perú • Convocatorias Oficiales
-                </span>
-              </div>
-            </Link>
-
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1 text-xs font-semibold text-slate-300">
-              <Link href="/empleos" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <Search size={14} className="text-emerald-400" />
-                <span>Buscador</span>
-              </Link>
-              <Link href="/guias" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10 text-emerald-300 font-bold">
-                <BookOpen size={14} className="text-emerald-400" />
-                <span>Guías CAS</span>
-              </Link>
-              <Link href="/organizaciones" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <Building2 size={14} className="text-emerald-400" />
-                <span>Organizaciones</span>
-              </Link>
-              <Link href="/calculadora-sueldo" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <Calculator size={14} className="text-emerald-400" />
-                <span>Calculadora Sueldo</span>
-              </Link>
-              <Link href="/comparador-regimenes" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <Scale size={14} className="text-emerald-400" />
-                <span>Comparador CAS</span>
-              </Link>
-              <Link href="/simulador-entrevista-ia" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <Bot size={14} className="text-emerald-400" />
-                <span>Entrevista IA</span>
-              </Link>
-              <Link href="/crear-cv-cas" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <FileSpreadsheet size={14} className="text-emerald-400" />
-                <span>Generar CV</span>
-              </Link>
-              <Link href="/quienes-somos" className="px-3 py-2 rounded-xl hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 border border-transparent hover:border-white/10">
-                <ShieldCheck size={14} className="text-slate-400" />
-                <span>Quiénes Somos</span>
-              </Link>
-            </nav>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <ChambaThemeToggle />
-
-              <Link
-                href="/publicar-empleo"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-slate-200 hover:text-emerald-400 transition-all shadow-sm"
-              >
-                <PlusCircle size={14} className="text-emerald-400" />
-                <span>Publicar</span>
-              </Link>
-
-              <Link
-                href="/empleos"
-                className="btn-brand-gradient relative group overflow-hidden px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-black font-display transition-all flex items-center gap-2 shadow-lg"
-              >
-                <Compass size={16} className="text-white drop-shadow-sm shrink-0" />
-                <span className="text-white drop-shadow-sm tracking-tight">Explorar Vacantes</span>
-              </Link>
-
-              {/* Mobile Drawer Button */}
-              <MobileNavMenu />
-            </div>
-          </div>
-        </header>
+        {/* Global Navigation Header (iLovePDF High-Contrast & Spacious Design) */}
+        <HeaderNav />
 
         {/* Main Content Area */}
         <main className="min-h-[calc(100vh-180px)]">{children}</main>
