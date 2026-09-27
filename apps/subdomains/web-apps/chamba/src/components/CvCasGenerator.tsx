@@ -351,7 +351,7 @@ export function CvCasGenerator() {
         </div>
 
         {/* Right Preview Column (Col 7 - Sticky pro workstation) */}
-        <div className={`lg:col-span-7 space-y-3 lg:sticky lg:top-4 self-start ${mobileTab === 'preview' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-7 space-y-3 lg:sticky lg:top-24 self-start ${mobileTab === 'preview' ? 'block' : 'hidden lg:block'}`}>
           {/* Mobile Back Button to Editor */}
           <button
             type="button"
@@ -532,7 +532,7 @@ export function CvCasGenerator() {
           </p>
           <ul className="list-disc list-inside space-y-1.5 text-slate-300 text-[11px] leading-relaxed">
             <li>
-              👉 <strong>Opción 1 (Más rápida):</strong> Pulsa el botón azul <strong className="text-blue-400 font-bold">&quot;Descargar Word (.DOC)&quot;</strong> arriba. Se descargará el archivo de inmediato, 100% editable en Microsoft Word o Google Docs, y puedes guardarlo como PDF cuando quieras.
+              👉 <strong>Opción 1 (Más rápida):</strong> Pulsa el botón azul <strong className="text-blue-400 font-bold">&quot;Descargar Word (.DOC)&quot;</strong> en la barra de vista previa o al pie del formulario. Se descargará el archivo de inmediato, 100% editable en Microsoft Word o Google Docs, y puedes guardarlo como PDF cuando quieras.
             </li>
             <li>
               👉 <strong>Opción 2 (PDF directo sin impresora física):</strong> En la ventana de impresión de Windows, cambia la impresora a <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Microsoft Print to PDF</strong> o <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded">Guardar como PDF</strong>. De esa manera Windows no busca ninguna máquina física y genera el PDF al instante.

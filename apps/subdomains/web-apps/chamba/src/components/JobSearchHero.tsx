@@ -53,7 +53,7 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: accentColor }}></span>
               <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: accentColor }}></span>
             </span>
-            <span>{branding?.hero_badge || "Plataforma Oficial Agregadora — empleos.atpdev.dev"}</span>
+            <span>{branding?.hero_badge || "Buscador Oficial de Empleos y Convocatorias — atpdev.dev"}</span>
           </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold shadow-[0_0_15px_rgba(6,182,212,0.15)]">

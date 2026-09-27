@@ -40,7 +40,7 @@ export default function TerminosCondicionesPage() {
             Términos y Condiciones de Uso
           </h1>
           <p className="text-sm text-slate-400 leading-relaxed max-w-2xl">
-            Bienvenido a <strong>Chamba Pro</strong>. Al acceder, navegar y utilizar los servicios provistos en este sitio web (incluidos <code>empleos.atpdev.dev</code> y <code>chamba.atpdev.dev</code>), aceptas los siguientes términos de forma íntegra y sin reservas.
+            Bienvenido a <strong>Chamba Pro</strong>. Al acceder, navegar y utilizar los servicios provistos en este sitio web (incluidos <code>atpdev.dev</code> y <code>chamba.atpdev.dev</code>), aceptas los siguientes términos de forma íntegra y sin reservas.
           </p>
         </div>
 

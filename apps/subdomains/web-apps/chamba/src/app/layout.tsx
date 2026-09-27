@@ -303,7 +303,7 @@ export default function RootLayout({
                     ch
                   </div>
                   <div>
-                    <p className="text-slate-100 font-bold text-sm font-display">chamba pro — empleos.atpdev.dev</p>
+                    <p className="text-slate-100 font-bold text-sm font-display">chamba pro — atpdev.dev</p>
                     <p className="text-[11px] text-slate-400">Plataforma Agregadora de Empleos y Convocatorias en Perú</p>
                   </div>
                 </div>

@@ -40,7 +40,7 @@ export default function PoliticaPrivacidadPage() {
             Política de Privacidad & Tratamiento de Datos
           </h1>
           <p className="text-sm text-slate-400 leading-relaxed max-w-2xl">
-            Última actualización: Septiembre de 2026. Esta política describe cómo <strong>Chamba Pro</strong> (accesible desde <code>empleos.atpdev.dev</code> y <code>chamba.atpdev.dev</code>) gestiona la información, respeta la privacidad de los usuarios conforme a la legislación peruana y se adhiere a las directrices de publicación de <strong>Google AdSense</strong>.
+            Última actualización: Septiembre de 2026. Esta política describe cómo <strong>Chamba Pro</strong> (accesible desde <code>atpdev.dev</code> y <code>chamba.atpdev.dev</code>) gestiona la información, respeta la privacidad de los usuarios conforme a la legislación peruana y se adhiere a las directrices de publicación de <strong>Google AdSense</strong>.
           </p>
         </div>
 

@@ -35,13 +35,13 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       position: 1,
       name: "Inicio",
-      item: "https://empleos.atpdev.dev",
+      item: `${SITE_URL}`,
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Comparador de Regímenes",
-      item: "https://empleos.atpdev.dev/comparador-regimenes",
+      item: `${SITE_URL}/comparador-regimenes`,
     },
   ],
 };

@@ -86,6 +86,6 @@ Declaro bajo juramento que toda la información consignada responde
 estrictamente a la verdad, acogiéndome al Principio de Presunción de
 Veracidad estipulado en la Ley del Procedimiento Administrativo General.
 ====================================================================
-Generado en: chamba pro (https://empleos.atpdev.dev/crear-cv-cas)
+Generado en: chamba pro (https://atpdev.dev/crear-cv-cas)
 `;
 }

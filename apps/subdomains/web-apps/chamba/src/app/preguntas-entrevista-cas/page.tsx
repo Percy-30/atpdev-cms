@@ -35,13 +35,13 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       position: 1,
       name: "Inicio",
-      item: "https://empleos.atpdev.dev",
+      item: `${SITE_URL}`,
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Banco de Preguntas CAS",
-      item: "https://empleos.atpdev.dev/preguntas-entrevista-cas",
+      item: `${SITE_URL}/preguntas-entrevista-cas`,
     },
   ],
 };

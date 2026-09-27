@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Generador de CV SERVIR CAS y ATS 2026 | chamba pro',
     description: 'Crea tu CV para convocatorias del Estado (SERVIR CAS) o Sector Privado en PDF y Word editable 100% gratis.',
-    images: ['https://empleos.atpdev.dev/opengraph-image'],
+    images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {
     index: true,
@@ -66,7 +66,7 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       name: 'Generador de CV Profesional Perú — Chamba Pro',
-      url: 'https://empleos.atpdev.dev/crear-cv-cas',
+      url: `${SITE_URL}/crear-cv-cas`,
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'All',
       browserRequirements: 'Requires JavaScript. Requires HTML5.',
@@ -94,13 +94,13 @@ const jsonLd = {
           '@type': 'ListItem',
           position: 1,
           name: 'Inicio',
-          item: 'https://empleos.atpdev.dev',
+          item: `${SITE_URL}`,
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'Generador de CV Profesional',
-          item: 'https://empleos.atpdev.dev/crear-cv-cas',
+          item: `${SITE_URL}/crear-cv-cas`,
         },
       ],
     },
@@ -194,9 +194,18 @@ export default function CrearCvCasPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4">
+      <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 space-y-6 sm:space-y-8">
+        {/* Breadcrumb Navigation */}
+        <nav aria-label="Ruta de navegación" className="print:hidden flex items-center justify-center gap-2 text-xs font-mono text-slate-400">
+          <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
+          <ChevronRight size={12} className="text-slate-600" />
+          <Link href="/empleos" className="hover:text-emerald-400 transition-colors">Herramientas</Link>
+          <ChevronRight size={12} className="text-slate-600" />
+          <span className="text-slate-200 font-semibold">Generador de CV SERVIR CAS</span>
+        </nav>
+
         {/* Centered Hero Header — Professional, High-Impact & Clean */}
-        <header className="print:hidden text-center space-y-3 pt-2 pb-5 max-w-4xl mx-auto">
+        <header className="print:hidden text-center space-y-3.5 max-w-4xl mx-auto">
           {/* Centered Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-sm">
             <Sparkles size={14} />
@@ -216,7 +225,7 @@ export default function CrearCvCasPage() {
             Diseña y descarga gratis tu hoja de vida en <strong>PDF A4 exacto</strong> o <strong>Word (.DOC) editable</strong> con las plantillas oficiales exigidas por el Estado y empresas.
           </p>
 
-          {/* Centered Pills */}
+          {/* Centered Trust Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-mono text-slate-300">
             <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-emerald-300 flex items-center gap-1.5 shadow-sm">
               ✓ Ficha Resumen SERVIR
