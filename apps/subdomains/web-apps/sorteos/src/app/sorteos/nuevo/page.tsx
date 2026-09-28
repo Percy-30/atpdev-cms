@@ -281,27 +281,33 @@ export default function NuevoSorteoPage() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-mono text-zinc-400 mb-2">
+              <label htmlFor="giveaway-title" className="block text-xs font-mono text-zinc-400 mb-2">
                 Título o Nombre de la Campaña:
               </label>
               <input
+                id="giveaway-title"
+                name="giveawayTitle"
                 type="text"
                 value={giveawayTitle}
                 onChange={(e) => setGiveawayTitle(e.target.value)}
                 placeholder="Ej: Gran Sorteo Fin de Año 2026"
+                aria-label="Título o Nombre de la Campaña"
                 className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-medium focus:outline-none focus:border-purple-500 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-zinc-400 mb-2">
+              <label htmlFor="post-url" className="block text-xs font-mono text-zinc-400 mb-2">
                 URL de la Publicación o Video:
               </label>
               <input
+                id="post-url"
+                name="postUrl"
                 type="url"
                 value={postUrl}
                 onChange={(e) => setPostUrl(e.target.value)}
                 placeholder="https://www.instagram.com/p/..."
+                aria-label="URL de la Publicación o Video"
                 className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-purple-500 transition-colors"
               />
               <p className="text-xs text-zinc-500 mt-2 font-mono">
@@ -404,8 +410,10 @@ export default function NuevoSorteoPage() {
                 Filtros de Participación
               </h3>
 
-              <label className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5 cursor-pointer select-none">
+              <label htmlFor="exclude-duplicates-checkbox" className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5 cursor-pointer select-none">
                 <input
+                  id="exclude-duplicates-checkbox"
+                  name="excludeDuplicates"
                   type="checkbox"
                   checked={rules.excludeDuplicates}
                   onChange={(e) => setRules({ ...rules, excludeDuplicates: e.target.checked })}
@@ -420,28 +428,34 @@ export default function NuevoSorteoPage() {
               </label>
 
               <div>
-                <label className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="min-mentions-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
                   Menciones mínimas por comentario (@amigo):
                 </label>
                 <input
+                  id="min-mentions-input"
+                  name="minMentions"
                   type="number"
                   min={0}
                   max={10}
                   value={rules.minMentions}
                   onChange={(e) => setRules({ ...rules, minMentions: parseInt(e.target.value) || 0 })}
+                  aria-label="Menciones mínimas por comentario"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="required-hashtag-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
                   Hashtag obligatorio en el comentario:
                 </label>
                 <input
+                  id="required-hashtag-input"
+                  name="requiredHashtag"
                   type="text"
                   value={rules.requiredHashtag}
                   onChange={(e) => setRules({ ...rules, requiredHashtag: e.target.value })}
                   placeholder="Ej: #sorteopro"
+                  aria-label="Hashtag obligatorio en el comentario"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
                 />
               </div>
@@ -454,29 +468,35 @@ export default function NuevoSorteoPage() {
               </h3>
 
               <div>
-                <label className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="winners-count-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
                   Cantidad de Ganadores Principales:
                 </label>
                 <input
+                  id="winners-count-input"
+                  name="winnersCount"
                   type="number"
                   min={1}
                   max={20}
                   value={rules.winnersCount}
                   onChange={(e) => setRules({ ...rules, winnersCount: Math.max(1, parseInt(e.target.value) || 1) })}
+                  aria-label="Cantidad de Ganadores Principales"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="substitutes-count-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
                   Cantidad de Suplentes de Respaldo:
                 </label>
                 <input
+                  id="substitutes-count-input"
+                  name="substitutesCount"
                   type="number"
                   min={0}
                   max={10}
                   value={rules.substitutesCount}
                   onChange={(e) => setRules({ ...rules, substitutesCount: parseInt(e.target.value) || 0 })}
+                  aria-label="Cantidad de Suplentes de Respaldo"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
                 />
               </div>

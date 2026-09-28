@@ -88,7 +88,7 @@ export default function RuletaPage() {
         {/* Right: Options Manager & Presets */}
         <div className="lg:col-span-5 space-y-6">
           <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
-            <h3 className="text-lg font-bold font-display text-white">Configurar Opciones</h3>
+            <h2 className="text-lg font-bold font-display text-white">Configurar Opciones</h2>
 
             {/* Presets */}
             <div className="space-y-1.5">
@@ -120,19 +120,26 @@ export default function RuletaPage() {
 
             {/* Add Option Form */}
             <form onSubmit={handleAddOption} className="flex gap-2">
+              <label htmlFor="new-option-input" className="sr-only">
+                Escribe una nueva opción para la ruleta
+              </label>
               <input
+                id="new-option-input"
+                name="newOption"
                 type="text"
                 value={newOption}
                 onChange={(e) => setNewOption(e.target.value)}
                 placeholder="Escribe una nueva opción..."
+                aria-label="Escribe una nueva opción para la ruleta"
                 className="flex-1 rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500"
               />
               <button
                 type="submit"
                 disabled={!newOption.trim() || isSpinning}
+                aria-label="Agregar opción a la ruleta"
                 className="p-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-bold transition-colors"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-5 h-5" aria-hidden="true" />
               </button>
             </form>
 
@@ -148,9 +155,10 @@ export default function RuletaPage() {
                     type="button"
                     onClick={() => handleRemoveOption(idx)}
                     disabled={isSpinning}
+                    aria-label={`Eliminar opción ${opt}`}
                     className="text-zinc-500 hover:text-red-400 transition-colors p-1"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-4 h-4" aria-hidden="true" />
                   </button>
                 </div>
               ))}

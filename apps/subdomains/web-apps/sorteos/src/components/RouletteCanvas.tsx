@@ -162,8 +162,12 @@ export const RouletteCanvas: React.FC<RouletteCanvasProps> = ({
           ref={canvasRef}
           width={380}
           height={380}
+          role="img"
+          aria-label="Ruleta interactiva con opciones configurables para sorteos"
           className="max-w-[300px] sm:max-w-[380px] max-h-[380px] rounded-full"
-        />
+        >
+          Ruleta aleatoria interactiva de Sorteos Pro
+        </canvas>
       </div>
 
       <button

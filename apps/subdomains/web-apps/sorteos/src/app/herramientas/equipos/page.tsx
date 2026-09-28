@@ -109,7 +109,7 @@ export default function EquiposPage() {
         {/* Left: Input Textarea */}
         <div className="lg:col-span-7 glass-card rounded-3xl p-6 border border-white/10 space-y-4">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-mono uppercase text-zinc-400 font-bold flex items-center gap-2">
+            <label htmlFor="equipos-textarea" className="text-xs font-mono uppercase text-zinc-400 font-bold flex items-center gap-2">
               <UserPlus className="w-3.5 h-3.5 text-purple-400" />
               <span>Lista de Participantes ({participantsList.length})</span>
             </label>
@@ -126,10 +126,13 @@ export default function EquiposPage() {
           </div>
 
           <textarea
+            id="equipos-textarea"
+            name="equiposLista"
             rows={10}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Escribe o pega los nombres (uno por línea)..."
+            aria-label="Lista de nombres para repartir en equipos"
             className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white font-mono text-sm placeholder:text-zinc-600 focus:outline-none focus:border-purple-500 transition-colors resize-none leading-relaxed"
           />
 
@@ -148,9 +151,9 @@ export default function EquiposPage() {
 
             {/* Teams Count */}
             <div>
-              <label className="block text-xs font-mono text-zinc-400 mb-2">
+              <span className="block text-xs font-mono text-zinc-400 mb-2">
                 Cantidad de Equipos ({teamCount})
-              </label>
+              </span>
               <div className="flex items-center gap-2">
                 {[2, 3, 4, 5, 6].map((num) => (
                   <button
@@ -171,10 +174,12 @@ export default function EquiposPage() {
 
             {/* Naming Style */}
             <div>
-              <label className="block text-xs font-mono text-zinc-400 mb-2">
+              <label htmlFor="naming-style-select" className="block text-xs font-mono text-zinc-400 mb-2">
                 Nombres de los Equipos
               </label>
               <select
+                id="naming-style-select"
+                name="namingStyle"
                 value={namingStyle}
                 onChange={(e) => setNamingStyle(parseInt(e.target.value))}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-purple-500"

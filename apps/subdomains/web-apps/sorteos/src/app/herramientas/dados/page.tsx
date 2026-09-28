@@ -32,6 +32,8 @@ export default function DadosPage() {
     return (
       <div
         key={idx}
+        role="img"
+        aria-label={`Dado mostrando valor ${val}`}
         className={`w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-b from-white to-zinc-200 text-zinc-900 shadow-2xl flex items-center justify-center p-3.5 border-2 border-white/60 select-none ${
           isRolling ? 'animate-dice-shake' : 'hover:scale-105 transition-transform'
         }`}
@@ -115,6 +117,7 @@ export default function DadosPage() {
             <button
               key={num}
               type="button"
+              aria-label={`Seleccionar ${num} ${num === 1 ? 'dado' : 'dados'}`}
               onClick={() => {
                 setDiceCount(num);
                 setDiceValues(Array.from({ length: num }, () => 1));
@@ -160,9 +163,9 @@ export default function DadosPage() {
       {/* History Log */}
       {history.length > 0 && (
         <div className="glass-card rounded-2xl p-5 border border-white/10 space-y-3">
-          <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-bold">
+          <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-bold">
             Historial de Tiradas Recientes
-          </h3>
+          </h2>
           <div className="flex flex-wrap gap-2">
             {history.map((item, idx) => (
               <div

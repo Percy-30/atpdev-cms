@@ -135,8 +135,10 @@ export default function NumerosPage() {
         {/* Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-mono text-zinc-400 mb-2">Desde (Mínimo):</label>
+            <label htmlFor="numero-minimo" className="block text-xs font-mono text-zinc-400 mb-2">Desde (Mínimo):</label>
             <input
+              id="numero-minimo"
+              name="numeroMinimo"
               type="number"
               value={min}
               onChange={(e) => setMin(parseInt(e.target.value) || 0)}
@@ -144,8 +146,10 @@ export default function NumerosPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-mono text-zinc-400 mb-2">Hasta (Máximo):</label>
+            <label htmlFor="numero-maximo" className="block text-xs font-mono text-zinc-400 mb-2">Hasta (Máximo):</label>
             <input
+              id="numero-maximo"
+              name="numeroMaximo"
               type="number"
               value={max}
               onChange={(e) => setMax(parseInt(e.target.value) || 0)}
@@ -153,8 +157,10 @@ export default function NumerosPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-mono text-zinc-400 mb-2">Cantidad de Números:</label>
+            <label htmlFor="numero-cantidad" className="block text-xs font-mono text-zinc-400 mb-2">Cantidad de Números:</label>
             <input
+              id="numero-cantidad"
+              name="numeroCantidad"
               type="number"
               min={1}
               max={1000}

@@ -62,11 +62,20 @@ export default function MonedaPage() {
         {/* 3D Coin Animation Area */}
         <div className="py-8 flex justify-center items-center perspective-1000">
           <div
-            className="w-40 h-40 sm:w-48 sm:h-48 rounded-full relative cursor-pointer select-none transition-transform duration-1000 transform-style-3d shadow-2xl"
+            role="button"
+            tabIndex={0}
+            aria-label="Moneda interactiva 3D. Haz clic o presiona Enter para lanzar."
+            className="w-40 h-40 sm:w-48 sm:h-48 rounded-full relative cursor-pointer select-none transition-transform duration-1000 transform-style-3d shadow-2xl focus:outline-none focus:ring-4 focus:ring-amber-400/50"
             style={{
               transform: `rotateY(${rotations}deg)`
             }}
             onClick={handleFlip}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleFlip();
+              }
+            }}
           >
             {/* Cara frontal (Cara) */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-100 p-2 shadow-inner border-4 border-amber-400/80 flex flex-col items-center justify-center text-amber-950 font-display font-black backface-hidden">
@@ -147,10 +156,10 @@ export default function MonedaPage() {
       {history.length > 0 && (
         <div className="glass-card rounded-2xl p-5 border border-white/10 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-2">
+            <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-2">
               <History className="w-3.5 h-3.5" />
               <span>Últimos lanzamientos</span>
-            </h3>
+            </h2>
             <button
               onClick={() => setHistory([])}
               className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"

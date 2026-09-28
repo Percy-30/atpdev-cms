@@ -103,7 +103,7 @@ export default function ListaPage() {
         <div className="lg:col-span-7 space-y-6">
           <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-bold text-white font-display flex items-center gap-2">
+              <label htmlFor="lista-participantes" className="text-sm font-bold text-white font-display flex items-center gap-2">
                 <span>Lista de Participantes</span>
                 <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 font-normal">
                   {participants.length} nombres válidos
@@ -112,26 +112,32 @@ export default function ListaPage() {
               <button
                 type="button"
                 onClick={() => setRawText('')}
+                aria-label="Limpiar lista de participantes"
                 className="text-xs text-zinc-400 hover:text-red-400 flex items-center gap-1 transition-colors"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Limpiar</span>
               </button>
             </div>
 
             <textarea
+              id="lista-participantes"
+              name="listaParticipantes"
               rows={9}
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
               placeholder="Pega aquí los nombres (uno por línea o separados por comas)..."
+              aria-label="Lista de participantes para el sorteo"
               className="w-full rounded-2xl bg-black/40 border border-white/10 p-4 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 font-mono"
             />
 
             {/* Config Options */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
               <div className="space-y-1.5">
-                <label className="text-xs font-mono text-zinc-300">Número de Ganadores:</label>
+                <label htmlFor="winners-count-input" className="text-xs font-mono text-zinc-300">Número de Ganadores:</label>
                 <input
+                  id="winners-count-input"
+                  name="winnersCount"
                   type="number"
                   min={1}
                   max={Math.max(1, participants.length)}
@@ -142,8 +148,10 @@ export default function ListaPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-mono text-zinc-300">Número de Suplentes:</label>
+                <label htmlFor="substitutes-count-input" className="text-xs font-mono text-zinc-300">Número de Suplentes:</label>
                 <input
+                  id="substitutes-count-input"
+                  name="substitutesCount"
                   type="number"
                   min={0}
                   max={10}

@@ -40,8 +40,13 @@ export const HomeHashVerifier: React.FC = () => {
 
       <form onSubmit={handleVerify} className="flex flex-col sm:flex-row gap-2.5 pt-2">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <label htmlFor="verify-query-input" className="sr-only">
+            Código de certificado oficial o hash SHA-256
+          </label>
+          <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
           <input
+            id="verify-query-input"
+            name="query"
             type="text"
             value={query}
             onChange={(e) => {
@@ -49,6 +54,7 @@ export const HomeHashVerifier: React.FC = () => {
               if (error) setError('');
             }}
             placeholder="Ejemplo: CERT-SP-98A41E8D o hash SHA-256..."
+            aria-label="Código de certificado oficial o hash SHA-256"
             className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-black/40 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-violet-500 transition-colors"
           />
         </div>
