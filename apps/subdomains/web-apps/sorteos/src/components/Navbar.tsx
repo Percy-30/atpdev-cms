@@ -4,41 +4,39 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   Gift, Sparkles, ChevronDown, ListOrdered, Disc, 
-  Dices, CircleDollarSign, Hash, Users2, ArrowRight, Menu, X, ShieldCheck
+  Dices, CircleDollarSign, Hash, Users2, ArrowRight, Menu, X, ShieldCheck, Globe
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   const standaloneTools = [
-    { name: 'Lista de Nombres', href: '/herramientas/lista', icon: ListOrdered, desc: 'Sorteo aleatorio de participantes' },
-    { name: 'Ruleta Aleatoria', href: '/herramientas/ruleta', icon: Disc, desc: 'Gira la ruleta interactiva' },
-    { name: 'Tirar Dados', href: '/herramientas/dados', icon: Dices, desc: 'Dados 3D de 1 a 6 unidades' },
-    { name: 'Lanzar Moneda', href: '/herramientas/moneda', icon: CircleDollarSign, desc: 'Cara o cruz verificable' },
+    { name: 'Sorteo por Nombres', href: '/herramientas/lista', icon: ListOrdered, desc: 'Escoge ganadores al azar de una lista' },
+    { name: 'Ruleta Aleatoria', href: '/herramientas/ruleta', icon: Disc, desc: 'Gira la ruleta interactiva digital' },
+    { name: 'Tirar Dados 3D', href: '/herramientas/dados', icon: Dices, desc: 'Dados 3D de 1 a 6 unidades' },
+    { name: 'Lanzar Moneda', href: '/herramientas/moneda', icon: CircleDollarSign, desc: 'Cara o cruz 3D verificable' },
     { name: 'Generador de Números', href: '/herramientas/numeros', icon: Hash, desc: 'Rifas, bingos y números al azar' },
     { name: 'Generador de Equipos', href: '/herramientas/equipos', icon: Users2, desc: 'Reparto balanceado en grupos' },
     { name: 'Amigo Invisible', href: '/herramientas/amigo-invisible', icon: Gift, desc: 'Intercambio de regalos secreto' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#070a12]/80 border-b border-white/10 transition-all">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-16 sm:h-18">
           
           {/* Logo Brand */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 via-pink-500 to-amber-400 p-0.5 shadow-lg shadow-violet-500/20 group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-[#0b0f19] rounded-[10px] flex items-center justify-center">
-                <Gift className="w-5 h-5 text-pink-400 group-hover:text-amber-300 transition-colors" />
-              </div>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-600 to-rose-500 p-0.5 shadow-md shadow-pink-500/20 group-hover:scale-105 transition-transform flex items-center justify-center text-white">
+              <Gift className="w-5 h-5" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="text-xl font-black font-display tracking-tight text-white">sorteos</span>
-                <span className="text-xs font-mono font-black uppercase px-1.5 py-0.5 rounded bg-gradient-to-r from-violet-500 to-pink-500 text-white shadow-sm">pro</span>
+                <span className="text-xl font-extrabold font-display tracking-tight text-slate-900">sorteos</span>
+                <span className="text-xs font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-pink-100 text-pink-700 border border-pink-200">pro</span>
               </div>
-              <span className="text-[10px] font-mono text-zinc-400 -mt-1 hidden sm:block">Plataforma SaaS de Sorteos Verificables</span>
             </div>
           </Link>
 
@@ -52,15 +50,15 @@ export const Navbar: React.FC = () => {
             >
               <button 
                 onClick={() => setToolsOpen(!toolsOpen)}
-                className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100/70 transition-colors"
               >
-                <span>Herramientas Gratis</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-violet-400' : ''}`} />
+                <span>Aplicaciones</span>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-pink-600' : ''}`} />
               </button>
 
               {toolsOpen && (
-                <div className="absolute top-full left-0 w-80 pt-2 z-50">
-                  <div className="glass-card rounded-2xl p-2.5 shadow-2xl border border-white/10 grid gap-1">
+                <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <div className="bg-white rounded-2xl p-2.5 shadow-xl border border-slate-200/80 grid gap-1">
                     {standaloneTools.map((tool) => {
                       const Icon = tool.icon;
                       return (
@@ -68,14 +66,14 @@ export const Navbar: React.FC = () => {
                           key={tool.href}
                           href={tool.href}
                           onClick={() => setToolsOpen(false)}
-                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/5 transition-colors group/item"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group/item"
                         >
-                          <div className="p-2 rounded-lg bg-violet-500/10 text-violet-400 group-hover/item:bg-violet-500 group-hover/item:text-white transition-all">
+                          <div className="p-2 rounded-lg bg-pink-50 text-pink-600 group-hover/item:bg-pink-600 group-hover/item:text-white transition-all">
                             <Icon className="w-4 h-4" />
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-white group-hover/item:text-violet-300 transition-colors">{tool.name}</p>
-                            <p className="text-xs text-zinc-400 leading-snug">{tool.desc}</p>
+                            <p className="text-sm font-semibold text-slate-800 group-hover/item:text-pink-600 transition-colors">{tool.name}</p>
+                            <p className="text-xs text-slate-500 leading-snug">{tool.desc}</p>
                           </div>
                         </Link>
                       );
@@ -87,32 +85,33 @@ export const Navbar: React.FC = () => {
 
             <Link 
               href="/sorteos/nuevo"
-              className="px-3.5 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100/70 transition-colors flex items-center gap-1.5"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Sorteos en Redes</span>
+              <Sparkles className="w-4 h-4 text-pink-600" />
+              <span>Sorteos Redes</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 px-1.5 py-0.2 rounded">NEW</span>
             </Link>
 
             <Link 
               href="/certificados/CERT-SP-98A41E8D" 
-              className="px-3.5 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100/70 transition-colors flex items-center gap-1.5"
             >
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Verificar Certificado</span>
             </Link>
 
             <Link 
               href="/planes" 
-              className="px-3.5 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+              className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100/70 transition-colors"
             >
-              Planes y Precios
+              Precios
             </Link>
 
             <Link 
               href="/blog" 
-              className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+              className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100/70 transition-colors"
             >
-              Guías
+              Ayuda
             </Link>
           </nav>
 
@@ -120,25 +119,41 @@ export const Navbar: React.FC = () => {
           <div className="hidden sm:flex items-center gap-3">
             <Link
               href="/login"
-              className="px-4 py-2.5 text-xs font-mono font-bold text-zinc-300 hover:text-white transition-colors rounded-xl hover:bg-white/5"
+              className="px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-100/70"
             >
-              Iniciar Sesión
+              Ingresar
             </Link>
 
             <Link
               href="/sorteos/nuevo"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 via-pink-500 to-amber-400 text-white font-bold font-display text-sm shadow-lg shadow-violet-500/25 hover:scale-105 active:scale-95 transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-bold font-display text-sm shadow-sm hover:shadow-md hover:shadow-pink-500/20 active:scale-95 transition-all"
             >
-              <Gift className="w-4 h-4 text-amber-200" />
-              <span>Crear Sorteo Gratis</span>
-              <ArrowRight className="w-4 h-4 text-pink-200" />
+              <span>Crear cuenta</span>
             </Link>
+
+            {/* Language dropdown button */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex items-center gap-1 px-2.5 py-2 text-xs font-bold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100/70 transition-colors"
+              >
+                <span>ES</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-50 text-xs font-semibold w-24">
+                  <button onClick={() => setLangOpen(false)} className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-pink-50 text-pink-600">Español</button>
+                  <button onClick={() => setLangOpen(false)} className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 text-slate-700">English</button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile hamburger button */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-zinc-400 hover:text-white focus:outline-none"
+            className="lg:hidden p-2 text-slate-600 hover:text-slate-900 focus:outline-none"
             aria-label="Abrir menú"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -148,16 +163,16 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden glass-card border-t border-white/10 px-4 pt-3 pb-6 space-y-4">
+        <div className="lg:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 space-y-4 shadow-lg">
           <div className="space-y-1">
-            <p className="px-3 text-[11px] font-mono uppercase tracking-wider text-violet-400 font-bold">Herramientas Gratis</p>
+            <p className="px-3 text-[11px] font-mono uppercase tracking-wider text-pink-600 font-bold">Aplicaciones</p>
             <div className="grid grid-cols-2 gap-2 pt-1">
               {standaloneTools.map((tool) => (
                 <Link
                   key={tool.href}
                   href={tool.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2.5 rounded-xl bg-white/5 text-xs font-semibold text-zinc-200 hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-2.5 rounded-xl bg-slate-50 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                 >
                   {tool.name}
                 </Link>
@@ -165,36 +180,36 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+          <div className="pt-2 border-t border-slate-200 flex flex-col gap-2">
             <Link
               href="/sorteos/nuevo"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-white hover:text-pink-400"
+              className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-800 hover:text-pink-600"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
+              <Sparkles className="w-4 h-4 text-pink-600" />
               <span>Sorteos en Redes Sociales</span>
             </Link>
             <Link
               href="/planes"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 text-sm font-semibold text-zinc-300 hover:text-white"
+              className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900"
             >
-              Planes y Precios
+              Precios
             </Link>
             <Link
               href="/blog"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 text-sm font-semibold text-zinc-300 hover:text-white"
+              className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900"
             >
-              Guías y Normativa Legal
+              Ayuda y Guías
             </Link>
 
             <Link
               href="/sorteos/nuevo"
               onClick={() => setMobileMenuOpen(false)}
-              className="mt-2 text-center py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-pink-600 text-white font-bold text-sm shadow-md"
+              className="mt-2 text-center py-2.5 rounded-xl bg-[#d91a7a] text-white font-bold text-sm shadow-md"
             >
-              Crear Sorteo Ahora
+              Crear cuenta gratis
             </Link>
           </div>
         </div>

@@ -101,18 +101,17 @@ export default function AmigoInvisiblePage() {
       receivers = [...givers.slice(1), givers[0]];
     }
 
-    const newMatches: Match[] = givers.map((giver, i) => ({
+    const calculatedMatches: Match[] = givers.map((giver, i) => ({
       giver,
       receiver: receivers[i],
       revealed: false
     }));
 
-    const timestamp = new Date().toISOString();
     const hash = await generateSha256Hash(
-      `amigo-invisible-${timestamp}-${newMatches.map((m) => `${m.giver}->${m.receiver}`).join('|')}`
+      `amigo-invisible-${Date.now()}-${givers.join(',')}`
     );
 
-    setMatches(newMatches);
+    setMatches(calculatedMatches);
     setAuditHash(hash);
     setIsDrawing(false);
     playWinnerFanfare();
@@ -138,7 +137,7 @@ export default function AmigoInvisiblePage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       <ConfettiEffect active={matches.length > 0 && !isDrawing} />
 
@@ -146,52 +145,53 @@ export default function AmigoInvisiblePage() {
       <Countdown3DOverlay
         active={showCountdown}
         seconds={3}
-        title="Generando Parejas Secretas 3D"
+        title="Generando Parejas Secretas"
         onComplete={executeMatches}
       />
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="text-center sm:text-left space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-            <Gift className="w-3.5 h-3.5 text-pink-400" />
-            <span>Intercambio de Regalos Secreto</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-            Sorteo de Amigo Invisible
-          </h1>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
-            Organiza el intercambio de regalos perfecto. Emparejamiento aleatorio seguro y privado con revelación oculta.
-          </p>
+      {/* Hero Header Estilo AppSorteos */}
+      <div className="text-center pt-2 sm:pt-4">
+        {/* Pastel Icon Badge */}
+        <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+          <Gift className="w-7 h-7" />
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+          Sorteo de Amigo Invisible
+        </h1>
+        
+        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+          Organiza el intercambio de regalos con emparejamiento aleatorio seguro y tarjetas secretas
+        </p>
+
+        {/* Small Audio & Screen Controls */}
+        <div className="flex items-center justify-center gap-2 mt-3">
           <button
             type="button"
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
           {matches.length > 0 && (
             <button
               type="button"
               onClick={() => setShowLiveStream(true)}
-              className="btn-pro-secondary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+              className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
             >
-              <Tv className="w-4 h-4 text-purple-400" />
-              <span>Modo En Vivo</span>
+              <Tv className="w-3.5 h-3.5" />
+              <span>En Vivo</span>
             </button>
           )}
         </div>
@@ -200,8 +200,8 @@ export default function AmigoInvisiblePage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Form: Participants & Rules */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
-            <h2 className="text-lg font-bold font-display text-white">Participantes ({participants.length})</h2>
+          <div className="bg-white rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold font-display text-slate-900">Participantes ({participants.length})</h2>
 
             {/* Add person form */}
             <form onSubmit={handleAddPerson} className="flex gap-2">
@@ -216,13 +216,13 @@ export default function AmigoInvisiblePage() {
                 onChange={(e) => setNewPerson(e.target.value)}
                 placeholder="Nombre de la persona..."
                 aria-label="Nombre del participante para el amigo invisible"
-                className="flex-1 rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500"
+                className="flex-1 rounded-xl bg-white border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
               />
               <button
                 type="submit"
                 disabled={!newPerson.trim()}
                 aria-label="Agregar participante a la lista"
-                className="p-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-bold transition-colors"
+                className="p-2.5 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] disabled:opacity-50 text-white font-bold transition-colors cursor-pointer shadow-xs"
               >
                 <Plus className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -233,14 +233,14 @@ export default function AmigoInvisiblePage() {
               {participants.map((person, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5 text-sm text-zinc-200"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800"
                 >
-                  <span className="font-medium truncate pr-2">👤 {person}</span>
+                  <span className="font-semibold truncate pr-2">👤 {person}</span>
                   <button
                     type="button"
                     onClick={() => handleRemovePerson(idx)}
                     aria-label={`Eliminar a ${person}`}
-                    className="text-zinc-500 hover:text-red-400 transition-colors p-1"
+                    className="text-slate-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -249,10 +249,10 @@ export default function AmigoInvisiblePage() {
             </div>
 
             {/* Extra details: Budget and Date */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-100">
               <div className="space-y-1">
-                <label htmlFor="budget-input" className="text-xs font-mono text-zinc-400 flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5 text-amber-400" /> Presupuesto:
+                <label htmlFor="budget-input" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
+                  <DollarSign className="w-3.5 h-3.5 text-amber-500" /> Presupuesto:
                 </label>
                 <input
                   id="budget-input"
@@ -260,13 +260,13 @@ export default function AmigoInvisiblePage() {
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
                   placeholder="Ej: $20.00"
-                  className="w-full rounded-xl bg-black/40 border border-white/10 px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
+                  className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 font-mono focus:outline-none focus:border-[#d91a7a]"
                 />
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="deadline-input" className="text-xs font-mono text-zinc-400 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-pink-400" /> Fecha de entrega:
+                <label htmlFor="deadline-input" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-pink-500" /> Fecha de entrega:
                 </label>
                 <input
                   id="deadline-input"
@@ -274,7 +274,7 @@ export default function AmigoInvisiblePage() {
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
                   placeholder="Ej: 24 Diciembre"
-                  className="w-full rounded-xl bg-black/40 border border-white/10 px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
+                  className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 font-mono focus:outline-none focus:border-[#d91a7a]"
                 />
               </div>
             </div>
@@ -285,10 +285,10 @@ export default function AmigoInvisiblePage() {
                 type="button"
                 disabled={participants.length < 3 || isDrawing}
                 onClick={handleStartDraw}
-                className="btn-pro-primary w-full text-base py-3.5 rounded-2xl flex items-center justify-center gap-2"
+                className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold w-full text-base py-3.5 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all"
               >
                 <Shuffle className="w-5 h-5" />
-                <span>{matches.length > 0 ? '¡Volver a Emparejar con Conteo!' : '¡Sortear Amigo Invisible!'}</span>
+                <span>{matches.length > 0 ? 'Volver a Emparejar' : 'Comenzar Emparejamiento'}</span>
               </button>
             </div>
           </div>
@@ -297,14 +297,14 @@ export default function AmigoInvisiblePage() {
         {/* Right Form: Secret Match Cards */}
         <div className="lg:col-span-6 space-y-4">
           {matches.length > 0 ? (
-            <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-amber-500/30">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-bold font-display text-white flex items-center gap-2">
-                    <Gift className="w-5 h-5 text-amber-400" />
+                  <h3 className="text-lg font-bold font-display text-slate-900 flex items-center gap-2">
+                    <Gift className="w-5 h-5 text-amber-500" />
                     <span>Resultados Secretos</span>
                   </h3>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-slate-500">
                     Pasa el dispositivo o comparte el mensaje en privado a cada uno.
                   </p>
                 </div>
@@ -315,36 +315,36 @@ export default function AmigoInvisiblePage() {
                 {matches.map((m, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 transition-all hover:border-amber-400/30"
+                    className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 transition-all hover:border-pink-300"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-base">
+                      <span className="font-bold text-slate-900 text-base">
                         🎁 {m.giver}
                       </span>
                       <button
                         type="button"
                         onClick={() => toggleReveal(idx)}
-                        className="text-xs font-mono text-purple-300 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 transition-colors"
+                        className="text-xs font-semibold text-pink-600 hover:text-pink-700 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-50 hover:bg-pink-100 transition-colors cursor-pointer"
                       >
                         {m.revealed ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                         <span>{m.revealed ? 'Ocultar' : 'Revelar Secreto'}</span>
                       </button>
                     </div>
 
-                    {/* Secret Box with 3D reveal effect */}
+                    {/* Secret Box */}
                     <div
                       className={`p-3.5 rounded-xl border text-center transition-all duration-300 select-none ${
                         m.revealed
-                          ? 'bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-violet-500/20 border-amber-400/50 text-amber-300 font-bold shadow-lg shadow-amber-500/10 scale-[1.01]'
-                          : 'bg-black/40 border-white/5 text-zinc-500 font-mono text-xs'
+                          ? 'bg-pink-50 border-pink-200 text-slate-900 font-bold shadow-xs'
+                          : 'bg-white border-slate-200 text-slate-400 font-mono text-xs'
                       }`}
                     >
                       {m.revealed ? (
                         <div className="space-y-0.5 animate-in zoom-in-95 duration-200">
-                          <span className="text-[10px] uppercase tracking-wider text-zinc-400 block font-normal">
+                          <span className="text-[10px] uppercase tracking-wider text-slate-500 block font-normal">
                             Le regala en secreto a:
                           </span>
-                          <span className="text-2xl font-black text-white title-neon-glow">{m.receiver}</span>
+                          <span className="text-2xl font-extrabold text-slate-900 font-display">{m.receiver}</span>
                         </div>
                       ) : (
                         <span>🔒 Toca &quot;Revelar Secreto&quot; para ver</span>
@@ -356,17 +356,17 @@ export default function AmigoInvisiblePage() {
                       <button
                         type="button"
                         onClick={() => copySecretMessage(m, idx)}
-                        className="flex-1 py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-zinc-300 flex items-center justify-center gap-1.5 transition-colors border border-white/5"
+                        className="flex-1 py-2 px-3 rounded-lg bg-white hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center justify-center gap-1.5 transition-colors border border-slate-200 cursor-pointer"
                       >
                         {copiedIndex === idx ? (
                           <>
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                            <span className="text-emerald-400 font-bold">¡Copiado!</span>
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            <span className="text-emerald-600 font-bold">¡Copiado!</span>
                           </>
                         ) : (
                           <>
                             <Copy className="w-3.5 h-3.5" />
-                            <span>Copiar Mensaje Privado</span>
+                            <span>Copiar Privado</span>
                           </>
                         )}
                       </button>
@@ -374,7 +374,7 @@ export default function AmigoInvisiblePage() {
                       <button
                         type="button"
                         onClick={() => shareViaWhatsApp(m)}
-                        className="py-2 px-3 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 text-xs font-medium flex items-center justify-center gap-1 transition-colors border border-emerald-500/30"
+                        className="py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1 transition-colors border border-emerald-200 cursor-pointer"
                       >
                         <Share2 className="w-3.5 h-3.5" />
                         <span>WhatsApp</span>
@@ -386,18 +386,18 @@ export default function AmigoInvisiblePage() {
 
               {/* Audit Hash */}
               {auditHash && (
-                <div className="text-[10px] font-mono text-zinc-500 flex items-center gap-1.5 pt-2 border-t border-white/10">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="text-[10px] font-mono text-slate-500 flex items-center gap-1.5 pt-2 border-t border-slate-100">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Audit Hash: {auditHash.slice(0, 24)}...</span>
                 </div>
               )}
             </div>
           ) : (
-            <div className="glass-card rounded-3xl p-12 text-center space-y-3 border border-white/5 text-zinc-500 flex flex-col items-center justify-center min-h-[380px]">
-              <Gift className="w-12 h-12 opacity-30 text-pink-400" />
-              <p className="text-base font-bold text-white">Listo para el intercambio</p>
-              <p className="text-xs text-zinc-400 max-w-sm">
-                Agrega al menos 3 personas a la lista y presiona &quot;Sortear Amigo Invisible&quot; para generar las parejas en secreto.
+            <div className="bg-white rounded-2xl p-12 text-center space-y-3 border border-slate-200 shadow-sm text-slate-500 flex flex-col items-center justify-center min-h-[380px]">
+              <Gift className="w-12 h-12 text-pink-400" />
+              <p className="text-base font-bold text-slate-900">Listo para el intercambio</p>
+              <p className="text-xs text-slate-500 max-w-sm">
+                Agrega al menos 3 personas a la lista y presiona &quot;Comenzar Emparejamiento&quot; para generar las parejas en secreto.
               </p>
             </div>
           )}

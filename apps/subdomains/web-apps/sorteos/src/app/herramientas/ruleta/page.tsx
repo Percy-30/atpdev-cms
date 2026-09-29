@@ -57,39 +57,39 @@ export default function RuletaPage() {
       <ToolSwitcher />
       <ConfettiEffect active={winner !== null && !isSpinning} />
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="text-center sm:text-left space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-            <Disc className="w-3.5 h-3.5 text-pink-400" />
-            <span>Ruleta Interactiva en Vivo</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-            Ruleta Aleatoria Digital
-          </h1>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
-            Personaliza los premios o nombres, gira la ruleta y toma decisiones emocionantes e imparciales en vivo.
-          </p>
+      {/* Hero Header Estilo AppSorteos */}
+      <div className="text-center pt-2 sm:pt-4">
+        {/* Pastel Icon Badge */}
+        <div className="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+          <Disc className="w-7 h-7" />
         </div>
 
-        {/* Live Presentation Button */}
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+          Ruleta Aleatoria Digital
+        </h1>
+        
+        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+          Personaliza los premios o nombres y gira la ruleta interactiva para elegir ganadores al azar
+        </p>
+
+        {/* Live Presentation Button if winner exists */}
         {winner && (
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setShowLiveStream(true)}
-              className="btn-pro-secondary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
-            >
-              <Tv className="w-4 h-4 text-purple-400" />
-              <span>Modo En Vivo</span>
-            </button>
+          <div className="flex items-center justify-center gap-2 mt-4">
             <button
               type="button"
               onClick={() => setShowExportModal(true)}
-              className="btn-pro-primary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
+              className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
             >
               <Share2 className="w-4 h-4" />
               <span>Exportar Tarjeta</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowLiveStream(true)}
+              className="py-2.5 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+            >
+              <Tv className="w-4 h-4" />
+              <span>Modo En Vivo</span>
             </button>
           </div>
         )}
@@ -97,22 +97,22 @@ export default function RuletaPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Roulette Wheel Canvas */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 sm:p-10 glass-card rounded-3xl border border-white/10 relative">
+        <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 sm:p-10 bg-white rounded-2xl border border-slate-200 shadow-sm relative">
           {winner && (
-            <div className="w-full mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-violet-500/20 border border-amber-400/40 text-center space-y-2 animate-bounce">
-              <span className="text-[11px] font-mono font-bold uppercase text-amber-300 tracking-wider flex items-center justify-center gap-1">
-                <Trophy className="w-3.5 h-3.5" /> ¡Opción Ganadora!
+            <div className="w-full mb-6 p-4 rounded-xl bg-pink-50 border border-pink-200 text-center space-y-1 animate-in fade-in duration-200">
+              <span className="text-xs font-bold uppercase text-pink-600 tracking-wider flex items-center justify-center gap-1">
+                <Trophy className="w-4 h-4 text-amber-500" /> ¡Opción Ganadora!
               </span>
-              <p className="text-2xl sm:text-4xl font-black text-white font-display title-neon-glow">
+              <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-display">
                 {winner}
               </p>
               <div className="flex items-center justify-center gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => setShowExportModal(true)}
-                  className="text-xs font-mono font-bold text-amber-300 hover:text-white underline flex items-center gap-1"
+                  className="text-xs font-semibold text-pink-600 hover:text-pink-700 underline flex items-center gap-1"
                 >
-                  <Share2 className="w-3 h-3" /> Descargar Story / Post
+                  <Share2 className="w-3.5 h-3.5" /> Descargar Story / Post
                 </button>
               </div>
             </div>
@@ -128,31 +128,31 @@ export default function RuletaPage() {
 
         {/* Right: Options Manager & Presets */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
-            <h2 className="text-lg font-bold font-display text-white">Configurar Opciones</h2>
+          <div className="bg-white rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 shadow-sm">
+            <h2 className="text-lg font-bold font-display text-slate-900">Configurar Opciones</h2>
 
             {/* Presets */}
             <div className="space-y-1.5">
-              <span className="text-xs font-mono text-zinc-400">Plantillas rápidas:</span>
+              <span className="text-xs font-semibold text-slate-500">Plantillas rápidas:</span>
               <div className="flex flex-wrap gap-1.5">
                 <button
                   type="button"
                   onClick={() => setPreset(['Sí ✅', 'No ❌', 'Tal vez 🤔'])}
-                  className="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
+                  className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-pink-50 hover:text-pink-600 text-slate-700 transition-colors font-medium"
                 >
                   Sí / No
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreset(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])}
-                  className="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
+                  className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-pink-50 hover:text-pink-600 text-slate-700 transition-colors font-medium"
                 >
                   Números 1-10
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreset(['Pizza 🍕', 'Hamburguesa 🍔', 'Sushi 🍣', 'Tacos 🌮', 'Ensalada 🥗'])}
-                  className="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
+                  className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-pink-50 hover:text-pink-600 text-slate-700 transition-colors font-medium"
                 >
                   Comida
                 </button>
@@ -170,15 +170,15 @@ export default function RuletaPage() {
                 type="text"
                 value={newOption}
                 onChange={(e) => setNewOption(e.target.value)}
-                placeholder="Escribe una nueva opción..."
+                placeholder="Escribe una opción..."
                 aria-label="Escribe una nueva opción para la ruleta"
-                className="flex-1 rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500"
+                className="flex-1 rounded-xl bg-white border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
               />
               <button
                 type="submit"
                 disabled={!newOption.trim() || isSpinning}
                 aria-label="Agregar opción a la ruleta"
-                className="p-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-bold transition-colors"
+                className="p-2.5 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] disabled:opacity-50 text-white font-bold transition-colors cursor-pointer shadow-xs"
               >
                 <Plus className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -189,15 +189,15 @@ export default function RuletaPage() {
               {options.map((opt, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5 text-sm text-zinc-200"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800"
                 >
-                  <span className="font-medium truncate pr-2">{opt}</span>
+                  <span className="font-semibold truncate pr-2">{opt}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveOption(idx)}
                     disabled={isSpinning}
                     aria-label={`Eliminar opción ${opt}`}
-                    className="text-zinc-500 hover:text-red-400 transition-colors p-1"
+                    className="text-slate-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" aria-hidden="true" />
                   </button>
@@ -205,12 +205,12 @@ export default function RuletaPage() {
               ))}
             </div>
 
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-zinc-500 font-mono">
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
               <span>{options.length} opciones en ruleta</span>
               <button
                 type="button"
                 onClick={() => setWinner(null)}
-                className="hover:text-zinc-300 flex items-center gap-1"
+                className="hover:text-slate-800 flex items-center gap-1 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reiniciar Ganador</span>

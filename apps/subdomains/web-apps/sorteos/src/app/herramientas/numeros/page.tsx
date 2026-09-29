@@ -16,12 +16,12 @@ import {
 } from '@/lib/soundEffects';
 
 const BALL_GRADIENTS = [
-  'from-amber-400 via-yellow-500 to-amber-700 text-amber-950 shadow-amber-500/40',
-  'from-purple-400 via-violet-500 to-indigo-700 text-white shadow-purple-500/40',
-  'from-pink-400 via-rose-500 to-pink-700 text-white shadow-pink-500/40',
-  'from-cyan-400 via-sky-500 to-blue-700 text-slate-950 shadow-cyan-500/40',
-  'from-emerald-400 via-teal-500 to-emerald-700 text-emerald-950 shadow-emerald-500/40',
-  'from-orange-400 via-amber-500 to-red-600 text-white shadow-orange-500/40',
+  'from-amber-400 via-yellow-500 to-amber-600 text-amber-950 shadow-amber-500/30',
+  'from-purple-500 via-violet-600 to-indigo-700 text-white shadow-purple-500/30',
+  'from-pink-500 via-rose-500 to-pink-700 text-white shadow-pink-500/30',
+  'from-cyan-400 via-sky-500 to-blue-600 text-slate-950 shadow-cyan-500/30',
+  'from-emerald-400 via-teal-500 to-emerald-700 text-emerald-950 shadow-emerald-500/30',
+  'from-orange-400 via-amber-500 to-red-600 text-white shadow-orange-500/30',
 ];
 
 export default function NumerosPage() {
@@ -120,7 +120,7 @@ export default function NumerosPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       {showConfetti && <ConfettiEffect />}
 
@@ -132,57 +132,58 @@ export default function NumerosPage() {
         onComplete={executeGeneration}
       />
 
-      {/* Header con controles */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="text-center sm:text-left space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-            <Hash className="w-3.5 h-3.5" />
-            <span>Generador CSPRNG con Bolas 3D</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-            Generador de Números 3D
-          </h1>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
-            Genera números aleatorios únicos o repetidos para rifas, loterías o bingos con esferas 3D e inmutabilidad SHA-256.
-          </p>
+      {/* Hero Header Estilo AppSorteos */}
+      <div className="text-center pt-2 sm:pt-4">
+        {/* Pastel Icon Badge */}
+        <div className="w-14 h-14 rounded-2xl bg-cyan-100 text-cyan-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+          <Hash className="w-7 h-7" />
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+          Generador de Números al Azar
+        </h1>
+        
+        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+          Genera números aleatorios únicos para rifas, loterías o bingos con esferas 3D certificadas
+        </p>
+
+        {/* Small Audio & Screen Controls */}
+        <div className="flex items-center justify-center gap-2 mt-3">
           <button
             type="button"
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
           {results.length > 0 && (
             <>
               <button
                 type="button"
-                onClick={() => setShowLiveStream(true)}
-                className="btn-pro-secondary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+                onClick={() => setShowExportModal(true)}
+                className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-semibold flex items-center gap-1 transition-colors"
               >
-                <Tv className="w-4 h-4 text-purple-400" />
-                <span>Modo En Vivo</span>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Exportar</span>
               </button>
               <button
                 type="button"
-                onClick={() => setShowExportModal(true)}
-                className="btn-pro-primary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+                onClick={() => setShowLiveStream(true)}
+                className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
               >
-                <Share2 className="w-4 h-4" />
-                <span>Exportar</span>
+                <Tv className="w-3.5 h-3.5" />
+                <span>En Vivo</span>
               </button>
             </>
           )}
@@ -190,34 +191,34 @@ export default function NumerosPage() {
       </div>
 
       {/* Config Card */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 pb-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-white">
-            <Sliders className="w-4 h-4 text-purple-400" />
+      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
+            <Sliders className="w-4 h-4 text-cyan-600" />
             <span>Configuración del Sorteo</span>
           </div>
 
           {/* Quick presets */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono text-zinc-500">Plantillas:</span>
+            <span className="text-xs font-semibold text-slate-500">Plantillas:</span>
             <button
               type="button"
               onClick={() => applyPreset(1, 100, 1, true)}
-              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-mono transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 hover:text-cyan-700 text-xs text-slate-700 font-medium transition-colors cursor-pointer"
             >
               1 al 100 (1 ganador)
             </button>
             <button
               type="button"
               onClick={() => applyPreset(1, 50, 6, true)}
-              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-mono transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 hover:text-cyan-700 text-xs text-slate-700 font-medium transition-colors cursor-pointer"
             >
               Lotería (6/50)
             </button>
             <button
               type="button"
               onClick={() => applyPreset(1, 75, 5, true)}
-              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-zinc-300 font-mono transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 hover:text-cyan-700 text-xs text-slate-700 font-medium transition-colors cursor-pointer"
             >
               Bingo (75)
             </button>
@@ -227,29 +228,29 @@ export default function NumerosPage() {
         {/* Form Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="numero-minimo" className="block text-xs font-mono text-zinc-400 mb-2">Valor Mínimo:</label>
+            <label htmlFor="numero-minimo" className="block text-xs font-semibold text-slate-700 mb-1.5">Valor Mínimo:</label>
             <input
               id="numero-minimo"
               name="numeroMinimo"
               type="number"
               value={min}
               onChange={(e) => setMin(parseInt(e.target.value) || 0)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono font-bold focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 transition-colors shadow-xs"
             />
           </div>
           <div>
-            <label htmlFor="numero-maximo" className="block text-xs font-mono text-zinc-400 mb-2">Valor Máximo:</label>
+            <label htmlFor="numero-maximo" className="block text-xs font-semibold text-slate-700 mb-1.5">Valor Máximo:</label>
             <input
               id="numero-maximo"
               name="numeroMaximo"
               type="number"
               value={max}
               onChange={(e) => setMax(parseInt(e.target.value) || 0)}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono font-bold focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 transition-colors shadow-xs"
             />
           </div>
           <div>
-            <label htmlFor="numero-cantidad" className="block text-xs font-mono text-zinc-400 mb-2">Cantidad de Números:</label>
+            <label htmlFor="numero-cantidad" className="block text-xs font-semibold text-slate-700 mb-1.5">Cantidad de Números:</label>
             <input
               id="numero-cantidad"
               name="numeroCantidad"
@@ -258,7 +259,7 @@ export default function NumerosPage() {
               max={1000}
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono font-bold focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 transition-colors shadow-xs"
             />
           </div>
         </div>
@@ -270,54 +271,52 @@ export default function NumerosPage() {
               type="checkbox"
               checked={!allowDuplicates}
               onChange={(e) => setAllowDuplicates(!e.target.checked)}
-              className="w-4 h-4 rounded text-purple-600 bg-zinc-900 border-zinc-700 focus:ring-purple-500"
+              className="w-4 h-4 rounded text-pink-600 bg-white border-slate-300 focus:ring-pink-500"
             />
-            <span className="text-xs text-zinc-300">Sin duplicados (Números únicos)</span>
+            <span className="text-xs font-medium text-slate-700">Sin duplicados (Números únicos)</span>
           </label>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-zinc-400 font-mono">Ordenar:</span>
+            <span className="text-xs font-semibold text-slate-500">Ordenar:</span>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as any)}
-              className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-purple-500"
+              className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-[#d91a7a]"
             >
-              <option value="none" className="bg-zinc-900">Al azar (orden de extracción)</option>
-              <option value="asc" className="bg-zinc-900">Menor a Mayor (Ascendente)</option>
-              <option value="desc" className="bg-zinc-900">Mayor a Menor (Descendente)</option>
+              <option value="none">Al azar (orden de extracción)</option>
+              <option value="asc">Menor a Mayor (Ascendente)</option>
+              <option value="desc">Mayor a Menor (Descendente)</option>
             </select>
           </div>
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300">
+          <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
             {error}
           </div>
         )}
 
         {/* Generate Button */}
-        <div className="pt-2">
+        <div className="pt-2 text-center">
           <button
             type="button"
             disabled={isGenerating}
             onClick={handleStartDraw}
-            className={`w-full py-4 text-base sm:text-lg btn-pro-primary rounded-2xl ${
-              isGenerating ? '!bg-zinc-800 !text-zinc-500 !cursor-not-allowed !shadow-none !transform-none opacity-60' : ''
-            }`}
+            className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold text-base sm:text-lg py-3.5 px-12 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
           >
             <RefreshCw className={`w-5 h-5 ${isGenerating ? 'animate-spin' : ''}`} />
-            <span>{isGenerating ? 'Extrayendo esferas 3D...' : '✨ ¡Sortear Números con Cuenta Regresiva!'}</span>
+            <span>{isGenerating ? 'Extrayendo esferas 3D...' : 'Comenzar Sorteo'}</span>
           </button>
         </div>
       </div>
 
       {/* Results Display with 3D Spheres */}
       {results.length > 0 && (
-        <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <h2 className="text-base font-bold text-white font-display">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <h2 className="text-base font-bold text-slate-900 font-display">
                 Esferas Extraídas ({results.length})
               </h2>
             </div>
@@ -325,15 +324,15 @@ export default function NumerosPage() {
               <button
                 type="button"
                 onClick={handleCopy}
-                className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-300 transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copied ? '¡Copiado!' : 'Copiar'}</span>
               </button>
               <button
                 type="button"
                 onClick={handleDownloadCsv}
-                className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-300 transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>CSV</span>
@@ -342,7 +341,7 @@ export default function NumerosPage() {
           </div>
 
           {/* 3D Spheres Ball Stage */}
-          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center py-8">
+          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center py-6 bg-slate-50 rounded-2xl border border-slate-100">
             {results.map((num, idx) => {
               const gradient = BALL_GRADIENTS[idx % BALL_GRADIENTS.length];
               return (
@@ -353,20 +352,20 @@ export default function NumerosPage() {
                 >
                   {/* 3D Ball Sphere */}
                   <div
-                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr ${gradient} shadow-2xl flex items-center justify-center relative p-1 border-2 border-white/50 transform group-hover:scale-110 group-hover:-translate-y-1 transition-all select-none`}
+                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr ${gradient} shadow-lg flex items-center justify-center relative p-1 border-2 border-white/60 transform group-hover:scale-110 group-hover:-translate-y-1 transition-all select-none`}
                   >
                     {/* Specular 3D Reflection Highlight */}
-                    <div className="absolute top-1.5 left-3 w-6 h-3 rounded-full bg-white/60 blur-[1px] rotate-[-20deg]" />
+                    <div className="absolute top-1.5 left-3 w-6 h-3 rounded-full bg-white/70 blur-[1px] rotate-[-20deg]" />
 
                     {/* Inner White Ring Center */}
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 shadow-inner border border-black/10 flex items-center justify-center">
-                      <span className="text-2xl sm:text-3xl font-black font-display text-zinc-950 font-mono-num tracking-tight">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/95 shadow-inner border border-black/5 flex items-center justify-center">
+                      <span className="text-2xl sm:text-3xl font-black font-display text-slate-900 font-mono-num tracking-tight">
                         {num}
                       </span>
                     </div>
                   </div>
 
-                  <span className="text-[11px] font-mono font-bold text-zinc-400 mt-2">
+                  <span className="text-[11px] font-semibold text-slate-500 mt-2">
                     Bola #{idx + 1}
                   </span>
                 </div>
@@ -376,12 +375,12 @@ export default function NumerosPage() {
 
           {/* Verification Hash */}
           {auditHash && (
-            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
-              <div className="flex items-center gap-2 text-zinc-400">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Hash Criptográfico SHA-256:</span>
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
+              <div className="flex items-center gap-2 text-slate-600">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span className="font-semibold">Hash Criptográfico SHA-256:</span>
               </div>
-              <span className="text-emerald-400/90 break-all">{auditHash}</span>
+              <span className="text-slate-500 break-all">{auditHash}</span>
             </div>
           )}
         </div>

@@ -99,29 +99,27 @@ export default function EquiposPage() {
       playCardFlip();
       playWinnerFanfare();
     } catch (err: any) {
-      setError(err.message || 'Error al conformar los equipos.');
+      setError(err.message || 'Error al armar equipos');
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const handleCopyTeam = (teamIdx: number, text: string) => {
+  const handleCopyTeam = (idx: number, text: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedTeam(teamIdx);
+    setCopiedTeam(idx);
     setTimeout(() => setCopiedTeam(null), 2000);
   };
 
   const handleCopyAll = () => {
-    const fullSummary = teams
-      .map((t) => `${t.name}:\n` + t.members.map((m, i) => `  ${i + 1}. ${m}`).join('\n'))
-      .join('\n\n');
-    navigator.clipboard.writeText(fullSummary);
+    const text = teams.map((t) => `${t.name}:\n` + t.members.map((m) => `- ${m}`).join('\n')).join('\n\n');
+    navigator.clipboard.writeText(text);
     setCopiedTeam(999);
     setTimeout(() => setCopiedTeam(null), 2000);
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       {showConfetti && <ConfettiEffect />}
 
@@ -129,61 +127,62 @@ export default function EquiposPage() {
       <Countdown3DOverlay
         active={showCountdown}
         seconds={3}
-        title="Barajando y Formando Equipos 3D"
+        title="Barajando y Formando Equipos"
         onComplete={executeGeneration}
       />
 
-      {/* Header con controles */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="text-center sm:text-left space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-            <Users className="w-3.5 h-3.5" />
-            <span>Reparto Equilibrado CSPRNG</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-            Generador de Equipos 3D
-          </h1>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
-            Divide listas de personas en grupos equilibrados y competitivos con animación de tarjetas y verificación.
-          </p>
+      {/* Hero Header Estilo AppSorteos */}
+      <div className="text-center pt-2 sm:pt-4">
+        {/* Pastel Icon Badge */}
+        <div className="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+          <Users className="w-7 h-7" />
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+          Generador de Equipos al Azar
+        </h1>
+        
+        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+          Divide listas de participantes en grupos o equipos equilibrados de manera equitativa e imparcial
+        </p>
+
+        {/* Small Audio & Screen Controls */}
+        <div className="flex items-center justify-center gap-2 mt-3">
           <button
             type="button"
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
           {teams.length > 0 && (
             <>
               <button
                 type="button"
-                onClick={() => setShowLiveStream(true)}
-                className="btn-pro-secondary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+                onClick={() => setShowExportModal(true)}
+                className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-semibold flex items-center gap-1 transition-colors"
               >
-                <Tv className="w-4 h-4 text-purple-400" />
-                <span>Modo En Vivo</span>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Exportar</span>
               </button>
               <button
                 type="button"
-                onClick={() => setShowExportModal(true)}
-                className="btn-pro-primary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+                onClick={() => setShowLiveStream(true)}
+                className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
               >
-                <Share2 className="w-4 h-4" />
-                <span>Exportar</span>
+                <Tv className="w-3.5 h-3.5" />
+                <span>En Vivo</span>
               </button>
             </>
           )}
@@ -191,20 +190,20 @@ export default function EquiposPage() {
       </div>
 
       {/* Main Form */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
+      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Participants Textarea */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="equipos-textarea" className="text-xs font-mono text-zinc-400">
-                Lista de Nombres ({participantsList.length} detectados):
+              <label htmlFor="equipos-textarea" className="text-xs font-semibold text-slate-700">
+                Participantes ({participantsList.length}):
               </label>
               <button
                 type="button"
                 onClick={() => setInputText('')}
-                className="text-xs text-zinc-500 hover:text-red-400 transition-colors font-mono"
+                className="text-xs text-slate-400 hover:text-red-500 transition-colors font-medium cursor-pointer"
               >
-                Limpiar
+                Vaciar lista
               </button>
             </div>
             <textarea
@@ -215,7 +214,7 @@ export default function EquiposPage() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ingresa un nombre por línea..."
               aria-label="Lista de participantes para dividir en equipos, un nombre por línea"
-              className="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-purple-500 resize-none transition-colors"
+              className="w-full p-4 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 resize-none transition-colors shadow-xs leading-relaxed"
             />
           </div>
 
@@ -224,7 +223,7 @@ export default function EquiposPage() {
             <div className="space-y-4">
               {/* Number of Teams */}
               <div>
-                <label className="block text-xs font-mono text-zinc-400 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-2">
                   Cantidad de Equipos a Formar:
                 </label>
                 <div className="grid grid-cols-5 gap-2">
@@ -233,10 +232,10 @@ export default function EquiposPage() {
                       key={num}
                       type="button"
                       onClick={() => setTeamCount(num)}
-                      className={`py-2.5 rounded-xl font-bold font-mono text-sm transition-all ${
+                      className={`py-2.5 rounded-xl font-bold font-mono text-sm transition-all cursor-pointer ${
                         teamCount === num
-                          ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
-                          : 'bg-white/5 text-zinc-400 hover:bg-white/10'
+                          ? 'bg-[#d91a7a] text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       }`}
                     >
                       {num}
@@ -247,23 +246,23 @@ export default function EquiposPage() {
 
               {/* Naming Style */}
               <div>
-                <label className="block text-xs font-mono text-zinc-400 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-2">
                   Estilo de Nombres para los Equipos:
                 </label>
                 <select
                   value={namingStyle}
                   onChange={(e) => setNamingStyle(parseInt(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-medium text-sm focus:outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-medium text-sm focus:outline-none focus:border-[#d91a7a] shadow-xs"
                 >
-                  <option value={0} className="bg-zinc-900">🛡️ Épico / Colores (Titanes, Fénix...)</option>
-                  <option value={1} className="bg-zinc-900">⚡ Elementos (Fuego, Relámpago...)</option>
-                  <option value={2} className="bg-zinc-900">🔤 Alfabeto Griego (Alfa, Beta...)</option>
+                  <option value={0}>🛡️ Épico / Colores (Titanes, Fénix...)</option>
+                  <option value={1}>⚡ Elementos (Fuego, Relámpago...)</option>
+                  <option value={2}>🔤 Alfabeto Griego (Alfa, Beta...)</option>
                 </select>
               </div>
             </div>
 
             {error && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300">
+              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
                 {error}
               </div>
             )}
@@ -273,12 +272,10 @@ export default function EquiposPage() {
               type="button"
               disabled={isGenerating}
               onClick={handleStartDraw}
-              className={`w-full py-4 text-base sm:text-lg btn-pro-primary rounded-2xl flex items-center justify-center gap-2 ${
-                isGenerating ? '!bg-zinc-800 !text-zinc-500 !cursor-not-allowed !shadow-none !transform-none opacity-60' : ''
-              }`}
+              className="w-full py-3.5 text-base sm:text-lg bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <Shuffle className={`w-5 h-5 ${isGenerating ? 'animate-spin' : ''}`} />
-              <span>{isGenerating ? 'Formando equipos...' : '🎲 ¡Dividir en Equipos con Conteo!'}</span>
+              <span>{isGenerating ? 'Formando equipos...' : 'Comenzar Reparto'}</span>
             </button>
           </div>
         </div>
@@ -288,17 +285,17 @@ export default function EquiposPage() {
       {teams.length > 0 && (
         <div className="space-y-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <h2 className="text-xl font-bold font-display text-white flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-400" />
+            <h2 className="text-xl font-bold font-display text-slate-900 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-amber-500" />
               <span>Equipos Conformados ({teams.length})</span>
             </h2>
 
             <button
               type="button"
               onClick={handleCopyAll}
-              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-300 transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-2 cursor-pointer"
             >
-              {copiedTeam === 999 ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              {copiedTeam === 999 ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
               <span>{copiedTeam === 999 ? '¡Todos Copiados!' : 'Copiar Todos los Equipos'}</span>
             </button>
           </div>
@@ -308,19 +305,19 @@ export default function EquiposPage() {
             {teams.map((t, idx) => (
               <div
                 key={idx}
-                className="glass-card rounded-2xl p-5 border border-white/10 space-y-4 relative overflow-hidden group hover:border-purple-500/40 transition-all hover:scale-[1.02]"
+                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4 hover:border-pink-300 transition-all"
               >
-                <div className="flex items-center justify-between border-b border-white/5 pb-3">
-                  <span className="font-bold text-base text-white font-display flex items-center gap-2">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <span className="font-bold text-base text-slate-900 font-display flex items-center gap-2">
                     {t.name}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleCopyTeam(idx, `${t.name}:\n` + t.members.join('\n'))}
-                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+                    className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                     title="Copiar este equipo"
                   >
-                    {copiedTeam === idx ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedTeam === idx ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
 
@@ -329,17 +326,17 @@ export default function EquiposPage() {
                   {t.members.map((member, mIdx) => (
                     <div
                       key={mIdx}
-                      className="flex items-center gap-2.5 text-xs text-zinc-300 bg-white/[0.02] p-2 rounded-lg"
+                      className="flex items-center gap-2.5 text-xs text-slate-800 bg-slate-50 p-2.5 rounded-lg"
                     >
-                      <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 font-mono font-bold flex items-center justify-center text-[10px]">
+                      <span className="w-5 h-5 rounded-full bg-pink-100 text-pink-700 font-bold flex items-center justify-center text-[10px]">
                         {mIdx + 1}
                       </span>
-                      <span className="font-medium truncate">{member}</span>
+                      <span className="font-semibold truncate">{member}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="text-[10px] font-mono text-zinc-500 text-right pt-1">
+                <div className="text-[11px] text-slate-400 text-right pt-1 font-medium">
                   {t.members.length} integrantes
                 </div>
               </div>
@@ -348,12 +345,12 @@ export default function EquiposPage() {
 
           {/* Verification Hash */}
           {auditHash && (
-            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
-              <div className="flex items-center gap-2 text-zinc-400">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Hash Criptográfico SHA-256:</span>
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
+              <div className="flex items-center gap-2 text-slate-600">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span className="font-semibold">Hash Criptográfico SHA-256:</span>
               </div>
-              <span className="text-emerald-400/90 break-all">{auditHash}</span>
+              <span className="text-slate-500 break-all">{auditHash}</span>
             </div>
           )}
         </div>

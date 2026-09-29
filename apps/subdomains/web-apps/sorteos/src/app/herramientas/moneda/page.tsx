@@ -36,11 +36,7 @@ export default function MonedaPage() {
     if (isFlipping) return;
     setIsFlipping(true);
 
-    // Calcular resultado matemáticamente con CSPRNG
     const outcome = flipCoin();
-
-    // Rotación física exacta: al menos 5 giros (1800°) y alineación con la cara
-    // Cara = 0° (mod 360), Cruz = 180° (mod 360)
     const targetOffset = outcome === 'cara' ? 0 : 180;
     const currentTurns = Math.floor(rotations / 360);
     const nextRotations = (currentTurns + 5) * 360 + targetOffset;
@@ -64,59 +60,56 @@ export default function MonedaPage() {
   const caraPercent = totalFlips > 0 ? Math.round((caraCount / totalFlips) * 100) : 50;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
 
-      {/* Header con controles de Sonido y Pantalla Completa */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="text-center sm:text-left space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-            <Coins className="w-3.5 h-3.5" />
-            <span>Cara o Cruz Criptográfico CSPRNG</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-            Lanzar Moneda Online
-          </h1>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
-            Decide al azar con un volado justo, 100% sincronizado y respaldado por Web Crypto.
-          </p>
+      {/* Hero Header Estilo AppSorteos */}
+      <div className="text-center pt-2 sm:pt-4">
+        {/* Pastel Icon Badge */}
+        <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+          <Coins className="w-7 h-7" />
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+          Lanzar Moneda (Cara o Cruz)
+        </h1>
+        
+        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+          Toma decisiones justas al instante con giro 3D sincronizado y algoritmo criptográfico
+        </p>
+
+        {/* Small Audio & Screen Controls */}
+        <div className="flex items-center justify-center gap-2 mt-3">
           <button
             type="button"
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
-            aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Modo transmisión pantalla completa'}
-            title={isFullscreen ? 'Salir de pantalla completa' : 'Modo transmisión'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
       {/* Main Board */}
-      <div className="glass-card rounded-3xl p-8 sm:p-12 space-y-8 border border-white/10 text-center relative overflow-hidden">
-        {/* Glow ambient */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="bg-white rounded-2xl p-6 sm:p-10 space-y-6 border border-slate-200 shadow-sm text-center relative overflow-hidden">
         {/* 3D Coin Animation Area */}
-        <div className="py-8 flex justify-center items-center perspective-1000">
+        <div className="py-6 flex justify-center items-center perspective-1000">
           <div
             role="button"
             tabIndex={0}
             aria-label={`Moneda interactiva 3D. Mostrará ${result}. Haz clic para lanzar.`}
-            className="w-44 h-44 sm:w-52 sm:h-52 rounded-full relative cursor-pointer select-none focus:outline-none focus:ring-4 focus:ring-amber-400/50"
+            className="w-44 h-44 sm:w-52 sm:h-52 rounded-full relative cursor-pointer select-none focus:outline-none focus:ring-4 focus:ring-pink-100"
             style={{
               transform: `rotateY(${rotations}deg)`,
               transformStyle: 'preserve-3d',
@@ -133,14 +126,14 @@ export default function MonedaPage() {
           >
             {/* Cara frontal (Cara) - 0 deg */}
             <div
-              className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-100 p-2.5 shadow-2xl border-4 border-amber-400/90 flex flex-col items-center justify-center text-amber-950 font-display font-black backface-hidden"
+              className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-100 p-2.5 shadow-xl border-4 border-amber-400 flex flex-col items-center justify-center text-amber-950 font-display font-black backface-hidden"
               style={{
                 backfaceVisibility: 'hidden',
                 WebkitBackfaceVisibility: 'hidden'
               }}
             >
               <div className="w-full h-full rounded-full border-2 border-dashed border-amber-800/40 flex flex-col items-center justify-center p-4">
-                <Sparkles className="w-9 h-9 text-amber-900 mb-1 animate-pulse" />
+                <Sparkles className="w-9 h-9 text-amber-900 mb-1" />
                 <span className="text-3xl font-black uppercase tracking-widest">CARA</span>
                 <span className="text-[10px] font-mono font-bold text-amber-900/80 mt-1">SORTEOS PRO</span>
               </div>
@@ -148,7 +141,7 @@ export default function MonedaPage() {
 
             {/* Cara dorsal (Cruz) - 180 deg */}
             <div
-              className="absolute inset-0 rounded-full bg-gradient-to-tr from-zinc-600 via-zinc-200 to-slate-100 p-2.5 shadow-2xl border-4 border-zinc-300/90 flex flex-col items-center justify-center text-zinc-900 font-display font-black backface-hidden"
+              className="absolute inset-0 rounded-full bg-gradient-to-tr from-zinc-500 via-zinc-200 to-slate-100 p-2.5 shadow-xl border-4 border-zinc-300 flex flex-col items-center justify-center text-zinc-900 font-display font-black backface-hidden"
               style={{
                 transform: 'rotateY(180deg)',
                 backfaceVisibility: 'hidden',
@@ -166,18 +159,18 @@ export default function MonedaPage() {
 
         {/* Current Result Tag */}
         <div>
-          <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-white/5 border border-white/10 shadow-lg min-w-[220px] justify-center">
+          <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs min-w-[220px] justify-center">
             {isFlipping ? (
-              <span className="text-sm font-mono font-bold text-amber-400 animate-pulse flex items-center gap-2">
-                <RotateCw className="w-4 h-4 animate-spin text-amber-400" />
+              <span className="text-sm font-semibold text-pink-600 animate-pulse flex items-center gap-2">
+                <RotateCw className="w-4 h-4 animate-spin text-pink-600" />
                 Girando en el aire...
               </span>
             ) : (
               <>
-                <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider">Resultado actual:</span>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Resultado:</span>
                 <span
-                  className={`text-2xl font-black uppercase tracking-wider ${
-                    result === 'cara' ? 'text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.5)]' : 'text-zinc-100 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]'
+                  className={`text-2xl font-extrabold uppercase tracking-wider ${
+                    result === 'cara' ? 'text-amber-600' : 'text-slate-800'
                   }`}
                 >
                   {result}
@@ -193,39 +186,37 @@ export default function MonedaPage() {
             type="button"
             disabled={isFlipping}
             onClick={handleFlip}
-            className={`btn-pro-gold text-base sm:text-lg py-4 px-12 rounded-2xl ${
-              isFlipping ? 'opacity-60 cursor-not-allowed !transform-none' : ''
-            }`}
+            className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold text-base sm:text-lg py-3.5 px-12 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 transition-all inline-flex items-center gap-2 cursor-pointer"
           >
             <RotateCw className={`w-5 h-5 ${isFlipping ? 'animate-spin' : ''}`} />
-            <span>{isFlipping ? 'Lanzando moneda...' : '🪙 ¡Lanzar Moneda Ahora!'}</span>
+            <span>{isFlipping ? 'Lanzando moneda...' : '¡Lanzar Moneda Ahora!'}</span>
           </button>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto pt-4 border-t border-white/5">
-          <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 text-center">
-            <div className="text-[11px] font-mono text-zinc-400 uppercase">Caras</div>
-            <div className="text-xl font-bold text-amber-400 font-mono-num">
-              {caraCount} <span className="text-xs text-zinc-500 font-normal">({caraPercent}%)</span>
+        <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto pt-4 border-t border-slate-100">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-center">
+            <div className="text-[11px] font-semibold text-slate-500 uppercase">Caras</div>
+            <div className="text-xl font-extrabold text-amber-600 font-mono-num">
+              {caraCount} <span className="text-xs text-slate-400 font-normal">({caraPercent}%)</span>
             </div>
           </div>
-          <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 text-center">
-            <div className="text-[11px] font-mono text-zinc-400 uppercase">Cruces</div>
-            <div className="text-xl font-bold text-zinc-300 font-mono-num">
-              {cruzCount} <span className="text-xs text-zinc-500 font-normal">({100 - caraPercent}%)</span>
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-center">
+            <div className="text-[11px] font-semibold text-slate-500 uppercase">Cruces</div>
+            <div className="text-xl font-extrabold text-slate-700 font-mono-num">
+              {cruzCount} <span className="text-xs text-slate-400 font-normal">({100 - caraPercent}%)</span>
             </div>
           </div>
-          <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 text-center">
-            <div className="text-[11px] font-mono text-zinc-400 uppercase">Tiradas</div>
-            <div className="text-xl font-bold text-purple-400 font-mono-num">{totalFlips}</div>
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-center">
+            <div className="text-[11px] font-semibold text-slate-500 uppercase">Tiradas</div>
+            <div className="text-xl font-extrabold text-purple-600 font-mono-num">{totalFlips}</div>
           </div>
         </div>
 
         {/* Audit Hash */}
         {lastHash && (
-          <div className="text-xs font-mono text-zinc-500 flex items-center justify-center gap-1.5 pt-2">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="text-xs font-mono text-slate-400 flex items-center justify-center gap-1.5 pt-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>Audit Hash: {lastHash.slice(0, 24)}...</span>
           </div>
         )}
@@ -233,15 +224,15 @@ export default function MonedaPage() {
 
       {/* History Log */}
       {history.length > 0 && (
-        <div className="glass-card rounded-2xl p-5 border border-white/10 space-y-3">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
               <History className="w-3.5 h-3.5" />
               <span>Últimos lanzamientos</span>
             </h2>
             <button
               onClick={() => setHistory([])}
-              className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+              className="text-xs text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
             >
               Limpiar
             </button>
@@ -252,8 +243,8 @@ export default function MonedaPage() {
                 key={idx}
                 className={`px-3 py-1 rounded-xl text-xs font-mono font-bold uppercase ${
                   item === 'cara'
-                    ? 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
-                    : 'bg-zinc-500/10 text-zinc-300 border border-zinc-500/20'
+                    ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                    : 'bg-slate-100 text-slate-700 border border-slate-200'
                 }`}
               >
                 #{history.length - idx}: {item}

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ListOrdered, Trophy, Sparkles, RefreshCw, Trash2, 
-  Copy, Check, Share2, Award, UserCheck, Shuffle, Tv,
-  Volume2, VolumeX, Maximize2, Minimize2
+  Copy, Check, Share2, Award, Tv, Upload, Settings,
+  Volume2, VolumeX, Maximize2, Minimize2, RotateCcw, FileText
 } from 'lucide-react';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
@@ -17,12 +17,15 @@ import {
 } from '@/lib/soundEffects';
 
 export default function ListaPage() {
+  const [title, setTitle] = useState<string>('Sorteo por Nombres al Azar');
   const [rawText, setRawText] = useState<string>(
     "María García\nCarlos López\nAna Torres\nJuan Pérez\nSofía Mendoza\nDiego Fernández\nValentina Ríos\nMateo Silva\nLucía Morales\nGabriel Castro"
   );
   const [winnersCount, setWinnersCount] = useState<number>(1);
   const [substitutesCount, setSubstitutesCount] = useState<number>(1);
   const [removeDuplicates, setRemoveDuplicates] = useState<boolean>(true);
+  const [useCountdown, setUseCountdown] = useState<boolean>(true);
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [winners, setWinners] = useState<string[]>([]);
@@ -33,6 +36,8 @@ export default function ListaPage() {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMuted(isAudioMuted());
@@ -61,9 +66,28 @@ export default function ListaPage() {
 
   const participants = getParticipants();
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (content) {
+        setRawText(content);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   const handleStartDraw = () => {
     if (participants.length === 0 || isDrawing) return;
-    setShowCountdown(true);
+    if (useCountdown) {
+      setShowCountdown(true);
+    } else {
+      executeDraw();
+    }
   };
 
   const executeDraw = async () => {
@@ -88,14 +112,16 @@ export default function ListaPage() {
   };
 
   const handleCopyWinners = () => {
-    const text = `🏆 Ganadores del Sorteo:\n${winners.map((w, i) => `${i + 1}. ${w}`).join('\n')}\n\n👥 Suplentes:\n${substitutes.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nVerificado con Sorteos Pro`;
+    const text = `🏆 Ganadores de ${title || 'Sorteo'}:\n${winners.map((w, i) => `${i + 1}. ${w}`).join('\n')}${
+      substitutes.length > 0 ? `\n\n👥 Suplentes:\n${substitutes.map((s, i) => `${i + 1}. ${s}`).join('\n')}` : ''
+    }\n\nVerificado con Sorteos Pro`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       <ConfettiEffect active={winners.length > 0 && !isDrawing} />
 
@@ -103,271 +129,314 @@ export default function ListaPage() {
       <Countdown3DOverlay
         active={showCountdown}
         seconds={3}
-        title="Eligiendo Ganadores de la Lista en 3D"
+        title="Eligiendo Ganadores de la Lista"
         onComplete={executeDraw}
       />
 
-      {/* Header con controles */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="text-center sm:text-left space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-            <ListOrdered className="w-3.5 h-3.5" />
-            <span>Herramienta Gratuita Certificada</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-            Sorteo por Lista de Nombres
-          </h1>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
-            Pega los nombres de tus participantes, ajusta los ganadores y realiza un sorteo 100% aleatorio, certificado e imparcial.
-          </p>
+      {/* Hero Header Estilo AppSorteos */}
+      <div className="text-center pt-2 sm:pt-4">
+        {/* Pastel Icon Badge */}
+        <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+          <ListOrdered className="w-7 h-7" />
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+          Sorteo por Nombres al Azar
+        </h1>
+        
+        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+          Escoge un ganador al azar de una <strong className="font-semibold text-slate-700">lista de nombres</strong> con nuestra App
+        </p>
+
+        {/* Small Audio & Screen Controls */}
+        <div className="flex items-center justify-center gap-2 mt-3">
           <button
             type="button"
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
           >
-            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
-          {winners.length > 0 && (
-            <>
-              <button
-                type="button"
-                onClick={() => setShowLiveStream(true)}
-                className="btn-pro-secondary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
-              >
-                <Tv className="w-4 h-4 text-purple-400" />
-                <span>Modo En Vivo</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowExportModal(true)}
-                className="btn-pro-primary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
-              >
-                <Share2 className="w-4 h-4" />
-                <span>Exportar</span>
-              </button>
-            </>
-          )}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Form & Inputs */}
-        <div className="lg:col-span-7 space-y-6">
-          <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
+      {/* Main Container */}
+      <div className="max-w-2xl mx-auto space-y-6">
+        {/* Form Card (Exact AppSorteos Structure) */}
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+          {/* Título Input */}
+          <div className="space-y-1.5">
+            <label htmlFor="draw-title" className="block text-sm font-semibold text-slate-700">
+              Título
+            </label>
+            <input
+              id="draw-title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Ej. Sorteo de fin de mes..."
+              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-4 focus:ring-pink-50 transition-all text-sm shadow-xs"
+            />
+          </div>
+
+          {/* Participantes Textarea */}
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label htmlFor="participants-text" className="text-sm font-bold font-display text-white">
-                Lista de Participantes ({participants.length})
+              <label htmlFor="participants-text" className="block text-sm font-semibold text-slate-700">
+                Participantes
               </label>
-              <button
-                type="button"
-                onClick={() => setRawText('')}
-                className="text-xs text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1"
-              >
-                <Trash2 className="w-3 h-3" />
-                <span>Vaciar</span>
-              </button>
+              {participants.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setRawText('')}
+                  className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 font-medium"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Vaciar lista</span>
+                </button>
+              )}
             </div>
 
-            <textarea
-              id="participants-text"
-              name="participantsText"
-              rows={8}
-              value={rawText}
-              onChange={(e) => setRawText(e.target.value)}
-              placeholder="Ingresa un nombre por línea o separados por comas..."
-              aria-label="Lista de participantes, un nombre por línea"
-              className="w-full rounded-2xl bg-black/40 border border-white/10 p-4 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 font-mono resize-none leading-relaxed"
-            />
+            <div className="relative">
+              <textarea
+                id="participants-text"
+                rows={8}
+                value={rawText}
+                onChange={(e) => setRawText(e.target.value)}
+                placeholder="Escribe o pega los participantes (un nombre por línea o separados por coma)..."
+                className="w-full p-4 pb-8 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-4 focus:ring-pink-50 transition-all resize-none text-sm leading-relaxed shadow-xs"
+              />
+              {/* Bottom right magenta counter matching screenshot */}
+              <span className="absolute bottom-3 right-4 text-sm font-semibold text-pink-600 bg-white/95 px-1 rounded select-none pointer-events-none">
+                {participants.length}
+              </span>
+            </div>
 
-            {/* Configs */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            {/* Bottom Actions: Import from file */}
+            <div className="flex items-center justify-between pt-1">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-sm font-semibold text-pink-600 hover:text-pink-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Importar desde archivo</span>
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".txt,.csv"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="text-xs font-semibold text-slate-500 hover:text-slate-700 flex items-center gap-1 transition-colors"
+              >
+                <Settings className="w-3.5 h-3.5" />
+                <span>{showAdvanced ? 'Ocultar opciones' : 'Opciones avanzadas'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Opciones Avanzadas (Ganadores, Suplentes, Duplicados) */}
+          {showAdvanced && (
+            <div className="pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-1 duration-150">
               <div className="space-y-1.5">
-                <label htmlFor="winners-count-input" className="text-xs font-mono text-zinc-400">
+                <label htmlFor="winners-count" className="text-xs font-semibold text-slate-700">
                   Número de Ganadores:
                 </label>
                 <input
-                  id="winners-count-input"
-                  name="winnersCount"
+                  id="winners-count"
                   type="number"
                   min={1}
                   max={Math.max(1, participants.length)}
                   value={winnersCount}
                   onChange={(e) => setWinnersCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  aria-label="Número de ganadores titulares"
-                  className="w-full rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="substitutes-count-input" className="text-xs font-mono text-zinc-400">
+                <label htmlFor="substitutes-count" className="text-xs font-semibold text-slate-700">
                   Número de Suplentes:
                 </label>
                 <input
-                  id="substitutes-count-input"
-                  name="substitutesCount"
+                  id="substitutes-count"
                   type="number"
                   min={0}
                   max={Math.max(0, participants.length - winnersCount)}
                   value={substitutesCount}
                   onChange={(e) => setSubstitutesCount(Math.max(0, parseInt(e.target.value) || 0))}
-                  aria-label="Número de suplentes de reserva"
-                  className="w-full rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
                 />
               </div>
-            </div>
 
-            {/* Checkbox Duplicates */}
-            <div className="pt-2">
-              <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-zinc-300">
-                <input
-                  type="checkbox"
-                  checked={removeDuplicates}
-                  onChange={(e) => setRemoveDuplicates(e.target.checked)}
-                  className="rounded border-white/20 bg-black/40 text-violet-600 focus:ring-violet-500"
-                />
-                <span>Eliminar automáticamente nombres duplicados</span>
-              </label>
-            </div>
+              <div className="sm:col-span-2 flex flex-col sm:flex-row gap-4 pt-1">
+                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={removeDuplicates}
+                    onChange={(e) => setRemoveDuplicates(e.target.checked)}
+                    className="rounded border-slate-300 text-pink-600 focus:ring-pink-500"
+                  />
+                  <span>Eliminar automáticamente nombres duplicados</span>
+                </label>
 
-            {/* Submit Button */}
-            <div className="pt-4 border-t border-white/10">
-              <button
-                type="button"
-                disabled={participants.length === 0 || isDrawing}
-                onClick={handleStartDraw}
-                className="btn-pro-primary w-full text-base sm:text-lg py-4 rounded-2xl flex items-center justify-center gap-2"
-              >
-                {isDrawing ? (
-                  <>
-                    <RefreshCw className="w-5 h-5 animate-spin" />
-                    <span>Realizando Sorteo...</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-5 h-5" />
-                    <span>¡Realizar Sorteo con Conteo 3D!</span>
-                  </>
-                )}
-              </button>
+                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={useCountdown}
+                    onChange={(e) => setUseCountdown(e.target.checked)}
+                    className="rounded border-slate-300 text-pink-600 focus:ring-pink-500"
+                  />
+                  <span>Cuenta regresiva 3D con audio</span>
+                </label>
+              </div>
             </div>
+          )}
+
+          {/* Centered Large Comenzar Button */}
+          <div className="pt-4 text-center">
+            <button
+              type="button"
+              disabled={participants.length === 0 || isDrawing}
+              onClick={handleStartDraw}
+              className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-base sm:text-lg py-3.5 px-12 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/25 transition-all duration-200 inline-flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {isDrawing ? (
+                <>
+                  <RefreshCw className="w-5 h-5 animate-spin" />
+                  <span>Sorteando...</span>
+                </>
+              ) : (
+                <span>Comenzar</span>
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Right Column: Results */}
-        <div className="lg:col-span-5 flex flex-col justify-center">
-          {winners.length > 0 ? (
-            <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-6 border border-amber-500/30 shadow-2xl shadow-amber-500/10 animate-fade-in">
-              <div className="text-center space-y-1">
-                <div className="inline-flex p-3 rounded-2xl bg-amber-500/10 text-amber-400 mb-2">
-                  <Award className="w-8 h-8" />
-                </div>
-                <h2 className="text-2xl font-black font-display text-white">¡Ganadores Seleccionados!</h2>
-                <p className="text-xs text-zinc-400 font-mono">Sorteo completado con éxito</p>
-              </div>
+        {/* Results Card (Clean Light Celebration) */}
+        {winners.length > 0 && (
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-pink-200 shadow-lg space-y-6 text-center animate-in fade-in zoom-in-95 duration-200">
+            {/* Trophy Squircle */}
+            <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
+              <Trophy className="w-8 h-8" />
+            </div>
 
-              {/* Winners List */}
+            <div className="space-y-1">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-display">
+                ¡Felicidades a los Ganadores!
+              </h2>
+              <p className="text-xs text-slate-500 font-medium">
+                {title} • Sorteo certificado y verificado
+              </p>
+            </div>
+
+            {/* Winners List */}
+            <div className="space-y-2 max-w-md mx-auto text-left">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 block">
+                🏆 Ganador(es) Titular(es):
+              </span>
               <div className="space-y-2">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold">
-                  🏆 Ganador(es) Titular(es):
+                {winners.map((winner, index) => (
+                  <div
+                    key={index}
+                    className="p-4 rounded-xl bg-pink-50/70 border border-pink-200/80 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="w-7 h-7 rounded-full bg-pink-600 text-white text-xs font-bold flex items-center justify-center">
+                        {index + 1}
+                      </span>
+                      <span className="text-lg font-bold text-slate-900 font-display">{winner}</span>
+                    </div>
+                    <Trophy className="w-5 h-5 text-amber-500" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Substitutes List */}
+            {substitutes.length > 0 && (
+              <div className="space-y-2 max-w-md mx-auto text-left pt-2 border-t border-slate-100">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+                  👥 Suplentes de Reserva:
                 </span>
-                <div className="space-y-2">
-                  {winners.map((winner, index) => (
+                <div className="space-y-1.5">
+                  {substitutes.map((sub, index) => (
                     <div
                       key={index}
-                      className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 to-transparent border border-amber-500/30 flex items-center justify-between"
+                      className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 rounded-full bg-amber-400 text-black text-xs font-black flex items-center justify-center">
-                          {index + 1}
-                        </span>
-                        <span className="text-base font-bold text-white font-display">{winner}</span>
-                      </div>
-                      <Trophy className="w-4 h-4 text-amber-400" />
+                      <span className="text-slate-700 font-semibold">#{index + 1} {sub}</span>
+                      <span className="text-[10px] text-slate-400 font-medium">Suplente</span>
                     </div>
                   ))}
                 </div>
               </div>
+            )}
 
-              {/* Substitutes List */}
-              {substitutes.length > 0 && (
-                <div className="space-y-2 pt-2 border-t border-white/10">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-bold">
-                    👥 Suplentes de Reserva:
-                  </span>
-                  <div className="space-y-1.5">
-                    {substitutes.map((sub, index) => (
-                      <div
-                        key={index}
-                        className="p-2.5 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between text-xs"
-                      >
-                        <span className="text-zinc-300 font-medium">#{index + 1} {sub}</span>
-                        <span className="text-[10px] font-mono text-zinc-500">Suplente</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Audit Hash */}
-              {auditHash && (
-                <div className="p-3 rounded-xl bg-black/40 border border-white/5 text-[10px] font-mono text-zinc-400 break-all">
-                  <span className="text-zinc-500 block mb-0.5">Hash de Auditoría Criptográfica:</span>
-                  {auditHash}
-                </div>
-              )}
-
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-2">
-                <button
-                  type="button"
-                  onClick={handleCopyWinners}
-                  className="flex-1 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-white/10"
-                >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copied ? '¡Copiado!' : 'Copiar Texto'}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowExportModal(true)}
-                  className="px-4 py-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-amber-500/30"
-                >
-                  <Share2 className="w-4 h-4" />
-                  <span>Descargar Tarjeta</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleStartDraw}
-                  className="px-4 py-3 rounded-xl bg-violet-600/30 hover:bg-violet-600/50 text-violet-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Shuffle className="w-4 h-4" />
-                  <span>Re-sortear</span>
-                </button>
+            {/* Cryptographic SHA-256 Audit Card */}
+            {auditHash && (
+              <div className="max-w-md mx-auto p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-mono text-slate-500 break-all text-left">
+                <span className="font-semibold text-slate-700 block mb-0.5">Hash de Auditoría SHA-256:</span>
+                {auditHash}
               </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handleCopyWinners}
+                className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+              >
+                {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                <span>{copied ? '¡Copiado!' : 'Copiar Texto'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowExportModal(true)}
+                className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>Descargar Tarjeta</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowLiveStream(true)}
+                className="py-2.5 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+              >
+                <Tv className="w-4 h-4" />
+                <span>Modo Streaming</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleStartDraw}
+                className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Re-sortear</span>
+              </button>
             </div>
-          ) : (
-            <div className="glass-card rounded-3xl p-8 text-center space-y-3 border border-white/5 text-zinc-500 flex flex-col items-center justify-center min-h-[380px]">
-              <Trophy className="w-12 h-12 opacity-30 text-zinc-400" />
-              <p className="text-sm font-medium text-zinc-400">Los ganadores aparecerán aquí</p>
-              <p className="text-xs text-zinc-600 max-w-xs">
-                Añade participantes en el formulario de la izquierda y presiona el botón para iniciar el sorteo aleatorio con cuenta regresiva 3D.
-              </p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Live Stream Stage */}
@@ -375,11 +444,11 @@ export default function ListaPage() {
         <LiveStreamStage
           isOpen={showLiveStream}
           onClose={() => setShowLiveStream(false)}
-          title="Sorteo por Lista de Nombres"
+          title={title}
           winner={winners[0]}
           substitutes={substitutes}
           auditHash={auditHash || ''}
-          platform="Lista de Nombres"
+          platform="Sorteo por Nombres"
           onReroll={handleStartDraw}
         />
       )}
@@ -390,9 +459,9 @@ export default function ListaPage() {
           isOpen={showExportModal}
           onClose={() => setShowExportModal(false)}
           winnerName={winners[0]}
-          drawTitle="Sorteo por Lista"
+          drawTitle={title}
           auditHash={auditHash || ''}
-          platform="Sorteo de Nombres"
+          platform="Sorteo por Nombres"
         />
       )}
     </div>

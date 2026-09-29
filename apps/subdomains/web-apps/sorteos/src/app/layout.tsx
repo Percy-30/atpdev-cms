@@ -6,8 +6,8 @@ import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#070a12",
-  colorScheme: "dark",
+  themeColor: "#ffffff",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -64,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es" className="light">
       <head>
         <Script
           id="google-adsense"
@@ -74,7 +74,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable} min-h-screen flex flex-col bg-[#070a12] text-zinc-100 antialiased selection:bg-pink-500 selection:text-white`}
+        className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable} min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 antialiased selection:bg-pink-500 selection:text-white`}
       >
         <Navbar />
         <main className="flex-1">
