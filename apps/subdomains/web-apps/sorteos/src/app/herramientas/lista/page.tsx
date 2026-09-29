@@ -211,7 +211,7 @@ export default function ListaPage() {
             <div className="relative">
               <textarea
                 id="participants-text"
-                rows={8}
+                rows={6}
                 value={rawText}
                 onChange={(e) => setRawText(e.target.value)}
                 placeholder="Escribe o pega los participantes (un nombre por línea o separados por coma)..."
