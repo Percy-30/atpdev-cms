@@ -41,6 +41,7 @@ export const Footer: React.FC = () => {
               <li><Link href="/herramientas/moneda" className="hover:text-violet-300 transition-colors">Lanzar Moneda</Link></li>
               <li><Link href="/herramientas/numeros" className="hover:text-violet-300 transition-colors">Generador de Números</Link></li>
               <li><Link href="/herramientas/equipos" className="hover:text-violet-300 transition-colors">Reparto de Equipos</Link></li>
+              <li><Link href="/herramientas/amigo-invisible" className="hover:text-pink-400 transition-colors">Amigo Invisible</Link></li>
             </ul>
           </div>
 

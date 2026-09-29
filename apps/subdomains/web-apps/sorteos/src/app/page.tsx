@@ -65,6 +65,15 @@ export default function HomePage() {
       badge: 'Balanceado',
       action: 'Armar Equipos'
     },
+    {
+      title: 'Amigo Invisible Secreto',
+      desc: 'Organiza intercambios de regalos. Emparejamiento aleatorio seguro con tarjetas secretas y enlaces para WhatsApp.',
+      href: '/herramientas/amigo-invisible',
+      icon: Gift,
+      color: 'from-rose-500 to-pink-600',
+      badge: 'Nuevo & Secreto',
+      action: 'Crear Amigo Invisible'
+    },
   ];
 
   return (

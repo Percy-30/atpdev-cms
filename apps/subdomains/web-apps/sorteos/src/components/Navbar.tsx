@@ -18,6 +18,7 @@ export const Navbar: React.FC = () => {
     { name: 'Lanzar Moneda', href: '/herramientas/moneda', icon: CircleDollarSign, desc: 'Cara o cruz verificable' },
     { name: 'Generador de Números', href: '/herramientas/numeros', icon: Hash, desc: 'Rifas, bingos y números al azar' },
     { name: 'Generador de Equipos', href: '/herramientas/equipos', icon: Users2, desc: 'Reparto balanceado en grupos' },
+    { name: 'Amigo Invisible', href: '/herramientas/amigo-invisible', icon: Gift, desc: 'Intercambio de regalos secreto' },
   ];
 
   return (
