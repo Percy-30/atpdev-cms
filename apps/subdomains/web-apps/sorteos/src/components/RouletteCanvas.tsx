@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { getSecureRandomInt } from '@/lib/randomEngine';
+import { playWheelTick, playWinnerFanfare } from '@/lib/soundEffects';
 
 interface RouletteCanvasProps {
   options: string[];
@@ -30,6 +31,7 @@ export const RouletteCanvas: React.FC<RouletteCanvasProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const currentRotationRef = useRef<number>(0);
   const animFrameIdRef = useRef<number | null>(null);
+  const lastSectorRef = useRef<number>(0);
 
   const drawWheel = useCallback((rotation: number) => {
     const canvas = canvasRef.current;
@@ -135,6 +137,14 @@ export const RouletteCanvas: React.FC<RouletteCanvasProps> = ({
       currentRotationRef.current = current;
       drawWheel(current);
 
+      // Sonido de clic/tac al pasar por cada sector
+      const sectorArc = (2 * Math.PI) / (options.length || 1);
+      const currentSector = Math.floor(current / sectorArc);
+      if (currentSector !== lastSectorRef.current) {
+        lastSectorRef.current = currentSector;
+        playWheelTick();
+      }
+
       if (progress < 1) {
         animFrameIdRef.current = requestAnimationFrame(animate);
       } else {
@@ -148,6 +158,7 @@ export const RouletteCanvas: React.FC<RouletteCanvasProps> = ({
         if (relativeAngle < 0) relativeAngle += 2 * Math.PI;
 
         const winnerIndex = Math.floor(relativeAngle / arc) % options.length;
+        playWinnerFanfare();
         onWinnerSelected(options[winnerIndex]);
       }
     };

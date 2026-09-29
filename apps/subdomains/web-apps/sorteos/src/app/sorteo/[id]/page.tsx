@@ -18,6 +18,9 @@ import {
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
 import { Giveaway } from '@/lib/types';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import { LiveStreamStage } from '@/components/LiveStreamStage';
+import { WinnerExportModal } from '@/components/WinnerExportModal';
+import { playWinnerFanfare } from '@/lib/soundEffects';
 
 // Fallback demo giveaway si no existe en localStorage
 const DEMO_GIVEAWAY: Giveaway = {
@@ -85,6 +88,8 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
   const resolvedParams = React.use(params);
   const [giveaway, setGiveaway] = useState<Giveaway>(DEMO_GIVEAWAY);
   const [copied, setCopied] = useState<boolean>(false);
+  const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
+  const [showExportModal, setShowExportModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -92,6 +97,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
       if (stored[resolvedParams.id]) {
         setGiveaway(stored[resolvedParams.id]);
       }
+      playWinnerFanfare();
     }
   }, [resolvedParams.id]);
 
@@ -137,6 +143,22 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
             <span>{copied ? '¡Enlace Copiado!' : 'Compartir Sorteo'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowLiveStream(true)}
+            className="px-3 py-1.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 text-xs font-mono text-purple-200 transition-colors flex items-center gap-1.5"
+          >
+            <span>📺 Modo En Vivo</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowExportModal(true)}
+            className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-xs font-mono text-amber-300 transition-colors flex items-center gap-1.5"
+          >
+            <span>📸 Exportar Tarjeta</span>
           </button>
 
           <Link
@@ -325,6 +347,31 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           <span>Crear Tu Propio Sorteo Gratis</span>
         </Link>
       </div>
+
+      {/* Live Stream Stage Modal */}
+      {giveaway.winners.length > 0 && (
+        <LiveStreamStage
+          isOpen={showLiveStream}
+          onClose={() => setShowLiveStream(false)}
+          title={giveaway.title}
+          winner={`@${giveaway.winners[0]?.participant.username}`}
+          substitutes={giveaway.substitutes?.map((s) => `@${s.participant.username}`)}
+          auditHash={giveaway.verificationHash}
+          platform={`Sorteo ${(giveaway.network || 'redes').toUpperCase()}`}
+        />
+      )}
+
+      {/* Winner Export Modal */}
+      {giveaway.winners.length > 0 && (
+        <WinnerExportModal
+          isOpen={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          winnerName={`@${giveaway.winners[0]?.participant.username}`}
+          drawTitle={giveaway.title}
+          auditHash={giveaway.verificationHash}
+          platform={`Sorteo ${(giveaway.network || 'redes').toUpperCase()}`}
+        />
+      )}
     </div>
   );
 }

@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Gift, Sparkles, Plus, Trash2, Eye, EyeOff, 
-  Copy, Check, Share2, Shuffle, CheckCircle2, Calendar, DollarSign
+  Copy, Check, Share2, Shuffle, CheckCircle2, Calendar, 
+  DollarSign, Volume2, VolumeX, Maximize2, Minimize2, Tv 
 } from 'lucide-react';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
+import { Countdown3DOverlay } from '@/components/Countdown3DOverlay';
+import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { shuffleArray, generateSha256Hash } from '@/lib/randomEngine';
-import { playCountdownTick, playWinnerFanfare } from '@/lib/soundEffects';
+import { 
+  playCardFlip, playWinnerFanfare, isAudioMuted, toggleAudioMute 
+} from '@/lib/soundEffects';
 
 interface Match {
   giver: string;
@@ -29,8 +34,28 @@ export default function AmigoInvisiblePage() {
   const [deadline, setDeadline] = useState<string>('24 de Diciembre');
   const [matches, setMatches] = useState<Match[]>([]);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [auditHash, setAuditHash] = useState<string>('');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [muted, setMuted] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMuted(isAudioMuted());
+  }, []);
+
+  const handleToggleSound = () => {
+    setMuted(toggleAudioMute());
+  };
+
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  };
 
   const handleAddPerson = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,27 +77,26 @@ export default function AmigoInvisiblePage() {
     setParticipants(participants.filter((_, i) => i !== idx));
   };
 
-  /**
-   * Algoritmo de desarreglo (Derangement) para garantizar que nadie se regale a sí mismo
-   */
-  const handleGenerateMatches = async () => {
+  const handleStartDraw = () => {
     if (participants.length < 3 || isDrawing) return;
+    setShowCountdown(true);
+  };
+
+  const executeMatches = async () => {
+    setShowCountdown(false);
     setIsDrawing(true);
-    playCountdownTick(true);
 
     const givers = [...participants];
     let receivers: string[] = [];
     let valid = false;
     let attempts = 0;
 
-    // Buscar una permutación válida donde ningún elemento coincida con su índice
     while (!valid && attempts < 100) {
       attempts++;
       receivers = shuffleArray(givers);
       valid = givers.every((giver, i) => giver !== receivers[i]);
     }
 
-    // Si no converge por azar, rotación cíclica simple garantizada
     if (!valid) {
       receivers = [...givers.slice(1), givers[0]];
     }
@@ -88,15 +112,14 @@ export default function AmigoInvisiblePage() {
       `amigo-invisible-${timestamp}-${newMatches.map((m) => `${m.giver}->${m.receiver}`).join('|')}`
     );
 
-    setTimeout(() => {
-      setMatches(newMatches);
-      setAuditHash(hash);
-      setIsDrawing(false);
-      playWinnerFanfare();
-    }, 600);
+    setMatches(newMatches);
+    setAuditHash(hash);
+    setIsDrawing(false);
+    playWinnerFanfare();
   };
 
   const toggleReveal = (idx: number) => {
+    playCardFlip();
     setMatches((prev) =>
       prev.map((m, i) => (i === idx ? { ...m, revealed: !m.revealed } : m))
     );
@@ -119,22 +142,62 @@ export default function AmigoInvisiblePage() {
       <ToolSwitcher />
       <ConfettiEffect active={matches.length > 0 && !isDrawing} />
 
+      {/* 3D Countdown Modal */}
+      <Countdown3DOverlay
+        active={showCountdown}
+        seconds={3}
+        title="Generando Parejas Secretas 3D"
+        onComplete={executeMatches}
+      />
+
       {/* Header */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-          <Gift className="w-3.5 h-3.5 text-pink-400" />
-          <span>Intercambio de Regalos Secreto</span>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-center sm:text-left space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
+            <Gift className="w-3.5 h-3.5 text-pink-400" />
+            <span>Intercambio de Regalos Secreto</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
+            Sorteo de Amigo Invisible
+          </h1>
+          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
+            Organiza el intercambio de regalos perfecto. Emparejamiento aleatorio seguro y privado con revelación oculta.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-          Sorteo de Amigo Invisible
-        </h1>
-        <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
-          Organiza el intercambio de regalos perfecto. Emparejamiento aleatorio seguro y privado sin que nadie descubra a su amigo secreto.
-        </p>
+
+        {/* Action Controls */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleToggleSound}
+            aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
+            title={muted ? 'Activar sonido' : 'Silenciar sonido'}
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+          </button>
+          <button
+            type="button"
+            onClick={handleToggleFullscreen}
+            aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+          </button>
+          {matches.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowLiveStream(true)}
+              className="btn-pro-secondary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+            >
+              <Tv className="w-4 h-4 text-purple-400" />
+              <span>Modo En Vivo</span>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
         {/* Left Form: Participants & Rules */}
         <div className="lg:col-span-6 space-y-6">
           <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
@@ -221,11 +284,11 @@ export default function AmigoInvisiblePage() {
               <button
                 type="button"
                 disabled={participants.length < 3 || isDrawing}
-                onClick={handleGenerateMatches}
+                onClick={handleStartDraw}
                 className="btn-pro-primary w-full text-base py-3.5 rounded-2xl flex items-center justify-center gap-2"
               >
                 <Shuffle className="w-5 h-5" />
-                <span>{matches.length > 0 ? '¡Volver a Emparejar!' : '¡Sortear Amigo Invisible!'}</span>
+                <span>{matches.length > 0 ? '¡Volver a Emparejar con Conteo!' : '¡Sortear Amigo Invisible!'}</span>
               </button>
             </div>
           </div>
@@ -242,17 +305,17 @@ export default function AmigoInvisiblePage() {
                     <span>Resultados Secretos</span>
                   </h3>
                   <p className="text-xs text-zinc-400">
-                    Pasa el teléfono a cada persona o comparte el mensaje en privado.
+                    Pasa el dispositivo o comparte el mensaje en privado a cada uno.
                   </p>
                 </div>
               </div>
 
-              {/* Match list */}
+              {/* Match list with 3D Flip style */}
               <div className="space-y-3 max-h-[460px] overflow-y-auto pr-1">
                 {matches.map((m, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3"
+                    className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 transition-all hover:border-amber-400/30"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-white text-base">
@@ -261,27 +324,27 @@ export default function AmigoInvisiblePage() {
                       <button
                         type="button"
                         onClick={() => toggleReveal(idx)}
-                        className="text-xs font-mono text-purple-300 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10"
+                        className="text-xs font-mono text-purple-300 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 transition-colors"
                       >
                         {m.revealed ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                         <span>{m.revealed ? 'Ocultar' : 'Revelar Secreto'}</span>
                       </button>
                     </div>
 
-                    {/* Secret Box */}
+                    {/* Secret Box with 3D reveal effect */}
                     <div
-                      className={`p-3 rounded-xl border text-center transition-all ${
+                      className={`p-3.5 rounded-xl border text-center transition-all duration-300 select-none ${
                         m.revealed
-                          ? 'bg-gradient-to-r from-amber-500/20 to-pink-500/20 border-amber-400/40 text-amber-300 font-bold'
+                          ? 'bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-violet-500/20 border-amber-400/50 text-amber-300 font-bold shadow-lg shadow-amber-500/10 scale-[1.01]'
                           : 'bg-black/40 border-white/5 text-zinc-500 font-mono text-xs'
                       }`}
                     >
                       {m.revealed ? (
-                        <div className="space-y-0.5">
+                        <div className="space-y-0.5 animate-in zoom-in-95 duration-200">
                           <span className="text-[10px] uppercase tracking-wider text-zinc-400 block font-normal">
-                            Le regala a:
+                            Le regala en secreto a:
                           </span>
-                          <span className="text-xl font-black text-white">{m.receiver}</span>
+                          <span className="text-2xl font-black text-white title-neon-glow">{m.receiver}</span>
                         </div>
                       ) : (
                         <span>🔒 Toca &quot;Revelar Secreto&quot; para ver</span>
@@ -339,8 +402,20 @@ export default function AmigoInvisiblePage() {
             </div>
           )}
         </div>
-
       </div>
+
+      {/* Live Stream Stage */}
+      {matches.length > 0 && (
+        <LiveStreamStage
+          isOpen={showLiveStream}
+          onClose={() => setShowLiveStream(false)}
+          title="Amigo Invisible - Sorteo Secreto"
+          winner={`¡Emparejamiento de ${matches.length} participantes realizado!`}
+          auditHash={auditHash}
+          platform="Amigo Secreto"
+          onReroll={handleStartDraw}
+        />
+      )}
     </div>
   );
 }

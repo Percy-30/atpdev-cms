@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ListOrdered, Trophy, Sparkles, RefreshCw, Trash2, 
-  Copy, Check, Share2, Award, UserCheck, Shuffle, Tv
+  Copy, Check, Share2, Award, UserCheck, Shuffle, Tv,
+  Volume2, VolumeX, Maximize2, Minimize2
 } from 'lucide-react';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
+import { Countdown3DOverlay } from '@/components/Countdown3DOverlay';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { shuffleArray, generateSha256Hash } from '@/lib/randomEngine';
-import { playCountdownTick, playWinnerFanfare } from '@/lib/soundEffects';
+import { 
+  playWinnerFanfare, isAudioMuted, toggleAudioMute 
+} from '@/lib/soundEffects';
 
 export default function ListaPage() {
   const [rawText, setRawText] = useState<string>(
@@ -20,13 +24,31 @@ export default function ListaPage() {
   const [substitutesCount, setSubstitutesCount] = useState<number>(1);
   const [removeDuplicates, setRemoveDuplicates] = useState<boolean>(true);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [winners, setWinners] = useState<string[]>([]);
   const [substitutes, setSubstitutes] = useState<string[]>([]);
   const [auditHash, setAuditHash] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
+  const [muted, setMuted] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMuted(isAudioMuted());
+  }, []);
+
+  const handleToggleSound = () => {
+    setMuted(toggleAudioMute());
+  };
+
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  };
 
   const getParticipants = (): string[] => {
     const list = rawText
@@ -41,28 +63,15 @@ export default function ListaPage() {
 
   const handleStartDraw = () => {
     if (participants.length === 0 || isDrawing) return;
+    setShowCountdown(true);
+  };
 
+  const executeDraw = async () => {
+    setShowCountdown(false);
     setIsDrawing(true);
     setWinners([]);
     setSubstitutes([]);
-    setCountdown(3);
-    playCountdownTick(false);
 
-    let count = 3;
-    const timer = setInterval(() => {
-      count--;
-      if (count > 0) {
-        setCountdown(count);
-        playCountdownTick(count === 1);
-      } else {
-        clearInterval(timer);
-        setCountdown(null);
-        finalizeDraw();
-      }
-    }, 800);
-  };
-
-  const finalizeDraw = async () => {
     const shuffled = shuffleArray(participants);
     const selectedWinners = shuffled.slice(0, Math.min(winnersCount, shuffled.length));
     const remaining = shuffled.slice(selectedWinners.length);
@@ -90,7 +99,15 @@ export default function ListaPage() {
       <ToolSwitcher />
       <ConfettiEffect active={winners.length > 0 && !isDrawing} />
 
-      {/* Header */}
+      {/* 3D Countdown Modal */}
+      <Countdown3DOverlay
+        active={showCountdown}
+        seconds={3}
+        title="Eligiendo Ganadores de la Lista en 3D"
+        onComplete={executeDraw}
+      />
+
+      {/* Header con controles */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-center sm:text-left space-y-2">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
@@ -105,26 +122,46 @@ export default function ListaPage() {
           </p>
         </div>
 
-        {winners.length > 0 && (
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setShowLiveStream(true)}
-              className="btn-pro-secondary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
-            >
-              <Tv className="w-4 h-4 text-purple-400" />
-              <span>Modo En Vivo</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowExportModal(true)}
-              className="btn-pro-primary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
-            >
-              <Share2 className="w-4 h-4" />
-              <span>Exportar Tarjeta</span>
-            </button>
-          </div>
-        )}
+        {/* Action Controls */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleToggleSound}
+            aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
+            title={muted ? 'Activar sonido' : 'Silenciar sonido'}
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            {muted ? <VolumeX className="w-5 h-5 text-zinc-500" /> : <Volume2 className="w-5 h-5 text-amber-400" />}
+          </button>
+          <button
+            type="button"
+            onClick={handleToggleFullscreen}
+            aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            {isFullscreen ? <Minimize2 className="w-5 h-5 text-purple-400" /> : <Maximize2 className="w-5 h-5" />}
+          </button>
+          {winners.length > 0 && (
+            <>
+              <button
+                type="button"
+                onClick={() => setShowLiveStream(true)}
+                className="btn-pro-secondary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+              >
+                <Tv className="w-4 h-4 text-purple-400" />
+                <span>Modo En Vivo</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowExportModal(true)}
+                className="btn-pro-primary py-2.5 px-4 rounded-xl text-xs flex items-center gap-1.5"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>Exportar</span>
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -222,7 +259,7 @@ export default function ListaPage() {
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5" />
-                    <span>¡Realizar Sorteo Ahora!</span>
+                    <span>¡Realizar Sorteo con Conteo 3D!</span>
                   </>
                 )}
               </button>
@@ -230,17 +267,9 @@ export default function ListaPage() {
           </div>
         </div>
 
-        {/* Right Column: Countdown or Results */}
+        {/* Right Column: Results */}
         <div className="lg:col-span-5 flex flex-col justify-center">
-          {countdown !== null ? (
-            <div className="glass-card rounded-3xl p-12 text-center space-y-4 border border-violet-500/40 shadow-2xl flex flex-col items-center justify-center min-h-[380px]">
-              <span className="text-xs font-mono uppercase tracking-widest text-pink-400">Eligiendo al azar</span>
-              <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-violet-600 to-pink-500 flex items-center justify-center text-5xl font-black text-white font-display animate-bounce shadow-2xl shadow-pink-500/50">
-                {countdown}
-              </div>
-              <p className="text-xs text-zinc-400 font-mono animate-pulse">Mezclando participantes...</p>
-            </div>
-          ) : winners.length > 0 ? (
+          {winners.length > 0 ? (
             <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-6 border border-amber-500/30 shadow-2xl shadow-amber-500/10 animate-fade-in">
               <div className="text-center space-y-1">
                 <div className="inline-flex p-3 rounded-2xl bg-amber-500/10 text-amber-400 mb-2">
@@ -334,7 +363,7 @@ export default function ListaPage() {
               <Trophy className="w-12 h-12 opacity-30 text-zinc-400" />
               <p className="text-sm font-medium text-zinc-400">Los ganadores aparecerán aquí</p>
               <p className="text-xs text-zinc-600 max-w-xs">
-                Añade participantes en el formulario de la izquierda y presiona el botón para iniciar el sorteo aleatorio.
+                Añade participantes en el formulario de la izquierda y presiona el botón para iniciar el sorteo aleatorio con cuenta regresiva 3D.
               </p>
             </div>
           )}

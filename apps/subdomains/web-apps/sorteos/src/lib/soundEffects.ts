@@ -97,24 +97,96 @@ export function playDiceSound(): void {
   if (!ctx) return;
 
   const now = ctx.currentTime;
-  // 3 pequeños impactos sucesivos simulando el rebote del dado
-  [0, 0.08, 0.18].forEach((offset) => {
+  [0, 0.08, 0.18, 0.28].forEach((offset) => {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
     osc.type = 'square';
-    osc.frequency.setValueAtTime(220 + Math.random() * 80, now + offset);
-    osc.frequency.exponentialRampToValueAtTime(80, now + offset + 0.06);
+    osc.frequency.setValueAtTime(240 + Math.random() * 120, now + offset);
+    osc.frequency.exponentialRampToValueAtTime(70, now + offset + 0.07);
 
-    gain.gain.setValueAtTime(0.15, now + offset);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.06);
+    gain.gain.setValueAtTime(0.18, now + offset);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.07);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start(now + offset);
-    osc.stop(now + offset + 0.07);
+    osc.stop(now + offset + 0.08);
   });
+}
+
+/** Sonido de clic/tac de la ruleta al girar */
+export function playWheelTick(): void {
+  if (isAudioMuted()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(1400, now);
+  osc.frequency.exponentialRampToValueAtTime(300, now + 0.03);
+
+  gain.gain.setValueAtTime(0.15, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(now);
+  osc.stop(now + 0.04);
+}
+
+/** Sonido de bola de lotería / número rebotando */
+export function playBallBounce(): void {
+  if (isAudioMuted()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(587.33, now); // D5
+  osc.frequency.exponentialRampToValueAtTime(880, now + 0.08); // A5
+
+  gain.gain.setValueAtTime(0.001, now);
+  gain.gain.linearRampToValueAtTime(0.16, now + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(now);
+  osc.stop(now + 0.24);
+}
+
+/** Sonido de barajado / reparto de tarjetas para equipos */
+export function playCardFlip(): void {
+  if (isAudioMuted()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(350, now);
+  osc.frequency.exponentialRampToValueAtTime(120, now + 0.12);
+
+  gain.gain.setValueAtTime(0.12, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(now);
+  osc.stop(now + 0.15);
 }
 
 /** Sonido de cuenta regresiva (3, 2, 1...) */
@@ -130,14 +202,42 @@ export function playCountdownTick(isFinal: boolean = false): void {
   osc.type = isFinal ? 'triangle' : 'sine';
   osc.frequency.setValueAtTime(isFinal ? 880 : 440, now);
 
-  gain.gain.setValueAtTime(isFinal ? 0.25 : 0.15, now);
-  gain.gain.exponentialRampToValueAtTime(0.001, now + (isFinal ? 0.4 : 0.15));
+  gain.gain.setValueAtTime(isFinal ? 0.3 : 0.18, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + (isFinal ? 0.45 : 0.2));
 
   osc.connect(gain);
   gain.connect(ctx.destination);
 
   osc.start(now);
-  osc.stop(now + (isFinal ? 0.45 : 0.2));
+  osc.stop(now + (isFinal ? 0.5 : 0.22));
+}
+
+/** Redoble de tambores / suspense durante cuenta regresiva */
+export function playDrumRoll(durationSeconds: number = 2.5): void {
+  if (isAudioMuted()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const count = Math.floor(durationSeconds * 20); // 20 hits por segundo
+  for (let i = 0; i < count; i++) {
+    const time = ctx.currentTime + (i * 0.05);
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(160 + Math.random() * 40, time);
+    osc.frequency.exponentialRampToValueAtTime(60, time + 0.04);
+
+    const volume = 0.03 + (i / count) * 0.12; // In crescendo emocionante
+    gain.gain.setValueAtTime(volume, time);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.04);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(time);
+    osc.stop(time + 0.045);
+  }
 }
 
 /** Fanfarria triunfal de ganador */
@@ -157,13 +257,13 @@ export function playWinnerFanfare(): void {
     osc.frequency.setValueAtTime(freq, now + idx * 0.12);
 
     gain.gain.setValueAtTime(0.001, now + idx * 0.12);
-    gain.gain.linearRampToValueAtTime(0.2, now + idx * 0.12 + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.12 + 0.6);
+    gain.gain.linearRampToValueAtTime(0.25, now + idx * 0.12 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.12 + 0.65);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start(now + idx * 0.12);
-    osc.stop(now + idx * 0.12 + 0.65);
+    osc.stop(now + idx * 0.12 + 0.7);
   });
 }
