@@ -213,21 +213,21 @@ export default function DadosPage() {
   const totalSum = diceValues.reduce((a, b) => a + b, 0);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
 
       {/* Hero Header Estilo AppSorteos */}
       <div className="text-center pt-2 sm:pt-4">
         {/* Pastel Icon Badge */}
-        <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-4 shadow-xs">
           <Dices className="w-7 h-7" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
           Tirar Dados 3D
         </h1>
         
-        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
           Tira de 1 a 6 dados tridimensionales con giros físicos realistas y suma automática
         </p>
 
@@ -238,23 +238,23 @@ export default function DadosPage() {
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
-            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600 dark:text-pink-400" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
             title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
-            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600 dark:text-pink-400" /> : <Maximize2 className="w-4 h-4" />}
           </button>
           <button
             type="button"
             onClick={() => setShowExportModal(true)}
-            className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+            className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
             <span>Exportar</span>
@@ -262,7 +262,7 @@ export default function DadosPage() {
           <button
             type="button"
             onClick={() => setShowLiveStream(true)}
-            className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+            className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
           >
             <Tv className="w-3.5 h-3.5" />
             <span>En Vivo</span>
@@ -271,10 +271,10 @@ export default function DadosPage() {
       </div>
 
       {/* Main Board */}
-      <div className="bg-white rounded-2xl p-6 sm:p-10 space-y-6 border border-slate-200 shadow-sm text-center relative overflow-hidden">
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-10 space-y-6 border border-slate-200 dark:border-white/10 shadow-sm text-center relative overflow-hidden">
         {/* Dice Count Selector */}
         <div className="flex items-center justify-center gap-2">
-          <span className="text-xs font-semibold text-slate-600 mr-2">Cantidad de dados:</span>
+          <span className="text-xs font-semibold text-slate-600 dark:text-zinc-400 mr-2">Cantidad de dados:</span>
           {[1, 2, 3, 4, 5, 6].map((num) => (
             <button
               key={num}
@@ -289,7 +289,7 @@ export default function DadosPage() {
               className={`w-9 h-9 rounded-xl font-bold font-mono text-xs transition-all cursor-pointer ${
                 diceCount === num
                   ? 'bg-[#d91a7a] text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-zinc-300 border border-slate-200 dark:border-white/10'
               }`}
             >
               {num}
@@ -298,7 +298,7 @@ export default function DadosPage() {
         </div>
 
         {/* 3D Dice Display Stage */}
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 py-6 min-h-[160px] bg-slate-50/70 rounded-2xl border border-slate-100">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 py-6 min-h-[160px] bg-slate-50/70 dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5">
           {diceValues.map((val, idx) => (
             <Dice3DCube
               key={idx}
@@ -313,9 +313,9 @@ export default function DadosPage() {
 
         {/* Total Badge */}
         <div>
-          <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-amber-50 border border-amber-200 shadow-xs">
-            <span className="text-xs font-semibold text-amber-700 uppercase tracking-wider">Suma Total:</span>
-            <span className="text-4xl font-extrabold font-display text-amber-900 font-mono-num">
+          <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 shadow-xs">
+            <span className="text-xs font-semibold text-amber-800 dark:text-amber-400 uppercase tracking-wider">Suma Total:</span>
+            <span className="text-4xl font-extrabold font-display text-amber-900 dark:text-amber-300 font-mono-num">
               {totalSum}
             </span>
           </div>
@@ -337,18 +337,18 @@ export default function DadosPage() {
 
       {/* History Log */}
       {history.length > 0 && (
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-3">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 border border-slate-200 dark:border-white/10 shadow-xs space-y-3">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
             Historial de Tiradas Recientes
           </h2>
           <div className="flex flex-wrap gap-2">
             {history.map((item, idx) => (
               <div
                 key={idx}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700 flex items-center gap-2"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-zinc-300 flex items-center gap-2"
               >
-                <span className="text-pink-600 font-bold text-sm">{item.total}</span>
-                <span className="text-slate-400">[{item.values.join(', ')}]</span>
+                <span className="text-pink-600 dark:text-pink-400 font-bold text-sm">{item.total}</span>
+                <span className="text-slate-400 dark:text-zinc-500">[{item.values.join(', ')}]</span>
               </div>
             ))}
           </div>

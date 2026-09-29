@@ -1,70 +1,74 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
-  ListOrdered, Trophy, Sparkles, RefreshCw, Trash2, 
-  Copy, Check, Share2, Award, Tv, Upload, Settings,
-  Volume2, VolumeX, Maximize2, Minimize2, RotateCcw, FileText
+  ListOrdered, 
+  Trash2, 
+  Upload, 
+  Settings, 
+  Trophy, 
+  RotateCcw, 
+  Copy, 
+  Share2, 
+  Tv, 
+  Volume2, 
+  VolumeX, 
+  Maximize2, 
+  Minimize2,
+  Check,
+  RefreshCw
 } from 'lucide-react';
-import { ConfettiEffect } from '@/components/ConfettiEffect';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
+import ConfettiEffect from '@/components/ConfettiEffect';
 import { Countdown3DOverlay } from '@/components/Countdown3DOverlay';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
-import { shuffleArray, generateSha256Hash } from '@/lib/randomEngine';
-import { 
-  playWinnerFanfare, isAudioMuted, toggleAudioMute 
-} from '@/lib/soundEffects';
+import { playWheelTick, playWinnerFanfare } from '@/lib/soundEffects';
+import { generateSha256Hash } from '@/lib/randomEngine';
 
-export default function ListaPage() {
+export default function SorteoListaPage() {
   const [title, setTitle] = useState<string>('Sorteo por Nombres al Azar');
   const [rawText, setRawText] = useState<string>(
-    "María García\nCarlos López\nAna Torres\nJuan Pérez\nSofía Mendoza\nDiego Fernández\nValentina Ríos\nMateo Silva\nLucía Morales\nGabriel Castro"
+    'Valeria Gómez\nDiego Martínez\nCamila Rodríguez\nLucas Fernández\nElena Castillo\nJuan Pérez\nDaniela Sánchez\nRoberto Navarro'
   );
   const [winnersCount, setWinnersCount] = useState<number>(1);
-  const [substitutesCount, setSubstitutesCount] = useState<number>(1);
+  const [substitutesCount, setSubstitutesCount] = useState<number>(2);
   const [removeDuplicates, setRemoveDuplicates] = useState<boolean>(true);
   const [useCountdown, setUseCountdown] = useState<boolean>(true);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+
+  // Drawing & Results State
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [winners, setWinners] = useState<string[]>([]);
   const [substitutes, setSubstitutes] = useState<string[]>([]);
   const [auditHash, setAuditHash] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
+
+  // Audio & Fullscreen
   const [muted, setMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  // Modals
   const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setMuted(isAudioMuted());
-  }, []);
-
-  const handleToggleSound = () => {
-    setMuted(toggleAudioMute());
-  };
-
-  const handleToggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
-    } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
-    }
-  };
-
-  const getParticipants = (): string[] => {
-    const list = rawText
+  // Parse lines into participants
+  const getCleanParticipants = (): string[] => {
+    let list = rawText
       .split(/[\n,]+/)
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0);
+      .map((n) => n.trim())
+      .filter((n) => n.length > 0);
 
-    return removeDuplicates ? Array.from(new Set(list)) : list;
+    if (removeDuplicates) {
+      list = Array.from(new Set(list));
+    }
+    return list;
   };
 
-  const participants = getParticipants();
+  const participants = getCleanParticipants();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -81,8 +85,26 @@ export default function ListaPage() {
     e.target.value = '';
   };
 
+  const handleToggleSound = () => {
+    setMuted(!muted);
+  };
+
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen().catch(() => {});
+      setIsFullscreen(false);
+    }
+  };
+
   const handleStartDraw = () => {
-    if (participants.length === 0 || isDrawing) return;
+    if (participants.length === 0) return;
+    setWinners([]);
+    setSubstitutes([]);
+    setAuditHash(null);
+
     if (useCountdown) {
       setShowCountdown(true);
     } else {
@@ -93,10 +115,13 @@ export default function ListaPage() {
   const executeDraw = async () => {
     setShowCountdown(false);
     setIsDrawing(true);
-    setWinners([]);
-    setSubstitutes([]);
 
-    const shuffled = shuffleArray(participants);
+    const shuffled = [...participants];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
     const selectedWinners = shuffled.slice(0, Math.min(winnersCount, shuffled.length));
     const remaining = shuffled.slice(selectedWinners.length);
     const selectedSubstitutes = remaining.slice(0, Math.min(substitutesCount, remaining.length));
@@ -121,7 +146,7 @@ export default function ListaPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       <ConfettiEffect active={winners.length > 0 && !isDrawing} />
 
@@ -136,16 +161,16 @@ export default function ListaPage() {
       {/* Hero Header Estilo AppSorteos */}
       <div className="text-center pt-2 sm:pt-4">
         {/* Pastel Icon Badge */}
-        <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-4 shadow-xs">
           <ListOrdered className="w-7 h-7" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
           Sorteo por Nombres al Azar
         </h1>
         
-        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
-          Escoge un ganador al azar de una <strong className="font-semibold text-slate-700">lista de nombres</strong> con nuestra App
+        <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
+          Escoge un ganador al azar de una <strong className="font-semibold text-slate-800 dark:text-zinc-200">lista de nombres</strong> con nuestra App
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -155,18 +180,18 @@ export default function ListaPage() {
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
-            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600 dark:text-pink-400" />}
           </button>
           <button
             type="button"
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
             title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
-            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600 dark:text-pink-400" /> : <Maximize2 className="w-4 h-4" />}
           </button>
         </div>
       </div>
@@ -174,10 +199,10 @@ export default function ListaPage() {
       {/* Main Container */}
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Form Card (Exact AppSorteos Structure) */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+        <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-5">
           {/* Título Input */}
           <div className="space-y-1.5">
-            <label htmlFor="draw-title" className="block text-sm font-semibold text-slate-700">
+            <label htmlFor="draw-title" className="block text-sm font-semibold text-slate-700 dark:text-zinc-300">
               Título
             </label>
             <input
@@ -186,21 +211,21 @@ export default function ListaPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ej. Sorteo de fin de mes..."
-              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-4 focus:ring-pink-50 transition-all text-sm shadow-xs"
+              className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-4 focus:ring-pink-50 dark:focus:ring-purple-900/30 transition-all text-sm shadow-xs"
             />
           </div>
 
           {/* Participantes Textarea */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label htmlFor="participants-text" className="block text-sm font-semibold text-slate-700">
+              <label htmlFor="participants-text" className="block text-sm font-semibold text-slate-700 dark:text-zinc-300">
                 Participantes
               </label>
               {participants.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setRawText('')}
-                  className="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 font-medium"
+                  className="text-xs text-slate-400 dark:text-zinc-500 hover:text-red-500 dark:hover:text-red-400 transition-colors flex items-center gap-1 font-medium cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Vaciar lista</span>
@@ -215,10 +240,10 @@ export default function ListaPage() {
                 value={rawText}
                 onChange={(e) => setRawText(e.target.value)}
                 placeholder="Escribe o pega los participantes (un nombre por línea o separados por coma)..."
-                className="w-full p-4 pb-8 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-4 focus:ring-pink-50 transition-all resize-none text-sm leading-relaxed shadow-xs"
+                className="w-full p-4 pb-8 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-4 focus:ring-pink-50 dark:focus:ring-purple-900/30 transition-all resize-none text-sm leading-relaxed shadow-xs"
               />
-              {/* Bottom right magenta counter matching screenshot */}
-              <span className="absolute bottom-3 right-4 text-sm font-semibold text-pink-600 bg-white/95 px-1 rounded select-none pointer-events-none">
+              {/* Bottom right counter */}
+              <span className="absolute bottom-3 right-4 text-sm font-semibold text-pink-600 dark:text-pink-400 bg-white/95 dark:bg-[#0f172a]/95 px-1.5 py-0.5 rounded select-none pointer-events-none">
                 {participants.length}
               </span>
             </div>
@@ -228,7 +253,7 @@ export default function ListaPage() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-sm font-semibold text-pink-600 hover:text-pink-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="text-sm font-semibold text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Upload className="w-4 h-4" />
                 <span>Importar desde archivo</span>
@@ -244,7 +269,7 @@ export default function ListaPage() {
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-700 flex items-center gap-1 transition-colors"
+                className="text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Settings className="w-3.5 h-3.5" />
                 <span>{showAdvanced ? 'Ocultar opciones' : 'Opciones avanzadas'}</span>
@@ -254,9 +279,9 @@ export default function ListaPage() {
 
           {/* Opciones Avanzadas (Ganadores, Suplentes, Duplicados) */}
           {showAdvanced && (
-            <div className="pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-1 duration-150">
+            <div className="pt-4 border-t border-slate-100 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-1 duration-150">
               <div className="space-y-1.5">
-                <label htmlFor="winners-count" className="text-xs font-semibold text-slate-700">
+                <label htmlFor="winners-count" className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
                   Número de Ganadores:
                 </label>
                 <input
@@ -266,12 +291,12 @@ export default function ListaPage() {
                   max={Math.max(1, participants.length)}
                   value={winnersCount}
                   onChange={(e) => setWinnersCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
+                  className="w-full px-3.5 py-2.5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-2 focus:ring-pink-50 dark:focus:ring-purple-900/30"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="substitutes-count" className="text-xs font-semibold text-slate-700">
+                <label htmlFor="substitutes-count" className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
                   Número de Suplentes:
                 </label>
                 <input
@@ -281,27 +306,27 @@ export default function ListaPage() {
                   max={Math.max(0, participants.length - winnersCount)}
                   value={substitutesCount}
                   onChange={(e) => setSubstitutesCount(Math.max(0, parseInt(e.target.value) || 0))}
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
+                  className="w-full px-3.5 py-2.5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-2 focus:ring-pink-50 dark:focus:ring-purple-900/30"
                 />
               </div>
 
               <div className="sm:col-span-2 flex flex-col sm:flex-row gap-4 pt-1">
-                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700">
+                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700 dark:text-zinc-300">
                   <input
                     type="checkbox"
                     checked={removeDuplicates}
                     onChange={(e) => setRemoveDuplicates(e.target.checked)}
-                    className="rounded border-slate-300 text-pink-600 focus:ring-pink-500"
+                    className="rounded border-slate-300 dark:border-white/20 bg-white dark:bg-[#1e293b] text-pink-600 focus:ring-pink-500"
                   />
                   <span>Eliminar automáticamente nombres duplicados</span>
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700">
+                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700 dark:text-zinc-300">
                   <input
                     type="checkbox"
                     checked={useCountdown}
                     onChange={(e) => setUseCountdown(e.target.checked)}
-                    className="rounded border-slate-300 text-pink-600 focus:ring-pink-500"
+                    className="rounded border-slate-300 dark:border-white/20 bg-white dark:bg-[#1e293b] text-pink-600 focus:ring-pink-500"
                   />
                   <span>Cuenta regresiva 3D con audio</span>
                 </label>
@@ -329,39 +354,39 @@ export default function ListaPage() {
           </div>
         </div>
 
-        {/* Results Card (Clean Light Celebration) */}
+        {/* Results Card */}
         {winners.length > 0 && (
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-pink-200 shadow-lg space-y-6 text-center animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 border border-pink-200 dark:border-pink-500/30 shadow-lg space-y-6 text-center animate-in fade-in zoom-in-95 duration-200">
             {/* Trophy Squircle */}
-            <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
+            <div className="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto shadow-xs">
               <Trophy className="w-8 h-8" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-display">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-display">
                 ¡Felicidades a los Ganadores!
               </h2>
-              <p className="text-xs text-slate-500 font-medium">
+              <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">
                 {title} • Sorteo certificado y verificado
               </p>
             </div>
 
             {/* Winners List */}
             <div className="space-y-2 max-w-md mx-auto text-left">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 block">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 block">
                 🏆 Ganador(es) Titular(es):
               </span>
               <div className="space-y-2">
                 {winners.map((winner, index) => (
                   <div
                     key={index}
-                    className="p-4 rounded-xl bg-pink-50/70 border border-pink-200/80 flex items-center justify-between"
+                    className="p-4 rounded-xl bg-pink-50/70 dark:bg-pink-500/10 border border-pink-200/80 dark:border-pink-500/30 flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
                       <span className="w-7 h-7 rounded-full bg-pink-600 text-white text-xs font-bold flex items-center justify-center">
                         {index + 1}
                       </span>
-                      <span className="text-lg font-bold text-slate-900 font-display">{winner}</span>
+                      <span className="text-lg font-bold text-slate-900 dark:text-white font-display">{winner}</span>
                     </div>
                     <Trophy className="w-5 h-5 text-amber-500" />
                   </div>
@@ -371,18 +396,18 @@ export default function ListaPage() {
 
             {/* Substitutes List */}
             {substitutes.length > 0 && (
-              <div className="space-y-2 max-w-md mx-auto text-left pt-2 border-t border-slate-100">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+              <div className="space-y-2 max-w-md mx-auto text-left pt-2 border-t border-slate-100 dark:border-white/5">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 block">
                   👥 Suplentes de Reserva:
                 </span>
                 <div className="space-y-1.5">
                   {substitutes.map((sub, index) => (
                     <div
                       key={index}
-                      className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs"
+                      className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-between text-xs"
                     >
-                      <span className="text-slate-700 font-semibold">#{index + 1} {sub}</span>
-                      <span className="text-[10px] text-slate-400 font-medium">Suplente</span>
+                      <span className="text-slate-700 dark:text-zinc-300 font-semibold">#{index + 1} {sub}</span>
+                      <span className="text-[10px] text-slate-400 dark:text-zinc-500 font-medium">Suplente</span>
                     </div>
                   ))}
                 </div>
@@ -391,8 +416,8 @@ export default function ListaPage() {
 
             {/* Cryptographic SHA-256 Audit Card */}
             {auditHash && (
-              <div className="max-w-md mx-auto p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-mono text-slate-500 break-all text-left">
-                <span className="font-semibold text-slate-700 block mb-0.5">Hash de Auditoría SHA-256:</span>
+              <div className="max-w-md mx-auto p-3 rounded-xl bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 text-[11px] font-mono text-slate-600 dark:text-zinc-400 break-all text-left">
+                <span className="font-semibold text-slate-800 dark:text-zinc-200 block mb-0.5">Hash de Auditoría SHA-256:</span>
                 {auditHash}
               </div>
             )}
@@ -402,16 +427,16 @@ export default function ListaPage() {
               <button
                 type="button"
                 onClick={handleCopyWinners}
-                className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-800 dark:text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-white/10"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
                 <span>{copied ? '¡Copiado!' : 'Copiar Texto'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowExportModal(true)}
-                className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
               >
                 <Share2 className="w-4 h-4" />
                 <span>Descargar Tarjeta</span>
@@ -420,7 +445,7 @@ export default function ListaPage() {
               <button
                 type="button"
                 onClick={() => setShowLiveStream(true)}
-                className="py-2.5 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                className="py-2.5 px-4 rounded-xl bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Tv className="w-4 h-4" />
                 <span>Modo Streaming</span>
@@ -429,7 +454,7 @@ export default function ListaPage() {
               <button
                 type="button"
                 onClick={handleStartDraw}
-                className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-700 dark:text-zinc-300 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-white/10"
               >
                 <RotateCcw className="w-4 h-4" />
                 <span>Re-sortear</span>

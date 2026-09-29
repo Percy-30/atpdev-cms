@@ -152,15 +152,15 @@ export default function AmigoInvisiblePage() {
       {/* Hero Header Estilo AppSorteos */}
       <div className="text-center pt-2 sm:pt-4">
         {/* Pastel Icon Badge */}
-        <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto mb-4 shadow-xs">
           <Gift className="w-7 h-7" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
           Sorteo de Amigo Invisible
         </h1>
         
-        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+        <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 max-w-xl mx-auto">
           Organiza el intercambio de regalos con emparejamiento aleatorio seguro y tarjetas secretas
         </p>
 
@@ -171,7 +171,7 @@ export default function AmigoInvisiblePage() {
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
@@ -180,7 +180,7 @@ export default function AmigoInvisiblePage() {
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
             title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
@@ -188,7 +188,7 @@ export default function AmigoInvisiblePage() {
             <button
               type="button"
               onClick={() => setShowLiveStream(true)}
-              className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+              className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
             >
               <Tv className="w-3.5 h-3.5" />
               <span>En Vivo</span>
@@ -200,8 +200,8 @@ export default function AmigoInvisiblePage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Form: Participants & Rules */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 shadow-sm">
-            <h2 className="text-lg font-bold font-display text-slate-900">Participantes ({participants.length})</h2>
+          <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-white/10 shadow-sm">
+            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">Participantes ({participants.length})</h2>
 
             {/* Add person form */}
             <form onSubmit={handleAddPerson} className="flex gap-2">
@@ -216,7 +216,7 @@ export default function AmigoInvisiblePage() {
                 onChange={(e) => setNewPerson(e.target.value)}
                 placeholder="Nombre de la persona..."
                 aria-label="Nombre del participante para el amigo invisible"
-                className="flex-1 rounded-xl bg-white border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50"
+                className="flex-1 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20"
               />
               <button
                 type="submit"
@@ -233,14 +233,14 @@ export default function AmigoInvisiblePage() {
               {participants.map((person, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-sm text-slate-800 dark:text-zinc-200"
                 >
                   <span className="font-semibold truncate pr-2">👤 {person}</span>
                   <button
                     type="button"
                     onClick={() => handleRemovePerson(idx)}
                     aria-label={`Eliminar a ${person}`}
-                    className="text-slate-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                    className="text-slate-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400 transition-colors p-1 cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -249,9 +249,9 @@ export default function AmigoInvisiblePage() {
             </div>
 
             {/* Extra details: Budget and Date */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-100 dark:border-white/10">
               <div className="space-y-1">
-                <label htmlFor="budget-input" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
+                <label htmlFor="budget-input" className="text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-1">
                   <DollarSign className="w-3.5 h-3.5 text-amber-500" /> Presupuesto:
                 </label>
                 <input
@@ -260,12 +260,12 @@ export default function AmigoInvisiblePage() {
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
                   placeholder="Ej: $20.00"
-                  className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 font-mono focus:outline-none focus:border-[#d91a7a]"
+                  className="w-full rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 px-3 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-[#d91a7a]"
                 />
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="deadline-input" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
+                <label htmlFor="deadline-input" className="text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5 text-pink-500" /> Fecha de entrega:
                 </label>
                 <input
@@ -274,7 +274,7 @@ export default function AmigoInvisiblePage() {
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
                   placeholder="Ej: 24 Diciembre"
-                  className="w-full rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm text-slate-900 font-mono focus:outline-none focus:border-[#d91a7a]"
+                  className="w-full rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 px-3 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-[#d91a7a]"
                 />
               </div>
             </div>
@@ -297,14 +297,14 @@ export default function AmigoInvisiblePage() {
         {/* Right Form: Secret Match Cards */}
         <div className="lg:col-span-6 space-y-4">
           {matches.length > 0 ? (
-            <div className="bg-white rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 shadow-sm">
+            <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-white/10 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-bold font-display text-slate-900 flex items-center gap-2">
+                  <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
                     <Gift className="w-5 h-5 text-amber-500" />
                     <span>Resultados Secretos</span>
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-zinc-400">
                     Pasa el dispositivo o comparte el mensaje en privado a cada uno.
                   </p>
                 </div>
@@ -315,16 +315,16 @@ export default function AmigoInvisiblePage() {
                 {matches.map((m, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 transition-all hover:border-pink-300"
+                    className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-3 transition-all hover:border-pink-300 dark:hover:border-pink-500/40"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-900 text-base">
+                      <span className="font-bold text-slate-900 dark:text-white text-base">
                         🎁 {m.giver}
                       </span>
                       <button
                         type="button"
                         onClick={() => toggleReveal(idx)}
-                        className="text-xs font-semibold text-pink-600 hover:text-pink-700 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-50 hover:bg-pink-100 transition-colors cursor-pointer"
+                        className="text-xs font-semibold text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-50 dark:bg-pink-950/40 hover:bg-pink-100 dark:hover:bg-pink-900/50 transition-colors cursor-pointer"
                       >
                         {m.revealed ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                         <span>{m.revealed ? 'Ocultar' : 'Revelar Secreto'}</span>
@@ -335,16 +335,16 @@ export default function AmigoInvisiblePage() {
                     <div
                       className={`p-3.5 rounded-xl border text-center transition-all duration-300 select-none ${
                         m.revealed
-                          ? 'bg-pink-50 border-pink-200 text-slate-900 font-bold shadow-xs'
-                          : 'bg-white border-slate-200 text-slate-400 font-mono text-xs'
+                          ? 'bg-pink-50 dark:bg-pink-950/40 border-pink-200 dark:border-pink-900/40 text-slate-900 dark:text-white font-bold shadow-xs'
+                          : 'bg-white dark:bg-[#1e293b] border-slate-200 dark:border-white/10 text-slate-400 dark:text-zinc-500 font-mono text-xs'
                       }`}
                     >
                       {m.revealed ? (
                         <div className="space-y-0.5 animate-in zoom-in-95 duration-200">
-                          <span className="text-[10px] uppercase tracking-wider text-slate-500 block font-normal">
+                          <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-zinc-400 block font-normal">
                             Le regala en secreto a:
                           </span>
-                          <span className="text-2xl font-extrabold text-slate-900 font-display">{m.receiver}</span>
+                          <span className="text-2xl font-extrabold text-slate-900 dark:text-white font-display">{m.receiver}</span>
                         </div>
                       ) : (
                         <span>🔒 Toca &quot;Revelar Secreto&quot; para ver</span>
@@ -356,12 +356,12 @@ export default function AmigoInvisiblePage() {
                       <button
                         type="button"
                         onClick={() => copySecretMessage(m, idx)}
-                        className="flex-1 py-2 px-3 rounded-lg bg-white hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center justify-center gap-1.5 transition-colors border border-slate-200 cursor-pointer"
+                        className="flex-1 py-2 px-3 rounded-lg bg-white dark:bg-[#1e293b] hover:bg-slate-100 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-zinc-200 flex items-center justify-center gap-1.5 transition-colors border border-slate-200 dark:border-white/10 cursor-pointer"
                       >
                         {copiedIndex === idx ? (
                           <>
-                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                            <span className="text-emerald-600 font-bold">¡Copiado!</span>
+                            <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">¡Copiado!</span>
                           </>
                         ) : (
                           <>
@@ -374,7 +374,7 @@ export default function AmigoInvisiblePage() {
                       <button
                         type="button"
                         onClick={() => shareViaWhatsApp(m)}
-                        className="py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1 transition-colors border border-emerald-200 cursor-pointer"
+                        className="py-2 px-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-semibold flex items-center justify-center gap-1 transition-colors border border-emerald-200 dark:border-emerald-800/40 cursor-pointer"
                       >
                         <Share2 className="w-3.5 h-3.5" />
                         <span>WhatsApp</span>
@@ -386,17 +386,17 @@ export default function AmigoInvisiblePage() {
 
               {/* Audit Hash */}
               {auditHash && (
-                <div className="text-[10px] font-mono text-slate-500 flex items-center gap-1.5 pt-2 border-t border-slate-100">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <div className="text-[10px] font-mono text-slate-500 dark:text-zinc-400 flex items-center gap-1.5 pt-2 border-t border-slate-100 dark:border-white/10">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>Audit Hash: {auditHash.slice(0, 24)}...</span>
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-12 text-center space-y-3 border border-slate-200 shadow-sm text-slate-500 flex flex-col items-center justify-center min-h-[380px]">
+            <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-12 text-center space-y-3 border border-slate-200 dark:border-white/10 shadow-sm text-slate-500 dark:text-zinc-400 flex flex-col items-center justify-center min-h-[380px]">
               <Gift className="w-12 h-12 text-pink-400" />
-              <p className="text-base font-bold text-slate-900">Listo para el intercambio</p>
-              <p className="text-xs text-slate-500 max-w-sm">
+              <p className="text-base font-bold text-slate-900 dark:text-white">Listo para el intercambio</p>
+              <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm">
                 Agrega al menos 3 personas a la lista y presiona &quot;Comenzar Emparejamiento&quot; para generar las parejas en secreto.
               </p>
             </div>

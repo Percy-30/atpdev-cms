@@ -119,7 +119,7 @@ export default function EquiposPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       {showConfetti && <ConfettiEffect />}
 
@@ -134,15 +134,15 @@ export default function EquiposPage() {
       {/* Hero Header Estilo AppSorteos */}
       <div className="text-center pt-2 sm:pt-4">
         {/* Pastel Icon Badge */}
-        <div className="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4 shadow-xs">
           <Users className="w-7 h-7" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
           Generador de Equipos al Azar
         </h1>
         
-        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+        <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 max-w-xl mx-auto">
           Divide listas de participantes en grupos o equipos equilibrados de manera equitativa e imparcial
         </p>
 
@@ -153,7 +153,7 @@ export default function EquiposPage() {
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
@@ -162,7 +162,7 @@ export default function EquiposPage() {
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
             title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
@@ -171,7 +171,7 @@ export default function EquiposPage() {
               <button
                 type="button"
                 onClick={() => setShowExportModal(true)}
-                className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+                className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-pink-950/40 dark:hover:bg-pink-900/50 text-pink-700 dark:text-pink-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span>Exportar</span>
@@ -179,7 +179,7 @@ export default function EquiposPage() {
               <button
                 type="button"
                 onClick={() => setShowLiveStream(true)}
-                className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+                className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Tv className="w-3.5 h-3.5" />
                 <span>En Vivo</span>
@@ -190,18 +190,18 @@ export default function EquiposPage() {
       </div>
 
       {/* Main Form */}
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Participants Textarea */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="equipos-textarea" className="text-xs font-semibold text-slate-700">
+              <label htmlFor="equipos-textarea" className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
                 Participantes ({participantsList.length}):
               </label>
               <button
                 type="button"
                 onClick={() => setInputText('')}
-                className="text-xs text-slate-400 hover:text-red-500 transition-colors font-medium cursor-pointer"
+                className="text-xs text-slate-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400 transition-colors font-medium cursor-pointer"
               >
                 Vaciar lista
               </button>
@@ -214,7 +214,7 @@ export default function EquiposPage() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ingresa un nombre por línea..."
               aria-label="Lista de participantes para dividir en equipos, un nombre por línea"
-              className="w-full p-4 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 resize-none transition-colors shadow-xs leading-relaxed"
+              className="w-full p-4 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 text-sm focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20 resize-none transition-colors shadow-xs leading-relaxed"
             />
           </div>
 
@@ -223,7 +223,7 @@ export default function EquiposPage() {
             <div className="space-y-4">
               {/* Number of Teams */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-2">
                   Cantidad de Equipos a Formar:
                 </label>
                 <div className="grid grid-cols-5 gap-2">
@@ -235,7 +235,7 @@ export default function EquiposPage() {
                       className={`py-2.5 rounded-xl font-bold font-mono text-sm transition-all cursor-pointer ${
                         teamCount === num
                           ? 'bg-[#d91a7a] text-white shadow-xs'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-white/10'
                       }`}
                     >
                       {num}
@@ -246,13 +246,13 @@ export default function EquiposPage() {
 
               {/* Naming Style */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-2">
                   Estilo de Nombres para los Equipos:
                 </label>
                 <select
                   value={namingStyle}
                   onChange={(e) => setNamingStyle(parseInt(e.target.value))}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-medium text-sm focus:outline-none focus:border-[#d91a7a] shadow-xs"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-medium text-sm focus:outline-none focus:border-[#d91a7a] shadow-xs"
                 >
                   <option value={0}>🛡️ Épico / Colores (Titanes, Fénix...)</option>
                   <option value={1}>⚡ Elementos (Fuego, Relámpago...)</option>
@@ -262,7 +262,7 @@ export default function EquiposPage() {
             </div>
 
             {error && (
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
+              <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400 font-medium">
                 {error}
               </div>
             )}
@@ -285,7 +285,7 @@ export default function EquiposPage() {
       {teams.length > 0 && (
         <div className="space-y-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <h2 className="text-xl font-bold font-display text-slate-900 flex items-center gap-2">
+            <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
               <Trophy className="w-5 h-5 text-amber-500" />
               <span>Equipos Conformados ({teams.length})</span>
             </h2>
@@ -293,9 +293,9 @@ export default function EquiposPage() {
             <button
               type="button"
               onClick={handleCopyAll}
-              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-2 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-2 cursor-pointer"
             >
-              {copiedTeam === 999 ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+              {copiedTeam === 999 ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
               <span>{copiedTeam === 999 ? '¡Todos Copiados!' : 'Copiar Todos los Equipos'}</span>
             </button>
           </div>
@@ -305,19 +305,19 @@ export default function EquiposPage() {
             {teams.map((t, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4 hover:border-pink-300 transition-all"
+                className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 border border-slate-200 dark:border-white/10 shadow-sm space-y-4 hover:border-pink-300 dark:hover:border-pink-500/40 transition-all"
               >
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <span className="font-bold text-base text-slate-900 font-display flex items-center gap-2">
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-3">
+                  <span className="font-bold text-base text-slate-900 dark:text-white font-display flex items-center gap-2">
                     {t.name}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleCopyTeam(idx, `${t.name}:\n` + t.members.join('\n'))}
-                    className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-400 dark:text-zinc-400 hover:text-slate-600 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                     title="Copiar este equipo"
                   >
-                    {copiedTeam === idx ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedTeam === idx ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
 
@@ -326,9 +326,9 @@ export default function EquiposPage() {
                   {t.members.map((member, mIdx) => (
                     <div
                       key={mIdx}
-                      className="flex items-center gap-2.5 text-xs text-slate-800 bg-slate-50 p-2.5 rounded-lg"
+                      className="flex items-center gap-2.5 text-xs text-slate-800 dark:text-zinc-200 bg-slate-50 dark:bg-[#1e293b]/60 p-2.5 rounded-lg border border-slate-100 dark:border-white/5"
                     >
-                      <span className="w-5 h-5 rounded-full bg-pink-100 text-pink-700 font-bold flex items-center justify-center text-[10px]">
+                      <span className="w-5 h-5 rounded-full bg-pink-100 dark:bg-pink-950/50 text-pink-700 dark:text-pink-300 font-bold flex items-center justify-center text-[10px]">
                         {mIdx + 1}
                       </span>
                       <span className="font-semibold truncate">{member}</span>
@@ -336,7 +336,7 @@ export default function EquiposPage() {
                   ))}
                 </div>
 
-                <div className="text-[11px] text-slate-400 text-right pt-1 font-medium">
+                <div className="text-[11px] text-slate-400 dark:text-zinc-500 text-right pt-1 font-medium">
                   {t.members.length} integrantes
                 </div>
               </div>
@@ -345,12 +345,12 @@ export default function EquiposPage() {
 
           {/* Verification Hash */}
           {auditHash && (
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
-              <div className="flex items-center gap-2 text-slate-600">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
+              <div className="flex items-center gap-2 text-slate-600 dark:text-zinc-300">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span className="font-semibold">Hash Criptográfico SHA-256:</span>
               </div>
-              <span className="text-slate-500 break-all">{auditHash}</span>
+              <span className="text-slate-500 dark:text-zinc-400 break-all">{auditHash}</span>
             </div>
           )}
         </div>

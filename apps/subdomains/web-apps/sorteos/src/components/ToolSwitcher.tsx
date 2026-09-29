@@ -27,22 +27,27 @@ export const ToolSwitcher: React.FC = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-full flex items-center justify-center overflow-x-auto py-1 px-2 scrollbar-none">
-      <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-white border border-slate-200 shadow-xs">
-        {TOOLS.map((t) => {
-          const Icon = t.icon;
-          const isActive = pathname === t.href;
-          return (
-            <Link
-              key={t.href}
-              href={t.href}
-              className={`tool-switcher-pill ${isActive ? 'active' : ''}`}
-            >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-pink-600' : 'text-slate-400'}`} />
-              <span>{t.name}</span>
-            </Link>
-          );
-        })}
+    <div className="w-full overflow-x-auto scrollbar-none py-2 px-2 sm:px-4">
+      <div className="flex min-w-full justify-start md:justify-center p-1">
+        <nav 
+          aria-label="Herramientas de sorteo"
+          className="inline-flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-white/10 shadow-xs shrink-0"
+        >
+          {TOOLS.map((t) => {
+            const Icon = t.icon;
+            const isActive = pathname === t.href;
+            return (
+              <Link
+                key={t.href}
+                href={t.href}
+                className={`tool-switcher-pill shrink-0 ${isActive ? 'active' : ''}`}
+              >
+                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-pink-600 dark:text-white' : 'text-slate-400 dark:text-zinc-500'}`} />
+                <span>{t.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
       </div>
     </div>
   );

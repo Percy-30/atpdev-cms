@@ -120,7 +120,7 @@ export default function NumerosPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <ToolSwitcher />
       {showConfetti && <ConfettiEffect />}
 
@@ -135,15 +135,15 @@ export default function NumerosPage() {
       {/* Hero Header Estilo AppSorteos */}
       <div className="text-center pt-2 sm:pt-4">
         {/* Pastel Icon Badge */}
-        <div className="w-14 h-14 rounded-2xl bg-cyan-100 text-cyan-600 flex items-center justify-center mx-auto mb-4 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-cyan-100 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-xs">
           <Hash className="w-7 h-7" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-2 font-display">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
           Generador de Números al Azar
         </h1>
         
-        <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
+        <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 max-w-xl mx-auto">
           Genera números aleatorios únicos para rifas, loterías o bingos con esferas 3D certificadas
         </p>
 
@@ -154,7 +154,7 @@ export default function NumerosPage() {
             onClick={handleToggleSound}
             aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
             title={muted ? 'Activar sonido' : 'Silenciar sonido'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600" />}
           </button>
@@ -163,7 +163,7 @@ export default function NumerosPage() {
             onClick={handleToggleFullscreen}
             aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
             title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600" /> : <Maximize2 className="w-4 h-4" />}
           </button>
@@ -172,7 +172,7 @@ export default function NumerosPage() {
               <button
                 type="button"
                 onClick={() => setShowExportModal(true)}
-                className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+                className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-pink-950/40 dark:hover:bg-pink-900/50 text-pink-700 dark:text-pink-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span>Exportar</span>
@@ -180,7 +180,7 @@ export default function NumerosPage() {
               <button
                 type="button"
                 onClick={() => setShowLiveStream(true)}
-                className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold flex items-center gap-1 transition-colors"
+                className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Tv className="w-3.5 h-3.5" />
                 <span>En Vivo</span>
@@ -191,34 +191,34 @@ export default function NumerosPage() {
       </div>
 
       {/* Config Card */}
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
-            <Sliders className="w-4 h-4 text-cyan-600" />
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-5">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-white/10 pb-4">
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
+            <Sliders className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
             <span>Configuración del Sorteo</span>
           </div>
 
           {/* Quick presets */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500">Plantillas:</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Plantillas:</span>
             <button
               type="button"
               onClick={() => applyPreset(1, 100, 1, true)}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 hover:text-cyan-700 text-xs text-slate-700 font-medium transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/5 hover:bg-cyan-50 dark:hover:bg-cyan-950/50 hover:text-cyan-700 dark:hover:text-cyan-300 text-xs text-slate-700 dark:text-zinc-300 font-medium transition-colors cursor-pointer"
             >
               1 al 100 (1 ganador)
             </button>
             <button
               type="button"
               onClick={() => applyPreset(1, 50, 6, true)}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 hover:text-cyan-700 text-xs text-slate-700 font-medium transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/5 hover:bg-cyan-50 dark:hover:bg-cyan-950/50 hover:text-cyan-700 dark:hover:text-cyan-300 text-xs text-slate-700 dark:text-zinc-300 font-medium transition-colors cursor-pointer"
             >
               Lotería (6/50)
             </button>
             <button
               type="button"
               onClick={() => applyPreset(1, 75, 5, true)}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 hover:text-cyan-700 text-xs text-slate-700 font-medium transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/5 hover:bg-cyan-50 dark:hover:bg-cyan-950/50 hover:text-cyan-700 dark:hover:text-cyan-300 text-xs text-slate-700 dark:text-zinc-300 font-medium transition-colors cursor-pointer"
             >
               Bingo (75)
             </button>
@@ -228,29 +228,29 @@ export default function NumerosPage() {
         {/* Form Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="numero-minimo" className="block text-xs font-semibold text-slate-700 mb-1.5">Valor Mínimo:</label>
+            <label htmlFor="numero-minimo" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">Valor Mínimo:</label>
             <input
               id="numero-minimo"
               name="numeroMinimo"
               type="number"
               value={min}
               onChange={(e) => setMin(parseInt(e.target.value) || 0)}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 transition-colors shadow-xs"
+              className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20 transition-colors shadow-xs"
             />
           </div>
           <div>
-            <label htmlFor="numero-maximo" className="block text-xs font-semibold text-slate-700 mb-1.5">Valor Máximo:</label>
+            <label htmlFor="numero-maximo" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">Valor Máximo:</label>
             <input
               id="numero-maximo"
               name="numeroMaximo"
               type="number"
               value={max}
               onChange={(e) => setMax(parseInt(e.target.value) || 0)}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 transition-colors shadow-xs"
+              className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20 transition-colors shadow-xs"
             />
           </div>
           <div>
-            <label htmlFor="numero-cantidad" className="block text-xs font-semibold text-slate-700 mb-1.5">Cantidad de Números:</label>
+            <label htmlFor="numero-cantidad" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">Cantidad de Números:</label>
             <input
               id="numero-cantidad"
               name="numeroCantidad"
@@ -259,7 +259,7 @@ export default function NumerosPage() {
               max={1000}
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 transition-colors shadow-xs"
+              className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20 transition-colors shadow-xs"
             />
           </div>
         </div>
@@ -271,17 +271,17 @@ export default function NumerosPage() {
               type="checkbox"
               checked={!allowDuplicates}
               onChange={(e) => setAllowDuplicates(!e.target.checked)}
-              className="w-4 h-4 rounded text-pink-600 bg-white border-slate-300 focus:ring-pink-500"
+              className="w-4 h-4 rounded text-pink-600 bg-white dark:bg-[#1e293b] border-slate-300 dark:border-white/20 focus:ring-pink-500"
             />
-            <span className="text-xs font-medium text-slate-700">Sin duplicados (Números únicos)</span>
+            <span className="text-xs font-medium text-slate-700 dark:text-zinc-300">Sin duplicados (Números únicos)</span>
           </label>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500">Ordenar:</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Ordenar:</span>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as any)}
-              className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-[#d91a7a]"
+              className="px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-xs text-slate-800 dark:text-zinc-200 focus:outline-none focus:border-[#d91a7a]"
             >
               <option value="none">Al azar (orden de extracción)</option>
               <option value="asc">Menor a Mayor (Ascendente)</option>
@@ -291,7 +291,7 @@ export default function NumerosPage() {
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
+          <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400 font-medium">
             {error}
           </div>
         )}
@@ -312,11 +312,11 @@ export default function NumerosPage() {
 
       {/* Results Display with 3D Spheres */}
       {results.length > 0 && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+        <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-6">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              <h2 className="text-base font-bold text-slate-900 font-display">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white font-display">
                 Esferas Extraídas ({results.length})
               </h2>
             </div>
@@ -324,15 +324,15 @@ export default function NumerosPage() {
               <button
                 type="button"
                 onClick={handleCopy}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copied ? '¡Copiado!' : 'Copiar'}</span>
               </button>
               <button
                 type="button"
                 onClick={handleDownloadCsv}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>CSV</span>
@@ -341,7 +341,7 @@ export default function NumerosPage() {
           </div>
 
           {/* 3D Spheres Ball Stage */}
-          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center py-6 bg-slate-50 rounded-2xl border border-slate-100">
+          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center py-6 bg-slate-50 dark:bg-[#1e293b]/50 rounded-2xl border border-slate-100 dark:border-white/10">
             {results.map((num, idx) => {
               const gradient = BALL_GRADIENTS[idx % BALL_GRADIENTS.length];
               return (
@@ -365,7 +365,7 @@ export default function NumerosPage() {
                     </div>
                   </div>
 
-                  <span className="text-[11px] font-semibold text-slate-500 mt-2">
+                  <span className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 mt-2">
                     Bola #{idx + 1}
                   </span>
                 </div>
@@ -375,12 +375,12 @@ export default function NumerosPage() {
 
           {/* Verification Hash */}
           {auditHash && (
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
-              <div className="flex items-center gap-2 text-slate-600">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
+              <div className="flex items-center gap-2 text-slate-600 dark:text-zinc-300">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span className="font-semibold">Hash Criptográfico SHA-256:</span>
               </div>
-              <span className="text-slate-500 break-all">{auditHash}</span>
+              <span className="text-slate-500 dark:text-zinc-400 break-all">{auditHash}</span>
             </div>
           )}
         </div>
