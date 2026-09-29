@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Dices, RefreshCw, RotateCcw, Trophy, Sparkles } from 'lucide-react';
 import { rollDice } from '@/lib/randomEngine';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
+import { playDiceSound } from '@/lib/soundEffects';
 
 export default function DadosPage() {
   const [diceCount, setDiceCount] = useState<number>(2);
@@ -16,6 +17,7 @@ export default function DadosPage() {
   const handleRoll = () => {
     if (isRolling) return;
     setIsRolling(true);
+    playDiceSound();
 
     // Animación de rotación rápida antes del resultado
     setTimeout(() => {

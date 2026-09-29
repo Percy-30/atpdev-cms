@@ -3,11 +3,14 @@
 import React, { useState } from 'react';
 import { 
   ListOrdered, Trophy, Sparkles, RefreshCw, Trash2, 
-  Copy, Check, Share2, Award, UserCheck, Shuffle
+  Copy, Check, Share2, Award, UserCheck, Shuffle, Tv
 } from 'lucide-react';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
-import { shuffleArray, getSecureRandomInt, generateSha256Hash } from '@/lib/randomEngine';
+import { LiveStreamStage } from '@/components/LiveStreamStage';
+import { WinnerExportModal } from '@/components/WinnerExportModal';
+import { shuffleArray, generateSha256Hash } from '@/lib/randomEngine';
+import { playCountdownTick, playWinnerFanfare } from '@/lib/soundEffects';
 
 export default function ListaPage() {
   const [rawText, setRawText] = useState<string>(
@@ -22,6 +25,8 @@ export default function ListaPage() {
   const [substitutes, setSubstitutes] = useState<string[]>([]);
   const [auditHash, setAuditHash] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
+  const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
+  const [showExportModal, setShowExportModal] = useState<boolean>(false);
 
   const getParticipants = (): string[] => {
     const list = rawText
@@ -41,13 +46,14 @@ export default function ListaPage() {
     setWinners([]);
     setSubstitutes([]);
     setCountdown(3);
+    playCountdownTick(false);
 
-    // Animación de cuenta regresiva emocionante
     let count = 3;
     const timer = setInterval(() => {
       count--;
       if (count > 0) {
         setCountdown(count);
+        playCountdownTick(count === 1);
       } else {
         clearInterval(timer);
         setCountdown(null);
@@ -69,6 +75,7 @@ export default function ListaPage() {
     setSubstitutes(selectedSubstitutes);
     setAuditHash(hash);
     setIsDrawing(false);
+    playWinnerFanfare();
   };
 
   const handleCopyWinners = () => {
@@ -84,57 +91,77 @@ export default function ListaPage() {
       <ConfettiEffect active={winners.length > 0 && !isDrawing} />
 
       {/* Header */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-          <ListOrdered className="w-3.5 h-3.5" />
-          <span>Herramienta Gratuita</span>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-center sm:text-left space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
+            <ListOrdered className="w-3.5 h-3.5" />
+            <span>Herramienta Gratuita Certificada</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
+            Sorteo por Lista de Nombres
+          </h1>
+          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
+            Pega los nombres de tus participantes, ajusta los ganadores y realiza un sorteo 100% aleatorio, certificado e imparcial.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-          Sorteo por Lista de Nombres
-        </h1>
-        <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
-          Pega los nombres de tus participantes, ajusta el número de ganadores y realiza un sorteo 100% aleatorio y sin trampas.
-        </p>
+
+        {winners.length > 0 && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowLiveStream(true)}
+              className="btn-pro-secondary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
+            >
+              <Tv className="w-4 h-4 text-purple-400" />
+              <span>Modo En Vivo</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowExportModal(true)}
+              className="btn-pro-primary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>Exportar Tarjeta</span>
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
         {/* Left Column: Form & Inputs */}
         <div className="lg:col-span-7 space-y-6">
           <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-white/10">
             <div className="flex items-center justify-between">
-              <label htmlFor="lista-participantes" className="text-sm font-bold text-white font-display flex items-center gap-2">
-                <span>Lista de Participantes</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 font-normal">
-                  {participants.length} nombres válidos
-                </span>
+              <label htmlFor="participants-text" className="text-sm font-bold font-display text-white">
+                Lista de Participantes ({participants.length})
               </label>
               <button
                 type="button"
                 onClick={() => setRawText('')}
-                aria-label="Limpiar lista de participantes"
-                className="text-xs text-zinc-400 hover:text-red-400 flex items-center gap-1 transition-colors"
+                className="text-xs text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1"
               >
-                <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Limpiar</span>
+                <Trash2 className="w-3 h-3" />
+                <span>Vaciar</span>
               </button>
             </div>
 
             <textarea
-              id="lista-participantes"
-              name="listaParticipantes"
-              rows={9}
+              id="participants-text"
+              name="participantsText"
+              rows={8}
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
-              placeholder="Pega aquí los nombres (uno por línea o separados por comas)..."
-              aria-label="Lista de participantes para el sorteo"
-              className="w-full rounded-2xl bg-black/40 border border-white/10 p-4 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 font-mono"
+              placeholder="Ingresa un nombre por línea o separados por comas..."
+              aria-label="Lista de participantes, un nombre por línea"
+              className="w-full rounded-2xl bg-black/40 border border-white/10 p-4 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 font-mono resize-none leading-relaxed"
             />
 
-            {/* Config Options */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
+            {/* Configs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div className="space-y-1.5">
-                <label htmlFor="winners-count-input" className="text-xs font-mono text-zinc-300">Número de Ganadores:</label>
+                <label htmlFor="winners-count-input" className="text-xs font-mono text-zinc-400">
+                  Número de Ganadores:
+                </label>
                 <input
                   id="winners-count-input"
                   name="winnersCount"
@@ -143,58 +170,63 @@ export default function ListaPage() {
                   max={Math.max(1, participants.length)}
                   value={winnersCount}
                   onChange={(e) => setWinnersCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
+                  aria-label="Número de ganadores titulares"
+                  className="w-full rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="substitutes-count-input" className="text-xs font-mono text-zinc-300">Número de Suplentes:</label>
+                <label htmlFor="substitutes-count-input" className="text-xs font-mono text-zinc-400">
+                  Número de Suplentes:
+                </label>
                 <input
                   id="substitutes-count-input"
                   name="substitutesCount"
                   type="number"
                   min={0}
-                  max={10}
+                  max={Math.max(0, participants.length - winnersCount)}
                   value={substitutesCount}
                   onChange={(e) => setSubstitutesCount(Math.max(0, parseInt(e.target.value) || 0))}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
+                  aria-label="Número de suplentes de reserva"
+                  className="w-full rounded-xl bg-black/40 border border-white/10 px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-violet-500"
                 />
               </div>
             </div>
 
-            <label className="flex items-center gap-3 pt-1 cursor-pointer text-xs text-zinc-300 select-none">
-              <input
-                type="checkbox"
-                checked={removeDuplicates}
-                onChange={(e) => setRemoveDuplicates(e.target.checked)}
-                className="w-4 h-4 rounded text-violet-600 bg-white/5 border-white/20 focus:ring-0"
-              />
-              <span>Eliminar nombres repetidos automáticamente (1 voto por persona)</span>
-            </label>
+            {/* Checkbox Duplicates */}
+            <div className="pt-2">
+              <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-zinc-300">
+                <input
+                  type="checkbox"
+                  checked={removeDuplicates}
+                  onChange={(e) => setRemoveDuplicates(e.target.checked)}
+                  className="rounded border-white/20 bg-black/40 text-violet-600 focus:ring-violet-500"
+                />
+                <span>Eliminar automáticamente nombres duplicados</span>
+              </label>
+            </div>
 
-            {/* Draw Button */}
-            <button
-              type="button"
-              disabled={participants.length === 0 || isDrawing}
-              onClick={handleStartDraw}
-              className={`w-full py-4 text-base sm:text-lg btn-pro-primary rounded-2xl ${
-                participants.length === 0 || isDrawing
-                  ? '!bg-zinc-800 !text-zinc-500 !cursor-not-allowed !shadow-none !transform-none opacity-60'
-                  : ''
-              }`}
-            >
-              {isDrawing ? (
-                <>
-                  <RefreshCw className="w-5 h-5 animate-spin" />
-                  <span>Sorteando ganadores...</span>
-                </>
-              ) : (
-                <>
-                  <Trophy className="w-5 h-5 text-amber-300" />
-                  <span>¡Realizar Sorteo Ahora!</span>
-                </>
-              )}
-            </button>
+            {/* Submit Button */}
+            <div className="pt-4 border-t border-white/10">
+              <button
+                type="button"
+                disabled={participants.length === 0 || isDrawing}
+                onClick={handleStartDraw}
+                className="btn-pro-primary w-full text-base sm:text-lg py-4 rounded-2xl flex items-center justify-center gap-2"
+              >
+                {isDrawing ? (
+                  <>
+                    <RefreshCw className="w-5 h-5 animate-spin" />
+                    <span>Realizando Sorteo...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    <span>¡Realizar Sorteo Ahora!</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -270,14 +302,22 @@ export default function ListaPage() {
               )}
 
               {/* Actions */}
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   type="button"
                   onClick={handleCopyWinners}
                   className="flex-1 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-white/10"
                 >
                   {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copied ? '¡Copiado!' : 'Copiar Resultados'}</span>
+                  <span>{copied ? '¡Copiado!' : 'Copiar Texto'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowExportModal(true)}
+                  className="px-4 py-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-amber-500/30"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>Descargar Tarjeta</span>
                 </button>
                 <button
                   type="button"
@@ -285,7 +325,7 @@ export default function ListaPage() {
                   className="px-4 py-3 rounded-xl bg-violet-600/30 hover:bg-violet-600/50 text-violet-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Shuffle className="w-4 h-4" />
-                  <span>Volver a Sortear</span>
+                  <span>Re-sortear</span>
                 </button>
               </div>
             </div>
@@ -300,6 +340,32 @@ export default function ListaPage() {
           )}
         </div>
       </div>
+
+      {/* Live Stream Stage */}
+      {winners.length > 0 && (
+        <LiveStreamStage
+          isOpen={showLiveStream}
+          onClose={() => setShowLiveStream(false)}
+          title="Sorteo por Lista de Nombres"
+          winner={winners[0]}
+          substitutes={substitutes}
+          auditHash={auditHash || ''}
+          platform="Lista de Nombres"
+          onReroll={handleStartDraw}
+        />
+      )}
+
+      {/* Winner Export Modal */}
+      {winners.length > 0 && (
+        <WinnerExportModal
+          isOpen={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          winnerName={winners[0]}
+          drawTitle="Sorteo por Lista"
+          auditHash={auditHash || ''}
+          platform="Sorteo de Nombres"
+        />
+      )}
     </div>
   );
 }

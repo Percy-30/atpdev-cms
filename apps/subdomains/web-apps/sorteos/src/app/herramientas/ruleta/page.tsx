@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Disc, Sparkles, Plus, Trash2, Trophy, RotateCcw, Check } from 'lucide-react';
+import { Disc, Sparkles, Plus, Trash2, Trophy, RotateCcw, Share2, Tv } from 'lucide-react';
 import { RouletteCanvas } from '@/components/RouletteCanvas';
 import { ConfettiEffect } from '@/components/ConfettiEffect';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
+import { LiveStreamStage } from '@/components/LiveStreamStage';
+import { WinnerExportModal } from '@/components/WinnerExportModal';
+import { playWinnerFanfare } from '@/lib/soundEffects';
 
 export default function RuletaPage() {
   const [options, setOptions] = useState<string[]>([
@@ -20,6 +23,8 @@ export default function RuletaPage() {
   const [newOption, setNewOption] = useState<string>('');
   const [winner, setWinner] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
+  const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
+  const [showExportModal, setShowExportModal] = useState<boolean>(false);
 
   const handleAddOption = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,44 +47,80 @@ export default function RuletaPage() {
     setWinner(null);
   };
 
+  const handleWinnerSelected = (selected: string) => {
+    setWinner(selected);
+    playWinnerFanfare();
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <ToolSwitcher />
       <ConfettiEffect active={winner !== null && !isSpinning} />
 
       {/* Header */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
-          <Disc className="w-3.5 h-3.5 text-pink-400" />
-          <span>Ruleta Interactiva en Vivo</span>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-center sm:text-left space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full purple-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
+            <Disc className="w-3.5 h-3.5 text-pink-400" />
+            <span>Ruleta Interactiva en Vivo</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
+            Ruleta Aleatoria Digital
+          </h1>
+          <p className="text-sm sm:text-base text-zinc-400 max-w-xl">
+            Personaliza los premios o nombres, gira la ruleta y toma decisiones emocionantes e imparciales en vivo.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
-          Ruleta Aleatoria Digital
-        </h1>
-        <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
-          Personaliza los premios o nombres, gira la ruleta y toma decisiones emocionantes e imparciales en vivo.
-        </p>
+
+        {/* Live Presentation Button */}
+        {winner && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowLiveStream(true)}
+              className="btn-pro-secondary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
+            >
+              <Tv className="w-4 h-4 text-purple-400" />
+              <span>Modo En Vivo</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowExportModal(true)}
+              className="btn-pro-primary py-3 px-5 rounded-xl text-sm flex items-center gap-2"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>Exportar Tarjeta</span>
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
         {/* Left: Roulette Wheel Canvas */}
         <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 sm:p-10 glass-card rounded-3xl border border-white/10 relative">
-          
           {winner && (
-            <div className="w-full mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-violet-500/20 border border-amber-400/40 text-center space-y-1 animate-bounce">
+            <div className="w-full mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-violet-500/20 border border-amber-400/40 text-center space-y-2 animate-bounce">
               <span className="text-[11px] font-mono font-bold uppercase text-amber-300 tracking-wider flex items-center justify-center gap-1">
                 <Trophy className="w-3.5 h-3.5" /> ¡Opción Ganadora!
               </span>
-              <p className="text-2xl sm:text-3xl font-black text-white font-display title-neon-glow">
+              <p className="text-2xl sm:text-4xl font-black text-white font-display title-neon-glow">
                 {winner}
               </p>
+              <div className="flex items-center justify-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowExportModal(true)}
+                  className="text-xs font-mono font-bold text-amber-300 hover:text-white underline flex items-center gap-1"
+                >
+                  <Share2 className="w-3 h-3" /> Descargar Story / Post
+                </button>
+              </div>
             </div>
           )}
 
           <RouletteCanvas
             options={options}
-            onWinnerSelected={(selected) => setWinner(selected)}
+            onWinnerSelected={handleWinnerSelected}
             isSpinning={isSpinning}
             setIsSpinning={setIsSpinning}
           />
@@ -178,6 +219,28 @@ export default function RuletaPage() {
           </div>
         </div>
       </div>
+
+      {/* Live Stream Stage Modal */}
+      {winner && (
+        <LiveStreamStage
+          isOpen={showLiveStream}
+          onClose={() => setShowLiveStream(false)}
+          title="Ruleta de la Suerte Digital"
+          winner={winner}
+          platform="Ruleta Sorteos Pro"
+        />
+      )}
+
+      {/* Story / Post Export Modal */}
+      {winner && (
+        <WinnerExportModal
+          isOpen={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          winnerName={winner}
+          drawTitle="Ruleta de la Suerte"
+          platform="Ruleta Digital"
+        />
+      )}
     </div>
   );
 }

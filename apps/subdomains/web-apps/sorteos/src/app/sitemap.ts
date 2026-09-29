@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/herramientas/moneda', priority: 0.85, freq: 'weekly' as const },
     { path: '/herramientas/numeros', priority: 0.9, freq: 'weekly' as const },
     { path: '/herramientas/equipos', priority: 0.85, freq: 'weekly' as const },
+    { path: '/herramientas/amigo-invisible', priority: 0.9, freq: 'weekly' as const },
     { path: '/planes', priority: 0.8, freq: 'weekly' as const },
     { path: '/blog', priority: 0.8, freq: 'daily' as const },
     { path: '/terminos-y-condiciones', priority: 0.5, freq: 'monthly' as const },

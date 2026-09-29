@@ -9,7 +9,8 @@ import {
   Dices, 
   CircleDollarSign, 
   Hash, 
-  Users2 
+  Users2,
+  Gift
 } from 'lucide-react';
 
 const TOOLS = [
@@ -19,6 +20,7 @@ const TOOLS = [
   { name: 'Moneda', href: '/herramientas/moneda', icon: CircleDollarSign },
   { name: 'Números', href: '/herramientas/numeros', icon: Hash },
   { name: 'Equipos', href: '/herramientas/equipos', icon: Users2 },
+  { name: 'Amigo Invisible', href: '/herramientas/amigo-invisible', icon: Gift },
 ];
 
 export const ToolSwitcher: React.FC = () => {

@@ -63,13 +63,39 @@ export function getQueue(): Bull.Queue<GiveawayExecutePayload> {
 }
 
 export async function enqueueExecute(payload: GiveawayExecutePayload, opts?: { jobId?: string }): Promise<string> {
-  const q = getQueue();
-  const job = await q.add(payload, {
-    jobId: opts?.jobId,
-    removeOnComplete: true,
-    removeOnFail: true,
-  });
-  return String(job.id);
+  try {
+    if (process.env.QUEUE_DRIVER === 'memory') {
+      throw new Error('Forced memory queue');
+    }
+    const q = getQueue();
+    const job = await q.add(payload, {
+      jobId: opts?.jobId,
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
+    return String(job.id);
+  } catch (err) {
+    // Graceful fallback para entornos locales sin Redis o serverless
+    logEvent('queue.fallback_in_memory', { giveawayId: payload.giveawayId, reason: String(err) });
+    const localId = opts?.jobId || uid('job-mem');
+    setTimeout(async () => {
+      try {
+        await processGiveawayExecute(payload, {
+          giveaways: db.giveaways,
+          usage: db.usage,
+          certificates: db.certificates,
+          audit: db.audit,
+          participants: db.participants,
+          winners: db.winners,
+          users: db.users,
+          socialAccounts: db.socialAccounts,
+        });
+      } catch (e) {
+        logEvent('queue.in_memory.failed', { giveawayId: payload.giveawayId, error: String(e) });
+      }
+    }, 15);
+    return localId;
+  }
 }
 
 export interface ExecuteJobDeps {
