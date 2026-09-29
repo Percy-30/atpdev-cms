@@ -71,13 +71,13 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
       <div className="flex items-center justify-between">
         <Link
           href={`/sorteo/${cert.giveawayId}`}
-          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver al resultado del sorteo</span>
         </Link>
 
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 font-bold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-xs font-mono text-emerald-700 dark:text-emerald-400 font-bold">
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>Firma Digital Válida</span>
         </div>
@@ -86,10 +86,10 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
       {/* Main Certificate Display */}
       <div className="space-y-4">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl sm:text-4xl font-black font-display text-white">
+          <h1 className="text-2xl sm:text-4xl font-black font-display text-slate-900 dark:text-white">
             Certificado Oficial de Transparencia
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400">
             Acreditación pública inmutable de selección aleatoria criptográfica conforme a las normas de Meta y YouTube.
           </p>
         </div>
@@ -98,13 +98,13 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* Interactive Hash Validator Section */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-6">
         <div className="space-y-2">
-          <h2 className="text-base font-bold font-display text-white flex items-center gap-2">
-            <Search className="w-4 h-4 text-purple-400" />
+          <h2 className="text-base font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+            <Search className="w-4 h-4 text-pink-600 dark:text-purple-400" />
             <span>Verificador Público de Autenticidad</span>
           </h2>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-slate-600 dark:text-zinc-400">
             Cualquier persona puede auditar este certificado ingresando el código de certificado o el hash SHA-256 para constatar que no ha sido adulterado.
           </p>
         </div>
@@ -115,19 +115,20 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
             value={searchHash}
             onChange={(e) => setSearchHash(e.target.value)}
             placeholder="Pega el hash SHA-256 o código de certificado..."
-            className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500 transition-colors"
+            aria-label="Pega el hash SHA-256 o código de certificado"
+            className="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500 transition-colors shadow-xs"
           />
           <button
             type="submit"
-            className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold font-display text-xs transition-colors shadow-lg shadow-purple-600/30"
+            className="px-6 py-3 rounded-xl btn-pro-primary font-bold font-display text-xs cursor-pointer"
           >
             Verificar Firma
           </button>
         </form>
 
         {verifyResult === 'valid' && (
-          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs font-mono flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>
               <strong>¡Certificado 100% Auténtico!</strong> Coincide de manera exacta con el registro criptográfico emitido por Sorteos Pro.
             </span>
@@ -135,8 +136,8 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
         )}
 
         {verifyResult === 'invalid' && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-mono flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+          <div className="p-4 rounded-xl bg-rose-50 dark:bg-red-500/10 border border-rose-200 dark:border-red-500/30 text-rose-800 dark:text-red-300 text-xs font-mono flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-red-400 shrink-0" />
             <span>
               <strong>Firma no coincidente:</strong> El código o hash ingresado no corresponde a este sorteo.
             </span>

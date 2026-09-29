@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { BookOpen, Calendar, Clock, ArrowRight, Sparkles, ShieldCheck, TrendingUp } from 'lucide-react';
+import { BookOpen, Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react';
 
 const ARTICLES = [
   {
@@ -56,10 +56,10 @@ export default function BlogPage() {
           <BookOpen className="w-3.5 h-3.5" />
           <span>Blog & Recursos</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-display text-slate-900 dark:text-white tracking-tight">
           Guías y Mejores Prácticas para Sorteos
         </h1>
-        <p className="text-sm sm:text-base text-zinc-400">
+        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
           Aprende a crear promociones efectivas, legales y transparentes que hagan crecer tu comunidad de forma orgánica.
         </p>
       </div>
@@ -68,34 +68,34 @@ export default function BlogPage() {
       {ARTICLES.filter((a) => a.featured).map((post) => (
         <div
           key={post.id}
-          className="glass-card rounded-3xl p-8 sm:p-12 border border-purple-500/40 relative overflow-hidden bg-gradient-to-r from-purple-950/20 via-white/[0.02] to-transparent space-y-6"
+          className="bg-white dark:bg-[#0f172a] rounded-3xl p-8 sm:p-12 border-2 border-pink-500/30 dark:border-purple-500/40 relative overflow-hidden shadow-md space-y-6"
         >
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-mono font-bold">
+            <span className="px-3 py-1 rounded-full bg-pink-100 dark:bg-purple-500/20 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 text-xs font-mono font-bold">
               ⭐ Destacado
             </span>
-            <span className="px-3 py-1 rounded-full bg-white/5 text-zinc-400 text-xs font-mono">
+            <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-zinc-400 text-xs font-mono">
               {post.category}
             </span>
-            <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
+            <div className="flex items-center gap-3 text-xs font-mono text-slate-500 dark:text-zinc-500">
               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
               <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {post.readTime}</span>
             </div>
           </div>
 
           <div className="space-y-3 max-w-2xl">
-            <h2 className="text-2xl sm:text-3xl font-black font-display text-white hover:text-purple-300 transition-colors cursor-pointer">
+            <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white hover:text-pink-600 dark:hover:text-purple-300 transition-colors cursor-pointer">
               {post.title}
             </h2>
-            <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed">
               {post.excerpt}
             </p>
           </div>
 
           <div className="pt-2">
             <Link
-              href={`/sorteos/nuevo`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold font-display text-xs shadow-lg shadow-purple-600/30 transition-all"
+              href="/sorteos/nuevo"
+              className="inline-flex items-center gap-2 btn-pro-primary py-3.5 px-6 rounded-xl font-bold font-display text-xs cursor-pointer shadow-md"
             >
               <span>Aplicar en un Sorteo</span>
               <ArrowRight className="w-4 h-4" />
@@ -109,28 +109,28 @@ export default function BlogPage() {
         {ARTICLES.filter((a) => !a.featured).map((post) => (
           <div
             key={post.id}
-            className="glass-card rounded-3xl p-6 border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between space-y-4"
+            className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-all flex flex-col justify-between space-y-4 shadow-sm"
           >
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
-                <span className="text-purple-400 font-bold">{post.category}</span>
+              <div className="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-zinc-500">
+                <span className="text-pink-600 dark:text-purple-400 font-bold">{post.category}</span>
                 <span>{post.readTime}</span>
               </div>
 
-              <h3 className="text-lg font-bold font-display text-white leading-snug">
+              <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white leading-snug">
                 {post.title}
               </h3>
 
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
                 {post.excerpt}
               </p>
             </div>
 
-            <div className="pt-2 flex items-center justify-between border-t border-white/5 text-xs font-mono">
-              <span className="text-zinc-500">{post.date}</span>
+            <div className="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-white/5 text-xs font-mono">
+              <span className="text-slate-500 dark:text-zinc-500">{post.date}</span>
               <Link
                 href="/sorteos/nuevo"
-                className="text-purple-400 hover:text-purple-300 font-bold flex items-center gap-1 transition-colors"
+                className="text-pink-600 dark:text-purple-400 hover:underline font-bold flex items-center gap-1 transition-colors"
               >
                 <span>Leer más</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -141,18 +141,18 @@ export default function BlogPage() {
       </div>
 
       {/* Newsletter / CTA banner */}
-      <div className="glass-card rounded-3xl p-8 sm:p-10 border border-white/10 text-center space-y-4 max-w-3xl mx-auto">
-        <Sparkles className="w-8 h-8 text-amber-400 mx-auto" />
-        <h2 className="text-2xl font-black font-display text-white">
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-white/10 text-center space-y-4 max-w-3xl mx-auto shadow-sm">
+        <Sparkles className="w-8 h-8 text-amber-500 mx-auto" />
+        <h2 className="text-2xl font-black font-display text-slate-900 dark:text-white">
           ¿Listo para crear tu próximo sorteo con certificado?
         </h2>
-        <p className="text-xs sm:text-sm text-zinc-400 max-w-lg mx-auto">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 max-w-lg mx-auto">
           Prueba nuestras herramientas gratuitas o inicia tu primer sorteo en Instagram o Facebook en menos de 2 minutos.
         </p>
         <div className="pt-2">
           <Link
             href="/sorteos/nuevo"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold font-display text-sm shadow-xl shadow-purple-600/30 hover:scale-105 transition-all"
+            className="inline-flex items-center gap-2 btn-pro-primary py-4 px-8 rounded-2xl text-sm font-bold font-display shadow-md hover:scale-105 transition-all cursor-pointer"
           >
             <span>Crear Sorteo Ahora</span>
             <ArrowRight className="w-4 h-4" />

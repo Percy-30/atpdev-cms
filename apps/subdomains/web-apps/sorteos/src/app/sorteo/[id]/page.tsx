@@ -9,11 +9,9 @@ import {
   ExternalLink, 
   Share2, 
   Check, 
-  Copy, 
   Users, 
   ArrowLeft,
-  Sparkles,
-  QrCode
+  Sparkles
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
 import { Giveaway } from '@/lib/types';
@@ -112,13 +110,13 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
   const getNetworkIcon = () => {
     switch (giveaway.network) {
       case 'instagram':
-        return <InstagramIcon className="w-4 h-4 text-pink-400" />;
+        return <InstagramIcon className="w-4 h-4 text-pink-500" />;
       case 'facebook':
-        return <FacebookIcon className="w-4 h-4 text-blue-400" />;
+        return <FacebookIcon className="w-4 h-4 text-blue-500" />;
       case 'youtube':
-        return <YoutubeIcon className="w-4 h-4 text-red-400" />;
+        return <YoutubeIcon className="w-4 h-4 text-red-500" />;
       default:
-        return <Sparkles className="w-4 h-4 text-purple-400" />;
+        return <Sparkles className="w-4 h-4 text-pink-600 dark:text-purple-400" />;
     }
   };
 
@@ -127,28 +125,28 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
       <ConfettiEffect />
 
       {/* Back nav & breadcrumb */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver al inicio</span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleCopyLink}
-            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-300 transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 dark:bg-white/5 dark:hover:bg-white/10 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
             <span>{copied ? '¡Enlace Copiado!' : 'Compartir Sorteo'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowLiveStream(true)}
-            className="px-3 py-1.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 text-xs font-mono text-purple-200 transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 border border-pink-200 dark:bg-purple-600/30 dark:hover:bg-purple-600/50 dark:border-purple-500/40 text-xs font-mono text-pink-700 dark:text-purple-200 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
             <span>📺 Modo En Vivo</span>
           </button>
@@ -156,7 +154,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           <button
             type="button"
             onClick={() => setShowExportModal(true)}
-            className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-xs font-mono text-amber-300 transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 dark:border-amber-500/30 text-xs font-mono text-amber-800 dark:text-amber-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
             <span>📸 Exportar Tarjeta</span>
           </button>
@@ -172,39 +170,39 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Public Giveaway Header Card */}
-      <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 space-y-6 relative overflow-hidden">
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-6 relative overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-zinc-300 flex items-center gap-1.5">
               {getNetworkIcon()}
               <span className="capitalize">{giveaway.network}</span>
             </span>
-            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-xs font-mono text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Resultado Auditado y Verificado</span>
             </span>
           </div>
 
-          <div className="text-xs font-mono text-zinc-400 flex items-center gap-1.5" suppressHydrationWarning>
+          <div className="text-xs font-mono text-slate-500 dark:text-zinc-400 flex items-center gap-1.5" suppressHydrationWarning>
             <Calendar className="w-3.5 h-3.5" />
             <span>{new Date(giveaway.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
           </div>
         </div>
 
         <div>
-          <h1 className="text-2xl sm:text-4xl font-black font-display text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black font-display text-slate-900 dark:text-white tracking-tight">
             {giveaway.title}
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-2 flex items-center gap-2 flex-wrap">
-            <span>Organizado por: <strong className="text-white">@{giveaway.authorUsername || 'anfitrión'}</strong></span>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 mt-2 flex items-center gap-2 flex-wrap">
+            <span>Organizado por: <strong className="text-slate-900 dark:text-white">@{giveaway.authorUsername || 'anfitrión'}</strong></span>
             {giveaway.postUrl && (
               <>
-                <span className="text-zinc-600">•</span>
+                <span className="text-slate-400 dark:text-zinc-600">•</span>
                 <a
                   href={giveaway.postUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-purple-400 hover:text-purple-300 underline underline-offset-4 flex items-center gap-1 font-mono text-xs"
+                  className="text-pink-600 dark:text-purple-400 hover:underline underline-offset-4 flex items-center gap-1 font-mono text-xs"
                 >
                   <span>Ver post original</span>
                   <ExternalLink className="w-3 h-3" />
@@ -221,37 +219,37 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           <div className="w-8 h-8 rounded-xl gold-gradient-badge flex items-center justify-center">
             <Trophy className="w-4 h-4 text-amber-950" />
           </div>
-          <h2 className="text-xl font-bold font-display text-white">
+          <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white">
             Ganador(es) Oficial(es)
           </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-4">
-          {giveaway.winners.map((winner, idx) => (
+          {giveaway.winners.map((winner) => (
             <div
               key={winner.id}
-              className="glass-card rounded-2xl p-6 border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-white/[0.02] to-transparent space-y-3 relative overflow-hidden"
+              className="bg-amber-50/60 dark:bg-[#0f172a] rounded-2xl p-6 border-2 border-amber-300 dark:border-amber-500/30 space-y-3 relative overflow-hidden shadow-sm"
             >
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-amber-400 text-black font-black font-display text-lg flex items-center justify-center shadow-lg shadow-amber-400/20">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-400 text-black font-black font-display text-lg flex items-center justify-center shadow-md shadow-amber-400/20">
                     #{winner.position}
                   </div>
                   <div>
-                    <span className="text-xs font-mono uppercase text-amber-400 font-bold">Ganador Titular</span>
-                    <h3 className="text-lg sm:text-xl font-bold font-mono text-white">
+                    <span className="text-xs font-mono uppercase text-amber-800 dark:text-amber-400 font-bold">Ganador Titular</span>
+                    <h3 className="text-lg sm:text-xl font-bold font-mono text-slate-900 dark:text-white">
                       @{winner.participant.username}
                     </h3>
                   </div>
                 </div>
 
-                <div className="px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-xs font-mono text-amber-300">
+                <div className="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-400/10 border border-amber-300 dark:border-amber-400/20 text-xs font-mono font-bold text-amber-800 dark:text-amber-300">
                   Verificado ✅
                 </div>
               </div>
 
               {winner.participant.commentText && (
-                <div className="p-3.5 rounded-xl bg-black/40 border border-white/5 text-xs text-zinc-300 italic">
+                <div className="p-3.5 rounded-xl bg-white dark:bg-black/40 border border-amber-200 dark:border-white/5 text-xs text-slate-700 dark:text-zinc-300 italic">
                   &ldquo;{winner.participant.commentText}&rdquo;
                 </div>
               )}
@@ -264,8 +262,8 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
       {giveaway.substitutes && giveaway.substitutes.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-purple-400" />
-            <h2 className="text-lg font-bold font-display text-white">
+            <Users className="w-5 h-5 text-pink-600 dark:text-purple-400" />
+            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
               Suplentes de Reserva ({giveaway.substitutes.length})
             </h2>
           </div>
@@ -274,17 +272,17 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             {giveaway.substitutes.map((sub) => (
               <div
                 key={sub.id}
-                className="glass-card rounded-2xl p-4 border border-white/10 space-y-2 text-xs"
+                className="bg-white dark:bg-[#0f172a] rounded-2xl p-4 border border-slate-200 dark:border-white/10 shadow-sm space-y-2 text-xs"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-zinc-400">Suplente #{sub.position}</span>
-                  <span className="text-[10px] font-mono text-zinc-500">Reserva</span>
+                  <span className="font-mono text-slate-500 dark:text-zinc-400">Suplente #{sub.position}</span>
+                  <span className="text-[10px] font-mono text-slate-400 dark:text-zinc-500">Reserva</span>
                 </div>
-                <div className="font-bold font-mono text-white text-sm">
+                <div className="font-bold font-mono text-slate-900 dark:text-white text-sm">
                   @{sub.participant.username}
                 </div>
                 {sub.participant.commentText && (
-                  <p className="text-zinc-400 italic line-clamp-2">
+                  <p className="text-slate-600 dark:text-zinc-400 italic line-clamp-2">
                     &ldquo;{sub.participant.commentText}&rdquo;
                   </p>
                 )}
@@ -295,37 +293,37 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
       )}
 
       {/* Audit & Cryptographic Transparency */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-4">
-        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-3">
-          <div className="flex items-center gap-2 text-sm font-bold text-white font-display">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-4">
+        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-white/5 pb-3">
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white font-display">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Auditoría y Transparencia del Algoritmo</span>
           </div>
-          <span className="text-xs font-mono text-zinc-500">
+          <span className="text-xs font-mono text-slate-500 dark:text-zinc-500">
             ID: {giveaway.id}
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
-          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-zinc-500 block">Comentarios Analizados:</span>
-            <span className="text-white font-bold text-sm">{giveaway.totalCommentsCount}</span>
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
+            <span className="text-slate-500 dark:text-zinc-500 block">Comentarios Analizados:</span>
+            <span className="text-slate-900 dark:text-white font-bold text-sm">{giveaway.totalCommentsCount}</span>
           </div>
-          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-zinc-500 block">Filtro Duplicados:</span>
-            <span className="text-white font-bold text-sm">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
+            <span className="text-slate-500 dark:text-zinc-500 block">Filtro Duplicados:</span>
+            <span className="text-slate-900 dark:text-white font-bold text-sm">
               {giveaway.rules.excludeDuplicates ? 'Activo (1 por persona)' : 'Inactivo'}
             </span>
           </div>
-          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-zinc-500 block">Menciones Requeridas:</span>
-            <span className="text-white font-bold text-sm">{giveaway.rules.minMentions} mención(es)</span>
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
+            <span className="text-slate-500 dark:text-zinc-500 block">Menciones Requeridas:</span>
+            <span className="text-slate-900 dark:text-white font-bold text-sm">{giveaway.rules.minMentions} mención(es)</span>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-black/40 border border-white/5 text-xs font-mono space-y-1">
-          <span className="text-zinc-500 text-[11px] block">Hash Criptográfico SHA-256 Inmutable:</span>
-          <span className="text-emerald-400 break-all">{giveaway.verificationHash}</span>
+        <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 text-xs font-mono space-y-1">
+          <span className="text-slate-500 dark:text-zinc-500 text-[11px] block">Hash Criptográfico SHA-256 Inmutable:</span>
+          <span className="text-emerald-700 dark:text-emerald-400 break-all select-all">{giveaway.verificationHash}</span>
         </div>
       </div>
 

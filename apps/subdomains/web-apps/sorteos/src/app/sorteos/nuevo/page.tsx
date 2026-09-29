@@ -6,11 +6,9 @@ import {
   Sparkles, 
   ShieldCheck, 
   Check, 
-  AlertCircle, 
   ArrowRight, 
   ArrowLeft, 
   Users, 
-  Settings2, 
   Trophy,
   RefreshCw,
   ExternalLink
@@ -87,7 +85,6 @@ export default function NuevoSorteoPage() {
   const handleImportComments = () => {
     setIsLoadingComments(true);
     setTimeout(() => {
-      // Cargar comentarios basados en la red social
       const sample = MOCK_COMMENTS_SAMPLE[network] || MOCK_COMMENTS_SAMPLE.instagram;
       setRawComments(sample);
       setIsLoadingComments(false);
@@ -103,20 +100,15 @@ export default function NuevoSorteoPage() {
     setStep(3);
   };
 
-  // Paso 3 -> Paso 4: Ejecutar Sorteo Verificable con CSPRNG
+  // Paso 3 -> Paso 4: Ejecutar sorteo con CSPRNG
   const handleExecuteDraw = async () => {
-    setIsDrawing(true);
-    setShowConfetti(false);
+    if (filteredEligible.length === 0) return;
 
+    setIsDrawing(true);
     setTimeout(async () => {
       try {
-        const drawResult = await executeVerifiableDraw(
-          filteredEligible,
-          rules.winnersCount,
-          rules.substitutesCount
-        );
-
-        const giveawayId = `sorteo-${Date.now().toString(36)}`;
+        const drawResult = await executeVerifiableDraw(filteredEligible, rules.winnersCount, rules.substitutesCount);
+        const giveawayId = `sw-${Date.now().toString(36)}`;
         const certificateId = `cert-${drawResult.verificationHash.slice(0, 10).toUpperCase()}`;
 
         const createdGiveaway: Giveaway = {
@@ -135,7 +127,6 @@ export default function NuevoSorteoPage() {
           verificationHash: drawResult.verificationHash
         };
 
-        // Guardar en localStorage para que /sorteo/[id] y /certificados/[id] puedan accederlo
         if (typeof window !== 'undefined') {
           const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
           stored[giveawayId] = createdGiveaway;
@@ -164,10 +155,10 @@ export default function NuevoSorteoPage() {
           <Sparkles className="w-3.5 h-3.5" />
           <span>Asistente de Sorteo Multi-Red</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-display text-slate-900 dark:text-white tracking-tight">
           Crear Nuevo Sorteo Social
         </h1>
-        <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
+        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
           Extrae comentarios de Instagram, Facebook o YouTube, aplica filtros de exclusión y sortea ganadores transparentes con certificación SHA-256.
         </p>
 
@@ -184,23 +175,23 @@ export default function NuevoSorteoPage() {
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-mono font-bold transition-all ${
                     step === st.num
-                      ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/40 ring-2 ring-purple-400'
+                      ? 'bg-[#d91a7a] dark:bg-purple-600 text-white shadow-lg shadow-pink-500/20 dark:shadow-purple-600/40 ring-2 ring-pink-400 dark:ring-purple-400'
                       : step > st.num
-                      ? 'bg-emerald-500 text-black'
-                      : 'bg-white/5 text-zinc-500 border border-white/10'
+                      ? 'bg-emerald-500 text-white dark:text-black font-bold'
+                      : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-zinc-500 border border-slate-200 dark:border-white/10'
                   }`}
                 >
                   {step > st.num ? <Check className="w-4 h-4" /> : st.num}
                 </div>
                 <span
                   className={`text-xs font-mono hidden sm:inline ${
-                    step === st.num ? 'text-white font-bold' : 'text-zinc-500'
+                    step === st.num ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-400 dark:text-zinc-500'
                   }`}
                 >
                   {st.label}
                 </span>
               </div>
-              {idx < 3 && <div className="w-6 h-px bg-white/10" />}
+              {idx < 3 && <div className="w-6 h-px bg-slate-200 dark:bg-white/10" />}
             </React.Fragment>
           ))}
         </div>
@@ -208,9 +199,9 @@ export default function NuevoSorteoPage() {
 
       {/* STEP 1: Select Network & Post URL */}
       {step === 1 && (
-        <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 space-y-8">
+        <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8">
           <div className="space-y-4">
-            <h2 className="text-lg font-bold font-display text-white">
+            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
               1. Selecciona la Red Social del Sorteo
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -220,18 +211,18 @@ export default function NuevoSorteoPage() {
                   setNetwork('instagram');
                   setPostUrl('https://www.instagram.com/p/DBa_9XYZ123/');
                 }}
-                className={`p-5 rounded-2xl border text-left transition-all flex flex-col justify-between space-y-3 ${
+                className={`p-5 rounded-2xl border text-left transition-all flex flex-col justify-between space-y-3 cursor-pointer ${
                   network === 'instagram'
-                    ? 'border-pink-500 bg-pink-500/10 shadow-lg shadow-pink-500/20 ring-1 ring-pink-500'
-                    : 'border-white/10 bg-white/5 hover:border-white/20'
+                    ? 'border-pink-500 bg-pink-50 dark:bg-pink-500/10 shadow-md ring-1 ring-pink-500'
+                    : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 hover:border-slate-300 dark:hover:border-white/20'
                 }`}
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-600 flex items-center justify-center text-white">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-600 flex items-center justify-center text-white shadow-sm">
                   <InstagramIcon className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-bold text-white text-sm">Instagram</div>
-                  <div className="text-xs text-zinc-400">Post, Reels, Carousels</div>
+                  <div className="font-bold text-slate-900 dark:text-white text-sm">Instagram</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400">Post, Reels, Carousels</div>
                 </div>
               </button>
 
@@ -241,18 +232,18 @@ export default function NuevoSorteoPage() {
                   setNetwork('facebook');
                   setPostUrl('https://www.facebook.com/watch/?v=987654321');
                 }}
-                className={`p-5 rounded-2xl border text-left transition-all flex flex-col justify-between space-y-3 ${
+                className={`p-5 rounded-2xl border text-left transition-all flex flex-col justify-between space-y-3 cursor-pointer ${
                   network === 'facebook'
-                    ? 'border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/20 ring-1 ring-blue-500'
-                    : 'border-white/10 bg-white/5 hover:border-white/20'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10 shadow-md ring-1 ring-blue-500'
+                    : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 hover:border-slate-300 dark:hover:border-white/20'
                 }`}
               >
-                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm">
                   <FacebookIcon className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-bold text-white text-sm">Facebook</div>
-                  <div className="text-xs text-zinc-400">Páginas y publicaciones</div>
+                  <div className="font-bold text-slate-900 dark:text-white text-sm">Facebook</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400">Páginas y publicaciones</div>
                 </div>
               </button>
 
@@ -262,18 +253,18 @@ export default function NuevoSorteoPage() {
                   setNetwork('youtube');
                   setPostUrl('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
                 }}
-                className={`p-5 rounded-2xl border text-left transition-all flex flex-col justify-between space-y-3 ${
+                className={`p-5 rounded-2xl border text-left transition-all flex flex-col justify-between space-y-3 cursor-pointer ${
                   network === 'youtube'
-                    ? 'border-red-500 bg-red-500/10 shadow-lg shadow-red-500/20 ring-1 ring-red-500'
-                    : 'border-white/10 bg-white/5 hover:border-white/20'
+                    ? 'border-red-500 bg-red-50 dark:bg-red-500/10 shadow-md ring-1 ring-red-500'
+                    : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 hover:border-slate-300 dark:hover:border-white/20'
                 }`}
               >
-                <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white">
+                <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-sm">
                   <YoutubeIcon className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-bold text-white text-sm">YouTube</div>
-                  <div className="text-xs text-zinc-400">Videos y Shorts</div>
+                  <div className="font-bold text-slate-900 dark:text-white text-sm">YouTube</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400">Videos y Shorts</div>
                 </div>
               </button>
             </div>
@@ -281,7 +272,7 @@ export default function NuevoSorteoPage() {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="giveaway-title" className="block text-xs font-mono text-zinc-400 mb-2">
+              <label htmlFor="giveaway-title" className="block text-xs font-mono font-medium text-slate-700 dark:text-zinc-300 mb-2">
                 Título o Nombre de la Campaña:
               </label>
               <input
@@ -292,12 +283,12 @@ export default function NuevoSorteoPage() {
                 onChange={(e) => setGiveawayTitle(e.target.value)}
                 placeholder="Ej: Gran Sorteo Fin de Año 2026"
                 aria-label="Título o Nombre de la Campaña"
-                className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-medium focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-medium focus:outline-none focus:border-pink-500 dark:focus:border-purple-500 transition-colors shadow-xs"
               />
             </div>
 
             <div>
-              <label htmlFor="post-url" className="block text-xs font-mono text-zinc-400 mb-2">
+              <label htmlFor="post-url" className="block text-xs font-mono font-medium text-slate-700 dark:text-zinc-300 mb-2">
                 URL de la Publicación o Video:
               </label>
               <input
@@ -308,9 +299,9 @@ export default function NuevoSorteoPage() {
                 onChange={(e) => setPostUrl(e.target.value)}
                 placeholder="https://www.instagram.com/p/..."
                 aria-label="URL de la Publicación o Video"
-                className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:border-pink-500 dark:focus:border-purple-500 transition-colors shadow-xs"
               />
-              <p className="text-xs text-zinc-500 mt-2 font-mono">
+              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-2 font-mono">
                 💡 Asegúrate de que la publicación sea pública y esté activa.
               </p>
             </div>
@@ -321,7 +312,7 @@ export default function NuevoSorteoPage() {
               type="button"
               disabled={isLoadingComments || !postUrl}
               onClick={handleImportComments}
-              className={`btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl ${
+              className={`btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl cursor-pointer ${
                 isLoadingComments || !postUrl ? 'opacity-50 cursor-not-allowed !transform-none' : ''
               }`}
             >
@@ -335,17 +326,17 @@ export default function NuevoSorteoPage() {
 
       {/* STEP 2: Preview Extracted Comments */}
       {step === 2 && (
-        <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 space-y-8">
-          <div className="flex items-center justify-between flex-wrap gap-4 border-b border-white/5 pb-4">
+        <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8">
+          <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-100 dark:border-white/5 pb-4">
             <div>
-              <h2 className="text-lg font-bold font-display text-white">
+              <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
                 2. Comentarios Extraídos ({rawComments.length})
               </h2>
-              <p className="text-xs text-zinc-400 mt-1">
-                Post analizado: <span className="text-purple-300 font-mono">{postUrl}</span>
+              <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
+                Post analizado: <span className="text-pink-600 dark:text-purple-300 font-mono font-semibold">{postUrl}</span>
               </p>
             </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-xs flex items-center gap-2">
+            <div className="px-3.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-mono text-xs flex items-center gap-2">
               <ShieldCheck className="w-4 h-4" />
               <span>Sincronización Exitosa</span>
             </div>
@@ -356,24 +347,24 @@ export default function NuevoSorteoPage() {
             {rawComments.map((c) => (
               <div
                 key={c.id}
-                className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 flex items-start justify-between gap-3 text-xs"
+                className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 flex items-start justify-between gap-3 text-xs"
               >
                 <div className="space-y-1">
-                  <div className="font-bold text-white flex items-center gap-1.5 font-mono">
-                    <span className="text-purple-400">@{c.username}</span>
+                  <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 font-mono">
+                    <span className="text-pink-600 dark:text-purple-400">@{c.username}</span>
                   </div>
-                  <p className="text-zinc-300">{c.commentText}</p>
+                  <p className="text-slate-600 dark:text-zinc-300">{c.commentText}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/5">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/5">
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2"
+              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Atrás</span>
@@ -382,7 +373,7 @@ export default function NuevoSorteoPage() {
             <button
               type="button"
               onClick={handleApplyRules}
-              className="btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl flex items-center gap-2"
+              className="btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl flex items-center gap-2 cursor-pointer"
             >
               <span>Configurar Reglas y Filtros</span>
               <ArrowRight className="w-4 h-4" />
@@ -393,12 +384,12 @@ export default function NuevoSorteoPage() {
 
       {/* STEP 3: Configure Rules & Filtering Engine */}
       {step === 3 && (
-        <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 space-y-8">
-          <div className="border-b border-white/5 pb-4">
-            <h2 className="text-lg font-bold font-display text-white">
+        <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8">
+          <div className="border-b border-slate-100 dark:border-white/5 pb-4">
+            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
               3. Reglas de Exclusión y Ganadores
             </h2>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
               Filtros según especificaciones RF-015 y RF-021 para asegurar transparencia estricta.
             </p>
           </div>
@@ -406,29 +397,29 @@ export default function NuevoSorteoPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Reglas de Filtrado */}
             <div className="space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-purple-400 font-bold">
+              <h3 className="text-xs font-mono uppercase tracking-wider text-pink-600 dark:text-purple-400 font-bold">
                 Filtros de Participación
               </h3>
 
-              <label htmlFor="exclude-duplicates-checkbox" className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5 cursor-pointer select-none">
+              <label htmlFor="exclude-duplicates-checkbox" className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 cursor-pointer select-none">
                 <input
                   id="exclude-duplicates-checkbox"
                   name="excludeDuplicates"
                   type="checkbox"
                   checked={rules.excludeDuplicates}
                   onChange={(e) => setRules({ ...rules, excludeDuplicates: e.target.checked })}
-                  className="mt-0.5 w-4 h-4 rounded text-purple-600 bg-zinc-900 border-zinc-700 focus:ring-purple-500"
+                  className="mt-0.5 w-4 h-4 rounded text-pink-600 dark:text-purple-600 border-slate-300 dark:border-zinc-700 focus:ring-pink-500"
                 />
                 <div>
-                  <div className="text-xs font-bold text-white">Excluir comentarios duplicados</div>
-                  <div className="text-[11px] text-zinc-400">
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">Excluir comentarios duplicados</div>
+                  <div className="text-[11px] text-slate-500 dark:text-zinc-400">
                     Solo se cuenta un comentario por usuario (1 oportunidad por persona).
                   </div>
                 </div>
               </label>
 
               <div>
-                <label htmlFor="min-mentions-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="min-mentions-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
                   Menciones mínimas por comentario (@amigo):
                 </label>
                 <input
@@ -440,12 +431,12 @@ export default function NuevoSorteoPage() {
                   value={rules.minMentions}
                   onChange={(e) => setRules({ ...rules, minMentions: parseInt(e.target.value) || 0 })}
                   aria-label="Menciones mínimas por comentario"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label htmlFor="required-hashtag-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="required-hashtag-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
                   Hashtag obligatorio en el comentario:
                 </label>
                 <input
@@ -456,19 +447,19 @@ export default function NuevoSorteoPage() {
                   onChange={(e) => setRules({ ...rules, requiredHashtag: e.target.value })}
                   placeholder="Ej: #sorteopro"
                   aria-label="Hashtag obligatorio en el comentario"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
                 />
               </div>
             </div>
 
             {/* Ganadores & Suplentes */}
             <div className="space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold">
+              <h3 className="text-xs font-mono uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold">
                 Asignación de Premios
               </h3>
 
               <div>
-                <label htmlFor="winners-count-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="winners-count-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
                   Cantidad de Ganadores Principales:
                 </label>
                 <input
@@ -480,12 +471,12 @@ export default function NuevoSorteoPage() {
                   value={rules.winnersCount}
                   onChange={(e) => setRules({ ...rules, winnersCount: Math.max(1, parseInt(e.target.value) || 1) })}
                   aria-label="Cantidad de Ganadores Principales"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label htmlFor="substitutes-count-input" className="block text-xs font-mono text-zinc-400 mb-1.5">
+                <label htmlFor="substitutes-count-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
                   Cantidad de Suplentes de Respaldo:
                 </label>
                 <input
@@ -497,34 +488,34 @@ export default function NuevoSorteoPage() {
                   value={rules.substitutesCount}
                   onChange={(e) => setRules({ ...rules, substitutesCount: parseInt(e.target.value) || 0 })}
                   aria-label="Cantidad de Suplentes de Respaldo"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
                 />
               </div>
 
               {/* Status Preview */}
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs font-mono">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 text-xs font-mono">
                 <div className="flex justify-between">
-                  <span className="text-zinc-400">Total comentarios:</span>
-                  <span className="text-white font-bold">{rawComments.length}</span>
+                  <span className="text-slate-500 dark:text-zinc-400">Total comentarios:</span>
+                  <span className="text-slate-900 dark:text-white font-bold">{rawComments.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-emerald-400">Elegibles calculados:</span>
-                  <span className="text-emerald-400 font-bold">{filteredEligible.length}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">Elegibles calculados:</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">{filteredEligible.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-red-400">Descartados por reglas:</span>
-                  <span className="text-red-400 font-bold">{filteredExcluded.length}</span>
+                  <span className="text-rose-600 dark:text-red-400">Descartados por reglas:</span>
+                  <span className="text-rose-600 dark:text-red-400 font-bold">{filteredExcluded.length}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/5">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/5">
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2"
+              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Atrás</span>
@@ -534,7 +525,7 @@ export default function NuevoSorteoPage() {
               type="button"
               disabled={isDrawing || filteredEligible.length === 0}
               onClick={handleExecuteDraw}
-              className={`btn-pro-gold text-base py-4 px-10 rounded-2xl flex items-center gap-2 ${
+              className={`btn-pro-gold text-base py-4 px-10 rounded-2xl flex items-center gap-2 cursor-pointer ${
                 isDrawing || filteredEligible.length === 0 ? 'opacity-60 cursor-not-allowed !transform-none' : ''
               }`}
             >
@@ -547,46 +538,46 @@ export default function NuevoSorteoPage() {
 
       {/* STEP 4: Draw Finished & Verifiable Certificate */}
       {step === 4 && finishedGiveaway && (
-        <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 space-y-8 text-center">
+        <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8 text-center">
           <div className="space-y-3">
             <div className="w-16 h-16 rounded-3xl gold-gradient-badge mx-auto flex items-center justify-center shadow-xl shadow-amber-500/20">
               <Trophy className="w-8 h-8 text-amber-950" />
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black font-display text-white">
+            <h2 className="text-2xl sm:text-4xl font-black font-display text-slate-900 dark:text-white">
               ¡Sorteo Realizado con Éxito!
             </h2>
-            <p className="text-sm text-zinc-400 max-w-lg mx-auto">
+            <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-lg mx-auto">
               Se han seleccionado {finishedGiveaway.winners.length} ganador(es) y {finishedGiveaway.substitutes?.length || 0} suplente(s) con semilla criptográfica Web Crypto.
             </p>
           </div>
 
           {/* Winners Card */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">
-            <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
-              <div className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5">
-                <Trophy className="w-4 h-4" />
+            <div className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 space-y-3">
+              <div className="text-xs font-mono uppercase tracking-wider text-amber-800 dark:text-amber-400 font-bold flex items-center gap-1.5">
+                <Trophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <span>Ganador(es) Oficial(es)</span>
               </div>
               <div className="space-y-2">
                 {finishedGiveaway.winners.map((w) => (
-                  <div key={w.id} className="p-3 rounded-xl bg-black/40 border border-amber-500/20">
-                    <div className="text-sm font-bold text-amber-300 font-mono">@{w.participant.username}</div>
-                    <div className="text-xs text-zinc-400 truncate mt-0.5">&ldquo;{w.participant.commentText}&rdquo;</div>
+                  <div key={w.id} className="p-3 rounded-xl bg-white dark:bg-black/40 border border-amber-200 dark:border-amber-500/20 shadow-xs">
+                    <div className="text-sm font-bold text-amber-800 dark:text-amber-300 font-mono">@{w.participant.username}</div>
+                    <div className="text-xs text-slate-600 dark:text-zinc-400 truncate mt-0.5">&ldquo;{w.participant.commentText}&rdquo;</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-              <div className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-1.5">
+            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-3">
+              <div className="text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-zinc-400 font-bold flex items-center gap-1.5">
                 <Users className="w-4 h-4" />
                 <span>Suplentes de Reserva</span>
               </div>
               <div className="space-y-2">
                 {finishedGiveaway.substitutes?.map((s) => (
-                  <div key={s.id} className="p-3 rounded-xl bg-black/40 border border-white/5">
-                    <div className="text-sm font-bold text-zinc-300 font-mono">Suplente #{s.position}: @{s.participant.username}</div>
-                    <div className="text-xs text-zinc-500 truncate mt-0.5">&ldquo;{s.participant.commentText}&rdquo;</div>
+                  <div key={s.id} className="p-3 rounded-xl bg-white dark:bg-black/40 border border-slate-200 dark:border-white/5 shadow-xs">
+                    <div className="text-sm font-bold text-slate-800 dark:text-zinc-300 font-mono">Suplente #{s.position}: @{s.participant.username}</div>
+                    <div className="text-xs text-slate-500 dark:text-zinc-500 truncate mt-0.5">&ldquo;{s.participant.commentText}&rdquo;</div>
                   </div>
                 ))}
               </div>
@@ -594,19 +585,19 @@ export default function NuevoSorteoPage() {
           </div>
 
           {/* Audit Verification */}
-          <div className="p-4 rounded-2xl bg-black/40 border border-white/10 max-w-xl mx-auto text-xs font-mono text-zinc-400 space-y-1">
-            <div className="flex items-center justify-center gap-1.5 text-emerald-400 font-bold">
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 max-w-xl mx-auto text-xs font-mono text-slate-600 dark:text-zinc-400 space-y-1">
+            <div className="flex items-center justify-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-bold">
               <ShieldCheck className="w-4 h-4" />
               <span>Certificado de Autenticidad Criptográfica</span>
             </div>
-            <div className="break-all text-[11px] text-zinc-500">{finishedGiveaway.verificationHash}</div>
+            <div className="break-all text-[11px] text-slate-500 dark:text-zinc-500">{finishedGiveaway.verificationHash}</div>
           </div>
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <button
               onClick={() => router.push(`/sorteo/${finishedGiveaway.id}`)}
-              className="btn-pro-primary py-4 px-8 text-sm flex items-center gap-2"
+              className="btn-pro-primary py-4 px-8 text-sm flex items-center gap-2 cursor-pointer"
             >
               <ExternalLink className="w-4 h-4" />
               <span>Ver Página Pública del Sorteo</span>
@@ -614,9 +605,9 @@ export default function NuevoSorteoPage() {
 
             <button
               onClick={() => router.push(`/certificados/${finishedGiveaway.certificateId}`)}
-              className="btn-pro-secondary py-4 px-8 text-sm flex items-center gap-2"
+              className="btn-pro-secondary py-4 px-8 text-sm flex items-center gap-2 cursor-pointer"
             >
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>Ver Certificado Oficial</span>
             </button>
           </div>

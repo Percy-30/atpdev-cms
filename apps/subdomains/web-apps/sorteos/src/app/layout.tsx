@@ -64,8 +64,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="light">
+    <html lang="es" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('sorteos_theme');
+                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                  } else {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch(e) {}
+              })();
+            `
+          }}
+        />
         <Script
           id="google-adsense"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414009811868137"
@@ -74,7 +92,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable} min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 antialiased selection:bg-pink-500 selection:text-white`}
+        className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable} min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 dark:bg-[#070a12] dark:text-zinc-100 antialiased selection:bg-pink-500 selection:text-white transition-colors duration-200`}
       >
         <Navbar />
         <main className="flex-1">

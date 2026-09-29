@@ -4,26 +4,19 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Gift, 
-  Users, 
   Sparkles, 
-  Trophy, 
   AlertTriangle, 
-  CheckCircle2, 
-  RefreshCw, 
   ExternalLink, 
   Copy, 
   Plus, 
   Share2, 
-  Settings, 
   ShieldCheck, 
   Check, 
-  RotateCcw,
-  Zap,
-  Lock
+  Zap
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
 import { Giveaway } from '@/lib/types';
-import { api, setToken, getToken } from '@/lib/api';
+import { api, setToken } from '@/lib/api';
 
 interface SocialAccount {
   id: string;
@@ -98,25 +91,12 @@ export default function DashboardPage() {
           api<{ data: Giveaway[] }>('/api/v1/giveaways').catch(() => null),
           api<{ data: SocialAccount[] }>('/api/v1/social-accounts').catch(() => null),
           api<{ used: number; limit: number; percent: number; warn80: boolean }>('/api/v1/billing/usage').catch(() => null),
-          api<{ user: { plan: string } }>('/api/v1/me').catch(() => null),
+          api<{ user: { plan?: string } }>('/api/v1/auth/me').catch(() => null),
         ]);
         if (cancelled) return;
-        if (gRes && Array.isArray(gRes.data)) {
-          setGiveaways(gRes.data as Giveaway[]);
-        }
-        if (sRes && Array.isArray(sRes.data)) {
-          setSocialAccounts(
-            (sRes.data as unknown as Array<Record<string, string>>).map((a) => ({
-              id: String(a.id),
-              network: (a.platform || a.network || 'instagram') as SocialAccount['network'],
-              name: String(a.name || ''),
-              handle: String(a.handle || ''),
-              status: (a.status === 'connected' ? 'connected' : a.status === 'expired' ? 'expired' : 'revoked') as SocialAccount['status'],
-              expiresInDays: Math.max(0, Math.round((Date.parse(String(a.expiresAt || Date.now())) - Date.now()) / 86400000)),
-            }))
-          );
-        }
-        if (uRes) setUsage({ used: uRes.used, limit: uRes.limit, percent: uRes.percent, warn80: uRes.warn80 });
+        if (gRes?.data) setGiveaways(gRes.data);
+        if (sRes?.data) setSocialAccounts(sRes.data);
+        if (uRes) setUsage(uRes);
         if (meRes?.user?.plan) {
           const labels: Record<string, string> = { free: 'Free', pro: 'Pro Creador', business: 'Business', enterprise: 'Enterprise' };
           setPlanName(labels[meRes.user.plan] || meRes.user.plan);
@@ -143,7 +123,6 @@ export default function DashboardPage() {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCopyLink = (id: string) => {
@@ -155,7 +134,7 @@ export default function DashboardPage() {
     }
   };
 
-  // RF-018: Duplicar sorteo como plantilla (vía API + fallback local)
+  // RF-018: Duplicar sorteo como plantilla
   const handleDuplicate = async (g: Giveaway) => {
     try {
       const data = await api<{ giveaway: Giveaway }>(`/api/v1/giveaways/${g.id}/duplicate`, { method: 'POST' });
@@ -181,7 +160,7 @@ export default function DashboardPage() {
     }
   };
 
-  // RF-008: Desconectar/reconectar cuenta social (vía API + fallback local)
+  // RF-008: Desconectar/reconectar cuenta social
   const handleToggleAccount = async (id: string) => {
     const acc = socialAccounts.find((a) => a.id === id);
     const nextStatus = acc?.status === 'connected' ? 'revoked' : 'connected';
@@ -203,17 +182,17 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono uppercase tracking-wider text-purple-400 font-bold">
+            <span className="text-xs font-mono uppercase tracking-wider text-pink-600 dark:text-purple-400 font-bold">
               Panel de Creador
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-pink-100 dark:bg-purple-500/20 text-pink-700 dark:text-purple-300 text-[10px] font-mono font-bold">
               Plan {planName}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-black font-display text-white mt-1">
+          <h1 className="text-2xl sm:text-4xl font-black font-display text-slate-900 dark:text-white mt-1">
             Hola, Creador Pro 👋
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 mt-1">
             Gestiona tus sorteos sociales activos, cuentas conectadas y límites de comentarios.
           </p>
         </div>
@@ -221,7 +200,7 @@ export default function DashboardPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/sorteos/nuevo"
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold font-display text-xs shadow-xl shadow-purple-600/25 hover:opacity-95 transition-all flex items-center gap-2"
+            className="btn-pro-primary px-5 py-3 rounded-2xl text-xs font-bold font-display shadow-md flex items-center gap-2 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Crear Nuevo Sorteo</span>
@@ -230,23 +209,23 @@ export default function DashboardPage() {
       </div>
 
       {/* RF-029 & RF-030: Usage & Alert Banner */}
-      <div className="glass-card rounded-3xl p-6 sm:p-7 border border-white/10 space-y-4">
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-white/10 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-pink-50 dark:bg-purple-500/10 text-pink-600 dark:text-purple-400 flex items-center justify-center">
               <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Consumo Mensual de Comentarios</h3>
-              <p className="text-xs text-zinc-400">
-                Has procesado <strong className="text-white font-mono">{commentsUsed}</strong> de <strong className="text-zinc-300 font-mono">{commentLimit}</strong> comentarios este mes.
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Consumo Mensual de Comentarios</h3>
+              <p className="text-xs text-slate-600 dark:text-zinc-400">
+                Has procesado <strong className="text-slate-900 dark:text-white font-mono">{commentsUsed}</strong> de <strong className="text-slate-700 dark:text-zinc-300 font-mono">{commentLimit}</strong> comentarios este mes.
               </p>
             </div>
           </div>
 
           <Link
             href="/planes"
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-purple-300 border border-purple-500/20 transition-colors"
+            className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-xs font-mono text-pink-600 dark:text-purple-300 border border-slate-200 dark:border-purple-500/20 transition-colors shadow-xs"
           >
             Ampliar Límite (Upgrade)
           </Link>
@@ -254,19 +233,19 @@ export default function DashboardPage() {
 
         {/* Progress Bar */}
         <div className="space-y-1.5">
-          <div className="w-full h-2.5 rounded-full bg-white/5 overflow-hidden">
+          <div className="w-full h-2.5 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
                 usagePercent >= 80
                   ? 'bg-gradient-to-r from-amber-500 to-pink-500'
-                  : 'bg-gradient-to-r from-purple-600 to-pink-500'
+                  : 'bg-gradient-to-r from-pink-500 to-purple-600'
               }`}
               style={{ width: `${Math.min(100, usagePercent)}%` }}
             />
           </div>
-          <div className="flex justify-between text-[11px] font-mono text-zinc-500">
+          <div className="flex justify-between text-[11px] font-mono text-slate-500 dark:text-zinc-500">
             <span>0</span>
-            <span className={usagePercent >= 80 ? 'text-amber-400 font-bold' : ''}>
+            <span className={usagePercent >= 80 ? 'text-amber-600 dark:text-amber-400 font-bold' : ''}>
               {usagePercent}% consumido
             </span>
             <span>{commentLimit} comentarios</span>
@@ -275,8 +254,8 @@ export default function DashboardPage() {
 
         {/* RF-030: Alerta automática si > 80% */}
         {usagePercent >= 80 && (
-          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+          <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
             <span>
               <strong>Aviso de cuota (RF-030):</strong> Has superado el 80% de tu límite mensual. Te recomendamos subir al Plan Business para evitar interrupciones en tus próximos sorteos.
             </span>
@@ -285,17 +264,17 @@ export default function DashboardPage() {
       </div>
 
       {/* RF-005 a RF-009: Connected Social Accounts */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
-        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-4">
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-white/5 pb-4">
           <div>
-            <h2 className="text-base sm:text-lg font-bold font-display text-white">
+            <h2 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white">
               Cuentas Sociales Conectadas (OAuth Oficial)
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5">
               Conexión directa mediante Graph API de Meta y Google API sin compartir contraseñas.
             </p>
           </div>
-          <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+          <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold">
             <ShieldCheck className="w-4 h-4" />
             <span>OAuth 2.0 Activo</span>
           </span>
@@ -307,22 +286,22 @@ export default function DashboardPage() {
             return (
               <div
                 key={acc.id}
-                className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3 flex flex-col justify-between"
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 space-y-3 flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {acc.network === 'instagram' && <InstagramIcon className="w-5 h-5 text-pink-400" />}
-                      {acc.network === 'facebook' && <FacebookIcon className="w-5 h-5 text-blue-400" />}
-                      {acc.network === 'youtube' && <YoutubeIcon className="w-5 h-5 text-red-400" />}
-                      <span className="font-bold text-white text-xs capitalize">{acc.network}</span>
+                      {acc.network === 'instagram' && <InstagramIcon className="w-5 h-5 text-pink-500" />}
+                      {acc.network === 'facebook' && <FacebookIcon className="w-5 h-5 text-blue-500" />}
+                      {acc.network === 'youtube' && <YoutubeIcon className="w-5 h-5 text-red-500" />}
+                      <span className="font-bold text-slate-900 dark:text-white text-xs capitalize">{acc.network}</span>
                     </div>
 
                     <span
                       className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
                         isConnected
-                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                          : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                          ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20'
+                          : 'bg-rose-50 dark:bg-red-500/10 text-rose-700 dark:text-red-400 border border-rose-200 dark:border-red-500/20'
                       }`}
                     >
                       {isConnected ? 'Conectada' : 'Revocada'}
@@ -330,18 +309,18 @@ export default function DashboardPage() {
                   </div>
 
                   <div>
-                    <div className="text-xs font-bold text-white">{acc.name}</div>
-                    <div className="text-[11px] font-mono text-zinc-400">{acc.handle}</div>
+                    <div className="text-xs font-bold text-slate-900 dark:text-white">{acc.name}</div>
+                    <div className="text-[11px] font-mono text-slate-500 dark:text-zinc-400">{acc.handle}</div>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-zinc-500">
+                <div className="pt-2 border-t border-slate-200 dark:border-white/5 flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-slate-500 dark:text-zinc-500">
                     {isConnected ? `Token: ${acc.expiresInDays}d` : 'Inactiva'}
                   </span>
                   <button
                     onClick={() => handleToggleAccount(acc.id)}
-                    className="text-xs text-purple-400 hover:text-purple-300 transition-colors font-bold"
+                    className="text-xs text-pink-600 dark:text-purple-400 hover:underline transition-colors font-bold cursor-pointer"
                   >
                     {isConnected ? 'Desconectar' : 'Reconectar'}
                   </button>
@@ -353,25 +332,25 @@ export default function DashboardPage() {
       </div>
 
       {/* RF-010 to RF-019: Giveaways List (Mis Sorteos) */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6">
-        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-white/5 pb-4">
+      <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-white/5 pb-4">
           <div className="flex items-center gap-2">
-            <Gift className="w-5 h-5 text-pink-400" />
-            <h2 className="text-base sm:text-lg font-bold font-display text-white">
+            <Gift className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+            <h2 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white">
               Historial de Sorteos ({giveaways.length})
             </h2>
           </div>
-          <span className="text-xs font-mono text-zinc-500">
+          <span className="text-xs font-mono text-slate-500 dark:text-zinc-500">
             Últimos registros auditados
           </span>
         </div>
 
         {giveaways.length === 0 ? (
           <div className="text-center py-12 space-y-3">
-            <p className="text-sm text-zinc-400">Aún no has creado ningún sorteo.</p>
+            <p className="text-sm text-slate-600 dark:text-zinc-400">Aún no has creado ningún sorteo.</p>
             <Link
               href="/sorteos/nuevo"
-              className="inline-flex items-center gap-2 text-xs font-bold text-purple-400 hover:text-purple-300"
+              className="inline-flex items-center gap-2 text-xs font-bold text-pink-600 dark:text-purple-400 hover:underline"
             >
               <span>Crear mi primer sorteo</span>
               <Sparkles className="w-3.5 h-3.5" />
@@ -382,32 +361,32 @@ export default function DashboardPage() {
             {giveaways.map((g) => (
               <div
                 key={g.id}
-                className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+                className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all flex flex-col md:flex-row md:items-center md:justify-between gap-4"
               >
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-zinc-300 uppercase">
+                    <span className="px-2.5 py-0.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-zinc-300 uppercase">
                       {g.network || g.platform || 'Social'}
                     </span>
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
                         g.status === 'completed' || g.status === 'finished'
-                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                          : 'bg-zinc-500/10 text-zinc-400 border border-zinc-500/20'
+                          ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20'
+                          : 'bg-slate-200/50 dark:bg-zinc-500/10 text-slate-600 dark:text-zinc-400 border border-slate-200 dark:border-zinc-500/20'
                       }`}
                     >
                       {g.status === 'completed' || g.status === 'finished' ? 'Finalizado' : 'Borrador'}
                     </span>
-                    <span className="text-[11px] font-mono text-zinc-500" suppressHydrationWarning>
+                    <span className="text-[11px] font-mono text-slate-500 dark:text-zinc-500" suppressHydrationWarning>
                       {new Date(g.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white font-display">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">
                     {g.title}
                   </h3>
 
-                  <div className="flex items-center gap-4 text-xs font-mono text-zinc-400">
+                  <div className="flex items-center gap-4 text-xs font-mono text-slate-600 dark:text-zinc-400">
                     <span>💬 {g.totalCommentsCount || 0} comentarios</span>
                     <span>🏆 {g.winners?.length || 0} ganador(es)</span>
                     {g.substitutes && g.substitutes.length > 0 && (
@@ -420,11 +399,11 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-2 flex-wrap pt-2 md:pt-0">
                   <button
                     onClick={() => handleCopyLink(g.id)}
-                    className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-zinc-300 border border-white/5 transition-colors flex items-center gap-1.5"
+                    className="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-xs font-mono text-slate-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-zinc-300 border border-slate-200 dark:border-white/5 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
                     title="Copiar enlace público"
                   >
                     {copiedId === g.id ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     ) : (
                       <Share2 className="w-3.5 h-3.5" />
                     )}
@@ -433,7 +412,7 @@ export default function DashboardPage() {
 
                   <button
                     onClick={() => handleDuplicate(g)}
-                    className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-zinc-300 border border-white/5 transition-colors flex items-center gap-1.5"
+                    className="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-xs font-mono text-slate-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-zinc-300 border border-slate-200 dark:border-white/5 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
                     title="Duplicar como plantilla (RF-018)"
                   >
                     <Copy className="w-3.5 h-3.5" />
@@ -442,7 +421,7 @@ export default function DashboardPage() {
 
                   <Link
                     href={`/sorteo/${g.id}`}
-                    className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold font-display text-xs transition-colors flex items-center gap-1.5"
+                    className="px-4 py-2 rounded-xl btn-pro-primary font-bold font-display text-xs flex items-center gap-1.5 cursor-pointer"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Ver Resultado</span>
