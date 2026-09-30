@@ -5,8 +5,10 @@ import { Coins, RotateCw, History, Trophy, Sparkles, CheckCircle2, Volume2, Volu
 import { flipCoin, generateSha256Hash } from '@/lib/randomEngine';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
 import { playCoinFlipSound, playCoinLandSound, isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function MonedaPage() {
+  const { t } = useLanguage();
   const [result, setResult] = useState<'cara' | 'cruz'>('cara');
   const [isFlipping, setIsFlipping] = useState<boolean>(false);
   const [rotations, setRotations] = useState<number>(0);
@@ -71,11 +73,11 @@ export default function MonedaPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Lanzar Moneda (Cara o Cruz)
+          {t('coin_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
-          Toma decisiones justas al instante con giro 3D sincronizado y algoritmo criptográfico
+          {t('coin_desc')}
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -163,17 +165,17 @@ export default function MonedaPage() {
             {isFlipping ? (
               <span className="text-sm font-semibold text-pink-600 dark:text-pink-400 animate-pulse flex items-center gap-2">
                 <RotateCw className="w-4 h-4 animate-spin text-pink-600 dark:text-pink-400" />
-                Girando en el aire...
+                {t('coin_flipping')}
               </span>
             ) : (
               <>
-                <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Resultado:</span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">{t('coin_result')}</span>
                 <span
                   className={`text-2xl font-extrabold uppercase tracking-wider ${
                     result === 'cara' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-800 dark:text-white'
                   }`}
                 >
-                  {result}
+                  {result === 'cara' ? t('coin_heads') : t('coin_tails')}
                 </span>
               </>
             )}
@@ -189,26 +191,26 @@ export default function MonedaPage() {
             className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold text-base sm:text-lg py-3.5 px-12 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 transition-all inline-flex items-center gap-2 cursor-pointer"
           >
             <RotateCw className={`w-5 h-5 ${isFlipping ? 'animate-spin' : ''}`} />
-            <span>{isFlipping ? 'Lanzando moneda...' : '¡Lanzar Moneda Ahora!'}</span>
+            <span>{isFlipping ? t('coin_flipping') : t('coin_btn_flip')}</span>
           </button>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto pt-4 border-t border-slate-100 dark:border-white/5">
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-center">
-            <div className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase">Caras</div>
+            <div className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase">{t('coin_heads_plural')}</div>
             <div className="text-xl font-extrabold text-amber-600 dark:text-amber-400 font-mono-num">
               {caraCount} <span className="text-xs text-slate-400 dark:text-zinc-500 font-normal">({caraPercent}%)</span>
             </div>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-center">
-            <div className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase">Cruces</div>
+            <div className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase">{t('coin_tails_plural')}</div>
             <div className="text-xl font-extrabold text-slate-700 dark:text-zinc-200 font-mono-num">
               {cruzCount} <span className="text-xs text-slate-400 dark:text-zinc-500 font-normal">({100 - caraPercent}%)</span>
             </div>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-center">
-            <div className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase">Tiradas</div>
+            <div className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400 uppercase">{t('coin_total_flips')}</div>
             <div className="text-xl font-extrabold text-purple-600 dark:text-purple-400 font-mono-num">{totalFlips}</div>
           </div>
         </div>
@@ -228,7 +230,7 @@ export default function MonedaPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 flex items-center gap-2">
               <History className="w-3.5 h-3.5" />
-              <span>Últimos lanzamientos</span>
+              <span>{t('coin_history')}</span>
             </h2>
             <button
               onClick={() => setHistory([])}
@@ -247,7 +249,7 @@ export default function MonedaPage() {
                     : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-white/10'
                 }`}
               >
-                #{history.length - idx}: {item}
+                #{history.length - idx}: {item === 'cara' ? t('coin_heads') : t('coin_tails')}
               </span>
             ))}
           </div>

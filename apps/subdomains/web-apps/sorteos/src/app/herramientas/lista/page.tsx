@@ -25,8 +25,10 @@ import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playWheelTick, playWinnerFanfare } from '@/lib/soundEffects';
 import { generateSha256Hash } from '@/lib/randomEngine';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function SorteoListaPage() {
+  const { t } = useLanguage();
   const [title, setTitle] = useState<string>('Sorteo por Nombres al Azar');
   const [rawText, setRawText] = useState<string>(
     'Valeria Gómez\nDiego Martínez\nCamila Rodríguez\nLucas Fernández\nElena Castillo\nJuan Pérez\nDaniela Sánchez\nRoberto Navarro'
@@ -166,11 +168,11 @@ export default function SorteoListaPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Sorteo por Nombres al Azar
+          {t('names_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
-          Escoge un ganador al azar de una <strong className="font-semibold text-slate-800 dark:text-zinc-200">lista de nombres</strong> con nuestra App
+          {t('names_desc')}
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -348,7 +350,7 @@ export default function SorteoListaPage() {
                   <span>Sorteando...</span>
                 </>
               ) : (
-                <span>Comenzar</span>
+                <span>{t('btn_start')}</span>
               )}
             </button>
           </div>
@@ -417,7 +419,7 @@ export default function SorteoListaPage() {
             {/* Cryptographic SHA-256 Audit Card */}
             {auditHash && (
               <div className="max-w-md mx-auto p-3 rounded-xl bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 text-[11px] font-mono text-slate-600 dark:text-zinc-400 break-all text-left">
-                <span className="font-semibold text-slate-800 dark:text-zinc-200 block mb-0.5">Hash de Auditoría SHA-256:</span>
+                <span className="font-semibold text-slate-800 dark:text-zinc-200 block mb-0.5">{t('audit_hash_label')}</span>
                 {auditHash}
               </div>
             )}
@@ -430,7 +432,7 @@ export default function SorteoListaPage() {
                 className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-800 dark:text-white font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-white/10"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                <span>{copied ? '¡Copiado!' : 'Copiar Texto'}</span>
+                <span>{copied ? t('btn_copied') : t('btn_copy')}</span>
               </button>
 
               <button
@@ -439,7 +441,7 @@ export default function SorteoListaPage() {
                 className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
               >
                 <Share2 className="w-4 h-4" />
-                <span>Descargar Tarjeta</span>
+                <span>{t('btn_export')}</span>
               </button>
 
               <button
@@ -448,7 +450,7 @@ export default function SorteoListaPage() {
                 className="py-2.5 px-4 rounded-xl bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Tv className="w-4 h-4" />
-                <span>Modo Streaming</span>
+                <span>{t('btn_live_mode')}</span>
               </button>
 
               <button
@@ -457,7 +459,7 @@ export default function SorteoListaPage() {
                 className="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-700 dark:text-zinc-300 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-white/10"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>Re-sortear</span>
+                <span>{t('btn_restart')}</span>
               </button>
             </div>
           </div>

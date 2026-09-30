@@ -16,6 +16,7 @@ import ConfettiEffect from '@/components/ConfettiEffect';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playWinnerFanfare } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 const DEFAULT_OPTIONS = [
   'Premio Mayor 🎁',
@@ -29,6 +30,7 @@ const DEFAULT_OPTIONS = [
 ];
 
 export default function RuletaPage() {
+  const { t } = useLanguage();
   const [options, setOptions] = useState<string[]>(DEFAULT_OPTIONS);
   const [newOption, setNewOption] = useState<string>('');
   const [winner, setWinner] = useState<string | null>(null);
@@ -74,11 +76,11 @@ export default function RuletaPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Ruleta Aleatoria Digital
+          {t('roulette_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
-          Personaliza los premios o nombres y gira la ruleta interactiva para elegir ganadores al azar
+          {t('roulette_desc')}
         </p>
 
         {/* Live Presentation Button if winner exists */}
@@ -90,7 +92,7 @@ export default function RuletaPage() {
               className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
             >
               <Share2 className="w-4 h-4" />
-              <span>Exportar Tarjeta</span>
+              <span>{t('btn_export')}</span>
             </button>
             <button
               type="button"
@@ -98,7 +100,7 @@ export default function RuletaPage() {
               className="py-2.5 px-4 rounded-xl bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <Tv className="w-4 h-4" />
-              <span>Modo En Vivo</span>
+              <span>{t('btn_live_mode')}</span>
             </button>
           </div>
         )}
@@ -110,7 +112,7 @@ export default function RuletaPage() {
           {winner && (
             <div className="w-full mb-6 p-4 rounded-xl bg-pink-50 dark:bg-pink-500/10 border border-pink-200 dark:border-pink-500/30 text-center space-y-1 animate-in fade-in duration-200">
               <span className="text-xs font-bold uppercase text-pink-600 dark:text-pink-400 tracking-wider flex items-center justify-center gap-1">
-                <Trophy className="w-4 h-4 text-amber-500" /> ¡Opción Ganadora!
+                <Trophy className="w-4 h-4 text-amber-500" /> {t('roulette_winner')}
               </span>
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-display">
                 {winner}
