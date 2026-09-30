@@ -22,22 +22,44 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const DYNAMIC_CACHE_KEY = 'sorteos_translation_cache_v1';
 
+export const getInitialLanguage = (): string => {
+  if (typeof window === 'undefined') return 'es';
+  try {
+    const savedLang = localStorage.getItem('sorteos_lang');
+    if (savedLang && SUPPORTED_LANGUAGES.some(l => l.code === savedLang)) {
+      return savedLang;
+    }
+    const match = document.cookie.match(/sorteos_lang=([a-z]{2})/);
+    if (match && match[1] && SUPPORTED_LANGUAGES.some(l => l.code === match[1])) {
+      return match[1];
+    }
+    if (typeof navigator !== 'undefined') {
+      const browserLangs = navigator.languages || [navigator.language];
+      for (const raw of browserLangs) {
+        if (!raw) continue;
+        const code = raw.split('-')[0].toLowerCase();
+        if (SUPPORTED_LANGUAGES.some(l => l.code === code)) {
+          return code;
+        }
+      }
+    }
+  } catch {}
+  return 'es';
+};
+
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [lang, setLang] = useState<string>('es');
+  const [lang, setLang] = useState<string>(getInitialLanguage);
   const [dynamicCache, setDynamicCache] = useState<Record<string, string>>({});
 
   // Initialize from localStorage or browser preferences
   useEffect(() => {
     try {
-      const savedLang = localStorage.getItem('sorteos_lang');
-      if (savedLang && SUPPORTED_LANGUAGES.some(l => l.code === savedLang)) {
-        setLang(savedLang);
-      } else if (typeof navigator !== 'undefined' && navigator.language) {
-        const browserCode = navigator.language.split('-')[0].toLowerCase();
-        if (SUPPORTED_LANGUAGES.some(l => l.code === browserCode)) {
-          setLang(browserCode);
-        }
+      const activeLang = getInitialLanguage();
+      if (activeLang !== lang) {
+        setLang(activeLang);
       }
+      localStorage.setItem('sorteos_lang', activeLang);
+      document.cookie = `sorteos_lang=${activeLang}; path=/; max-age=31536000; SameSite=Lax`;
 
       // Load dynamic cache from localStorage
       const cached = localStorage.getItem(DYNAMIC_CACHE_KEY);

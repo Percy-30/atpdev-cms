@@ -4,6 +4,7 @@ import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { SorteosThemeListener } from "@/components/SorteosThemeListener";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -80,7 +81,26 @@ export default function RootLayout({
                     document.documentElement.classList.add('light');
                     document.documentElement.classList.remove('dark');
                   }
+                  
+                  // Auto-detect browser language if not previously set by user
+                  var supported = ['es', 'en', 'pt', 'fr', 'de', 'it', 'ru', 'zh', 'ja', 'hi', 'ar'];
                   var lang = localStorage.getItem('sorteos_lang');
+                  if (!lang && typeof navigator !== 'undefined') {
+                    var browserLangs = navigator.languages || [navigator.language];
+                    for (var i = 0; i < browserLangs.length; i++) {
+                      var raw = browserLangs[i];
+                      if (!raw) continue;
+                      var code = raw.split('-')[0].toLowerCase();
+                      if (supported.indexOf(code) !== -1) {
+                        lang = code;
+                        try {
+                          localStorage.setItem('sorteos_lang', code);
+                          document.cookie = 'sorteos_lang=' + code + '; path=/; max-age=31536000; SameSite=Lax';
+                        } catch(e) {}
+                        break;
+                      }
+                    }
+                  }
                   if (lang) {
                     document.documentElement.lang = lang;
                     if (lang === 'ar') document.documentElement.dir = 'rtl';
@@ -100,6 +120,7 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable} min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 dark:bg-[#070a12] dark:text-zinc-100 antialiased selection:bg-pink-500 selection:text-white transition-colors duration-200`}
       >
+        <SorteosThemeListener />
         <LanguageProvider>
           <Navbar />
           <main className="flex-1">

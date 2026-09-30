@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { 
   GiveawayRecord,
   SorteosUserRecord,
   FeatureFlagRecord,
   SorteosMetricsRecord,
   SubdomainConfig,
-  DEFAULT_CHAMBA_CONFIG
+  DEFAULT_SORTEOS_CONFIG
 } from '@atpdev/database';
 import { 
   Gift, 
@@ -84,11 +84,14 @@ export default function SorteosAdminClient({
   const [users, setUsers] = useState<SorteosUserRecord[]>(initialUsers);
   const [featureFlags, setFeatureFlags] = useState<FeatureFlagRecord[]>(initialFeatureFlags);
   const [metrics] = useState<SorteosMetricsRecord>(initialMetrics);
-  const [siteConfig, setSiteConfig] = useState<SubdomainConfig>(initialConfig || DEFAULT_CHAMBA_CONFIG);
+  const [siteConfig, setSiteConfig] = useState<SubdomainConfig>(initialConfig || DEFAULT_SORTEOS_CONFIG);
 
   const [activeTab, setActiveTab] = useState<'giveaways' | 'users' | 'create' | 'theme' | 'settings' | 'flags' | 'metrics'>('giveaways');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [feedbackMsg, setFeedbackMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  // Live preview iframe reference
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Filter states for Giveaways
   const [searchGiveaway, setSearchGiveaway] = useState('');
@@ -135,6 +138,25 @@ export default function SorteosAdminClient({
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [isSavingConfig, setIsSavingConfig] = useState(false);
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
+
+  // Broadcast theme update to iframe in real time
+  const broadcastThemeUpdate = () => {
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      iframeRef.current.contentWindow.postMessage({
+        type: 'UPDATE_SORTEOS_THEME',
+        payload: {
+          accent_color: seedColor,
+          primary_color: seedColor,
+          theme_mode: themeMode,
+          radius_style: radiusStyle
+        }
+      }, '*');
+    }
+  };
+
+  useEffect(() => {
+    broadcastThemeUpdate();
+  }, [seedColor, themeMode, radiusStyle]);
 
   // Notification helper
   const notify = (text: string, type: 'success' | 'error' = 'success') => {
@@ -1230,9 +1252,11 @@ export default function SorteosAdminClient({
               previewDevice === 'mobile' ? 'max-w-[375px] h-[650px]' : previewDevice === 'tablet' ? 'max-w-[768px] h-[650px]' : 'w-full h-[650px]'
             }`}>
               <iframe
+                ref={iframeRef}
                 src="http://localhost:3006"
                 className="w-full h-full border-0"
                 title="Sorteos Pro Live Preview"
+                onLoad={broadcastThemeUpdate}
               />
             </div>
           </div>

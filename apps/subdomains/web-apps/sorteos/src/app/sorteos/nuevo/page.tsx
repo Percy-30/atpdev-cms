@@ -61,7 +61,7 @@ export default function NuevoSorteoPage() {
   const [step, setStep] = useState<number>(1);
   const [network, setNetwork] = useState<SocialNetwork>('instagram');
   const [postUrl, setPostUrl] = useState<string>('https://www.instagram.com/p/DBa_9XYZ123/');
-  const [giveawayTitle, setGiveawayTitle] = useState<string>('Sorteo Oficial de Aniversario');
+  const [giveawayTitle, setGiveawayTitle] = useState<string>('');
   const [isLoadingComments, setIsLoadingComments] = useState<boolean>(false);
   const [rawComments, setRawComments] = useState<Participant[]>(MOCK_COMMENTS_SAMPLE.instagram);
 
@@ -115,7 +115,7 @@ export default function NuevoSorteoPage() {
 
         const createdGiveaway: Giveaway = {
           id: giveawayId,
-          title: giveawayTitle,
+          title: giveawayTitle || t('wizard_campaign_default_title'),
           network,
           postUrl,
           authorUsername: 'empresa_oficial',
@@ -224,7 +224,7 @@ export default function NuevoSorteoPage() {
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 dark:text-white text-sm">Instagram</div>
-                  <div className="text-xs text-slate-500 dark:text-zinc-400">Post, Reels, Carousels</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400">{t('wizard_net_ig_sub')}</div>
                 </div>
               </button>
 
@@ -245,7 +245,7 @@ export default function NuevoSorteoPage() {
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 dark:text-white text-sm">Facebook</div>
-                  <div className="text-xs text-slate-500 dark:text-zinc-400">Páginas y publicaciones</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400">{t('wizard_net_fb_sub')}</div>
                 </div>
               </button>
 
@@ -266,7 +266,7 @@ export default function NuevoSorteoPage() {
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 dark:text-white text-sm">YouTube</div>
-                  <div className="text-xs text-slate-500 dark:text-zinc-400">Videos y Shorts</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400">{t('wizard_net_yt_sub')}</div>
                 </div>
               </button>
             </div>
@@ -275,15 +275,15 @@ export default function NuevoSorteoPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="giveaway-title" className="block text-xs font-mono font-medium text-slate-700 dark:text-zinc-300 mb-2">
-                Título o Nombre de la Campaña:
+                {t('wizard_campaign_title_label')}
               </label>
               <input
                 id="giveaway-title"
                 name="giveawayTitle"
                 type="text"
-                value={giveawayTitle}
+                value={giveawayTitle !== '' ? giveawayTitle : t('wizard_campaign_default_title')}
                 onChange={(e) => setGiveawayTitle(e.target.value)}
-                placeholder="Ej: Gran Sorteo Fin de Año 2026"
+                placeholder={t('wizard_campaign_title_placeholder')}
                 aria-label="Título o Nombre de la Campaña"
                 className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-medium focus:outline-none focus:border-pink-500 dark:focus:border-purple-500 transition-colors shadow-xs"
               />
@@ -304,7 +304,7 @@ export default function NuevoSorteoPage() {
                 className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:border-pink-500 dark:focus:border-purple-500 transition-colors shadow-xs"
               />
               <p className="text-xs text-slate-500 dark:text-zinc-500 mt-2 font-mono">
-                💡 Asegúrate de que la publicación sea pública y esté activa.
+                {t('wizard_tip_public_post')}
               </p>
             </div>
           </div>
@@ -335,7 +335,7 @@ export default function NuevoSorteoPage() {
                 {t('wizard_step2_title')} ({rawComments.length})
               </h2>
               <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-                Post analizado: <span className="text-pink-600 dark:text-purple-300 font-mono font-semibold">{postUrl}</span>
+                {t('wizard_analyzed_post')} <span className="text-pink-600 dark:text-purple-300 font-mono font-semibold">{postUrl}</span>
               </p>
             </div>
             <div className="px-3.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-mono text-xs flex items-center gap-2">
@@ -392,7 +392,7 @@ export default function NuevoSorteoPage() {
               {t('wizard_step3_title')}
             </h2>
             <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-              Filtros según especificaciones RF-015 y RF-021 para asegurar transparencia estricta.
+              {t('wizard_rules_desc')}
             </p>
           </div>
 
@@ -400,7 +400,7 @@ export default function NuevoSorteoPage() {
             {/* Reglas de Filtrado */}
             <div className="space-y-4">
               <h3 className="text-xs font-mono uppercase tracking-wider text-pink-600 dark:text-purple-400 font-bold">
-                Filtros de Participación
+                {t('wizard_rules_filter_title')}
               </h3>
 
               <label htmlFor="exclude-duplicates-checkbox" className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 cursor-pointer select-none">
@@ -415,7 +415,7 @@ export default function NuevoSorteoPage() {
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white">{t('wizard_exclude_duplicates')}</div>
                   <div className="text-[11px] text-slate-500 dark:text-zinc-400">
-                    Solo se cuenta un comentario por usuario (1 oportunidad por persona).
+                    {t('wizard_rules_duplicate_desc')}
                   </div>
                 </div>
               </label>
@@ -457,7 +457,7 @@ export default function NuevoSorteoPage() {
             {/* Ganadores & Suplentes */}
             <div className="space-y-4">
               <h3 className="text-xs font-mono uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold">
-                Asignación de Premios
+                {t('wizard_rules_prizes_title')}
               </h3>
 
               <div>
@@ -497,15 +497,15 @@ export default function NuevoSorteoPage() {
               {/* Status Preview */}
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 text-xs font-mono">
                 <div className="flex justify-between">
-                  <span className="text-slate-500 dark:text-zinc-400">Total comentarios:</span>
+                  <span className="text-slate-500 dark:text-zinc-400">{t('wizard_rules_total_comments')}</span>
                   <span className="text-slate-900 dark:text-white font-bold">{rawComments.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-emerald-600 dark:text-emerald-400">Elegibles calculados:</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">{t('wizard_rules_eligible')}</span>
                   <span className="text-emerald-600 dark:text-emerald-400 font-bold">{filteredEligible.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-rose-600 dark:text-red-400">Descartados por reglas:</span>
+                  <span className="text-rose-600 dark:text-red-400">{t('wizard_rules_discarded')}</span>
                   <span className="text-rose-600 dark:text-red-400 font-bold">{filteredExcluded.length}</span>
                 </div>
               </div>
@@ -549,7 +549,7 @@ export default function NuevoSorteoPage() {
               {t('wizard_step4_title')}
             </h2>
             <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-lg mx-auto">
-              Se han seleccionado {finishedGiveaway.winners.length} ganador(es) y {finishedGiveaway.substitutes?.length || 0} suplente(s) con semilla criptográfica Web Crypto.
+              {t('wizard_step4_desc')}
             </p>
           </div>
 
@@ -558,7 +558,7 @@ export default function NuevoSorteoPage() {
             <div className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 space-y-3">
               <div className="text-xs font-mono uppercase tracking-wider text-amber-800 dark:text-amber-400 font-bold flex items-center gap-1.5">
                 <Trophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span>Ganador(es) Oficial(es)</span>
+                <span>{t('wizard_winners_official')}</span>
               </div>
               <div className="space-y-2">
                 {finishedGiveaway.winners.map((w) => (
@@ -573,12 +573,12 @@ export default function NuevoSorteoPage() {
             <div className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-3">
               <div className="text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-zinc-400 font-bold flex items-center gap-1.5">
                 <Users className="w-4 h-4" />
-                <span>Suplentes de Reserva</span>
+                <span>{t('wizard_substitutes_reserve')}</span>
               </div>
               <div className="space-y-2">
                 {finishedGiveaway.substitutes?.map((s) => (
                   <div key={s.id} className="p-3 rounded-xl bg-white dark:bg-black/40 border border-slate-200 dark:border-white/5 shadow-xs">
-                    <div className="text-sm font-bold text-slate-800 dark:text-zinc-300 font-mono">Suplente #{s.position}: @{s.participant.username}</div>
+                    <div className="text-sm font-bold text-slate-800 dark:text-zinc-300 font-mono">{t('wizard_substitute_label')} #{s.position}: @{s.participant.username}</div>
                     <div className="text-xs text-slate-500 dark:text-zinc-500 truncate mt-0.5">&ldquo;{s.participant.commentText}&rdquo;</div>
                   </div>
                 ))}
@@ -602,7 +602,7 @@ export default function NuevoSorteoPage() {
               className="btn-pro-primary py-4 px-8 text-sm flex items-center gap-2 cursor-pointer"
             >
               <ExternalLink className="w-4 h-4" />
-              <span>Ver Página Pública del Sorteo</span>
+              <span>{t('wizard_view_public_page')}</span>
             </button>
 
             <button
@@ -610,7 +610,7 @@ export default function NuevoSorteoPage() {
               className="btn-pro-secondary py-4 px-8 text-sm flex items-center gap-2 cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>{t('nav_verify_cert')}</span>
+              <span>{t('wizard_view_cert')}</span>
             </button>
           </div>
         </div>

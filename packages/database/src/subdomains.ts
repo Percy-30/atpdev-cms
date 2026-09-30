@@ -42,15 +42,16 @@ export interface SubdomainSEO {
 }
 
 export interface SubdomainModules {
-  scraper_enabled: boolean;
-  public_submissions_enabled: boolean;
-  adsense_enabled: boolean;
-  salary_calculator_enabled: boolean;
-  regimes_comparator_enabled: boolean;
-  ai_simulator_enabled: boolean;
-  cv_generator_enabled: boolean;
+  scraper_enabled?: boolean;
+  public_submissions_enabled?: boolean;
+  adsense_enabled?: boolean;
+  salary_calculator_enabled?: boolean;
+  regimes_comparator_enabled?: boolean;
+  ai_simulator_enabled?: boolean;
+  cv_generator_enabled?: boolean;
   whatsapp_channel_enabled?: boolean;
   telegram_channel_enabled?: boolean;
+  [key: string]: boolean | undefined;
 }
 
 export interface SubdomainContact {
@@ -204,8 +205,85 @@ function getConfigFilePath(): string | null {
   }
 }
 
+export const DEFAULT_SORTEOS_CONFIG: SubdomainConfig = {
+  id: 'sorteos',
+  name: 'Sorteos Pro',
+  slug: 'sorteos',
+  subdomain: 'sorteos',
+  full_domain: 'sorteos.atpdev.pe',
+  devPort: 3006,
+  category: 'Sorteos & Promociones SaaS Multi-Red',
+  status: 'active',
+  theme: {
+    accent_color: '#8b5cf6',
+    accent_name: 'purple',
+    theme_mode: 'dark',
+    radius_style: 'rounded-3xl',
+    radius_scale: 'full',
+    seed_color: '#8b5cf6',
+    color_theme: 'neon',
+    primary_color: '#8b5cf6',
+    secondary_color: '#ec4899',
+    tertiary_color: '#f59e0b',
+    neutral_color: '#070a12',
+    font_headline: 'Space Grotesk',
+    font_body: 'Inter',
+    font_label: 'IBM Plex Mono',
+    glow_style: 'full-border',
+    neon_thickness: '4px',
+    cursor_effect: 'cursor-default',
+    global_background_image: ''
+  },
+  branding: {
+    site_title: 'sorteos pro',
+    site_tagline: 'Plataforma SaaS de Sorteos Verificables en Redes Sociales',
+    hero_badge: 'Certificación Criptográfica SHA-256 • CSPRNG',
+    hero_title_prefix: 'Sorteos Transparentes en Redes Sociales con',
+    hero_title_highlight: 'Sorteos Pro',
+    hero_description: 'Crea sorteos verificables en Instagram, Facebook y YouTube en menos de 3 minutos. Algoritmo no manipulable y 6 herramientas interactivas gratis.',
+    logo_url: '/icon.svg',
+    favicon_url: '/icon.svg',
+    announcement_text: '🎉 Sorteos ilimitados con Ruleta, Dados, Moneda, Equipos y Números 100% gratis.',
+    announcement_enabled: true
+  },
+  seo: {
+    meta_title: 'Sorteos Pro — Plataforma SaaS de Sorteos Verificables en Redes Sociales',
+    meta_description: 'Crea sorteos transparentes y certificados en Instagram, Facebook y YouTube. Herramientas gratis de ruleta, lista de nombres, dados y monedas con hash criptográfico anti-fraude.',
+    keywords: [
+      'sorteos instagram',
+      'sorteo instagram comentarios',
+      'sorteos facebook',
+      'ruleta aleatoria',
+      'sorteo certificado',
+      'sorteos online'
+    ],
+    canonical_url: 'https://sorteos.atpdev.pe'
+  },
+  modules: {
+    instagram_giveaways_enabled: true,
+    facebook_giveaways_enabled: true,
+    youtube_giveaways_enabled: true,
+    standalone_tools_enabled: true,
+    public_certificates_enabled: true,
+    billing_stripe_enabled: true,
+    superadmin_enabled: true
+  },
+  contact: {
+    email: 'soporte@atpdev.pe',
+    whatsapp: '+51987654321',
+    support_url: 'https://sorteos.atpdev.pe/planes'
+  },
+  updated_at: new Date().toISOString()
+};
+
+function getDefaultConfig(id: string): SubdomainConfig {
+  if (id === 'sorteos') return { ...DEFAULT_SORTEOS_CONFIG };
+  return { ...DEFAULT_CHAMBA_CONFIG };
+}
+
 let inMemoryConfigs: Record<string, SubdomainConfig> = {
-  chamba: { ...DEFAULT_CHAMBA_CONFIG }
+  chamba: { ...DEFAULT_CHAMBA_CONFIG },
+  sorteos: { ...DEFAULT_SORTEOS_CONFIG }
 };
 
 export function listSubdomains(): SubdomainConfig[] {
@@ -226,20 +304,21 @@ export function listSubdomains(): SubdomainConfig[] {
 }
 
 export function getSubdomainConfig(id: string): SubdomainConfig {
+  const fallback = getDefaultConfig(id);
   try {
     const { fs: fsMod } = getSafeNodeModules();
-    if (!fsMod) return inMemoryConfigs[id] || { ...DEFAULT_CHAMBA_CONFIG };
+    if (!fsMod) return inMemoryConfigs[id] || fallback;
     const filePath = getConfigFilePath();
     if (filePath && fsMod.existsSync(filePath)) {
       const data = JSON.parse(fsMod.readFileSync(filePath, 'utf-8'));
       if (data && data[id]) {
-        return { ...DEFAULT_CHAMBA_CONFIG, ...data[id] };
+        return { ...fallback, ...data[id] };
       }
     }
   } catch (err) {
     // Silently fallback to in-memory config
   }
-  return inMemoryConfigs[id] || { ...DEFAULT_CHAMBA_CONFIG };
+  return inMemoryConfigs[id] || fallback;
 }
 
 export function saveSubdomainConfig(id: string, updates: Partial<SubdomainConfig>): { success: boolean; config: SubdomainConfig } {
@@ -281,6 +360,6 @@ export function saveSubdomainConfig(id: string, updates: Partial<SubdomainConfig
     return { success: true, config: updated };
   } catch (err) {
     console.error(`Error saving config for subdomain ${id}:`, err);
-    return { success: false, config: inMemoryConfigs[id] || DEFAULT_CHAMBA_CONFIG };
+    return { success: false, config: inMemoryConfigs[id] || getDefaultConfig(id) };
   }
 }
