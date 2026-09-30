@@ -1,8 +1,13 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { Gift, ShieldCheck, Heart } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Footer: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-slate-200 dark:border-white/10 bg-white dark:bg-[#070a12] text-slate-600 dark:text-zinc-400 text-sm relative transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
@@ -29,26 +34,26 @@ export const Footer: React.FC = () => {
 
           {/* Col 1: Herramientas Gratuitas */}
           <div className="space-y-3">
-            <p className="text-xs font-mono uppercase tracking-wider text-slate-900 dark:text-white font-bold">Herramientas Gratis</p>
+            <p className="text-xs font-mono uppercase tracking-wider text-slate-900 dark:text-white font-bold">{t('nav_apps')}</p>
             <ul className="space-y-2 text-xs text-slate-600 dark:text-zinc-400">
-              <li><Link href="/herramientas/lista" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Sorteo por Nombres</Link></li>
-              <li><Link href="/herramientas/ruleta" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Ruleta Aleatoria</Link></li>
-              <li><Link href="/herramientas/dados" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Tirar Dados 3D</Link></li>
-              <li><Link href="/herramientas/moneda" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Lanzar Moneda</Link></li>
-              <li><Link href="/herramientas/numeros" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Generador de Números</Link></li>
-              <li><Link href="/herramientas/equipos" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Reparto de Equipos</Link></li>
-              <li><Link href="/herramientas/amigo-invisible" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Amigo Invisible</Link></li>
+              <li><Link href="/herramientas/lista" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_names')}</Link></li>
+              <li><Link href="/herramientas/ruleta" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_roulette')}</Link></li>
+              <li><Link href="/herramientas/dados" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_dice')}</Link></li>
+              <li><Link href="/herramientas/moneda" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_coin')}</Link></li>
+              <li><Link href="/herramientas/numeros" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_numbers')}</Link></li>
+              <li><Link href="/herramientas/equipos" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_teams')}</Link></li>
+              <li><Link href="/herramientas/amigo-invisible" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('tool_secret_santa')}</Link></li>
             </ul>
           </div>
 
           {/* Col 2: Sorteos Redes */}
           <div className="space-y-3">
-            <p className="text-xs font-mono uppercase tracking-wider text-slate-900 dark:text-white font-bold">Sorteos Sociales</p>
+            <p className="text-xs font-mono uppercase tracking-wider text-slate-900 dark:text-white font-bold">{t('nav_social_draws')}</p>
             <ul className="space-y-2 text-xs text-slate-600 dark:text-zinc-400">
               <li><Link href="/sorteos/nuevo?platform=instagram" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Sorteo Instagram</Link></li>
               <li><Link href="/sorteos/nuevo?platform=facebook" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Sorteo Facebook</Link></li>
               <li><Link href="/sorteos/nuevo?platform=youtube" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">Sorteo YouTube</Link></li>
-              <li><Link href="/planes" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Planes y Precios</Link></li>
+              <li><Link href="/planes" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('nav_pricing')}</Link></li>
               <li><Link href="/blog" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">Guías Legales</Link></li>
             </ul>
           </div>
@@ -59,7 +64,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs text-slate-600 dark:text-zinc-400">
               <li><Link href="/terminos-y-condiciones" className="hover:text-slate-900 dark:hover:text-white transition-colors">Términos del Servicio</Link></li>
               <li><Link href="/politica-de-privacidad" className="hover:text-slate-900 dark:hover:text-white transition-colors">Política de Privacidad</Link></li>
-              <li><Link href="/certificados/CERT-SP-98A41E8D" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">Verificar Certificado</Link></li>
+              <li><Link href="/certificados/CERT-SP-98A41E8D" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">{t('nav_verify_cert')}</Link></li>
               <li><Link href="/admin" className="text-slate-400 dark:text-zinc-600 hover:text-slate-600 dark:hover:text-zinc-400 transition-colors">Consola Admin</Link></li>
             </ul>
           </div>

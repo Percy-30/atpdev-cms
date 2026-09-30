@@ -17,6 +17,7 @@ import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIco
 import { SocialNetwork, GiveawayRules, Participant, Giveaway } from '@/lib/types';
 import { filterParticipants, executeVerifiableDraw } from '@/lib/randomEngine';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Participantes simulados realistas para pruebas inmediatas
 const MOCK_COMMENTS_SAMPLE: { [key in SocialNetwork]: Participant[] } = {
@@ -54,6 +55,7 @@ const MOCK_COMMENTS_SAMPLE: { [key in SocialNetwork]: Participant[] } = {
 
 export default function NuevoSorteoPage() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   // Wizard Steps: 1: Red y URL, 2: Comentarios importados, 3: Reglas y Filtros, 4: Sorteo & Resultados
   const [step, setStep] = useState<number>(1);
@@ -153,22 +155,22 @@ export default function NuevoSorteoPage() {
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Asistente de Sorteo Multi-Red</span>
+          <span>{t('wizard_badge')}</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-black font-display text-slate-900 dark:text-white tracking-tight">
-          Crear Nuevo Sorteo Social
+          {t('wizard_title')}
         </h1>
         <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
-          Extrae comentarios de Instagram, Facebook o YouTube, aplica filtros de exclusión y sortea ganadores transparentes con certificación SHA-256.
+          {t('wizard_desc')}
         </p>
 
         {/* Step Indicator */}
         <div className="flex items-center justify-center gap-3 pt-4">
           {[
-            { num: 1, label: 'Red & Enlace' },
-            { num: 2, label: 'Comentarios' },
-            { num: 3, label: 'Filtros y Reglas' },
-            { num: 4, label: 'Ganadores' }
+            { num: 1, label: t('wizard_step_1') },
+            { num: 2, label: t('wizard_step_2') },
+            { num: 3, label: t('wizard_step_3') },
+            { num: 4, label: t('wizard_step_4') }
           ].map((st, idx) => (
             <React.Fragment key={st.num}>
               <div className="flex items-center gap-2">
@@ -202,7 +204,7 @@ export default function NuevoSorteoPage() {
         <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8">
           <div className="space-y-4">
             <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
-              1. Selecciona la Red Social del Sorteo
+              {t('wizard_step1_title')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <button
@@ -289,7 +291,7 @@ export default function NuevoSorteoPage() {
 
             <div>
               <label htmlFor="post-url" className="block text-xs font-mono font-medium text-slate-700 dark:text-zinc-300 mb-2">
-                URL de la Publicación o Video:
+                {t('wizard_post_url_label')}
               </label>
               <input
                 id="post-url"
@@ -297,7 +299,7 @@ export default function NuevoSorteoPage() {
                 type="url"
                 value={postUrl}
                 onChange={(e) => setPostUrl(e.target.value)}
-                placeholder="https://www.instagram.com/p/..."
+                placeholder={t('wizard_post_url_placeholder')}
                 aria-label="URL de la Publicación o Video"
                 className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:border-pink-500 dark:focus:border-purple-500 transition-colors shadow-xs"
               />
@@ -317,7 +319,7 @@ export default function NuevoSorteoPage() {
               }`}
             >
               <RefreshCw className={`w-4 h-4 ${isLoadingComments ? 'animate-spin' : ''}`} />
-              <span>{isLoadingComments ? 'Extrayendo comentarios...' : 'Continuar a Comentarios'}</span>
+              <span>{isLoadingComments ? t('wizard_btn_fetching') : t('wizard_btn_fetch_comments')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -330,7 +332,7 @@ export default function NuevoSorteoPage() {
           <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-100 dark:border-white/5 pb-4">
             <div>
               <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
-                2. Comentarios Extraídos ({rawComments.length})
+                {t('wizard_step2_title')} ({rawComments.length})
               </h2>
               <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
                 Post analizado: <span className="text-pink-600 dark:text-purple-300 font-mono font-semibold">{postUrl}</span>
@@ -338,7 +340,7 @@ export default function NuevoSorteoPage() {
             </div>
             <div className="px-3.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-mono text-xs flex items-center gap-2">
               <ShieldCheck className="w-4 h-4" />
-              <span>Sincronización Exitosa</span>
+              <span>{t('wizard_sync_success')}</span>
             </div>
           </div>
 
@@ -367,7 +369,7 @@ export default function NuevoSorteoPage() {
               className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Atrás</span>
+              <span>{t('wizard_btn_back')}</span>
             </button>
 
             <button
@@ -375,7 +377,7 @@ export default function NuevoSorteoPage() {
               onClick={handleApplyRules}
               className="btn-pro-primary text-sm sm:text-base py-3.5 px-8 rounded-2xl flex items-center gap-2 cursor-pointer"
             >
-              <span>Configurar Reglas y Filtros</span>
+              <span>{t('wizard_btn_configure_rules')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -387,7 +389,7 @@ export default function NuevoSorteoPage() {
         <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8">
           <div className="border-b border-slate-100 dark:border-white/5 pb-4">
             <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
-              3. Reglas de Exclusión y Ganadores
+              {t('wizard_step3_title')}
             </h2>
             <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
               Filtros según especificaciones RF-015 y RF-021 para asegurar transparencia estricta.
@@ -411,7 +413,7 @@ export default function NuevoSorteoPage() {
                   className="mt-0.5 w-4 h-4 rounded text-pink-600 dark:text-purple-600 border-slate-300 dark:border-zinc-700 focus:ring-pink-500"
                 />
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">Excluir comentarios duplicados</div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">{t('wizard_exclude_duplicates')}</div>
                   <div className="text-[11px] text-slate-500 dark:text-zinc-400">
                     Solo se cuenta un comentario por usuario (1 oportunidad por persona).
                   </div>
@@ -420,7 +422,7 @@ export default function NuevoSorteoPage() {
 
               <div>
                 <label htmlFor="min-mentions-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  Menciones mínimas por comentario (@amigo):
+                  {t('wizard_min_mentions')}
                 </label>
                 <input
                   id="min-mentions-input"
@@ -437,7 +439,7 @@ export default function NuevoSorteoPage() {
 
               <div>
                 <label htmlFor="required-hashtag-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  Hashtag obligatorio en el comentario:
+                  {t('wizard_required_hashtag')}
                 </label>
                 <input
                   id="required-hashtag-input"
@@ -460,7 +462,7 @@ export default function NuevoSorteoPage() {
 
               <div>
                 <label htmlFor="winners-count-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  Cantidad de Ganadores Principales:
+                  {t('wizard_winners_count')}
                 </label>
                 <input
                   id="winners-count-input"
@@ -477,7 +479,7 @@ export default function NuevoSorteoPage() {
 
               <div>
                 <label htmlFor="substitutes-count-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  Cantidad de Suplentes de Respaldo:
+                  {t('wizard_substitutes_count')}
                 </label>
                 <input
                   id="substitutes-count-input"
@@ -518,7 +520,7 @@ export default function NuevoSorteoPage() {
               className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Atrás</span>
+              <span>{t('wizard_btn_back')}</span>
             </button>
 
             <button
@@ -530,7 +532,7 @@ export default function NuevoSorteoPage() {
               }`}
             >
               <RefreshCw className={`w-5 h-5 ${isDrawing ? 'animate-spin' : ''}`} />
-              <span>{isDrawing ? 'Sorteando con CSPRNG...' : '🎲 ¡Realizar Sorteo Oficial!'}</span>
+              <span>{isDrawing ? t('wizard_btn_executing') : t('wizard_btn_execute')}</span>
             </button>
           </div>
         </div>
@@ -544,7 +546,7 @@ export default function NuevoSorteoPage() {
               <Trophy className="w-8 h-8 text-amber-950" />
             </div>
             <h2 className="text-2xl sm:text-4xl font-black font-display text-slate-900 dark:text-white">
-              ¡Sorteo Realizado con Éxito!
+              {t('wizard_step4_title')}
             </h2>
             <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-lg mx-auto">
               Se han seleccionado {finishedGiveaway.winners.length} ganador(es) y {finishedGiveaway.substitutes?.length || 0} suplente(s) con semilla criptográfica Web Crypto.
@@ -588,7 +590,7 @@ export default function NuevoSorteoPage() {
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 max-w-xl mx-auto text-xs font-mono text-slate-600 dark:text-zinc-400 space-y-1">
             <div className="flex items-center justify-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-bold">
               <ShieldCheck className="w-4 h-4" />
-              <span>Certificado de Autenticidad Criptográfica</span>
+              <span>{t('nav_verify_cert')}</span>
             </div>
             <div className="break-all text-[11px] text-slate-500 dark:text-zinc-500">{finishedGiveaway.verificationHash}</div>
           </div>
@@ -608,7 +610,7 @@ export default function NuevoSorteoPage() {
               className="btn-pro-secondary py-4 px-8 text-sm flex items-center gap-2 cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Ver Certificado Oficial</span>
+              <span>{t('nav_verify_cert')}</span>
             </button>
           </div>
         </div>
