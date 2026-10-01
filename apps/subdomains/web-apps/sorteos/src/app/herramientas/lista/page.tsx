@@ -205,14 +205,14 @@ export default function SorteoListaPage() {
           {/* Título Input */}
           <div className="space-y-1.5">
             <label htmlFor="draw-title" className="block text-sm font-semibold text-slate-700 dark:text-zinc-300">
-              Título
+              {t('wizard_campaign_title_label')}
             </label>
             <input
               id="draw-title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ej. Sorteo de fin de mes..."
+              placeholder={t('names_title_placeholder')}
               className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-4 focus:ring-pink-50 dark:focus:ring-purple-900/30 transition-all text-sm shadow-xs"
             />
           </div>
@@ -221,7 +221,7 @@ export default function SorteoListaPage() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label htmlFor="participants-text" className="block text-sm font-semibold text-slate-700 dark:text-zinc-300">
-                Participantes
+                {t('teams_participants_label')}
               </label>
               {participants.length > 0 && (
                 <button
@@ -230,7 +230,7 @@ export default function SorteoListaPage() {
                   className="text-xs text-slate-400 dark:text-zinc-500 hover:text-red-500 dark:hover:text-red-400 transition-colors flex items-center gap-1 font-medium cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  <span>Vaciar lista</span>
+                  <span>{t('btn_restart')}</span>
                 </button>
               )}
             </div>
@@ -241,7 +241,7 @@ export default function SorteoListaPage() {
                 rows={6}
                 value={rawText}
                 onChange={(e) => setRawText(e.target.value)}
-                placeholder="Escribe o pega los participantes (un nombre por línea o separados por coma)..."
+                placeholder={t('names_participants_placeholder')}
                 className="w-full p-4 pb-8 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-4 focus:ring-pink-50 dark:focus:ring-purple-900/30 transition-all resize-none text-sm leading-relaxed shadow-xs"
               />
               {/* Bottom right counter */}
@@ -258,7 +258,7 @@ export default function SorteoListaPage() {
                 className="text-sm font-semibold text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Upload className="w-4 h-4" />
-                <span>Importar desde archivo</span>
+                <span>{t('import_file_label')}</span>
               </button>
               <input
                 ref={fileInputRef}
@@ -274,7 +274,7 @@ export default function SorteoListaPage() {
                 className="text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Settings className="w-3.5 h-3.5" />
-                <span>{showAdvanced ? 'Ocultar opciones' : 'Opciones avanzadas'}</span>
+                <span>{t('options_advanced_toggle')}</span>
               </button>
             </div>
           </div>
@@ -284,7 +284,7 @@ export default function SorteoListaPage() {
             <div className="pt-4 border-t border-slate-100 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-1 duration-150">
               <div className="space-y-1.5">
                 <label htmlFor="winners-count" className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
-                  Número de Ganadores:
+                  {t('wizard_winners_count')}:
                 </label>
                 <input
                   id="winners-count"
@@ -299,7 +299,7 @@ export default function SorteoListaPage() {
 
               <div className="space-y-1.5">
                 <label htmlFor="substitutes-count" className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
-                  Número de Suplentes:
+                  {t('wizard_substitutes_count')}:
                 </label>
                 <input
                   id="substitutes-count"
@@ -320,7 +320,7 @@ export default function SorteoListaPage() {
                     onChange={(e) => setRemoveDuplicates(e.target.checked)}
                     className="rounded border-slate-300 dark:border-white/20 bg-white dark:bg-[#1e293b] text-pink-600 focus:ring-pink-500"
                   />
-                  <span>Eliminar automáticamente nombres duplicados</span>
+                  <span>{t('wizard_exclude_duplicates')}</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-slate-700 dark:text-zinc-300">

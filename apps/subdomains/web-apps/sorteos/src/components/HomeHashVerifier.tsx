@@ -52,8 +52,8 @@ export const HomeHashVerifier: React.FC = () => {
               setQuery(e.target.value);
               if (error) setError('');
             }}
-            placeholder="Ejemplo: CERT-SP-98A41E8D o hash SHA-256..."
-            aria-label="Código de certificado oficial o hash SHA-256"
+            placeholder={t('verify_input_placeholder')}
+            aria-label={t('verify_input_placeholder')}
             className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-2 focus:ring-pink-50 dark:focus:ring-purple-900/30 transition-colors shadow-xs"
           />
         </div>

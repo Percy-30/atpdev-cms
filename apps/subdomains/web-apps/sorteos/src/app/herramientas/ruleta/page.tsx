@@ -123,7 +123,7 @@ export default function RuletaPage() {
                   onClick={() => setShowExportModal(true)}
                   className="text-xs font-semibold text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1 cursor-pointer"
                 >
-                  <Share2 className="w-3.5 h-3.5" /> Descargar Story / Post
+                  <Share2 className="w-3.5 h-3.5" /> {t('btn_export')}
                 </button>
               </div>
             </div>
@@ -140,11 +140,11 @@ export default function RuletaPage() {
         {/* Right: Options Manager & Presets */}
         <div className="lg:col-span-5 space-y-6">
           <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-white/10 shadow-sm">
-            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">Configurar Opciones</h2>
+            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">{t('options_config_title')}</h2>
 
             {/* Presets */}
             <div className="space-y-1.5">
-              <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Plantillas rápidas:</span>
+              <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">{t('quick_presets_label')}</span>
               <div className="flex flex-wrap gap-1.5">
                 <button
                   type="button"
@@ -181,8 +181,8 @@ export default function RuletaPage() {
                 type="text"
                 value={newOption}
                 onChange={(e) => setNewOption(e.target.value)}
-                placeholder="Escribe una opción..."
-                aria-label="Escribe una nueva opción para la ruleta"
+                placeholder={t('roulette_placeholder')}
+                aria-label={t('roulette_placeholder')}
                 className="flex-1 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] dark:focus:border-purple-500 focus:ring-2 focus:ring-pink-50 dark:focus:ring-purple-900/30"
               />
               <button

@@ -147,7 +147,7 @@ export default function AmigoInvisiblePage() {
       <Countdown3DOverlay
         active={showCountdown}
         seconds={3}
-        title="Generando Parejas Secretas"
+        title={t('countdown_matching_secret')}
         onComplete={executeMatches}
       />
 
@@ -216,8 +216,8 @@ export default function AmigoInvisiblePage() {
                 type="text"
                 value={newPerson}
                 onChange={(e) => setNewPerson(e.target.value)}
-                placeholder="Nombre de la persona..."
-                aria-label="Nombre del participante para el amigo invisible"
+                placeholder={t('secret_santa_placeholder_name')}
+                aria-label={t('secret_santa_placeholder_name')}
                 className="flex-1 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20"
               />
               <button
@@ -307,7 +307,7 @@ export default function AmigoInvisiblePage() {
                     <span>{t('secret_santa_secret_card')}</span>
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-zinc-400">
-                    Pasa el dispositivo o comparte el mensaje en privado a cada uno.
+                    {t('secret_santa_instructions')}
                   </p>
                 </div>
               </div>
@@ -344,7 +344,7 @@ export default function AmigoInvisiblePage() {
                       {m.revealed ? (
                         <div className="space-y-0.5 animate-in zoom-in-95 duration-200">
                           <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-zinc-400 block font-normal">
-                            Le regala en secreto a:
+                            {t('secret_santa_give_secret_to')}
                           </span>
                           <span className="text-2xl font-extrabold text-slate-900 dark:text-white font-display">{m.receiver}</span>
                         </div>
@@ -397,9 +397,9 @@ export default function AmigoInvisiblePage() {
           ) : (
             <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-12 text-center space-y-3 border border-slate-200 dark:border-white/10 shadow-sm text-slate-500 dark:text-zinc-400 flex flex-col items-center justify-center min-h-[380px]">
               <Gift className="w-12 h-12 text-pink-400" />
-              <p className="text-base font-bold text-slate-900 dark:text-white">Listo para el intercambio</p>
+              <p className="text-base font-bold text-slate-900 dark:text-white">{t('secret_santa_ready_title')}</p>
               <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm">
-                Agrega al menos 3 personas a la lista y presiona &quot;Comenzar Emparejamiento&quot; para generar las parejas en secreto.
+                {t('secret_santa_ready_desc')}
               </p>
             </div>
           )}

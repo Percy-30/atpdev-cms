@@ -133,7 +133,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           className="inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Volver al inicio</span>
+          <span>{t('btn_back_home')}</span>
         </Link>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -181,7 +181,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             </span>
             <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-xs font-mono text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Resultado Auditado y Verificado</span>
+              <span>{t('verified_badge')}</span>
             </span>
           </div>
 
@@ -196,7 +196,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             {giveaway.title}
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 mt-2 flex items-center gap-2 flex-wrap">
-            <span>Organizado por: <strong className="text-slate-900 dark:text-white">@{giveaway.authorUsername || 'anfitrión'}</strong></span>
+            <span>{t('organized_by')} <strong className="text-slate-900 dark:text-white">@{giveaway.authorUsername || 'host'}</strong></span>
             {giveaway.postUrl && (
               <>
                 <span className="text-slate-400 dark:text-zinc-600">•</span>
@@ -206,7 +206,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
                   rel="noopener noreferrer"
                   className="text-pink-600 dark:text-purple-400 hover:underline underline-offset-4 flex items-center gap-1 font-mono text-xs"
                 >
-                  <span>Ver post original</span>
+                  <span>{t('view_original_post')}</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </>
@@ -238,7 +238,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
                     #{winner.position}
                   </div>
                   <div>
-                    <span className="text-xs font-mono uppercase text-amber-800 dark:text-amber-400 font-bold">Ganador Titular</span>
+                    <span className="text-xs font-mono uppercase text-amber-800 dark:text-amber-400 font-bold">{t('winner_primary')}</span>
                     <h3 className="text-lg sm:text-xl font-bold font-mono text-slate-900 dark:text-white">
                       @{winner.participant.username}
                     </h3>
@@ -246,7 +246,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
                 </div>
 
                 <div className="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-400/10 border border-amber-300 dark:border-amber-400/20 text-xs font-mono font-bold text-amber-800 dark:text-amber-300">
-                  Verificado ✅
+                  {t('verified_tag')}
                 </div>
               </div>
 
@@ -277,8 +277,8 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
                 className="bg-white dark:bg-[#0f172a] rounded-2xl p-4 border border-slate-200 dark:border-white/10 shadow-sm space-y-2 text-xs"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-slate-500 dark:text-zinc-400">Suplente #{sub.position}</span>
-                  <span className="text-[10px] font-mono text-slate-400 dark:text-zinc-500">Reserva</span>
+                  <span className="font-mono text-slate-500 dark:text-zinc-400">{t('wizard_substitute_label')} #{sub.position}</span>
+                  <span className="text-[10px] font-mono text-slate-400 dark:text-zinc-500">{t('substitute_reserve')}</span>
                 </div>
                 <div className="font-bold font-mono text-slate-900 dark:text-white text-sm">
                   @{sub.participant.username}
@@ -299,7 +299,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
         <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-white/5 pb-3">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white font-display">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Auditoría y Transparencia del Algoritmo</span>
+            <span>{t('audit_title')}</span>
           </div>
           <span className="text-xs font-mono text-slate-500 dark:text-zinc-500">
             ID: {giveaway.id}
@@ -308,23 +308,23 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
           <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
-            <span className="text-slate-500 dark:text-zinc-500 block">Comentarios Analizados:</span>
+            <span className="text-slate-500 dark:text-zinc-500 block">{t('audit_comments_analyzed')}</span>
             <span className="text-slate-900 dark:text-white font-bold text-sm">{giveaway.totalCommentsCount}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
-            <span className="text-slate-500 dark:text-zinc-500 block">Filtro Duplicados:</span>
+            <span className="text-slate-500 dark:text-zinc-500 block">{t('audit_filter_duplicates')}</span>
             <span className="text-slate-900 dark:text-white font-bold text-sm">
-              {giveaway.rules.excludeDuplicates ? 'Activo (1 por persona)' : 'Inactivo'}
+              {giveaway.rules.excludeDuplicates ? t('audit_active_duplicate') : t('audit_inactive')}
             </span>
           </div>
           <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
-            <span className="text-slate-500 dark:text-zinc-500 block">Menciones Requeridas:</span>
-            <span className="text-slate-900 dark:text-white font-bold text-sm">{giveaway.rules.minMentions} mención(es)</span>
+            <span className="text-slate-500 dark:text-zinc-500 block">{t('audit_mentions_required')}</span>
+            <span className="text-slate-900 dark:text-white font-bold text-sm">{giveaway.rules.minMentions}</span>
           </div>
         </div>
 
         <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 text-xs font-mono space-y-1">
-          <span className="text-slate-500 dark:text-zinc-500 text-[11px] block">Hash Criptográfico SHA-256 Inmutable:</span>
+          <span className="text-slate-500 dark:text-zinc-500 text-[11px] block">{t('audit_hash_label')}</span>
           <span className="text-emerald-700 dark:text-emerald-400 break-all select-all">{giveaway.verificationHash}</span>
         </div>
       </div>
@@ -336,7 +336,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           className="btn-pro-gold py-4 px-8 text-sm flex items-center gap-2"
         >
           <ShieldCheck className="w-4 h-4 text-amber-950" />
-          <span>Ver Certificado Oficial Criptográfico</span>
+          <span>{t('wizard_view_cert')}</span>
         </Link>
 
         <Link
@@ -344,7 +344,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           className="btn-pro-primary py-4 px-8 text-sm flex items-center gap-2"
         >
           <Sparkles className="w-4 h-4 text-pink-200" />
-          <span>Crear Tu Propio Sorteo Gratis</span>
+          <span>{t('create_own_giveaway')}</span>
         </Link>
       </div>
 

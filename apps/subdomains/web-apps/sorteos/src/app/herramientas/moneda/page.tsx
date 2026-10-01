@@ -136,7 +136,7 @@ export default function MonedaPage() {
             >
               <div className="w-full h-full rounded-full border-2 border-dashed border-amber-800/40 flex flex-col items-center justify-center p-4">
                 <Sparkles className="w-9 h-9 text-amber-900 mb-1" />
-                <span className="text-3xl font-black uppercase tracking-widest">CARA</span>
+                <span className="text-3xl font-black uppercase tracking-widest">{t('coin_heads')}</span>
                 <span className="text-[10px] font-mono font-bold text-amber-900/80 mt-1">SORTEOS PRO</span>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function MonedaPage() {
             >
               <div className="w-full h-full rounded-full border-2 border-dashed border-zinc-700/40 flex flex-col items-center justify-center p-4">
                 <Trophy className="w-9 h-9 text-zinc-800 mb-1" />
-                <span className="text-3xl font-black uppercase tracking-widest">CRUZ</span>
+                <span className="text-3xl font-black uppercase tracking-widest">{t('coin_tails')}</span>
                 <span className="text-[10px] font-mono font-bold text-zinc-700 mt-1">PRO AUDIT</span>
               </div>
             </div>
@@ -236,7 +236,7 @@ export default function MonedaPage() {
               onClick={() => setHistory([])}
               className="text-xs text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors cursor-pointer"
             >
-              Limpiar
+              {t('btn_restart')}
             </button>
           </div>
           <div className="flex flex-wrap gap-2">

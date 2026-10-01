@@ -129,7 +129,7 @@ export default function EquiposPage() {
       <Countdown3DOverlay
         active={showCountdown}
         seconds={3}
-        title="Barajando y Formando Equipos"
+        title={t('countdown_shuffling_teams')}
         onComplete={executeGeneration}
       />
 
@@ -214,8 +214,8 @@ export default function EquiposPage() {
               rows={8}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ingresa un nombre por línea..."
-              aria-label="Lista de participantes para dividir en equipos, un nombre por línea"
+              placeholder={t('teams_placeholder')}
+              aria-label={t('teams_participants_label')}
               className="w-full p-4 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 text-sm focus:outline-none focus:border-[#d91a7a] focus:ring-2 focus:ring-pink-50 dark:focus:ring-pink-900/20 resize-none transition-colors shadow-xs leading-relaxed"
             />
           </div>
@@ -256,9 +256,9 @@ export default function EquiposPage() {
                   onChange={(e) => setNamingStyle(parseInt(e.target.value))}
                   className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-medium text-sm focus:outline-none focus:border-[#d91a7a] shadow-xs"
                 >
-                  <option value={0}>🛡️ Épico / Colores (Titanes, Fénix...)</option>
-                  <option value={1}>⚡ Elementos (Fuego, Relámpago...)</option>
-                  <option value={2}>🔤 Alfabeto Griego (Alfa, Beta...)</option>
+                  <option value={0}>{t('teams_style_epic')}</option>
+                  <option value={1}>{t('teams_style_elements')}</option>
+                  <option value={2}>{t('teams_style_greek')}</option>
                 </select>
               </div>
             </div>
@@ -304,20 +304,20 @@ export default function EquiposPage() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {teams.map((t, idx) => (
+            {teams.map((team, idx) => (
               <div
                 key={idx}
                 className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 border border-slate-200 dark:border-white/10 shadow-sm space-y-4 hover:border-pink-300 dark:hover:border-pink-500/40 transition-all"
               >
                 <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-3">
                   <span className="font-bold text-base text-slate-900 dark:text-white font-display flex items-center gap-2">
-                    {t.name}
+                    {team.name}
                   </span>
                   <button
                     type="button"
-                    onClick={() => handleCopyTeam(idx, `${t.name}:\n` + t.members.join('\n'))}
+                    onClick={() => handleCopyTeam(idx, `${team.name}:\n` + team.members.join('\n'))}
                     className="p-1.5 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-400 dark:text-zinc-400 hover:text-slate-600 dark:hover:text-zinc-200 transition-colors cursor-pointer"
-                    title="Copiar este equipo"
+                    title={t('teams_copy_team_title')}
                   >
                     {copiedTeam === idx ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
@@ -325,7 +325,7 @@ export default function EquiposPage() {
 
                 {/* Members list */}
                 <div className="space-y-2">
-                  {t.members.map((member, mIdx) => (
+                  {team.members.map((member, mIdx) => (
                     <div
                       key={mIdx}
                       className="flex items-center gap-2.5 text-xs text-slate-800 dark:text-zinc-200 bg-slate-50 dark:bg-[#1e293b]/60 p-2.5 rounded-lg border border-slate-100 dark:border-white/5"
@@ -339,7 +339,7 @@ export default function EquiposPage() {
                 </div>
 
                 <div className="text-[11px] text-slate-400 dark:text-zinc-500 text-right pt-1 font-medium">
-                  {t.members.length} integrantes
+                  {team.members.length} {t('teams_members_count')}
                 </div>
               </div>
             ))}

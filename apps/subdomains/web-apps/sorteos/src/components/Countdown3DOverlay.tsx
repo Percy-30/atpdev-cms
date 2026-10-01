@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { playCountdownTick, playDrumRoll } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 export interface Countdown3DOverlayProps {
   active: boolean;
@@ -14,8 +15,10 @@ export const Countdown3DOverlay: React.FC<Countdown3DOverlayProps> = ({
   active,
   seconds = 3,
   onComplete,
-  title = 'Sorteando al azar...'
+  title
 }) => {
+  const { t } = useLanguage();
+  const displayTitle = title || t('countdown_drawing_title');
   const [currentCount, setCurrentCount] = useState<number>(seconds);
   const [isFlipping, setIsFlipping] = useState<boolean>(false);
 
@@ -62,7 +65,7 @@ export const Countdown3DOverlay: React.FC<Countdown3DOverlayProps> = ({
         {/* Title badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-widest animate-pulse">
           <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-          <span>{title}</span>
+          <span>{displayTitle}</span>
         </div>
 
         {/* 3D Rotating Countdown Number Box */}
@@ -85,16 +88,16 @@ export const Countdown3DOverlay: React.FC<Countdown3DOverlayProps> = ({
         </div>
 
         <p className="text-xs sm:text-sm font-mono text-zinc-400 animate-pulse tracking-wide">
-          Algoritmo CSPRNG calculando resultado inmutable...
+          {t('countdown_csprng_sub')}
         </p>
 
         {/* Skip button for user control */}
         <button
           type="button"
           onClick={onComplete}
-          className="text-xs text-zinc-500 hover:text-zinc-300 font-mono underline transition-colors pt-4"
+          className="text-xs text-zinc-500 hover:text-zinc-300 font-mono underline transition-colors pt-4 cursor-pointer"
         >
-          Omitir cuenta regresiva ⚡
+          {t('countdown_skip')}
         </button>
       </div>
     </div>

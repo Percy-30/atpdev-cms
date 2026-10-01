@@ -185,7 +185,7 @@ export default function NumerosPage() {
                 className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Tv className="w-3.5 h-3.5" />
-                <span>En Vivo</span>
+                <span>{t('btn_live_mode')}</span>
               </button>
             </>
           )}
@@ -197,12 +197,12 @@ export default function NumerosPage() {
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-white/10 pb-4">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
             <Sliders className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-            <span>Configuración del Sorteo</span>
+            <span>{t('options_config_title')}</span>
           </div>
 
           {/* Quick presets */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Plantillas:</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">{t('quick_presets_label')}</span>
             <button
               type="button"
               onClick={() => applyPreset(1, 100, 1, true)}

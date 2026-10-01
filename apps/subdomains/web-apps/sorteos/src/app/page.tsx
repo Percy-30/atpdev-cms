@@ -148,13 +148,13 @@ export default function HomePage() {
             <InstagramIcon className="w-4 h-4 text-pink-600" /> Instagram Posts & Reels
           </span>
           <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-white/10 shadow-xs">
-            <FacebookIcon className="w-4 h-4 text-blue-600" /> Páginas de Facebook
+            <FacebookIcon className="w-4 h-4 text-blue-600" /> {t('home_trust_fb')}
           </span>
           <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-white/10 shadow-xs">
-            <YoutubeIcon className="w-4 h-4 text-red-600" /> Videos de YouTube
+            <YoutubeIcon className="w-4 h-4 text-red-600" /> {t('home_trust_yt')}
           </span>
           <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-300 shadow-xs">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Certificado SHA-256
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> {t('home_trust_sha')}
           </span>
         </div>
       </section>
@@ -164,19 +164,19 @@ export default function HomePage() {
         <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center border border-slate-200 dark:border-white/10 shadow-sm">
           <div className="space-y-1">
             <p className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white">+150,000</p>
-            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Sorteos Realizados</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">{t('home_stat_draws')}</p>
           </div>
           <div className="space-y-1">
             <p className="text-3xl sm:text-4xl font-extrabold font-display text-[#d91a7a]">+4.8M</p>
-            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Comentarios Procesados</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">{t('home_stat_comments')}</p>
           </div>
           <div className="space-y-1">
             <p className="text-3xl sm:text-4xl font-extrabold font-display text-emerald-600 dark:text-emerald-400">100%</p>
-            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Aleatorio y Auditable</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">{t('home_stat_random')}</p>
           </div>
           <div className="space-y-1">
             <p className="text-3xl sm:text-4xl font-extrabold font-display text-cyan-600 dark:text-cyan-400">&lt; 3 min</p>
-            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Tiempo de Creación</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">{t('home_stat_time')}</p>
           </div>
         </div>
       </section>
@@ -191,13 +191,13 @@ export default function HomePage() {
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <span className="text-xs font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider flex items-center justify-center gap-1.5">
             <Zap className="w-4 h-4" />
-            <span>Herramientas Gratuitas Standalone</span>
+            <span>{t('home_tools_badge')}</span>
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-            Sorteos Rápidos sin Registro
+            {t('home_tools_title')}
           </h2>
           <p className="text-sm text-slate-600 dark:text-zinc-400">
-            Utiliza nuestras herramientas interactivas al instante: pega listas, gira la ruleta, tira dados o divide grupos de forma 100% gratuita.
+            {t('home_tools_desc')}
           </p>
         </div>
 
@@ -246,7 +246,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <span className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
-            Mecánica en 3 Pasos
+            {t('home_step_badge')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
             {t('home_why_title')}
@@ -261,9 +261,9 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold text-xl flex items-center justify-center mx-auto">
               1
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Pega el Enlace del Post</h3>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">{t('home_step1_title')}</h3>
             <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
-              Introduce el enlace de tu publicación o reel de Instagram, post de Facebook o video de YouTube. Nuestro motor importa los comentarios en segundo plano.
+              {t('home_step1_desc')}
             </p>
           </div>
 
@@ -271,9 +271,9 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-500/20 text-pink-700 dark:text-pink-300 font-bold text-xl flex items-center justify-center mx-auto">
               2
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Configura tus Reglas</h3>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">{t('home_step2_title')}</h3>
             <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
-              Excluye duplicados (1 persona = 1 voto), exige número mínimo de amigos etiquetados, hashtags específicos y define ganadores y suplentes.
+              {t('home_step2_desc')}
             </p>
           </div>
 
@@ -281,9 +281,9 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold text-xl flex items-center justify-center mx-auto">
               3
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Descarga tu Certificado</h3>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">{t('home_step3_title')}</h3>
             <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
-              El sistema ejecuta el sorteo con un algoritmo criptográfico CSPRNG y crea una landing pública con hash anti-fraude y certificado descargable.
+              {t('home_step3_desc')}
             </p>
           </div>
         </div>
@@ -293,13 +293,13 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <span className="text-xs font-bold text-pink-600 dark:text-purple-400 uppercase tracking-wider">
-            Planes Transparentes
+            {t('home_pricing_badge')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-            Escala tus Sorteos según tu Audiencia
+            {t('home_pricing_title')}
           </h2>
           <p className="text-sm text-slate-600 dark:text-zinc-400">
-            Empieza gratis con herramientas standalone o desbloquea filtros avanzados y mayor volumen de comentarios para tus campañas de marca.
+            {t('home_pricing_desc')}
           </p>
         </div>
 
@@ -315,7 +315,7 @@ export default function HomePage() {
             >
               {plan.isPopular && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#d91a7a] text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
-                  Más Recomendado
+                  {t('home_plan_popular')}
                 </div>
               )}
 
@@ -330,7 +330,7 @@ export default function HomePage() {
                     {plan.priceMonthly === 0 ? '0€' : `${plan.priceMonthly}€`}
                   </span>
                   {plan.priceMonthly > 0 && (
-                    <span className="text-xs text-slate-500 dark:text-zinc-400 font-medium">/mes</span>
+                    <span className="text-xs text-slate-500 dark:text-zinc-400 font-medium">{t('home_plan_per_month')}</span>
                   )}
                 </div>
 
@@ -364,30 +364,30 @@ export default function HomePage() {
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center justify-center gap-1.5">
             <HelpCircle className="w-4 h-4 text-amber-500" />
-            <span>Dudas Frecuentes</span>
+            <span>{t('home_faq_badge')}</span>
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">Preguntas Frecuentes</h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">{t('home_faq_title')}</h2>
         </div>
 
         <div className="space-y-4">
           <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 space-y-2 border border-slate-200 dark:border-white/10 shadow-sm">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">¿Cómo garantiza Sorteos Pro que el resultado no está manipulado?</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">{t('home_faq1_q')}</h3>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Utilizamos un generador de números aleatorios criptográficamente seguro (Web Crypto API CSPRNG). Al finalizar cada sorteo se calcula un hash inmutable SHA-256 que vincula la lista completa de comentarios y la fecha/hora exacta en un certificado público que cualquiera puede auditar.
+              {t('home_faq1_a')}
             </p>
           </div>
 
           <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 space-y-2 border border-slate-200 dark:border-white/10 shadow-sm">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">¿Cumple con las políticas oficiales de Instagram y Facebook?</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">{t('home_faq2_q')}</h3>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Sí. La plataforma utiliza las APIs oficiales de Meta Graph y YouTube Data API. No solicitamos contraseñas de tus cuentas sociales ni realizamos scraping no autorizado.
+              {t('home_faq2_a')}
             </p>
           </div>
 
           <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 space-y-2 border border-slate-200 dark:border-white/10 shadow-sm">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">¿Puedo usar las herramientas sin registrarme?</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">{t('home_faq3_q')}</h3>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              ¡Por supuesto! Todas las herramientas standalone (Sorteo por lista, Ruleta aleatoria, Tirada de dados, Lanzar moneda, Generador de números y Equipos) son 100% gratuitas y de acceso libre directo en tu navegador.
+              {t('home_faq3_a')}
             </p>
           </div>
         </div>
