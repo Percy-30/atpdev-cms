@@ -14,6 +14,7 @@ import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { 
   playCardFlip, playWinnerFanfare, isAudioMuted, toggleAudioMute 
 } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 const TEAM_NAMES_PRESETS = [
   ['🔴 Titanes Rojos', '🔵 Centinelas Azules', '🟢 Dragones Verdes', '🟡 Fénix Dorados', '🟣 Halcones Violetas', '⚪ Lobos Blancos'],
@@ -22,6 +23,7 @@ const TEAM_NAMES_PRESETS = [
 ];
 
 export default function EquiposPage() {
+  const { t } = useLanguage();
   const [inputText, setInputText] = useState<string>(
     "Alejandro\nBeatriz\nCarlos\nDaniela\nEduardo\nFernanda\nGabriel\nHelena\nIgnacio\nJimena\nKevin\nLaura"
   );
@@ -139,11 +141,11 @@ export default function EquiposPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Generador de Equipos al Azar
+          {t('teams_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 max-w-xl mx-auto">
-          Divide listas de participantes en grupos o equipos equilibrados de manera equitativa e imparcial
+          {t('teams_desc')}
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -174,7 +176,7 @@ export default function EquiposPage() {
                 className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-pink-950/40 dark:hover:bg-pink-900/50 text-pink-700 dark:text-pink-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>Exportar</span>
+                <span>{t('btn_export')}</span>
               </button>
               <button
                 type="button"
@@ -182,7 +184,7 @@ export default function EquiposPage() {
                 className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Tv className="w-3.5 h-3.5" />
-                <span>En Vivo</span>
+                <span>{t('btn_live_mode')}</span>
               </button>
             </>
           )}
@@ -196,14 +198,14 @@ export default function EquiposPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label htmlFor="equipos-textarea" className="text-xs font-semibold text-slate-700 dark:text-zinc-300">
-                Participantes ({participantsList.length}):
+                {t('teams_participants_label')} ({participantsList.length}):
               </label>
               <button
                 type="button"
                 onClick={() => setInputText('')}
                 className="text-xs text-slate-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400 transition-colors font-medium cursor-pointer"
               >
-                Vaciar lista
+                {t('btn_restart')}
               </button>
             </div>
             <textarea
@@ -224,7 +226,7 @@ export default function EquiposPage() {
               {/* Number of Teams */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-2">
-                  Cantidad de Equipos a Formar:
+                  {t('teams_count_label')}:
                 </label>
                 <div className="grid grid-cols-5 gap-2">
                   {[2, 3, 4, 5, 6].map((num) => (
@@ -247,7 +249,7 @@ export default function EquiposPage() {
               {/* Naming Style */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-2">
-                  Estilo de Nombres para los Equipos:
+                  {t('teams_naming_style')}:
                 </label>
                 <select
                   value={namingStyle}
@@ -275,7 +277,7 @@ export default function EquiposPage() {
               className="w-full py-3.5 text-base sm:text-lg bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <Shuffle className={`w-5 h-5 ${isGenerating ? 'animate-spin' : ''}`} />
-              <span>{isGenerating ? 'Formando equipos...' : 'Comenzar Reparto'}</span>
+              <span>{isGenerating ? t('teams_generating') : t('teams_btn_generate')}</span>
             </button>
           </div>
         </div>
@@ -287,7 +289,7 @@ export default function EquiposPage() {
           <div className="flex items-center justify-between flex-wrap gap-4">
             <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
               <Trophy className="w-5 h-5 text-amber-500" />
-              <span>Equipos Conformados ({teams.length})</span>
+              <span>{t('teams_title')} ({teams.length})</span>
             </h2>
 
             <button
@@ -296,7 +298,7 @@ export default function EquiposPage() {
               className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-2 cursor-pointer"
             >
               {copiedTeam === 999 ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              <span>{copiedTeam === 999 ? '¡Todos Copiados!' : 'Copiar Todos los Equipos'}</span>
+              <span>{copiedTeam === 999 ? t('btn_copied') : t('btn_copy')}</span>
             </button>
           </div>
 
@@ -348,7 +350,7 @@ export default function EquiposPage() {
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
               <div className="flex items-center gap-2 text-slate-600 dark:text-zinc-300">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="font-semibold">Hash Criptográfico SHA-256:</span>
+                <span className="font-semibold">{t('audit_hash_label')}:</span>
               </div>
               <span className="text-slate-500 dark:text-zinc-400 break-all">{auditHash}</span>
             </div>

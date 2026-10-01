@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { 
@@ -8,71 +10,74 @@ import {
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
 import { HomeHashVerifier } from '@/components/HomeHashVerifier';
 import { PRICING_PLANS } from '@/lib/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   const standaloneTools = [
     {
-      title: 'Sorteo por Nombres al Azar',
-      desc: 'Pega una lista de participantes, elimina duplicados automáticamente y elige ganadores y suplentes con certificación inmutable.',
+      title: t('tool_names'),
+      desc: t('tool_names_desc'),
       href: '/herramientas/lista',
       icon: ListOrdered,
       color: 'from-amber-400 to-amber-600',
-      badge: 'Más Usado',
-      action: 'Abrir Lista'
+      badge: 'Top',
+      action: t('names_btn_draw')
     },
     {
-      title: 'Ruleta Aleatoria Digital',
-      desc: 'Personaliza los gajos, premios o nombres y gira la ruleta interactiva con física realista y algoritmo CSPRNG.',
+      title: t('tool_roulette'),
+      desc: t('tool_roulette_desc'),
       href: '/herramientas/ruleta',
       icon: Disc,
       color: 'from-pink-500 to-rose-600',
-      badge: 'Interactivo',
-      action: 'Girar Ruleta'
+      badge: 'Top',
+      action: t('roulette_btn_spin')
     },
     {
-      title: 'Tirar Dados 3D',
-      desc: 'Lanza entre 1 y 6 dados simultáneos con física visual y cálculo automático de la suma total para juegos o decisiones.',
+      title: t('tool_dice'),
+      desc: t('tool_dice_desc'),
       href: '/herramientas/dados',
       icon: Dices,
       color: 'from-amber-500 to-orange-600',
-      badge: 'Instantáneo',
-      action: 'Lanzar Dados'
+      badge: 'Top',
+      action: t('dice_btn_roll')
     },
     {
-      title: 'Lanzar Moneda (Cara o Cruz)',
-      desc: 'Simulación de volado de moneda con giro 3D de alta precisión y estadísticas criptográficas sin sesgos.',
+      title: t('tool_coin'),
+      desc: t('tool_coin_desc'),
       href: '/herramientas/moneda',
       icon: CircleDollarSign,
       color: 'from-emerald-500 to-teal-600',
-      badge: 'Criptográfico',
-      action: 'Lanzar Moneda'
+      badge: 'Top',
+      action: t('coin_btn_flip')
     },
     {
-      title: 'Generador de Números',
-      desc: 'Elige números aleatorios entre un mínimo y un máximo sin repetición para rifas, loterías y bingos.',
+      title: t('tool_numbers'),
+      desc: t('tool_numbers_desc'),
       href: '/herramientas/numeros',
       icon: Hash,
       color: 'from-cyan-500 to-blue-600',
-      badge: 'Rifas & Bingos',
-      action: 'Generar Números'
+      badge: 'Top',
+      action: t('numbers_btn_generate')
     },
     {
-      title: 'Generador de Equipos',
-      desc: 'Divide una lista de personas o jugadores en N equipos equilibrados de manera equitativa y sin favoritismos.',
+      title: t('tool_teams'),
+      desc: t('tool_teams_desc'),
       href: '/herramientas/equipos',
       icon: Users2,
       color: 'from-indigo-500 to-violet-600',
-      badge: 'Balanceado',
-      action: 'Armar Equipos'
+      badge: 'Top',
+      action: t('teams_btn_generate')
     },
     {
-      title: 'Amigo Invisible Secreto',
-      desc: 'Organiza intercambios de regalos. Emparejamiento aleatorio seguro con tarjetas secretas y enlaces para WhatsApp.',
+      title: t('tool_secret_santa'),
+      desc: t('tool_secret_santa_desc'),
       href: '/herramientas/amigo-invisible',
       icon: Gift,
       color: 'from-rose-500 to-pink-600',
-      badge: 'Nuevo & Secreto',
-      action: 'Crear Amigo Invisible'
+      badge: 'Top',
+      action: t('secret_santa_btn_generate')
     },
   ];
 
@@ -85,17 +90,17 @@ export default function HomePage() {
         {/* Glowing Top Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-50 dark:bg-pink-500/10 border border-pink-200 dark:border-pink-500/20 text-xs font-semibold uppercase tracking-wider text-pink-700 dark:text-pink-300 shadow-xs">
           <Sparkles className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400" />
-          <span>Plataforma de Sorteos Verificables</span>
+          <span>{t('home_hero_badge')}</span>
         </div>
 
         {/* Main Headline */}
         <div className="space-y-4 max-w-4xl mx-auto">
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-            Crea Sorteos en Redes Sociales <br />
-            <span className="title-neon-glow">100% Transparentes y Verificables</span>
+            {t('home_hero_title_1')} <br />
+            <span className="title-neon-glow">{t('home_hero_title_2')}</span>
           </h1>
           <p className="text-base sm:text-xl text-slate-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Importa comentarios de <span className="text-pink-600 dark:text-pink-400 font-semibold">Instagram</span>, <span className="text-blue-600 dark:text-blue-400 font-semibold">Facebook</span> y <span className="text-red-600 dark:text-red-400 font-semibold">YouTube</span>. Aplica filtros anti-fraude y genera un certificado con validez criptográfica SHA-256.
+            {t('home_hero_desc')}
           </p>
         </div>
 
@@ -106,7 +111,7 @@ export default function HomePage() {
             className="btn-pro-primary w-full sm:w-auto text-base sm:text-lg py-4 px-8 cursor-pointer"
           >
             <Gift className="w-5 h-5" />
-            <span>Crear Sorteo de Redes Sociales</span>
+            <span>{t('home_hero_cta_social')}</span>
             <ArrowRight className="w-5 h-5" />
           </Link>
 
@@ -115,13 +120,13 @@ export default function HomePage() {
             className="btn-pro-secondary w-full sm:w-auto text-base sm:text-lg py-4 px-8 cursor-pointer"
           >
             <ListOrdered className="w-5 h-5 text-pink-600 dark:text-pink-400" />
-            <span>Sorteo de Nombres Gratis</span>
+            <span>{t('home_hero_cta_free')}</span>
           </Link>
         </div>
 
         {/* Quick Access Tools Pills */}
         <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
-          <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider mr-2">Herramientas instantáneas:</span>
+          <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider mr-2">{t('home_tools_instant')}</span>
           {standaloneTools.map((t) => {
             const Icon = t.icon;
             return (
@@ -244,10 +249,10 @@ export default function HomePage() {
             Mecánica en 3 Pasos
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-            ¿Cómo Funciona Sorteos Pro?
+            {t('home_why_title')}
           </h2>
           <p className="text-sm text-slate-600 dark:text-zinc-400">
-            Diseñado para cumplir las directrices de Meta y YouTube y certificar ante tus seguidores que no hay trampa ni manipulación.
+            {t('home_why_desc')}
           </p>
         </div>
 

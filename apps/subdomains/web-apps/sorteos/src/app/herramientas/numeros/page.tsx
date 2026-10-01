@@ -14,6 +14,7 @@ import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { 
   playBallBounce, playWinnerFanfare, isAudioMuted, toggleAudioMute 
 } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 const BALL_GRADIENTS = [
   'from-amber-400 via-yellow-500 to-amber-600 text-amber-950 shadow-amber-500/30',
@@ -25,6 +26,7 @@ const BALL_GRADIENTS = [
 ];
 
 export default function NumerosPage() {
+  const { t } = useLanguage();
   const [min, setMin] = useState<number>(1);
   const [max, setMax] = useState<number>(100);
   const [quantity, setQuantity] = useState<number>(5);
@@ -140,11 +142,11 @@ export default function NumerosPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Generador de Números al Azar
+          {t('numbers_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 max-w-xl mx-auto">
-          Genera números aleatorios únicos para rifas, loterías o bingos con esferas 3D certificadas
+          {t('numbers_desc')}
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -175,7 +177,7 @@ export default function NumerosPage() {
                 className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-pink-950/40 dark:hover:bg-pink-900/50 text-pink-700 dark:text-pink-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>Exportar</span>
+                <span>{t('btn_export')}</span>
               </button>
               <button
                 type="button"
@@ -228,7 +230,7 @@ export default function NumerosPage() {
         {/* Form Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="numero-minimo" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">Valor Mínimo:</label>
+            <label htmlFor="numero-minimo" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">{t('numbers_min')}:</label>
             <input
               id="numero-minimo"
               name="numeroMinimo"
@@ -239,7 +241,7 @@ export default function NumerosPage() {
             />
           </div>
           <div>
-            <label htmlFor="numero-maximo" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">Valor Máximo:</label>
+            <label htmlFor="numero-maximo" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">{t('numbers_max')}:</label>
             <input
               id="numero-maximo"
               name="numeroMaximo"
@@ -250,7 +252,7 @@ export default function NumerosPage() {
             />
           </div>
           <div>
-            <label htmlFor="numero-cantidad" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">Cantidad de Números:</label>
+            <label htmlFor="numero-cantidad" className="block text-xs font-semibold text-slate-700 dark:text-zinc-300 mb-1.5">{t('numbers_qty')}:</label>
             <input
               id="numero-cantidad"
               name="numeroCantidad"
@@ -273,19 +275,19 @@ export default function NumerosPage() {
               onChange={(e) => setAllowDuplicates(!e.target.checked)}
               className="w-4 h-4 rounded text-pink-600 bg-white dark:bg-[#1e293b] border-slate-300 dark:border-white/20 focus:ring-pink-500"
             />
-            <span className="text-xs font-medium text-slate-700 dark:text-zinc-300">Sin duplicados (Números únicos)</span>
+            <span className="text-xs font-medium text-slate-700 dark:text-zinc-300">{t('numbers_duplicates')}</span>
           </label>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Ordenar:</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">{t('numbers_sort_order')}:</span>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as any)}
               className="px-3 py-1.5 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 text-xs text-slate-800 dark:text-zinc-200 focus:outline-none focus:border-[#d91a7a]"
             >
-              <option value="none">Al azar (orden de extracción)</option>
-              <option value="asc">Menor a Mayor (Ascendente)</option>
-              <option value="desc">Mayor a Menor (Descendente)</option>
+              <option value="none">{t('numbers_order_none')}</option>
+              <option value="asc">{t('numbers_order_asc')}</option>
+              <option value="desc">{t('numbers_order_desc')}</option>
             </select>
           </div>
         </div>
@@ -305,7 +307,7 @@ export default function NumerosPage() {
             className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold text-base sm:text-lg py-3.5 px-12 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
           >
             <RefreshCw className={`w-5 h-5 ${isGenerating ? 'animate-spin' : ''}`} />
-            <span>{isGenerating ? 'Extrayendo esferas 3D...' : 'Comenzar Sorteo'}</span>
+            <span>{isGenerating ? t('numbers_generating') : t('numbers_btn_generate')}</span>
           </button>
         </div>
       </div>
@@ -327,7 +329,7 @@ export default function NumerosPage() {
                 className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? '¡Copiado!' : 'Copiar'}</span>
+                <span>{copied ? t('btn_copied') : t('btn_copy')}</span>
               </button>
               <button
                 type="button"

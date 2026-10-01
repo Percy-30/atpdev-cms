@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Check, Sparkles, Zap, ShieldCheck, HelpCircle, ArrowRight } from 'lucide-react';
 import { PRICING_PLANS } from '@/lib/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function PlanesPage() {
+  const { t } = useLanguage();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
 
   const faqs = [
@@ -37,19 +39,19 @@ export default function PlanesPage() {
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-gradient-badge text-xs font-mono font-bold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Precios Transparentes</span>
+          <span>{t('pricing_badge')}</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
-          Elige el plan ideal para tus sorteos
+          {t('pricing_title')}
         </h1>
         <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-          Desde sorteos gratuitos para pequeñas cuentas hasta infraestructura masiva para marcas globales y agencias.
+          {t('pricing_desc')}
         </p>
 
         {/* Billing Switch */}
         <div className="pt-4 flex items-center justify-center gap-3">
           <span className={`text-xs font-mono font-medium ${billingCycle === 'monthly' ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-500 dark:text-zinc-500'}`}>
-            Facturación Mensual
+            {t('pricing_monthly')}
           </span>
           <button
             type="button"
@@ -65,7 +67,7 @@ export default function PlanesPage() {
           </button>
           <div className="flex items-center gap-1.5">
             <span className={`text-xs font-mono font-medium ${billingCycle === 'annual' ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-500 dark:text-zinc-500'}`}>
-              Facturación Anual
+              {t('pricing_annual')}
             </span>
             <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-400/10 border border-amber-300 dark:border-amber-400/20 text-[10px] font-mono font-bold text-amber-800 dark:text-amber-300">
               Ahorra 20%
@@ -194,7 +196,7 @@ export default function PlanesPage() {
         <div className="text-center space-y-2">
           <div className="inline-flex items-center gap-1.5 text-xs font-mono text-pink-600 dark:text-purple-400 font-bold uppercase">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Preguntas Frecuentes</span>
+            <span>{t('pricing_faq_title')}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">
             ¿Tienes alguna duda sobre los planes?

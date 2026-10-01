@@ -19,6 +19,7 @@ import ConfettiEffect from '@/components/ConfettiEffect';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playWinnerFanfare } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Fallback demo giveaway si no existe en localStorage
 const DEMO_GIVEAWAY: Giveaway = {
@@ -84,6 +85,7 @@ const DEMO_GIVEAWAY: Giveaway = {
 
 export default function SorteoPublicoPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = React.use(params);
+  const { t } = useLanguage();
   const [giveaway, setGiveaway] = useState<Giveaway>(DEMO_GIVEAWAY);
   const [copied, setCopied] = useState<boolean>(false);
   const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
@@ -140,7 +142,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 dark:bg-white/5 dark:hover:bg-white/10 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
-            <span>{copied ? '¡Enlace Copiado!' : 'Compartir Sorteo'}</span>
+            <span>{copied ? t('btn_copied') : t('btn_copy')}</span>
           </button>
 
           <button
@@ -148,7 +150,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             onClick={() => setShowLiveStream(true)}
             className="px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 border border-pink-200 dark:bg-purple-600/30 dark:hover:bg-purple-600/50 dark:border-purple-500/40 text-xs font-mono text-pink-700 dark:text-purple-200 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
-            <span>📺 Modo En Vivo</span>
+            <span>📺 {t('btn_live_mode')}</span>
           </button>
 
           <button
@@ -156,7 +158,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             onClick={() => setShowExportModal(true)}
             className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 dark:border-amber-500/30 text-xs font-mono text-amber-800 dark:text-amber-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
-            <span>📸 Exportar Tarjeta</span>
+            <span>📸 {t('btn_export')}</span>
           </button>
 
           <Link
@@ -164,7 +166,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             className="px-3.5 py-1.5 rounded-xl gold-gradient-badge text-black text-xs font-bold font-display flex items-center gap-1.5 shadow-md shadow-amber-500/20"
           >
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Ver Certificado</span>
+            <span>{t('wizard_view_cert')}</span>
           </Link>
         </div>
       </div>
@@ -220,7 +222,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
             <Trophy className="w-4 h-4 text-amber-950" />
           </div>
           <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white">
-            Ganador(es) Oficial(es)
+            {t('wizard_winners_official')}
           </h2>
         </div>
 
@@ -264,7 +266,7 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-pink-600 dark:text-purple-400" />
             <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
-              Suplentes de Reserva ({giveaway.substitutes.length})
+              {t('wizard_substitutes_reserve')} ({giveaway.substitutes.length})
             </h2>
           </div>
 

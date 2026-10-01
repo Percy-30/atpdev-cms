@@ -14,6 +14,7 @@ import { shuffleArray, generateSha256Hash } from '@/lib/randomEngine';
 import { 
   playCardFlip, playWinnerFanfare, isAudioMuted, toggleAudioMute 
 } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface Match {
   giver: string;
@@ -22,6 +23,7 @@ interface Match {
 }
 
 export default function AmigoInvisiblePage() {
+  const { t } = useLanguage();
   const [participants, setParticipants] = useState<string[]>([
     'Carlos Gómez',
     'Lucía Fernández',
@@ -157,11 +159,11 @@ export default function AmigoInvisiblePage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Sorteo de Amigo Invisible
+          {t('secret_santa_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 max-w-xl mx-auto">
-          Organiza el intercambio de regalos con emparejamiento aleatorio seguro y tarjetas secretas
+          {t('secret_santa_desc')}
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -191,7 +193,7 @@ export default function AmigoInvisiblePage() {
               className="py-1.5 px-3 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
             >
               <Tv className="w-3.5 h-3.5" />
-              <span>En Vivo</span>
+              <span>{t('btn_live_mode')}</span>
             </button>
           )}
         </div>
@@ -201,7 +203,7 @@ export default function AmigoInvisiblePage() {
         {/* Left Form: Participants & Rules */}
         <div className="lg:col-span-6 space-y-6">
           <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-white/10 shadow-sm">
-            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">Participantes ({participants.length})</h2>
+            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">{t('secret_santa_participants_label')} ({participants.length})</h2>
 
             {/* Add person form */}
             <form onSubmit={handleAddPerson} className="flex gap-2">
@@ -252,7 +254,7 @@ export default function AmigoInvisiblePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-100 dark:border-white/10">
               <div className="space-y-1">
                 <label htmlFor="budget-input" className="text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5 text-amber-500" /> Presupuesto:
+                  <DollarSign className="w-3.5 h-3.5 text-amber-500" /> {t('secret_santa_budget_label')}:
                 </label>
                 <input
                   id="budget-input"
@@ -266,7 +268,7 @@ export default function AmigoInvisiblePage() {
 
               <div className="space-y-1">
                 <label htmlFor="deadline-input" className="text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-pink-500" /> Fecha de entrega:
+                  <Calendar className="w-3.5 h-3.5 text-pink-500" /> {t('secret_santa_deadline_label')}:
                 </label>
                 <input
                   id="deadline-input"
@@ -288,7 +290,7 @@ export default function AmigoInvisiblePage() {
                 className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold w-full text-base py-3.5 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all"
               >
                 <Shuffle className="w-5 h-5" />
-                <span>{matches.length > 0 ? 'Volver a Emparejar' : 'Comenzar Emparejamiento'}</span>
+                <span>{t('secret_santa_btn_generate')}</span>
               </button>
             </div>
           </div>
@@ -302,7 +304,7 @@ export default function AmigoInvisiblePage() {
                 <div>
                   <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
                     <Gift className="w-5 h-5 text-amber-500" />
-                    <span>Resultados Secretos</span>
+                    <span>{t('secret_santa_secret_card')}</span>
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-zinc-400">
                     Pasa el dispositivo o comparte el mensaje en privado a cada uno.
@@ -327,7 +329,7 @@ export default function AmigoInvisiblePage() {
                         className="text-xs font-semibold text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-50 dark:bg-pink-950/40 hover:bg-pink-100 dark:hover:bg-pink-900/50 transition-colors cursor-pointer"
                       >
                         {m.revealed ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                        <span>{m.revealed ? 'Ocultar' : 'Revelar Secreto'}</span>
+                        <span>{m.revealed ? t('secret_santa_hide') : t('secret_santa_reveal')}</span>
                       </button>
                     </div>
 
@@ -347,7 +349,7 @@ export default function AmigoInvisiblePage() {
                           <span className="text-2xl font-extrabold text-slate-900 dark:text-white font-display">{m.receiver}</span>
                         </div>
                       ) : (
-                        <span>🔒 Toca &quot;Revelar Secreto&quot; para ver</span>
+                        <span>🔒 {t('secret_santa_reveal')}</span>
                       )}
                     </div>
 
@@ -361,12 +363,12 @@ export default function AmigoInvisiblePage() {
                         {copiedIndex === idx ? (
                           <>
                             <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">¡Copiado!</span>
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">{t('btn_copied')}</span>
                           </>
                         ) : (
                           <>
                             <Copy className="w-3.5 h-3.5" />
-                            <span>Copiar Privado</span>
+                            <span>{t('btn_copy')}</span>
                           </>
                         )}
                       </button>
@@ -377,7 +379,7 @@ export default function AmigoInvisiblePage() {
                         className="py-2 px-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-semibold flex items-center justify-center gap-1 transition-colors border border-emerald-200 dark:border-emerald-800/40 cursor-pointer"
                       >
                         <Share2 className="w-3.5 h-3.5" />
-                        <span>WhatsApp</span>
+                        <span>{t('secret_santa_share_whatsapp')}</span>
                       </button>
                     </div>
                   </div>

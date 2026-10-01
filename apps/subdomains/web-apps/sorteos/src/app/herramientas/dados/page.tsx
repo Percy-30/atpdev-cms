@@ -10,6 +10,7 @@ import { ToolSwitcher } from '@/components/ToolSwitcher';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playDiceSound, playWinnerFanfare, isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface DiceCubeProps {
   value: number;
@@ -152,6 +153,7 @@ const Dice3DCube: React.FC<DiceCubeProps> = ({ value, isRolling, rollAngleX, rol
 };
 
 export default function DadosPage() {
+  const { t } = useLanguage();
   const [diceCount, setDiceCount] = useState<number>(2);
   const [diceValues, setDiceValues] = useState<number[]>([3, 4]);
   const [rollAngles, setRollAngles] = useState<Array<{ x: number; y: number; z: number }>>([
@@ -224,11 +226,11 @@ export default function DadosPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2 font-display">
-          Tirar Dados 3D
+          {t('dice_title')}
         </h1>
         
         <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
-          Tira de 1 a 6 dados tridimensionales con giros físicos realistas y suma automática
+          {t('dice_desc')}
         </p>
 
         {/* Small Audio & Screen Controls */}
@@ -257,7 +259,7 @@ export default function DadosPage() {
             className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
-            <span>Exportar</span>
+            <span>{t('btn_export')}</span>
           </button>
           <button
             type="button"
@@ -314,7 +316,7 @@ export default function DadosPage() {
         {/* Total Badge */}
         <div>
           <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 shadow-xs">
-            <span className="text-xs font-semibold text-amber-800 dark:text-amber-400 uppercase tracking-wider">Suma Total:</span>
+            <span className="text-xs font-semibold text-amber-800 dark:text-amber-400 uppercase tracking-wider">{t('dice_total_sum')}</span>
             <span className="text-4xl font-extrabold font-display text-amber-900 dark:text-amber-300 font-mono-num">
               {totalSum}
             </span>
@@ -330,7 +332,7 @@ export default function DadosPage() {
             className="bg-[#d91a7a] hover:bg-[#c2186b] active:scale-95 disabled:opacity-50 text-white font-bold text-base sm:text-lg py-3.5 px-12 rounded-xl shadow-md hover:shadow-lg shadow-pink-500/20 transition-all inline-flex items-center gap-2 cursor-pointer"
           >
             <RefreshCw className={`w-5 h-5 ${isRolling ? 'animate-spin' : ''}`} />
-            <span>{isRolling ? 'Lanzando dados 3D...' : '¡Tirar Dados Ahora!'}</span>
+            <span>{isRolling ? t('dice_rolling') : t('dice_btn_roll')}</span>
           </button>
         </div>
       </div>
@@ -339,7 +341,7 @@ export default function DadosPage() {
       {history.length > 0 && (
         <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 border border-slate-200 dark:border-white/10 shadow-xs space-y-3">
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
-            Historial de Tiradas Recientes
+            {t('dice_history')}
           </h2>
           <div className="flex flex-wrap gap-2">
             {history.map((item, idx) => (
