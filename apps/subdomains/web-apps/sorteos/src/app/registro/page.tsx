@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Gift, ArrowRight, Lock, Mail, User } from 'lucide-react';
 import { PRICING_PLANS } from '@/lib/types';
-import { api, setToken } from '@/lib/api';
+import { api, setToken, getToken } from '@/lib/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 function RegistroContent() {
   const router = useRouter();
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const initialPlan = searchParams.get('plan') || 'free';
 
@@ -19,6 +21,12 @@ function RegistroContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (getToken()) {
+      router.push('/dashboard');
+    }
+  }, [router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -26,7 +34,7 @@ function RegistroContent() {
     try {
       const data = await api<{ token: string }>('/api/v1/auth/register', {
         method: 'POST',
-        body: { name, email, password },
+        body: { name, email, password, plan: selectedPlan },
         auth: false,
       });
       setToken(data.token);
@@ -50,17 +58,17 @@ function RegistroContent() {
             <span className="text-xl font-black font-display text-slate-900 dark:text-white">sorteos <span className="text-pink-600 dark:text-purple-400">pro</span></span>
           </Link>
           <h1 className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
-            Crear Cuenta en Sorteos Pro
+            {t('auth_register_title')}
           </h1>
           <p className="text-xs text-slate-600 dark:text-zinc-400">
-            Empieza a realizar sorteos transparentes y verificables en minutos
+            {t('auth_register_subtitle')}
           </p>
         </div>
 
         <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-7 border border-slate-200 dark:border-white/10 shadow-sm space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-1.5">Nombre Completo o Empresa:</label>
+              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-1.5">{t('auth_name_label')}</label>
               <div className="relative">
                 <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                 <input
@@ -68,14 +76,14 @@ function RegistroContent() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Tu nombre o marca"
+                  placeholder={t('auth_name_placeholder')}
                   className="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white text-xs font-mono focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-1.5">Correo Electrónico:</label>
+              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-1.5">{t('auth_email_label')}</label>
               <div className="relative">
                 <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                 <input
@@ -90,7 +98,7 @@ function RegistroContent() {
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-1.5">Contraseña:</label>
+              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-1.5">{t('auth_password_label')}</label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-zinc-500" />
                 <input
@@ -98,7 +106,7 @@ function RegistroContent() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mínimo 8 caracteres"
+                  placeholder={t('auth_password_placeholder')}
                   className="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white text-xs font-mono focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
                 />
               </div>
@@ -106,7 +114,7 @@ function RegistroContent() {
 
             {/* Plan Selector */}
             <div>
-              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-2">Selecciona tu Plan Inicial:</label>
+              <label className="block text-xs font-mono text-slate-700 dark:text-zinc-300 mb-2">{t('auth_select_plan')}</label>
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                 {PRICING_PLANS.slice(0, 4).map((p) => (
                   <button
@@ -139,7 +147,7 @@ function RegistroContent() {
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl btn-pro-primary text-xs font-bold font-display shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>{loading ? 'Creando cuenta...' : 'Comenzar Ahora'}</span>
+                <span>{loading ? t('auth_register_loading') : t('auth_register_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -147,9 +155,9 @@ function RegistroContent() {
         </div>
 
         <p className="text-center text-xs text-slate-600 dark:text-zinc-400">
-          ¿Ya tienes cuenta?{' '}
+          {t('auth_has_account')}{' '}
           <Link href="/login" className="text-pink-600 dark:text-purple-400 hover:underline font-bold font-mono">
-            Inicia sesión aquí
+            {t('auth_login_link')}
           </Link>
         </p>
       </div>
@@ -162,7 +170,7 @@ export default function RegistroPage() {
     <React.Suspense
       fallback={
         <div className="min-h-[85vh] flex items-center justify-center text-slate-400 dark:text-zinc-500 font-mono text-xs">
-          Cargando registro...
+          Cargando...
         </div>
       }
     >

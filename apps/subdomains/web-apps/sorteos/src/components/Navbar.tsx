@@ -1,19 +1,37 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Gift, Sparkles, ChevronDown, ListOrdered, Disc, 
-  Dices, CircleDollarSign, Hash, Users2, Menu, X, ShieldCheck
+  Dices, CircleDollarSign, Hash, Users2, Menu, X, ShieldCheck,
+  LayoutDashboard, LogOut
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageSelector } from './LanguageSelector';
 import { useLanguage } from '@/context/LanguageContext';
+import { getToken } from '@/lib/api';
 
 export const Navbar: React.FC = () => {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t } = useLanguage();
+
+  useEffect(() => {
+    setIsLoggedIn(Boolean(getToken()));
+    const checkAuth = () => setIsLoggedIn(Boolean(getToken()));
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('sorteos_jwt');
+      setIsLoggedIn(false);
+      window.location.href = '/login';
+    }
+  };
 
   const standaloneTools = [
     { name: t('tool_names'), href: '/herramientas/lista', icon: ListOrdered, desc: t('tool_names_desc') },
@@ -126,19 +144,40 @@ export const Navbar: React.FC = () => {
             {/* Language Selector Dropdown */}
             <LanguageSelector />
 
-            <Link
-              href="/login"
-              className="px-3.5 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5"
-            >
-              {t('nav_login')}
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 font-bold font-display text-sm hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>{t('nav_dashboard')}</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="px-3 py-2 text-xs font-semibold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
+                  title={t('nav_logout')}
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="px-3.5 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5"
+                >
+                  {t('nav_login')}
+                </Link>
 
-            <Link
-              href="/sorteos/nuevo"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-bold font-display text-sm shadow-sm hover:shadow-md hover:shadow-pink-500/20 active:scale-95 transition-all"
-            >
-              <span>{t('nav_create_account')}</span>
-            </Link>
+                <Link
+                  href="/registro"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-bold font-display text-sm shadow-sm hover:shadow-md hover:shadow-pink-500/20 active:scale-95 transition-all"
+                >
+                  <span>{t('nav_create_account')}</span>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile hamburger button */}
@@ -199,13 +238,45 @@ export const Navbar: React.FC = () => {
               {t('nav_help')}
             </Link>
 
-            <Link
-              href="/sorteos/nuevo"
-              onClick={() => setMobileMenuOpen(false)}
-              className="mt-2 text-center py-2.5 rounded-xl bg-[#d91a7a] text-white font-bold text-sm shadow-md"
-            >
-              {t('nav_create_account')}
-            </Link>
+            {isLoggedIn ? (
+              <div className="flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-white/10">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-purple-600 dark:text-purple-400"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>{t('nav_dashboard')}</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-rose-600 dark:text-rose-400 cursor-pointer text-left"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>{t('nav_logout')}</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-white/10">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white"
+                >
+                  {t('nav_login')}
+                </Link>
+                <Link
+                  href="/registro"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mt-1 text-center py-2.5 rounded-xl bg-[#d91a7a] text-white font-bold text-sm shadow-md"
+                >
+                  {t('nav_create_account')}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}

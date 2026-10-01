@@ -136,6 +136,7 @@ export default function SorteosAdminClient({
   const [themeMode, setThemeMode] = useState<'dark' | 'light'>(theme.theme_mode === 'light' ? 'light' : 'dark');
   const [radiusStyle, setRadiusStyle] = useState(theme.radius_style || 'rounded-3xl');
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [previewKey, setPreviewKey] = useState(0);
   const [isSavingConfig, setIsSavingConfig] = useState(false);
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
 
@@ -1223,36 +1224,61 @@ export default function SorteosAdminClient({
                 <span className="text-xs font-mono font-bold text-slate-300">Vista Previa en Vivo (Puerto 3006)</span>
               </div>
 
-              <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
-                <button
-                  onClick={() => setPreviewDevice('desktop')}
-                  className={`p-1.5 rounded ${previewDevice === 'desktop' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
-                  title="Desktop"
-                >
-                  <Laptop size={14} />
-                </button>
-                <button
-                  onClick={() => setPreviewDevice('tablet')}
-                  className={`p-1.5 rounded ${previewDevice === 'tablet' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
-                  title="Tablet"
-                >
-                  <Tablet size={14} />
-                </button>
-                <button
-                  onClick={() => setPreviewDevice('mobile')}
-                  className={`p-1.5 rounded ${previewDevice === 'mobile' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
-                  title="Mobile"
-                >
-                  <Smartphone size={14} />
-                </button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                  <button
+                    onClick={() => setPreviewDevice('desktop')}
+                    className={`p-1.5 rounded ${previewDevice === 'desktop' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                    title="Desktop"
+                  >
+                    <Laptop size={14} />
+                  </button>
+                  <button
+                    onClick={() => setPreviewDevice('tablet')}
+                    className={`p-1.5 rounded ${previewDevice === 'tablet' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                    title="Tablet"
+                  >
+                    <Tablet size={14} />
+                  </button>
+                  <button
+                    onClick={() => setPreviewDevice('mobile')}
+                    className={`p-1.5 rounded ${previewDevice === 'mobile' ? 'bg-violet-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                    title="Mobile"
+                  >
+                    <Smartphone size={14} />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => {
+                      setPreviewKey(k => k + 1);
+                      setTimeout(broadcastThemeUpdate, 500);
+                    }}
+                    className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                    title="Recargar vista previa"
+                  >
+                    <RefreshCw size={14} />
+                  </button>
+                  <a
+                    href="http://localhost:3006"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center gap-1 text-xs"
+                    title="Abrir Sorteos Pro en nueva pestaña"
+                  >
+                    <ExternalLink size={14} />
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div className={`mx-auto bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 ${
+            <div className={`mx-auto bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 relative ${
               previewDevice === 'mobile' ? 'max-w-[375px] h-[650px]' : previewDevice === 'tablet' ? 'max-w-[768px] h-[650px]' : 'w-full h-[650px]'
             }`}>
               <iframe
                 ref={iframeRef}
+                key={previewKey}
                 src="http://localhost:3006"
                 className="w-full h-full border-0"
                 title="Sorteos Pro Live Preview"
