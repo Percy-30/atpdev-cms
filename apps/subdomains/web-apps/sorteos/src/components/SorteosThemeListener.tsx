@@ -2,6 +2,21 @@
 
 import { useEffect } from "react";
 
+// Development safeguard: Suppress false-positive React 19 inline script warnings
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  const origError = console.error;
+  console.error = (...args: unknown[]) => {
+    if (
+      typeof args[0] === "string" &&
+      (args[0].includes("Encountered a script tag while rendering React component") ||
+        args[0].includes("Scripts inside React components are never executed"))
+    ) {
+      return;
+    }
+    origError.apply(console, args);
+  };
+}
+
 export function SorteosThemeListener() {
   useEffect(() => {
     // 1. Initial local theme mode check
