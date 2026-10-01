@@ -5,6 +5,7 @@ import { Trophy, Sparkles, X, Volume2, VolumeX, Share2, RotateCcw, CheckCircle2,
 import { ConfettiEffect } from './ConfettiEffect';
 import { WinnerExportModal } from './WinnerExportModal';
 import { playCountdownTick, playWinnerFanfare, isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
+import { useLanguage } from '@/context/LanguageContext';
 
 export interface LiveStreamStageProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export const LiveStreamStage: React.FC<LiveStreamStageProps> = ({
   onReroll,
   platform = 'Sorteos Pro'
 }) => {
+  const { t } = useLanguage();
   const [countdown, setCountdown] = useState<number | null>(null);
   const [revealed, setRevealed] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
@@ -192,7 +194,7 @@ export const LiveStreamStage: React.FC<LiveStreamStageProps> = ({
               className="btn-pro-primary py-3.5 px-6 rounded-2xl text-base flex items-center gap-2"
             >
               <Share2 className="w-5 h-5" />
-              <span>📸 Exportar Tarjeta para Redes</span>
+              <span>📸 {t('btn_export')}</span>
             </button>
 
             {onReroll && (
@@ -206,7 +208,7 @@ export const LiveStreamStage: React.FC<LiveStreamStageProps> = ({
                 className="btn-pro-secondary py-3.5 px-6 rounded-2xl text-base flex items-center gap-2"
               >
                 <RotateCcw className="w-5 h-5" />
-                <span>Volver a Sortear</span>
+                <span>{t('btn_restart')}</span>
               </button>
             )}
           </>

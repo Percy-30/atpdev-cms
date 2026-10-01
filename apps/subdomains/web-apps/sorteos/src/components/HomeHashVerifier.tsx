@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShieldCheck, Search, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const HomeHashVerifier: React.FC = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
 
@@ -59,7 +61,7 @@ export const HomeHashVerifier: React.FC = () => {
           type="submit"
           className="btn-pro-primary text-sm py-3 px-6 shrink-0 cursor-pointer"
         >
-          <span>Verificar</span>
+          <span>{t('nav_verify_cert')}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </form>

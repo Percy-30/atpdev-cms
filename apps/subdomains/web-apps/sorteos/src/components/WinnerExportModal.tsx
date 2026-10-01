@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Download, Copy, Check, X, Sparkles, Trophy, Share2, Camera } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export interface WinnerExportModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
   auditHash = 'a1b2c3d4e5f67890123456789abcdef0',
   platform = 'Sorteos Pro'
 }) => {
+  const { t } = useLanguage();
   const [format, setFormat] = useState<'story' | 'post'>('story');
   const [copied, setCopied] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -276,7 +278,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
             className="btn-pro-primary flex-1 py-3.5 rounded-xl text-base flex items-center justify-center gap-2"
           >
             <Download className="w-5 h-5" />
-            <span>Descargar PNG HD</span>
+            <span>{t('btn_export')}</span>
           </button>
 
           <button
@@ -286,7 +288,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
             className="btn-pro-secondary py-3.5 px-6 rounded-xl text-base flex items-center justify-center gap-2"
           >
             {copied ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5" />}
-            <span>{copied ? '¡Copiado!' : 'Copiar Imagen'}</span>
+            <span>{copied ? t('btn_copied') : t('btn_copy')}</span>
           </button>
         </div>
       </div>
