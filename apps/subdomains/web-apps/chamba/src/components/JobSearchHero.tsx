@@ -29,7 +29,7 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
   };
 
   return (
-    <div className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 border-b border-white/10 overflow-hidden bg-gradient-to-b from-slate-950 via-[#070d18] to-[#070a12]">
+    <div className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-white/10 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100/90 dark:from-slate-950 dark:via-[#070d18] dark:to-[#070a12] transition-colors duration-200">
       {/* Ambient Gradient Lights & Cyber Glow */}
       <div 
         className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] blur-[140px] pointer-events-none rounded-full" 
@@ -64,7 +64,7 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
 
         {/* Main Headline */}
         <div className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-white leading-[1.15]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-slate-900 dark:text-white leading-[1.15]">
             {branding?.hero_title_prefix ? (
               <>
                 {branding.hero_title_prefix}{" "}
@@ -78,73 +78,73 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
               </>
             ) : (
               <>
-                Encuentra tu próxima <span className="title-neon-glow underline decoration-emerald-400/60 decoration-wavy decoration-2">chamba</span>, ofertas de trabajo y empleos en Perú
+                Encuentra tu próxima <span className="title-neon-glow underline decoration-emerald-500/60 decoration-wavy decoration-2">chamba</span>, ofertas de trabajo y empleos en Perú
               </>
             )}
           </h1>
-          <p className="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300/90 max-w-2xl mx-auto leading-relaxed font-normal">
             {branding?.hero_description || (
               <>
-                Bolsa de trabajo líder en convocatorias del Estado (<span className="text-amber-300 font-medium">CAS 1057</span>, <span className="text-emerald-300 font-medium">D.L. 728</span>, <span className="text-cyan-300 font-medium">276</span>) y sector privado en las 25 regiones del Perú. Postulación directa sin intermediarios con bases oficiales.
+                Bolsa de trabajo líder en convocatorias del Estado (<span className="text-amber-600 dark:text-amber-300 font-semibold">CAS 1057</span>, <span className="text-emerald-600 dark:text-emerald-300 font-semibold">D.L. 728</span>, <span className="text-cyan-600 dark:text-cyan-300 font-semibold">276</span>) y sector privado en las 25 regiones del Perú. Postulación directa sin intermediarios con bases oficiales.
               </>
             )}
           </p>
         </div>
 
         {/* Live Search Engine Bar */}
-        <form onSubmit={handleSearch} className="glass-card p-3 rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-3 sm:space-y-0 sm:flex items-center gap-3 transition-all focus-within:border-emerald-500/50 focus-within:shadow-[0_0_35px_rgba(16,185,129,0.25)]">
-          <div className="flex-1 flex items-center gap-3 px-3.5 py-2.5 bg-slate-900/90 rounded-xl border border-white/10 text-white focus-within:border-emerald-500/40 transition-colors">
-            <Search size={20} className="text-emerald-400 flex-shrink-0" />
+        <form onSubmit={handleSearch} className="glass-card p-3 rounded-2xl border border-slate-200/90 dark:border-white/15 bg-white/95 dark:bg-slate-900/80 shadow-md dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-3 sm:space-y-0 sm:flex items-center gap-3 transition-all focus-within:border-emerald-500/50">
+          <div className="flex-1 flex items-center gap-3 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus-within:border-emerald-500/40 transition-colors">
+            <Search size={20} className="text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
             <input
               type="text"
               placeholder="Puesto, institución o palabra clave (ej. Sistemas, SUNAT, Contador)..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full bg-transparent text-sm sm:text-base text-white placeholder-slate-400 focus:outline-none"
+              className="w-full bg-transparent text-sm sm:text-base text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none"
             />
           </div>
 
-          <div className="flex items-center gap-2 px-3.5 py-2.5 bg-slate-900/90 rounded-xl border border-white/10 text-white sm:w-56 focus-within:border-emerald-500/40 transition-colors">
+          <div className="flex items-center gap-2 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white sm:w-56 focus-within:border-emerald-500/40 transition-colors">
             <MapPin size={18} className="text-emerald-400 flex-shrink-0" />
             <select
               value={region}
               onChange={(e) => setRegion(e.target.value)}
-              className="w-full bg-transparent text-sm text-slate-200 focus:outline-none cursor-pointer"
+              className="w-full bg-transparent text-sm text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer"
             >
-              <option value="" className="bg-slate-900 text-slate-200">Todas las Regiones (25 Dept.)</option>
-              <option value="Amazonas" className="bg-slate-900 text-slate-200">Amazonas</option>
-              <option value="Áncash" className="bg-slate-900 text-slate-200">Áncash</option>
-              <option value="Apurímac" className="bg-slate-900 text-slate-200">Apurímac</option>
-              <option value="Arequipa" className="bg-slate-900 text-slate-200">Arequipa</option>
-              <option value="Ayacucho" className="bg-slate-900 text-slate-200">Ayacucho</option>
-              <option value="Cajamarca" className="bg-slate-900 text-slate-200">Cajamarca</option>
-              <option value="Callao" className="bg-slate-900 text-slate-200">Callao</option>
-              <option value="Cusco" className="bg-slate-900 text-slate-200">Cusco</option>
-              <option value="Huancavelica" className="bg-slate-900 text-slate-200">Huancavelica</option>
-              <option value="Huánuco" className="bg-slate-900 text-slate-200">Huánuco</option>
-              <option value="Ica" className="bg-slate-900 text-slate-200">Ica</option>
-              <option value="Junín" className="bg-slate-900 text-slate-200">Junín</option>
-              <option value="La Libertad" className="bg-slate-900 text-slate-200">La Libertad</option>
-              <option value="Lambayeque" className="bg-slate-900 text-slate-200">Lambayeque</option>
-              <option value="Lima" className="bg-slate-900 text-slate-200">Lima & Callao</option>
-              <option value="Loreto" className="bg-slate-900 text-slate-200">Loreto</option>
-              <option value="Madre de Dios" className="bg-slate-900 text-slate-200">Madre de Dios</option>
-              <option value="Moquegua" className="bg-slate-900 text-slate-200">Moquegua</option>
-              <option value="Pasco" className="bg-slate-900 text-slate-200">Pasco</option>
-              <option value="Piura" className="bg-slate-900 text-slate-200">Piura</option>
-              <option value="Puno" className="bg-slate-900 text-slate-200">Puno</option>
-              <option value="San Martín" className="bg-slate-900 text-slate-200">San Martín</option>
-              <option value="Tacna" className="bg-slate-900 text-slate-200">Tacna</option>
-              <option value="Tumbes" className="bg-slate-900 text-slate-200">Tumbes</option>
-              <option value="Ucayali" className="bg-slate-900 text-slate-200">Ucayali</option>
-              <option value="Nacional / Remoto" className="bg-slate-900 text-slate-200">Nacional / Remoto</option>
+              <option value="" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Todas las Regiones (25 Dept.)</option>
+              <option value="Amazonas" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Amazonas</option>
+              <option value="Áncash" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Áncash</option>
+              <option value="Apurímac" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Apurímac</option>
+              <option value="Arequipa" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Arequipa</option>
+              <option value="Ayacucho" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Ayacucho</option>
+              <option value="Cajamarca" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Cajamarca</option>
+              <option value="Callao" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Callao</option>
+              <option value="Cusco" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Cusco</option>
+              <option value="Huancavelica" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Huancavelica</option>
+              <option value="Huánuco" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Huánuco</option>
+              <option value="Ica" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Ica</option>
+              <option value="Junín" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Junín</option>
+              <option value="La Libertad" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">La Libertad</option>
+              <option value="Lambayeque" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Lambayeque</option>
+              <option value="Lima" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Lima & Callao</option>
+              <option value="Loreto" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Loreto</option>
+              <option value="Madre de Dios" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Madre de Dios</option>
+              <option value="Moquegua" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Moquegua</option>
+              <option value="Pasco" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Pasco</option>
+              <option value="Piura" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Piura</option>
+              <option value="Puno" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Puno</option>
+              <option value="San Martín" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">San Martín</option>
+              <option value="Tacna" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Tacna</option>
+              <option value="Tumbes" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Tumbes</option>
+              <option value="Ucayali" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Ucayali</option>
+              <option value="Nacional / Remoto" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Nacional / Remoto</option>
             </select>
           </div>
 
           <button
             type="submit"
             disabled={isPending}
-            className="btn-brand-gradient w-full sm:w-auto px-7 py-3 rounded-xl text-white font-black font-display text-sm flex items-center justify-center gap-2 cursor-pointer flex-shrink-0 disabled:opacity-75 disabled:cursor-wait shadow-xl"
+            className="btn-brand-gradient w-full sm:w-auto px-7 py-3 rounded-xl text-white font-black font-display text-sm flex items-center justify-center gap-2 cursor-pointer flex-shrink-0 disabled:opacity-75 disabled:cursor-wait shadow-xl hover:scale-105 transition-transform"
           >
             {isPending ? (
               <>
@@ -161,8 +161,8 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
         </form>
 
         {/* Trending Search Tags Row */}
-        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-slate-400">
-          <span className="flex items-center gap-1.5 text-amber-400 font-bold px-2 py-1 rounded-md bg-amber-500/10 border border-amber-500/20">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+          <span className="flex items-center gap-1.5 text-amber-700 dark:text-amber-400 font-bold px-2 py-1 rounded-md bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
             <TrendingUp size={13} />
             <span>Tendencias:</span>
           </span>
@@ -178,7 +178,7 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
               key={item.tag}
               type="button"
               onClick={() => router.push(`/empleos?q=${encodeURIComponent(item.q)}`)}
-              className="px-3 py-1 rounded-lg bg-slate-900/80 border border-white/10 hover:border-emerald-500/40 text-slate-300 hover:text-emerald-300 transition-all hover:scale-105 cursor-pointer shadow-sm hover:shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+              className="px-3 py-1 rounded-lg bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 hover:border-emerald-500 text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 transition-all hover:scale-105 cursor-pointer shadow-sm hover:shadow-[0_0_10px_rgba(16,185,129,0.2)]"
             >
               #{item.tag}
             </button>
@@ -186,30 +186,30 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
         </div>
 
         {/* IBM Plex Mono Live Statistics */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10">
-          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
-            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400 flex items-center justify-center gap-1">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-200 dark:border-white/10">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 space-y-1 shadow-sm">
+            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1">
               <span>{totalJobs}</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">Ofertas Activas</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider font-semibold">Ofertas Activas</p>
           </div>
-          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
-            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-amber-400 flex items-center justify-center gap-1">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 space-y-1 shadow-sm">
+            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1">
               <span>{totalVacancies}</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">Vacantes Totales</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider font-semibold">Vacantes Totales</p>
           </div>
-          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
-            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-400 flex items-center justify-center gap-1">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 space-y-1 shadow-sm">
+            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-600 dark:text-cyan-400 flex items-center justify-center gap-1">
               <span>100%</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">RUCs Verificados</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider font-semibold">RUCs Verificados</p>
           </div>
-          <div className="p-4 rounded-2xl glass-card border border-white/10 space-y-1 shadow-sm">
-            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400 flex items-center justify-center gap-1">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 space-y-1 shadow-sm">
+            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-purple-600 dark:text-purple-400 flex items-center justify-center gap-1">
               <span>0 S/</span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider font-semibold">Costo Postulante</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider font-semibold">Costo Postulante</p>
           </div>
         </div>
       </div>

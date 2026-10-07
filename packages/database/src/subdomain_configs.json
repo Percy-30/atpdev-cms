@@ -9,17 +9,17 @@
     "category": "Convocatorias & Empleos Perú",
     "status": "active",
     "theme": {
-      "accent_color": "#9C33FF",
-      "accent_name": "custom",
+      "accent_color": "#10b981",
+      "accent_name": "emerald",
       "theme_mode": "dark",
       "radius_style": "rounded-3xl",
       "radius_scale": "full",
-      "seed_color": "#a855f7",
-      "color_theme": "vibrant",
-      "primary_color": "#9C33FF",
-      "secondary_color": "#1A1320",
-      "tertiary_color": "#381537",
-      "neutral_color": "#807986",
+      "seed_color": "#10b981",
+      "color_theme": "emerald",
+      "primary_color": "#10b981",
+      "secondary_color": "#064e3b",
+      "tertiary_color": "#047857",
+      "neutral_color": "#64748b",
       "font_headline": "Space Grotesk",
       "font_body": "Inter",
       "font_label": "IBM Plex Mono",
@@ -83,22 +83,22 @@
     "status": "active",
     "theme": {
       "accent_color": "#8b5cf6",
-      "accent_name": "neon-violet",
+      "accent_name": "purple",
       "theme_mode": "dark",
       "radius_style": "rounded-3xl",
       "radius_scale": "full",
       "seed_color": "#8b5cf6",
       "color_theme": "neon",
       "primary_color": "#8b5cf6",
-      "secondary_color": "#ec4899",
-      "tertiary_color": "#f59e0b",
-      "neutral_color": "#070a12",
+      "secondary_color": "#3074E8",
+      "tertiary_color": "#DD3CD5",
+      "neutral_color": "#7D7986",
       "font_headline": "Space Grotesk",
       "font_body": "Inter",
       "font_label": "IBM Plex Mono",
-      "glow_style": "full-border",
+      "glow_style": "full-border,ripple,burst,cursor-trail",
       "neon_thickness": "4px",
-      "cursor_effect": "cursor-default",
+      "cursor_effect": "cursor-trail",
       "global_background_image": ""
     },
     "branding": {
@@ -140,6 +140,6 @@
       "whatsapp": "+51987654321",
       "support_url": "https://sorteos.atpdev.pe/planes"
     },
-    "updated_at": "2026-09-22T20:30:00.000Z"
+    "updated_at": "2026-10-03T17:04:06.545Z"
   }
 }

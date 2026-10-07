@@ -13,7 +13,10 @@
         "excludeDuplicates": true,
         "minMentions": 2,
         "requiredHashtag": "#TechStoreSorteo",
-        "blockedUsers": ["@spambot1", "@troll99"],
+        "blockedUsers": [
+          "@spambot1",
+          "@troll99"
+        ],
         "winnersCount": 1,
         "substitutesCount": 2
       },
@@ -200,13 +203,35 @@
   ],
   "users": [
     {
+      "id": "usr-atp-dev",
+      "name": "ATP Dev (Oficial)",
+      "email": "atp.dev000@gmail.com",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 7,
+      "commentsConsumed": 170,
+      "commentsLimit": 2500,
+      "joinedAt": "2026-10-01"
+    },
+    {
+      "id": "usr-percy-admin",
+      "name": "Percy (ATP DEV Admin)",
+      "email": "achataipepercy@gmail.com",
+      "plan": "enterprise",
+      "status": "active",
+      "giveawaysCount": 24,
+      "commentsConsumed": 12500,
+      "commentsLimit": 500000,
+      "joinedAt": "2026-09-01"
+    },
+    {
       "id": "usr-1",
       "name": "Agencia Digital Lima",
       "email": "contacto@agenciadigital.pe",
       "plan": "business",
       "status": "active",
       "giveawaysCount": 42,
-      "commentsConsumed": 12400,
+      "commentsConsumed": 0,
       "commentsLimit": 50000,
       "joinedAt": "2026-08-10"
     },
@@ -226,9 +251,9 @@
       "name": "Spam Bot Network",
       "email": "spambot99@disposable.com",
       "plan": "free",
-      "status": "suspended",
+      "status": "active",
       "giveawaysCount": 1,
-      "commentsConsumed": 50,
+      "commentsConsumed": 0,
       "commentsLimit": 250,
       "joinedAt": "2026-09-18"
     },

@@ -83,38 +83,38 @@ export function HeaderNav() {
   const isToolActive = HERRAMIENTAS.some(h => pathname === h.href);
 
   return (
-    <header className="sticky top-0 z-40 bg-[#070a12]/90 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#070a12]/90 backdrop-blur-2xl border-b border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3.5 group shrink-0">
           <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-2xl blur-sm opacity-50 group-hover:opacity-100 transition duration-500" />
-            <div className="relative w-11 h-11 rounded-xl bg-slate-950 border border-white/15 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-              <Briefcase className="text-emerald-400 font-bold" size={22} />
+            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-2xl blur-sm opacity-40 group-hover:opacity-100 transition duration-500" />
+            <div className="relative w-11 h-11 rounded-xl bg-emerald-50 dark:bg-slate-950 border border-emerald-200 dark:border-white/15 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+              <Briefcase className="text-emerald-600 dark:text-emerald-400 font-bold" size={22} />
             </div>
           </div>
           <div>
-            <span className="font-display font-black text-2xl tracking-tight text-white flex items-center gap-1.5">
-              chamba <span className="text-emerald-400 font-mono text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.3)]">pro</span>
+            <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+              chamba <span className="text-emerald-700 dark:text-emerald-400 font-mono text-xs px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/40 shadow-sm">pro</span>
             </span>
-            <span className="text-[10px] text-slate-400 font-mono block -mt-1 tracking-widest uppercase">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block -mt-1 tracking-widest uppercase">
               Perú • Convocatorias Oficiales
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation - Clear, Large, Bold & Professional like iLovePDF */}
-        <nav className="hidden lg:flex items-center gap-2 font-display text-sm font-bold text-slate-200">
+        <nav className="hidden lg:flex items-center gap-1.5 font-display text-sm font-bold">
           {/* Convocatorias */}
           <Link 
             href="/empleos" 
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
               pathname.startsWith('/empleos')
-                ? 'bg-white/10 text-white border-white/20 shadow-sm'
-                : 'border-transparent hover:text-white hover:bg-white/5 hover:border-white/10'
+                ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
+                : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
-            <Search size={16} className="text-emerald-400" />
+            <Search size={16} className="text-emerald-600 dark:text-emerald-400" />
             <span>Convocatorias</span>
           </Link>
 
@@ -123,13 +123,13 @@ export function HeaderNav() {
             href="/guias" 
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
               pathname.startsWith('/guias')
-                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 shadow-sm'
-                : 'border-transparent text-slate-200 hover:text-emerald-300 hover:bg-white/5 hover:border-white/10'
+                ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 shadow-sm'
+                : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
-            <BookOpen size={16} className="text-emerald-400" />
+            <BookOpen size={16} className="text-emerald-600 dark:text-emerald-400" />
             <span>Guías CAS</span>
-            <span className="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[10px] font-mono font-bold uppercase tracking-wider">
+            <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 rounded text-[10px] font-mono font-bold uppercase tracking-wider">
               Nuevo
             </span>
           </Link>
@@ -141,21 +141,21 @@ export function HeaderNav() {
               onClick={() => setToolsOpen(!toolsOpen)}
               className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer ${
                 toolsOpen || isToolActive
-                  ? 'bg-white/10 text-white border-white/20 shadow-sm'
-                  : 'border-transparent hover:text-white hover:bg-white/5 hover:border-white/10'
+                  ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
+                  : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
               }`}
             >
-              <Sparkles size={16} className="text-emerald-400" />
+              <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400" />
               <span>Herramientas</span>
               <ChevronDown 
                 size={15} 
-                className={`text-slate-400 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-emerald-400' : ''}`} 
+                className={`text-slate-400 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} 
               />
             </button>
 
             {/* Dropdown Mega Menu */}
             {toolsOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-3xl bg-slate-950/95 backdrop-blur-2xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-3xl bg-white/98 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-2xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150">
                 {HERRAMIENTAS.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.href;
@@ -166,8 +166,8 @@ export function HeaderNav() {
                       onClick={() => setToolsOpen(false)}
                       className={`p-3 rounded-2xl border transition-all flex items-start gap-3 group text-left ${
                         active 
-                          ? 'bg-white/10 border-white/25 shadow-md' 
-                          : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.08] hover:border-white/15'
+                          ? 'bg-emerald-50 dark:bg-white/10 border-emerald-200 dark:border-white/25 shadow-sm' 
+                          : 'bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-200 dark:hover:border-white/15'
                       }`}
                     >
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-md shrink-0 group-hover:scale-105 transition-transform`}>
@@ -175,16 +175,16 @@ export function HeaderNav() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-display font-bold text-xs text-white group-hover:text-emerald-400 transition-colors">
+                          <span className="font-display font-bold text-xs text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                             {item.title}
                           </span>
                           {item.badge && (
-                            <span className="text-[9.5px] font-mono px-1.5 py-0.2 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                            <span className="text-[9.5px] font-mono px-1.5 py-0.2 rounded-md bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">
                               {item.badge}
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-slate-400 line-clamp-2 mt-0.5 leading-snug font-normal">
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 leading-snug font-normal">
                           {item.desc}
                         </p>
                       </div>
@@ -200,11 +200,11 @@ export function HeaderNav() {
             href="/quienes-somos" 
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
               pathname === '/quienes-somos'
-                ? 'bg-white/10 text-white border-white/20 shadow-sm'
-                : 'border-transparent text-slate-300 hover:text-white hover:bg-white/5 hover:border-white/10'
+                ? 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
-            <ShieldCheck size={16} className="text-slate-400" />
+            <ShieldCheck size={16} className="text-slate-500 dark:text-slate-400" />
             <span>Quiénes Somos</span>
           </Link>
         </nav>
@@ -216,20 +216,20 @@ export function HeaderNav() {
           {/* Publicar Empleo */}
           <Link
             href="/publicar-empleo"
-            className="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-bold font-display text-slate-200 hover:text-white transition-all shadow-sm cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            className="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 text-xs font-bold font-display text-slate-700 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white transition-all shadow-sm cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
           >
-            <PlusCircle size={15} className="text-emerald-400" />
+            <PlusCircle size={15} className="text-emerald-600 dark:text-emerald-400" />
             <span>Publicar Empleo</span>
           </Link>
 
           {/* Explorar Vacantes - Big, Bold Primary Button */}
           <Link
             href="/empleos"
-            className="btn-brand-gradient relative group overflow-hidden px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-black font-display transition-all flex items-center gap-2.5 shadow-[0_8px_25px_rgba(16,185,129,0.35)] hover:shadow-[0_10px_30px_rgba(16,185,129,0.5)] cursor-pointer hover:scale-[1.03] active:scale-[0.98]"
+            className="btn-brand-gradient relative group overflow-hidden px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-black font-display transition-all flex items-center gap-2.5 shadow-md hover:shadow-lg cursor-pointer hover:scale-[1.03] active:scale-[0.98]"
           >
-            <Compass size={18} className="text-slate-950 stroke-[2.5] shrink-0 group-hover:rotate-45 transition-transform duration-300" />
-            <span className="text-slate-950 font-black tracking-tight">Explorar Vacantes</span>
-            <ArrowRight size={15} className="text-slate-950 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
+            <Compass size={18} className="text-white dark:text-slate-950 stroke-[2.5] shrink-0 group-hover:rotate-45 transition-transform duration-300" />
+            <span className="text-white dark:text-slate-950 font-black tracking-tight">Explorar Vacantes</span>
+            <ArrowRight size={15} className="text-white dark:text-slate-950 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
           </Link>
 
           {/* Mobile Drawer */}

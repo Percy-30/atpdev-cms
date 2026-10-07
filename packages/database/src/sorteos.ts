@@ -113,7 +113,8 @@ function getSorteosDataFilePath(): string | null {
       pathMod.resolve(cwd, 'packages/database/src/sorteos_data.json'),
       pathMod.resolve(cwd, '../packages/database/src/sorteos_data.json'),
       pathMod.resolve(cwd, '../../packages/database/src/sorteos_data.json'),
-      pathMod.resolve(cwd, '../../../packages/database/src/sorteos_data.json')
+      pathMod.resolve(cwd, '../../../packages/database/src/sorteos_data.json'),
+      pathMod.resolve(cwd, '../../../../packages/database/src/sorteos_data.json')
     ];
 
     for (const p of possiblePaths) {
@@ -295,6 +296,76 @@ export async function deleteGiveaway(id: string): Promise<boolean> {
 export async function getSorteosUsers(): Promise<SorteosUserRecord[]> {
   const data = readFullSorteosData();
   return data.users;
+}
+
+export async function syncRealSorteosUser(user: Partial<SorteosUserRecord> & { email: string }): Promise<SorteosUserRecord> {
+  const data = readFullSorteosData();
+  const emailNorm = user.email.toLowerCase().trim();
+  let existing = data.users.find(u => u.email.toLowerCase() === emailNorm || (user.id && u.id === user.id));
+  
+  if (existing) {
+    if (user.name) existing.name = user.name;
+    if (user.plan) existing.plan = user.plan;
+    if (user.status) existing.status = user.status;
+    if (user.giveawaysCount !== undefined) existing.giveawaysCount = user.giveawaysCount;
+    if (user.commentsConsumed !== undefined) existing.commentsConsumed = user.commentsConsumed;
+    if (user.commentsLimit !== undefined) existing.commentsLimit = user.commentsLimit;
+  } else {
+    existing = {
+      id: user.id || `usr-${Date.now()}`,
+      name: user.name || user.email.split('@')[0],
+      email: user.email,
+      plan: user.plan || 'pro',
+      status: user.status || 'active',
+      giveawaysCount: user.giveawaysCount ?? 1,
+      commentsConsumed: user.commentsConsumed ?? 0,
+      commentsLimit: user.commentsLimit ?? (user.plan === 'business' ? 50000 : user.plan === 'enterprise' ? 500000 : 10000),
+      joinedAt: user.joinedAt || new Date().toISOString().split('T')[0]
+    };
+    data.users.unshift(existing);
+  }
+
+  writeFullSorteosData(data);
+  return existing;
+}
+
+export async function getSorteosUserByEmail(email: string): Promise<SorteosUserRecord | undefined> {
+  const data = readFullSorteosData();
+  const emailNorm = email.toLowerCase().trim();
+  return data.users.find(u => u.email.toLowerCase() === emailNorm);
+}
+
+export async function recordSorteosUserConsumption(
+  emailOrId: string,
+  commentsCount: number,
+  isNewGiveaway = false
+): Promise<{ success: boolean; user?: SorteosUserRecord }> {
+  const data = readFullSorteosData();
+  const search = emailOrId.toLowerCase().trim();
+  let user = data.users.find(u => u.email.toLowerCase() === search || u.id === emailOrId);
+
+  if (!user) {
+    user = {
+      id: `usr-${Date.now()}`,
+      name: emailOrId.includes('@') ? emailOrId.split('@')[0] : 'Creador',
+      email: emailOrId.includes('@') ? emailOrId : `${emailOrId}@sorteos.pro`,
+      plan: 'pro',
+      status: 'active',
+      giveawaysCount: isNewGiveaway ? 1 : 0,
+      commentsConsumed: Math.max(0, commentsCount),
+      commentsLimit: 10000,
+      joinedAt: new Date().toISOString().split('T')[0]
+    };
+    data.users.unshift(user);
+  } else {
+    user.commentsConsumed = (user.commentsConsumed || 0) + Math.max(0, commentsCount);
+    if (isNewGiveaway) {
+      user.giveawaysCount = (user.giveawaysCount || 0) + 1;
+    }
+  }
+
+  writeFullSorteosData(data);
+  return { success: true, user };
 }
 
 export async function updateUserPlan(userId: string, newPlan: SorteosUserRecord['plan']): Promise<boolean> {

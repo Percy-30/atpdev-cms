@@ -2459,11 +2459,11 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('CONTRALORIA') || norm.includes('CONTRALORÍA')) return 'https://www.gob.pe/contraloria';
   if (norm.includes('INEI')) return 'https://uneteservicios.inei.gob.pe/';
   if (norm.includes('DEFENSORIA') || norm.includes('DEFENSORÍA')) return 'https://www.defensoria.gob.pe/convocatorias-cas/';
-  if (norm.includes('SUNAFIL')) return 'https://aplicativosweb2.sunafil.gob.pe/si.convocatorias/';
+  if (norm.includes('SUNAFIL')) return 'https://www.gob.pe/sunafil';
   if (norm.includes('INDECOPI')) return 'https://www.gob.pe/indecopi';
   if (norm.includes('OSINERGMIN')) return 'https://www.osinergmin.gob.pe/seccion/institucional/oportunidades-laborales';
   if (norm.includes('SUNASS')) return 'https://www.sunass.gob.pe/trabaja-con-nosotros/';
-  if (norm.includes('OSIPTEL')) return 'https://www.osiptel.gob.pe/portal-del-usuario/trabaja-con-nosotros/';
+  if (norm.includes('OSIPTEL')) return 'https://www.gob.pe/osiptel';
   if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
   if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
   if (norm.includes('AUTORIDAD DE TRANSPORTE URBANO') || norm.includes('ATU')) return 'https://portal.atu.gob.pe/convocatorias/';
@@ -2472,7 +2472,7 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('ACADEMIA DE LA MAGISTRATURA') || norm.includes('AMAG')) return 'https://www.amag.edu.pe/convocatorias';
   if (norm.includes('INSTITUTO CATASTRAL') || norm.includes('CATASTRAL DE LIMA') || norm.includes('ICL')) return 'https://www.icl.gob.pe/';
   if (norm.includes('OFTALMOLOG') || norm.includes('INSTITUTO REGIONAL DE OFTALMOLOGIA')) return 'https://www.gob.pe/minsa';
-  if (norm.includes('OLMOS') || norm.includes('AUTONOMA DE OLMOS') || norm.includes('AUTÓNOMA DE OLMOS')) return 'https://unao.edu.pe/';
+  if (norm.includes('OLMOS') || norm.includes('AUTONOMA DE OLMOS') || norm.includes('AUTÓNOMA DE OLMOS')) return 'https://www.gob.pe/servir';
   if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
   if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('UNIDAD DE GESTION EDUCATIVA') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
   if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
@@ -2487,7 +2487,7 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('MININTER') || /\bPOLIC[IÍ]A\b/i.test(norm) || norm.includes('POLICIA NACIONAL') || norm.includes('POLICÍA NACIONAL') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
   if (norm.includes('MINDEF') || norm.includes('DEFENSA') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
   if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
-  if (norm.includes('ANIN')) return 'https://www.gob.pe/institucion/anin/colecciones/36109-convocatorias-de-trabajo';
+  if (norm.includes('ANIN')) return 'https://www.gob.pe/anin';
   if (norm.includes('MINEM') || norm.includes('ENERGIA') || norm.includes('ENERGÍA')) return 'https://www.gob.pe/minem';
   if (norm.includes('PRODUCE') || norm.includes('PRODUCCION') || norm.includes('PRODUCCIÓN') || norm.includes('SANIPES') || norm.includes('ITP')) return 'https://www.gob.pe/produce';
   if (norm.includes('MIDAGRI') || norm.includes('MINAGRI') || norm.includes('AGRICULTURA') || norm.includes('SERFOR') || norm.includes('SENASA') || norm.includes('ANA')) return 'https://www.gob.pe/midagri';
@@ -2512,17 +2512,19 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('AGROIDEAS')) return 'https://www.gob.pe/agroideas';
   if (norm.includes('SIERRA Y SELVA EXPORTADORA')) return 'https://www.gob.pe/sierraexportadora';
   if (norm.includes('QUILLABAMBA') || norm.includes('LA CONVENCION') || norm.includes('LA CONVENCIÓN')) return 'https://munilaconvencion.gob.pe/';
-  if (norm.includes('AREQUIPA') || norm.includes('REGION AREQUIPA') || norm.includes('GOBIERNO REGIONAL DE AREQUIPA')) return 'https://www.regionarequipa.gob.pe/convocatorias/';
+  if (norm.includes('AREQUIPA') || norm.includes('REGION AREQUIPA') || norm.includes('GOBIERNO REGIONAL DE AREQUIPA')) return 'https://www.gob.pe/regionarequipa';
   if (norm.includes('SAN MARCOS') || norm.includes('UNMSM')) return 'https://unmsm.edu.pe/';
   if ((norm.includes('UNIVERSIDAD NACIONAL DE INGENIERIA') || norm.includes('UNIVERSIDAD NACIONAL DE INGENIERÍA') || /\bUNI\b/.test(norm)) && !norm.includes('MUNICIPALIDAD') && !norm.includes('UNIDAD')) return 'https://www.uni.edu.pe/';
   if (norm.includes('INIA') || norm.includes('INNOVACION AGRARIA') || norm.includes('INNOVACIÓN AGRARIA')) return 'https://www.gob.pe/inia';
   if ((norm.includes('UNIVERSIDAD NACIONAL AGRARIA') || norm.includes('UNALM')) && !norm.includes('INIA')) return 'https://www.lamolina.edu.pe/';
   if (norm.includes('MIRAFLORES')) return 'https://www.miraflores.gob.pe/convocatorias/';
   if (norm.includes('SAN ISIDRO')) return 'https://msi.gob.pe/portal/convocatorias-de-trabajo/';
-  if (norm.includes('BREÑA') || norm.includes('BRENA')) return 'https://www.munibrena.gob.pe/';
+  if (norm.includes('BREÑA') || norm.includes('BRENA')) return 'https://www.gob.pe/munibrena';
   if (norm.includes('ASCOPE')) return 'https://www.gob.pe/institucion/muniascope/campa%C3%B1as/';
-  if (norm.includes('ISLAY') || norm.includes('MOLLENDO')) return 'https://www.gob.pe/institucion/munimollendo/campa%C3%B1as/';
-  if (norm.includes('QUILCA')) return 'https://www.gob.pe/institucion/muniquilca/campa%C3%B1as/';
+  if (norm.includes('ISLAY') || norm.includes('MOLLENDO')) return 'https://www.gob.pe/munimollendo';
+  if (norm.includes('QUILCA')) return 'https://www.gob.pe/muniquilca';
+  if (norm.includes('PAIS') || norm.includes('PROGRAMA PAIS') || norm.includes('PROGRAMA NACIONAL PAIS')) return 'https://www.gob.pe/pais';
+  if (norm.includes('RENIEC')) return 'https://www.gob.pe/reniec';
   if (norm.includes('MUNICIPALIDAD') || norm.includes('GOBIERNO REGIONAL')) return 'https://www.gob.pe/servir';
 
   // Sector Privado genérico
@@ -2541,9 +2543,23 @@ export function isDeadOrBrokenUrl(url?: string): boolean {
     low.includes('postulacion.minsa.gob.pe') ||
     low.includes('sicoin.mpfn.gob.pe') ||
     low.includes('ww1.essalud.gob.pe') ||
+    low.includes('ww10.essalud.gob.pe') ||
     low.includes('censos2025.com.pe') ||
     low.includes('cloud.juntos.gob.pe') ||
-    low.includes('convocatorias.mef.gob.pe')
+    low.includes('convocatorias.mef.gob.pe') ||
+    low.includes('unao.edu.pe') ||
+    low.includes('munibrena.gob.pe') ||
+    low.includes('munimollendo/campa') ||
+    low.includes('regionarequipa.gob.pe/convocatorias') ||
+    low.includes('aplicativosweb2.sunafil.gob.pe') ||
+    low.includes('apps.reniec.gob.pe/convocaweb') ||
+    low.includes('osiptel.gob.pe/portal-del-usuario') ||
+    low.includes('anin/colecciones/36109') ||
+    low.includes('convocatorias.pais.gob.pe') ||
+    low.includes('38.187.4.52') ||
+    low.includes('facebook.com') ||
+    low.includes('forms.gle') ||
+    low.includes('docs.google.com/forms')
   );
 }
 
@@ -2556,7 +2572,7 @@ export function fixDeadDomainUrl(url?: string, entityName?: string, sectorType?:
   if (low.includes('sicoin.mpfn.gob.pe')) {
     return 'https://portal.mpfn.gob.pe/convocatorias';
   }
-  if (low.includes('ww1.essalud.gob.pe')) {
+  if (low.includes('ww1.essalud.gob.pe') || low.includes('ww10.essalud.gob.pe')) {
     return 'https://www.gob.pe/essalud';
   }
   if (low.includes('censos2025.com.pe')) {
@@ -2567,6 +2583,36 @@ export function fixDeadDomainUrl(url?: string, entityName?: string, sectorType?:
   }
   if (low.includes('convocatorias.mef.gob.pe')) {
     return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
+  }
+  if (low.includes('unao.edu.pe')) {
+    return 'https://www.gob.pe/servir';
+  }
+  if (low.includes('munibrena.gob.pe')) {
+    return 'https://www.gob.pe/munibrena';
+  }
+  if (low.includes('munimollendo/campa')) {
+    return 'https://www.gob.pe/munimollendo';
+  }
+  if (low.includes('regionarequipa.gob.pe/convocatorias')) {
+    return 'https://www.gob.pe/regionarequipa';
+  }
+  if (low.includes('aplicativosweb2.sunafil.gob.pe')) {
+    return 'https://www.gob.pe/sunafil';
+  }
+  if (low.includes('apps.reniec.gob.pe/convocaweb')) {
+    return 'https://www.gob.pe/reniec';
+  }
+  if (low.includes('osiptel.gob.pe/portal-del-usuario')) {
+    return 'https://www.gob.pe/osiptel';
+  }
+  if (low.includes('anin/colecciones/36109')) {
+    return 'https://www.gob.pe/anin';
+  }
+  if (low.includes('convocatorias.pais.gob.pe')) {
+    return 'https://www.gob.pe/pais';
+  }
+  if (low.includes('facebook.com') || low.includes('forms.gle') || low.includes('docs.google.com/forms') || low.includes('38.187.4.52')) {
+    return getOfficialEntityPortalUrl(entityName, sectorType);
   }
   return url;
 }
@@ -2888,9 +2934,15 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 
     const cleanApply = sanitizeOfficialUrl(j.apply_url, safeTarget, j.entity_name, j.sector_type);
     const cleanBases = candidateBases ? sanitizeOfficialUrl(candidateBases, cleanApply, j.entity_name, j.sector_type) : undefined;
-    const cleanFuente = (j.fuente_url && (isCompetitorUrl(j.fuente_url) || isGenericPublicationUrl(j.fuente_url)))
+    const cleanFuente = (j.fuente_url && (isCompetitorUrl(j.fuente_url) || isGenericPublicationUrl(j.fuente_url) || isDeadOrBrokenUrl(j.fuente_url)))
       ? (cleanBases || cleanApply)
       : j.fuente_url;
+    const cleanResultados = (j.resultados_url && (isCompetitorUrl(j.resultados_url) || isGenericPublicationUrl(j.resultados_url) || isDeadOrBrokenUrl(j.resultados_url)))
+      ? undefined
+      : j.resultados_url;
+    const cleanGuia = (j.guia_postulante_url && (isCompetitorUrl(j.guia_postulante_url) || isGenericPublicationUrl(j.guia_postulante_url) || isDeadOrBrokenUrl(j.guia_postulante_url)))
+      ? undefined
+      : j.guia_postulante_url;
     const cleanPlazas = j.plazas ? j.plazas.map(p => ({
       ...p,
       title: cleanPlazaText(p.title) || p.title,
@@ -2900,12 +2952,27 @@ export async function getJobPostings(): Promise<JobPosting[]> {
       bases_url: sanitizeOfficialUrl(p.bases_url, cleanBases || cleanApply, j.entity_name, j.sector_type)
     })) : undefined;
 
+    const today = new Date().toISOString().split('T')[0];
+    let normalizedStartDate = j.start_date;
+    let normalizedEndDate = j.end_date;
+    let normalizedStatus = j.status;
+
+    // Si la fecha límite ya venció en el calendario oficial, marcar fielmente como Finalizado
+    if (j.end_date && j.end_date < today) {
+      normalizedStatus = 'Finalizado';
+    }
+
     return {
       ...j,
+      start_date: normalizedStartDate,
+      end_date: normalizedEndDate,
+      status: normalizedStatus,
       scrape_source_url: j.scrape_source_url || (j.fuente_url && isCompetitorUrl(j.fuente_url) ? j.fuente_url : undefined),
       apply_url: cleanApply,
       bases_pdf_url: cleanBases,
       fuente_url: cleanFuente,
+      resultados_url: cleanResultados,
+      guia_postulante_url: cleanGuia,
       plazas: cleanPlazas
     };
   });
@@ -3035,23 +3102,23 @@ export async function getJobPostingBySlug(
 
     // SANITIZACIÓN ESTRICTA: NUNCA enviar al usuario a computrabajo, convocatoriasdetrabajo, portaltrabajos, bumeran, etc.
     const fallbackPortal = getOfficialEntityPortalUrl(job.entity_name, job.sector_type);
-    const rawBases = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url) && !isGenericPublicationUrl(job.bases_pdf_url)) ? job.bases_pdf_url : undefined;
+    const rawBases = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url) && !isGenericPublicationUrl(job.bases_pdf_url) && !isDeadOrBrokenUrl(job.bases_pdf_url)) ? job.bases_pdf_url : undefined;
     const safeTarget = rawBases || 
-                       (!isCompetitorUrl(job.resultados_url) && !isGenericPublicationUrl(job.resultados_url) && job.resultados_url) || 
+                       (!isCompetitorUrl(job.resultados_url) && !isGenericPublicationUrl(job.resultados_url) && !isDeadOrBrokenUrl(job.resultados_url) && job.resultados_url) || 
                        fallbackPortal;
 
     job.apply_url = sanitizeOfficialUrl(job.apply_url, safeTarget, job.entity_name, job.sector_type);
-    if (job.bases_pdf_url && (isCompetitorUrl(job.bases_pdf_url) || isGenericPublicationUrl(job.bases_pdf_url))) {
-      job.bases_pdf_url = rawBases;
+    if (job.bases_pdf_url && (isCompetitorUrl(job.bases_pdf_url) || isGenericPublicationUrl(job.bases_pdf_url) || isDeadOrBrokenUrl(job.bases_pdf_url))) {
+      job.bases_pdf_url = rawBases ? sanitizeOfficialUrl(rawBases, job.apply_url, job.entity_name, job.sector_type) : undefined;
     }
-    if (job.fuente_url && (isCompetitorUrl(job.fuente_url) || isGenericPublicationUrl(job.fuente_url))) {
+    if (job.fuente_url && (isCompetitorUrl(job.fuente_url) || isGenericPublicationUrl(job.fuente_url) || isDeadOrBrokenUrl(job.fuente_url))) {
       job.fuente_url = job.resultados_url || job.bases_pdf_url || job.apply_url;
     }
-    if (job.cuadro_plazas_url && (isCompetitorUrl(job.cuadro_plazas_url) || isGenericPublicationUrl(job.cuadro_plazas_url))) job.cuadro_plazas_url = undefined;
-    if (job.cronograma_url && (isCompetitorUrl(job.cronograma_url) || isGenericPublicationUrl(job.cronograma_url))) job.cronograma_url = undefined;
-    if (job.anexos_url && (isCompetitorUrl(job.anexos_url) || isGenericPublicationUrl(job.anexos_url))) job.anexos_url = undefined;
-    if (job.guia_postulante_url && (isCompetitorUrl(job.guia_postulante_url) || isGenericPublicationUrl(job.guia_postulante_url))) job.guia_postulante_url = undefined;
-    if (job.resultados_url && (isCompetitorUrl(job.resultados_url) || isGenericPublicationUrl(job.resultados_url))) job.resultados_url = undefined;
+    if (job.cuadro_plazas_url && (isCompetitorUrl(job.cuadro_plazas_url) || isGenericPublicationUrl(job.cuadro_plazas_url) || isDeadOrBrokenUrl(job.cuadro_plazas_url))) job.cuadro_plazas_url = undefined;
+    if (job.cronograma_url && (isCompetitorUrl(job.cronograma_url) || isGenericPublicationUrl(job.cronograma_url) || isDeadOrBrokenUrl(job.cronograma_url))) job.cronograma_url = undefined;
+    if (job.anexos_url && (isCompetitorUrl(job.anexos_url) || isGenericPublicationUrl(job.anexos_url) || isDeadOrBrokenUrl(job.anexos_url))) job.anexos_url = undefined;
+    if (job.guia_postulante_url && (isCompetitorUrl(job.guia_postulante_url) || isGenericPublicationUrl(job.guia_postulante_url) || isDeadOrBrokenUrl(job.guia_postulante_url))) job.guia_postulante_url = undefined;
+    if (job.resultados_url && (isCompetitorUrl(job.resultados_url) || isGenericPublicationUrl(job.resultados_url) || isDeadOrBrokenUrl(job.resultados_url))) job.resultados_url = undefined;
 
     if (job.plazas) {
       job.plazas.forEach(p => {

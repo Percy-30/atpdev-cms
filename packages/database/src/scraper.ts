@@ -1,3 +1,8 @@
+import dns from 'dns';
+try {
+  dns.setDefaultResultOrder?.('ipv4first');
+} catch {}
+
 import { JobPosting, JobPlaza, INITIAL_JOBS } from './jobs';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 import { SERVIR_JOBS_DATA } from './servirJobsData';
@@ -582,9 +587,11 @@ async function refreshLiveFeedInBackground(): Promise<void> {
 function getCdCacheFilePath(): string | null {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const fsMod = typeof require !== 'undefined' ? require('fs') : null;
+    const fsName = 'f' + 's';
+    const pathName = 'p' + 'a' + 't' + 'h';
+    const fsMod = typeof require !== 'undefined' ? (require(fsName) as typeof import('fs')) : null;
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pathMod = typeof require !== 'undefined' ? require('path') : null;
+    const pathMod = typeof require !== 'undefined' ? (require(pathName) as typeof import('path')) : null;
     if (!fsMod || !pathMod) return null;
 
     const cwd = typeof process !== 'undefined' && process.cwd ? process.cwd() : '.';
@@ -609,7 +616,8 @@ function getCdCacheFilePath(): string | null {
 
 export function loadPersistedCdJobs(): JobPosting[] {
   try {
-    const fsMod = typeof require !== 'undefined' ? require('fs') : null;
+    const fsName = 'f' + 's';
+    const fsMod = typeof require !== 'undefined' ? (require(fsName) as typeof import('fs')) : null;
     if (!fsMod) return [];
     const filePath = getCdCacheFilePath();
     if (filePath && fsMod.existsSync(filePath)) {
@@ -627,7 +635,8 @@ export function loadPersistedCdJobs(): JobPosting[] {
 
 export function persistCdJobs(jobs: JobPosting[]): void {
   try {
-    const fsMod = typeof require !== 'undefined' ? require('fs') : null;
+    const fsName = 'f' + 's';
+    const fsMod = typeof require !== 'undefined' ? (require(fsName) as typeof import('fs')) : null;
     if (!fsMod || !Array.isArray(jobs) || jobs.length === 0) return;
     const filePath = getCdCacheFilePath();
     if (filePath) {
@@ -705,7 +714,7 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
   try {
     const res = await fetch('https://www.convocatoriasdetrabajo.com/', {
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-      signal: AbortSignal.timeout(4000)
+      signal: AbortSignal.timeout(15000)
     });
     if (!res.ok) return cachedCdJobs.data;
     const html = await res.text();
@@ -762,7 +771,7 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
       else if (/pr[aá]ctica/i.test(h4Text) || /pr[aá]ctica/i.test(rawTitle)) sector_type = 'Prácticas';
       else if (/privad/i.test(h4Text)) sector_type = 'Privado';
 
-      let end_date = '2026-09-30';
+      let end_date = '';
       if (dateMatch) {
         const dStr = dateMatch[1].trim();
         const parts = dStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -771,6 +780,25 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
           const month = parts[2].padStart(2, '0');
           const year = parts[3];
           end_date = `${year}-${month}-${day}`;
+        }
+      }
+
+      // Si no hay fecha en icono, intentar inferir del pill oficial de la convocatoria
+      if (!end_date) {
+        const pillMatch = content.match(/class=['"][^'"]*main__pills[^'"]*['"][^>]*>([\s\S]*?)<\/span>/i);
+        if (pillMatch) {
+          const pillText = pillMatch[1].trim();
+          const daysMatch = pillText.match(/Finaliza en (\d+) d[ií]as/i);
+          if (daysMatch) {
+            const days = parseInt(daysMatch[1], 10);
+            const d = new Date(Date.now() + days * 86400000);
+            end_date = d.toISOString().split('T')[0];
+          } else if (/Finaliza hoy/i.test(pillText)) {
+            end_date = today;
+          } else if (/Finaliza ma[ñn]ana/i.test(pillText)) {
+            const d = new Date(Date.now() + 86400000);
+            end_date = d.toISOString().split('T')[0];
+          }
         }
       }
 
@@ -813,7 +841,7 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
         featured: i <= 8,
         views_count: 1800 + i * 20,
         clicks_count: 450 + i * 10,
-        status: end_date >= today ? 'Vigente' : 'Finalizado',
+        status: (end_date && end_date < today) ? 'Finalizado' : 'Vigente',
         created_at: new Date().toISOString()
       });
     }

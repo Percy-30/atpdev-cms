@@ -113,20 +113,20 @@ export function JobFilterClient({
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
-        <h3 className="font-display font-bold text-white flex items-center gap-2 text-base">
-          <div className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-4">
+        <h3 className="font-display font-bold text-slate-900 dark:text-white flex items-center gap-2 text-base">
+          <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
             <Filter size={16} />
           </div>
           <span>Filtros de Búsqueda</span>
           {isPending && (
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping ml-1 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping ml-1 inline-block" />
           )}
         </h3>
         {hasActiveFilters && (
           <button
             onClick={handleReset}
-            className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-mono cursor-pointer transition-colors px-2 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:border-amber-500/40"
+            className="text-xs text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 flex items-center gap-1 font-mono cursor-pointer transition-colors px-2 py-1 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 hover:border-amber-500/40"
             title="Restablecer todos los filtros"
           >
             <RotateCcw size={12} />
@@ -137,7 +137,7 @@ export function JobFilterClient({
 
       {/* Quick Pills for 1-Click Filtering */}
       <div className="space-y-1.5">
-        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold block">Filtros Rápidos</span>
+        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold block">Filtros Rápidos</span>
         <div className="flex flex-wrap gap-1.5">
           <button
             type="button"
@@ -148,8 +148,8 @@ export function JobFilterClient({
             }}
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               regimen === "CAS 1057"
-                ? "bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-[0_0_12px_rgba(245,158,11,0.25)]"
-                : "bg-slate-900/80 text-slate-400 border border-white/10 hover:border-white/20 hover:text-white"
+                ? "bg-amber-50 dark:bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/50 shadow-sm"
+                : "bg-slate-100 dark:bg-slate-900/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             CAS
@@ -163,8 +163,8 @@ export function JobFilterClient({
             }}
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               regimen === "D.L. 728"
-                ? "bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]"
-                : "bg-slate-900/80 text-slate-400 border border-white/10 hover:border-white/20 hover:text-white"
+                ? "bg-emerald-50 dark:bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 shadow-sm"
+                : "bg-slate-100 dark:bg-slate-900/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             728
@@ -178,8 +178,8 @@ export function JobFilterClient({
             }}
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               region === "Lima"
-                ? "bg-purple-500/25 text-purple-300 border border-purple-500/50 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
-                : "bg-slate-900/80 text-slate-400 border border-white/10 hover:border-white/20 hover:text-white"
+                ? "bg-purple-50 dark:bg-purple-500/25 text-purple-800 dark:text-purple-300 border border-purple-300 dark:border-purple-500/50 shadow-sm"
+                : "bg-slate-100 dark:bg-slate-900/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             Lima
@@ -193,8 +193,8 @@ export function JobFilterClient({
             }}
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               sueldo === "3000-6000"
-                ? "bg-cyan-500/25 text-cyan-300 border border-cyan-500/50 shadow-[0_0_12px_rgba(6,182,212,0.25)]"
-                : "bg-slate-900/80 text-slate-400 border border-white/10 hover:border-white/20 hover:text-white"
+                ? "bg-cyan-50 dark:bg-cyan-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/50 shadow-sm"
+                : "bg-slate-100 dark:bg-slate-900/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             S/. 3K+
@@ -203,9 +203,9 @@ export function JobFilterClient({
       </div>
 
       {/* Instant Feedback Banner */}
-      <div className="flex items-center justify-between px-3.5 py-2 bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/25 rounded-xl text-[11px] font-mono text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.08)]">
+      <div className="flex items-center justify-between px-3.5 py-2 bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/25 rounded-xl text-[11px] font-mono text-emerald-800 dark:text-emerald-300 shadow-sm">
         <span className="flex items-center gap-2">
-          <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+          <CheckCircle2 size={13} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
           <span>{isPending ? "Actualizando resultados..." : "Filtro dinámico activo"}</span>
         </span>
         {isPending && <span className="animate-spin text-xs">⏳</span>}
@@ -213,11 +213,11 @@ export function JobFilterClient({
 
       {/* Text Query Filter (Debounced) */}
       <div className="space-y-1.5">
-        <label className="text-xs font-mono font-semibold text-slate-300 flex items-center justify-between">
+        <label className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
           <span>Palabra Clave</span>
-          {q && <span className="text-[10px] text-emerald-400 font-mono">Buscando</span>}
+          {q && <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold">Buscando</span>}
         </label>
-        <div className="flex items-center gap-2.5 px-3.5 py-2.5 bg-slate-950/80 rounded-xl border border-white/10 text-white focus-within:border-emerald-500/50 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all">
+        <div className="flex items-center gap-2.5 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950/80 rounded-xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus-within:border-emerald-500/50 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all">
           <Search size={16} className="text-slate-400 shrink-0" />
           <input
             type="text"
@@ -229,7 +229,7 @@ export function JobFilterClient({
                 applyFilters({ q });
               }
             }}
-            className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+            className="w-full bg-transparent text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none"
           />
           {q && (
             <button
@@ -237,7 +237,7 @@ export function JobFilterClient({
                 setQ("");
                 applyFilters({ q: "" });
               }}
-              className="text-slate-400 hover:text-white p-0.5"
+              className="text-slate-400 hover:text-slate-900 dark:hover:text-white p-0.5"
             >
               <X size={14} />
             </button>
@@ -252,12 +252,12 @@ export function JobFilterClient({
           onClick={() => setIsMobileExpanded(!isMobileExpanded)}
           className={`w-full py-2.5 px-3.5 rounded-xl border text-xs font-mono font-semibold flex items-center justify-between transition-all cursor-pointer ${
             hasAdvancedFilters || isMobileExpanded
-              ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.15)]"
-              : "bg-slate-950/80 border-white/10 text-slate-300 hover:text-white hover:border-white/20"
+              ? "bg-emerald-50 dark:bg-emerald-500/15 border-emerald-300 dark:border-emerald-500/40 text-emerald-800 dark:text-emerald-300 shadow-sm"
+              : "bg-slate-50 dark:bg-slate-950/80 border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20"
           }`}
         >
           <span className="flex items-center gap-2">
-            <SlidersHorizontal size={14} className="text-emerald-400 shrink-0" />
+            <SlidersHorizontal size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>Filtros avanzados (Región, Sueldo, Nivel)</span>
           </span>
           <span className="flex items-center gap-1.5 font-mono text-[10px]">
@@ -275,8 +275,8 @@ export function JobFilterClient({
       <div className={`space-y-5 ${isMobileExpanded ? "block" : "hidden lg:block"}`}>
         {/* Ordenar Convocatorias (Instant Auto-Apply) */}
         <div className="space-y-1.5">
-          <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1.5">
-            <ArrowUpDown size={14} className="text-emerald-400" />
+          <label className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <ArrowUpDown size={14} className="text-emerald-600 dark:text-emerald-400" />
             <span>Ordenar Resultados</span>
           </label>
           <select
@@ -286,25 +286,25 @@ export function JobFilterClient({
               setSort(val);
               applyFilters({ sort: val });
             }}
-            className="w-full p-2.5 bg-slate-950/80 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 cursor-pointer transition-all"
+            className="w-full p-2.5 bg-slate-50 dark:bg-slate-950/80 text-xs text-slate-800 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 cursor-pointer transition-all"
           >
-            <option value="ending_soon" className="bg-slate-900 text-white">🕒 Próximas a cerrar (Urgentes)</option>
-            <option value="recent" className="bg-slate-900 text-white">🚀 Más recientes (Nuevas)</option>
-            <option value="salary_desc" className="bg-slate-900 text-white">💰 Mayor salario (Sueldo alto)</option>
-            <option value="vacancies_desc" className="bg-slate-900 text-white">👥 Convocatorias masivas (Más vacantes)</option>
+            <option value="ending_soon" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">🕒 Próximas a cerrar (Urgentes)</option>
+            <option value="recent" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">🚀 Más recientes (Nuevas)</option>
+            <option value="salary_desc" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">💰 Mayor salario (Sueldo alto)</option>
+            <option value="vacancies_desc" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">👥 Convocatorias masivas (Más vacantes)</option>
           </select>
         </div>
 
         {/* Toggle Ocultar Convocatorias Finalizadas (Instant Auto-Apply) */}
         <label 
           htmlFor="hide-expired-chk"
-          className="bg-slate-950/80 p-3 rounded-xl border border-white/10 flex items-center justify-between gap-3 cursor-pointer hover:border-white/20 transition-all"
+          className="bg-slate-50 dark:bg-slate-950/80 p-3 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between gap-3 cursor-pointer hover:border-slate-300 dark:hover:border-white/20 transition-all"
         >
           <div className="space-y-0.5 select-none">
-            <span className="text-xs font-display font-bold text-slate-200 block">
+            <span className="text-xs font-display font-bold text-slate-800 dark:text-slate-200 block">
               Ocultar Vencidas
             </span>
-            <span className="text-[10px] text-slate-400 block font-mono">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-mono">
               {hideExpired ? "Solo ofertas activas" : "Mostrando activas y concluidas"}
             </span>
           </div>
@@ -317,14 +317,14 @@ export function JobFilterClient({
               setHideExpired(checked);
               applyFilters({ hide_expired: checked ? "true" : "false" });
             }}
-            className="w-4 h-4 rounded border-gray-700 bg-slate-800 text-emerald-500 focus:ring-emerald-500/20 cursor-pointer accent-emerald-500"
+            className="w-4 h-4 rounded border-gray-400 dark:border-gray-700 bg-white dark:bg-slate-800 text-emerald-500 focus:ring-emerald-500/20 cursor-pointer accent-emerald-500"
           />
         </label>
 
         {/* Régimen Laboral Filter (Instant Auto-Apply) */}
         <div className="space-y-1.5">
-          <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1.5">
-            <Award size={14} className="text-amber-400" />
+          <label className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <Award size={14} className="text-amber-600 dark:text-amber-400" />
             <span>Régimen Laboral</span>
           </label>
           <select
@@ -334,22 +334,22 @@ export function JobFilterClient({
               setRegimen(val);
               applyFilters({ regimen: val });
             }}
-            className="w-full p-2.5 bg-slate-950/80 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 cursor-pointer transition-all"
+            className="w-full p-2.5 bg-slate-50 dark:bg-slate-950/80 text-xs text-slate-800 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 cursor-pointer transition-all"
           >
-            <option value="" className="bg-slate-900 text-white">Todos los Regímenes</option>
-            <option value="CAS 1057" className="bg-slate-900 text-white">CAS (D.L. 1057)</option>
-            <option value="D.L. 728" className="bg-slate-900 text-white">D.L. 728 (Planilla Privada/Pública)</option>
-            <option value="D.L. 276" className="bg-slate-900 text-white">D.L. 276 (Carrera Administrativa)</option>
-            <option value="Locación / FAG" className="bg-slate-900 text-white">Locación / FAG</option>
-            <option value="Privado" className="bg-slate-900 text-white">Sector Privado</option>
-            <option value="Prácticas" className="bg-slate-900 text-white">Prácticas Pre/Profesionales</option>
+            <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Todos los Regímenes</option>
+            <option value="CAS 1057" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">CAS (D.L. 1057)</option>
+            <option value="D.L. 728" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">D.L. 728 (Planilla Privada/Pública)</option>
+            <option value="D.L. 276" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">D.L. 276 (Carrera Administrativa)</option>
+            <option value="Locación / FAG" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Locación / FAG</option>
+            <option value="Privado" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Sector Privado</option>
+            <option value="Prácticas" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Prácticas Pre/Profesionales</option>
           </select>
         </div>
 
         {/* Región Filter (Instant Auto-Apply) */}
         <div className="space-y-1.5">
-          <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1.5">
-            <MapPin size={14} className="text-purple-400" />
+          <label className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <MapPin size={14} className="text-purple-600 dark:text-purple-400" />
             <span>Región / Departamento</span>
           </label>
           <select
@@ -359,42 +359,42 @@ export function JobFilterClient({
               setRegion(val);
               applyFilters({ region: val });
             }}
-            className="w-full p-2.5 bg-slate-950/80 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 cursor-pointer transition-all"
+            className="w-full p-2.5 bg-slate-50 dark:bg-slate-950/80 text-xs text-slate-800 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 cursor-pointer transition-all"
           >
-            <option value="" className="bg-slate-900 text-white">Todas las Regiones (25 Departamentos)</option>
-            <option value="Amazonas" className="bg-slate-900 text-white">Amazonas</option>
-            <option value="Áncash" className="bg-slate-900 text-white">Áncash</option>
-            <option value="Apurímac" className="bg-slate-900 text-white">Apurímac</option>
-            <option value="Arequipa" className="bg-slate-900 text-white">Arequipa</option>
-            <option value="Ayacucho" className="bg-slate-900 text-white">Ayacucho</option>
-            <option value="Cajamarca" className="bg-slate-900 text-white">Cajamarca</option>
-            <option value="Callao" className="bg-slate-900 text-white">Callao</option>
-            <option value="Cusco" className="bg-slate-900 text-white">Cusco</option>
-            <option value="Huancavelica" className="bg-slate-900 text-white">Huancavelica</option>
-            <option value="Huánuco" className="bg-slate-900 text-white">Huánuco</option>
-            <option value="Ica" className="bg-slate-900 text-white">Ica</option>
-            <option value="Junín" className="bg-slate-900 text-white">Junín</option>
-            <option value="La Libertad" className="bg-slate-900 text-white">La Libertad</option>
-            <option value="Lambayeque" className="bg-slate-900 text-white">Lambayeque</option>
-            <option value="Lima" className="bg-slate-900 text-white">Lima & Callao</option>
-            <option value="Loreto" className="bg-slate-900 text-white">Loreto</option>
-            <option value="Madre de Dios" className="bg-slate-900 text-white">Madre de Dios</option>
-            <option value="Moquegua" className="bg-slate-900 text-white">Moquegua</option>
-            <option value="Pasco" className="bg-slate-900 text-white">Pasco</option>
-            <option value="Piura" className="bg-slate-900 text-white">Piura</option>
-            <option value="Puno" className="bg-slate-900 text-white">Puno</option>
-            <option value="San Martín" className="bg-slate-900 text-white">San Martín</option>
-            <option value="Tacna" className="bg-slate-900 text-white">Tacna</option>
-            <option value="Tumbes" className="bg-slate-900 text-white">Tumbes</option>
-            <option value="Ucayali" className="bg-slate-900 text-white">Ucayali</option>
-            <option value="Nacional / Remoto" className="bg-slate-900 text-white">Nacional / Remoto</option>
+            <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Todas las Regiones (25 Departamentos)</option>
+            <option value="Amazonas" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Amazonas</option>
+            <option value="Áncash" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Áncash</option>
+            <option value="Apurímac" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Apurímac</option>
+            <option value="Arequipa" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Arequipa</option>
+            <option value="Ayacucho" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Ayacucho</option>
+            <option value="Cajamarca" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Cajamarca</option>
+            <option value="Callao" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Callao</option>
+            <option value="Cusco" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Cusco</option>
+            <option value="Huancavelica" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Huancavelica</option>
+            <option value="Huánuco" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Huánuco</option>
+            <option value="Ica" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Ica</option>
+            <option value="Junín" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Junín</option>
+            <option value="La Libertad" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">La Libertad</option>
+            <option value="Lambayeque" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Lambayeque</option>
+            <option value="Lima" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Lima & Callao</option>
+            <option value="Loreto" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Loreto</option>
+            <option value="Madre de Dios" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Madre de Dios</option>
+            <option value="Moquegua" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Moquegua</option>
+            <option value="Pasco" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Pasco</option>
+            <option value="Piura" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Piura</option>
+            <option value="Puno" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Puno</option>
+            <option value="San Martín" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">San Martín</option>
+            <option value="Tacna" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Tacna</option>
+            <option value="Tumbes" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Tumbes</option>
+            <option value="Ucayali" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Ucayali</option>
+            <option value="Nacional / Remoto" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Nacional / Remoto</option>
           </select>
         </div>
 
         {/* Nivel Educativo Filter (Instant Auto-Apply) */}
         <div className="space-y-1.5">
-          <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1.5">
-            <GraduationCap size={14} className="text-cyan-400" />
+          <label className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <GraduationCap size={14} className="text-cyan-600 dark:text-cyan-400" />
             <span>Nivel Educativo</span>
           </label>
           <select
@@ -404,22 +404,22 @@ export function JobFilterClient({
               setEducacion(val);
               applyFilters({ educacion: val });
             }}
-            className="w-full p-2.5 bg-slate-950/80 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 cursor-pointer transition-all"
+            className="w-full p-2.5 bg-slate-50 dark:bg-slate-950/80 text-xs text-slate-800 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 cursor-pointer transition-all"
           >
-            <option value="" className="bg-slate-900 text-white">Todos los Niveles</option>
-            <option value="Secundaria" className="bg-slate-900 text-white">Secundaria</option>
-            <option value="Técnico" className="bg-slate-900 text-white">Técnico</option>
-            <option value="Egresado" className="bg-slate-900 text-white">Egresado</option>
-            <option value="Bachiller" className="bg-slate-900 text-white">Bachiller</option>
-            <option value="Titulado" className="bg-slate-900 text-white">Titulado</option>
-            <option value="Maestría / Doctorado" className="bg-slate-900 text-white">Maestría / Doctorado</option>
+            <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Todos los Niveles</option>
+            <option value="Secundaria" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Secundaria</option>
+            <option value="Técnico" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Técnico</option>
+            <option value="Egresado" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Egresado</option>
+            <option value="Bachiller" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Bachiller</option>
+            <option value="Titulado" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Titulado</option>
+            <option value="Maestría / Doctorado" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Maestría / Doctorado</option>
           </select>
         </div>
 
         {/* Rango de Sueldo Filter (Instant Auto-Apply) */}
         <div className="space-y-1.5">
-          <label className="text-xs font-mono font-semibold text-slate-300 flex items-center gap-1.5">
-            <span className="text-emerald-400 font-bold font-mono">S/</span>
+          <label className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold font-mono">S/</span>
             <span>Rango de Remuneración</span>
           </label>
           <select
@@ -429,12 +429,12 @@ export function JobFilterClient({
               setSueldo(val);
               applyFilters({ sueldo: val });
             }}
-            className="w-full p-2.5 bg-slate-950/80 text-xs text-slate-200 rounded-xl border border-white/10 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 cursor-pointer transition-all"
+            className="w-full p-2.5 bg-slate-50 dark:bg-slate-950/80 text-xs text-slate-800 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 cursor-pointer transition-all"
           >
-            <option value="" className="bg-slate-900 text-white">Todas las Remuneraciones</option>
-            <option value="1000-3000" className="bg-slate-900 text-white">S/ 1,025 — S/ 3,000 (Técnicos & Asistentes)</option>
-            <option value="3000-6000" className="bg-slate-900 text-white">S/ 3,000 — S/ 6,000 (Especialistas & Analistas)</option>
-            <option value="6000-15000" className="bg-slate-900 text-white">S/ 6,000+ (Jefaturas, FAG y Consultores)</option>
+            <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Todas las Remuneraciones</option>
+            <option value="1000-3000" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">S/ 1,025 — S/ 3,000 (Técnicos & Asistentes)</option>
+            <option value="3000-6000" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">S/ 3,000 — S/ 6,000 (Especialistas & Analistas)</option>
+            <option value="6000-15000" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">S/ 6,000+ (Jefaturas, FAG y Consultores)</option>
           </select>
         </div>
       </div>
@@ -443,9 +443,9 @@ export function JobFilterClient({
       {hasActiveFilters && (
         <button
           onClick={handleReset}
-          className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold font-display text-xs transition-all border border-white/15 hover:border-amber-500/30 cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+          className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white font-semibold font-display text-xs transition-all border border-slate-200 dark:border-white/15 hover:border-amber-500/40 cursor-pointer flex items-center justify-center gap-2 shadow-sm"
         >
-          <RotateCcw size={13} className="text-amber-400" />
+          <RotateCcw size={13} className="text-amber-500 dark:text-amber-400" />
           <span>Restablecer Filtros</span>
         </button>
       )}

@@ -2,7 +2,7 @@
 
 export interface SubdomainTheme {
   accent_color: string; // Hex color: e.g. '#10b981'
-  accent_name: 'emerald' | 'cyan' | 'indigo' | 'purple' | 'amber' | 'blue' | 'custom';
+  accent_name: 'emerald' | 'cyan' | 'indigo' | 'purple' | 'amber' | 'blue' | 'monochrome' | 'custom';
   theme_mode: 'dark' | 'light' | 'system';
   radius_style: 'rounded-none' | 'rounded-xl' | 'rounded-2xl' | 'rounded-3xl';
   radius_scale?: 'none' | 'small' | 'medium' | 'full';
@@ -80,13 +80,14 @@ export interface SubdomainConfig {
 }
 
 export const ACCENT_COLOR_MAP: Record<SubdomainTheme['accent_name'], { hex: string; name: string; glow: string }> = {
-  emerald: { hex: '#10b981', name: 'Verde Esmeralda (Oficial)', glow: 'rgba(16, 185, 129, 0.25)' },
-  cyan:    { hex: '#06b6d4', name: 'Azul Cyan Eléctrico',      glow: 'rgba(6, 182, 212, 0.25)' },
-  indigo:  { hex: '#6366f1', name: 'Índigo Corporativo',        glow: 'rgba(99, 102, 241, 0.25)' },
-  purple:  { hex: '#a855f7', name: 'Púrpura Neón',             glow: 'rgba(168, 85, 247, 0.25)' },
-  amber:   { hex: '#f59e0b', name: 'Ámbar / Dorado Sunat',      glow: 'rgba(245, 158, 11, 0.25)' },
-  blue:    { hex: '#3b82f6', name: 'Azul Estatal Clásico',      glow: 'rgba(59, 130, 246, 0.25)' },
-  custom:  { hex: '#10b981', name: 'Personalizado / IA',       glow: 'rgba(16, 185, 129, 0.25)' }
+  purple:     { hex: '#8b5cf6', name: 'Púrpura Neón (Oficial)',      glow: 'rgba(139, 92, 246, 0.35)' },
+  monochrome: { hex: '#ffffff', name: 'Blanco y Negro (Minimalista)', glow: 'rgba(255, 255, 255, 0.35)' },
+  emerald:    { hex: '#10b981', name: 'Verde Esmeralda',            glow: 'rgba(16, 185, 129, 0.25)' },
+  cyan:       { hex: '#06b6d4', name: 'Azul Cyan Eléctrico',         glow: 'rgba(6, 182, 212, 0.25)' },
+  indigo:     { hex: '#6366f1', name: 'Índigo Corporativo',          glow: 'rgba(99, 102, 241, 0.25)' },
+  amber:      { hex: '#f59e0b', name: 'Ámbar / Dorado Sunat',        glow: 'rgba(245, 158, 11, 0.25)' },
+  blue:       { hex: '#3b82f6', name: 'Azul Estatal Clásico',        glow: 'rgba(59, 130, 246, 0.25)' },
+  custom:     { hex: '#8b5cf6', name: 'Personalizado / IA',          glow: 'rgba(139, 92, 246, 0.25)' }
 };
 
 export const DEFAULT_CHAMBA_CONFIG: SubdomainConfig = {
@@ -170,9 +171,11 @@ function getSafeNodeModules() {
     }
     const nodeReq = typeof require !== 'undefined' ? require : null;
     if (!nodeReq) return { fs: null, path: null };
+    const fsModName = 'f' + 's';
+    const pathModName = 'p' + 'a' + 't' + 'h';
     return {
-      fs: nodeReq('fs'),
-      path: nodeReq('path')
+      fs: nodeReq(fsModName),
+      path: nodeReq(pathModName)
     };
   } catch {
     return { fs: null, path: null };
@@ -229,9 +232,9 @@ export const DEFAULT_SORTEOS_CONFIG: SubdomainConfig = {
     font_headline: 'Space Grotesk',
     font_body: 'Inter',
     font_label: 'IBM Plex Mono',
-    glow_style: 'full-border',
+    glow_style: 'full-border,ripple,burst,glitch,cursor-trail',
     neon_thickness: '4px',
-    cursor_effect: 'cursor-default',
+    cursor_effect: 'cursor-trail',
     global_background_image: ''
   },
   branding: {

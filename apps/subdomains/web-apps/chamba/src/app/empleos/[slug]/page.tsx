@@ -326,23 +326,23 @@ export default async function JobDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-24 sm:pb-8">
         {/* Breadcrumb Bar */}
-        <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
-          <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
+        <nav className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+          <Link href="/" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Inicio</Link>
           <ChevronRight size={12} />
-          <Link href="/empleos" className="hover:text-emerald-400 transition-colors">Convocatorias</Link>
+          <Link href="/empleos" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Convocatorias</Link>
           <ChevronRight size={12} />
-          <span className="text-slate-200 truncate max-w-[250px] sm:max-w-[400px]">{job.title}</span>
+          <span className="text-slate-800 dark:text-slate-200 truncate max-w-[250px] sm:max-w-[400px] font-semibold">{job.title}</span>
         </nav>
 
         {/* Banner de Revisión Editorial si la convocatoria aún está pendiente */}
         {job.status === 'Pendiente' && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_30px_rgba(245,158,11,0.15)]">
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-700 dark:text-amber-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_30px_rgba(245,158,11,0.15)]">
             <div className="flex items-center gap-3">
-              <Clock size={20} className="text-amber-400 shrink-0 animate-pulse" />
+              <Clock size={20} className="text-amber-500 dark:text-amber-400 shrink-0 animate-pulse" />
               <div>
-                <strong className="text-white block sm:inline">Modo Vista Previa Editorial: </strong>
+                <strong className="text-slate-900 dark:text-white block sm:inline">Modo Vista Previa Editorial: </strong>
                 <span>Esta solicitud se encuentra <strong>en revisión por ATPDev</strong> y aún no se lista públicamente.</span>
               </div>
             </div>
@@ -354,13 +354,13 @@ export default async function JobDetailPage({
 
         {/* Banner de Convocatoria Finalizada con opciones para el postulante */}
         {isFinalized && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_0_30px_rgba(244,63,94,0.15)]">
+          <div className="p-4 sm:p-5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm dark:shadow-[0_0_30px_rgba(244,63,94,0.15)]">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
+              <div className="p-2 rounded-xl bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 shrink-0">
                 <Clock size={18} />
               </div>
               <div>
-                <strong className="text-white block sm:inline">Convocatoria Finalizada: </strong>
+                <strong className="text-slate-900 dark:text-white block sm:inline">Convocatoria Finalizada: </strong>
                 <span>El plazo de postulación ha concluido. Te sugerimos explorar otras convocatorias vigentes.</span>
               </div>
             </div>
@@ -368,7 +368,7 @@ export default async function JobDetailPage({
               {job.entity_name && (
                 <Link
                   href={`/empleos?q=${encodeURIComponent(job.entity_name)}`}
-                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-[11px] font-bold tracking-wider uppercase transition-colors"
+                  className="px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-200 text-[11px] font-bold tracking-wider uppercase transition-colors"
                 >
                   Más de {job.entity_name}
                 </Link>
@@ -385,21 +385,21 @@ export default async function JobDetailPage({
         )}
 
         {/* Main Convocatoria Header Card */}
-        <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/15 space-y-6 relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-[#0b0f19]">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="glass-card p-6 sm:p-8 rounded-3xl border border-slate-200/90 dark:border-white/15 space-y-6 relative overflow-hidden bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-[#0b0f19] shadow-sm dark:shadow-2xl">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 dark:border-white/10 pb-4">
             <div className="flex items-center gap-3">
               <EntityLogo entityName={job.entity_name} logoUrl={job.entity_logo} size="lg" />
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-300">{job.entity_name}</span>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{job.entity_name}</span>
                   {job.entity_verified && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[10px] font-bold">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 font-mono text-[10px] font-bold">
                       <ShieldCheck size={12} />
                       <span>RUC Verificado</span>
                     </span>
                   )}
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-black font-display text-white mt-1 leading-snug">
+                <h1 className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white mt-1 leading-snug">
                   {job.title}
                 </h1>
               </div>
@@ -407,49 +407,49 @@ export default async function JobDetailPage({
 
             <div className="flex items-center gap-2">
               {!isFinalized && job.status === 'Vigente' ? (
-                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-mono font-bold animate-pulse">
+                <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/40 text-xs font-mono font-bold animate-pulse">
                   ● CONVOCATORIA VIGENTE
                 </span>
               ) : job.status === 'Pendiente' ? (
-                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold animate-pulse">
+                <span className="px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-500/40 text-xs font-mono font-bold animate-pulse">
                   ● EN REVISIÓN EDITORIAL
                 </span>
               ) : (
-                <span className="px-3 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-xs font-mono font-bold">
+                <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold">
                   ● CONVOCATORIA FINALIZADA
                 </span>
               )}
-              <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-mono font-bold">
+              <span className="px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30 text-xs font-mono font-bold">
                 {job.sector_type}
               </span>
             </div>
           </div>
 
           {/* Institutional Metadata Grid (As seen in PortalTrabajos reference!) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 p-4 rounded-2xl bg-slate-950/70 border border-white/10 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-white/10 text-xs">
             <div className="space-y-1">
-              <span className="text-slate-400 font-mono block text-[10px] uppercase">Institución</span>
-              <span className="text-slate-100 font-bold block truncate">{job.entity_name}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-mono block text-[10px] uppercase">Institución</span>
+              <span className="text-slate-900 dark:text-slate-100 font-bold block truncate">{job.entity_name}</span>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-400 font-mono block text-[10px] uppercase">Vacantes</span>
-              <span className="text-amber-400 font-bold block">{job.vacancies_count} Vacantes</span>
+              <span className="text-slate-500 dark:text-slate-400 font-mono block text-[10px] uppercase">Vacantes</span>
+              <span className="text-amber-600 dark:text-amber-400 font-bold block">{job.vacancies_count} Vacantes</span>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-400 font-mono block text-[10px] uppercase">Ubicación</span>
-              <span className="text-slate-100 font-bold block">{job.region}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-mono block text-[10px] uppercase">Ubicación</span>
+              <span className="text-slate-900 dark:text-slate-100 font-bold block">{job.region}</span>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-400 font-mono block text-[10px] uppercase">Publicado</span>
-              <span className="text-slate-300 font-bold block font-mono">{job.start_date}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-mono block text-[10px] uppercase">Publicado</span>
+              <span className="text-slate-700 dark:text-slate-300 font-bold block font-mono">{job.start_date}</span>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-400 font-mono block text-[10px] uppercase">Vigente Hasta</span>
-              <span className="text-cyan-400 font-bold block font-mono">{job.end_date}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-mono block text-[10px] uppercase">Vigente Hasta</span>
+              <span className="text-cyan-600 dark:text-cyan-400 font-bold block font-mono">{job.end_date}</span>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-400 font-mono block text-[10px] uppercase">Salario / Remuneración</span>
-              <span className="text-emerald-400 font-extrabold block">{job.salary_text}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-mono block text-[10px] uppercase">Salario / Remuneración</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-extrabold block">{job.salary_text}</span>
             </div>
           </div>
 
@@ -650,16 +650,16 @@ export default async function JobDetailPage({
 
             {/* Visor Oficial de Bases Incrustado (Si existe PDF o Google Drive) */}
             {cleanBasesUrl && isBasesDoc && (
-              <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-emerald-500/30 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-emerald-500/30 bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 shadow-sm dark:shadow-xl">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-white/10 pb-4">
                   <div className="flex items-center gap-2.5">
-                    <FileText className="text-emerald-400" size={22} />
+                    <FileText className="text-emerald-600 dark:text-emerald-400" size={22} />
                     <div>
-                      <h2 className="text-xl font-bold font-display text-white">
+                      <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white">
                         Documento Oficial de Bases {hasDistinctPlazaBases ? `- ${job.plazas![0].title}` : 'del Concurso'}
                       </h2>
                       {hasDistinctPlazaBases && (
-                        <p className="text-xs text-slate-400 mt-0.5">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                           Visualizando bases del puesto 1. Cada plaza de la lista superior dispone de su propia descarga oficial de bases y TDR en PDF.
                         </p>
                       )}
@@ -675,7 +675,7 @@ export default async function JobDetailPage({
                       target="_blank"
                       download
                       rel="nofollow noopener noreferrer"
-                      className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold font-mono transition-colors flex items-center gap-1.5 border border-white/10"
+                      className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold font-mono transition-colors flex items-center gap-1.5 border border-slate-200 dark:border-white/10"
                     >
                       <span>📥 Descargar PDF</span>
                     </a>
@@ -687,7 +687,7 @@ export default async function JobDetailPage({
                       }
                       target="_blank"
                       rel="nofollow noopener noreferrer"
-                      className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-display transition-colors flex items-center gap-1.5"
+                      className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-display transition-colors flex items-center gap-1.5 shadow-sm"
                     >
                       <span>Pantalla Completa</span>
                       <ExternalLink size={12} />
@@ -695,12 +695,12 @@ export default async function JobDetailPage({
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-300">
-                  Visualización oficial directa del documento emitido por <b className="text-white">{job.entity_name}</b>:
+                <p className="text-xs text-slate-600 dark:text-slate-300">
+                  Visualización oficial directa del documento emitido por <b className="text-slate-900 dark:text-white">{job.entity_name}</b>:
                 </p>
 
                 {cleanBasesUrl.includes('drive.google.com') || cleanBasesUrl.includes('docs.google.com') ? (
-                  <div className="rounded-2xl overflow-hidden border border-white/10 h-[550px] bg-slate-950 relative shadow-2xl">
+                  <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 h-[560px] bg-slate-950 relative shadow-xl">
                     <iframe
                       src={
                         cleanBasesUrl.includes('drive.google.com/file/d/')
@@ -713,42 +713,32 @@ export default async function JobDetailPage({
                     />
                   </div>
                 ) : (
-                  <div className="p-6 rounded-2xl bg-slate-950/80 border border-emerald-500/20 space-y-4 text-center">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
-                      <FileText size={24} />
+                  <div className="space-y-4">
+                    <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 h-[560px] bg-slate-900 relative shadow-xl">
+                      <iframe
+                        src={`https://docs.google.com/viewer?url=${encodeURIComponent(cleanBasesUrl)}&embedded=true`}
+                        className="w-full h-full border-0 bg-white"
+                        title={`Visor Oficial de Bases - ${job.title}`}
+                        loading="lazy"
+                      />
                     </div>
-                    <div>
-                      <h3 className="text-white font-bold font-display text-base">
-                        {hasDistinctPlazaBases ? `Bases Oficiales: ${job.plazas!.length} Puestos Convocados` : `Bases Oficiales del Concurso`}
-                      </h3>
-                      <p className="text-xs text-slate-300 mt-1 max-w-md mx-auto">
+                    <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-white/10 text-xs">
+                      <span className="text-slate-500 dark:text-slate-400 font-mono">
                         {hasDistinctPlazaBases
-                          ? `Esta convocatoria cuenta con ${job.plazas!.length} bases y TDRs oficiales independientes emitidos por ${job.entity_name}. Cada especialidad tiene su propio archivo PDF para descargar arriba.`
-                          : `Documento oficial verificado emitido por ${job.entity_name}.`}
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                      {hasDistinctPlazaBases ? (
-                        <a
-                          href="#plazas-convocadas"
-                          className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 cursor-pointer"
-                        >
-                          <FileText size={15} />
-                          <span>Ver y Descargar las {job.plazas!.length} Bases Individuales</span>
-                        </a>
-                      ) : (
-                        <a
-                          href={cleanBasesUrl}
-                          target="_blank"
-                          download
-                          rel="nofollow noopener noreferrer"
-                          className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black font-display transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] flex items-center gap-2 cursor-pointer"
-                        >
-                          <FileText size={15} />
-                          <span>Descargar Bases (PDF)</span>
-                          <ExternalLink size={12} />
-                        </a>
-                      )}
+                          ? `Visualizando puesto 1. Selecciona otras especialidades en la lista de plazas arriba.`
+                          : `¿Prefieres abrir o descargar el archivo original en tu dispositivo?`}
+                      </span>
+                      <a
+                        href={cleanBasesUrl}
+                        target="_blank"
+                        download
+                        rel="nofollow noopener noreferrer"
+                        className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-display text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                      >
+                        <FileText size={14} />
+                        <span>Abrir / Descargar PDF Oficial</span>
+                        <ExternalLink size={12} />
+                      </a>
                     </div>
                   </div>
                 )}
@@ -763,36 +753,36 @@ export default async function JobDetailPage({
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                <div className="p-4 rounded-2xl bg-slate-950/60 border border-white/10 space-y-1">
-                  <span className="text-xs text-slate-400 font-mono block">PUESTO:</span>
-                  <span className="font-bold text-white block">{job.title}</span>
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 space-y-1">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono block">PUESTO:</span>
+                  <span className="font-bold text-slate-900 dark:text-white block">{job.title}</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-950/60 border border-white/10 space-y-1">
-                  <span className="text-xs text-slate-400 font-mono block">TIPO DE CONTRATO / RÉGIMEN:</span>
-                  <span className="font-bold text-amber-400 block">{job.sector_type}</span>
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 space-y-1">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono block">TIPO DE CONTRATO / RÉGIMEN:</span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400 block">{job.sector_type}</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-950/60 border border-white/10 space-y-1">
-                  <span className="text-xs text-slate-400 font-mono block">NIVEL EDUCATIVO REQUERIDO:</span>
-                  <span className="font-bold text-cyan-400 block">{job.education_level}</span>
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 space-y-1">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono block">NIVEL EDUCATIVO REQUERIDO:</span>
+                  <span className="font-bold text-cyan-600 dark:text-cyan-400 block">{job.education_level}</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-950/60 border border-white/10 space-y-1">
-                  <span className="text-xs text-slate-400 font-mono block">MODALIDAD DE TRABAJO:</span>
-                  <span className="font-bold text-emerald-400 block">Presencial / Descentralizado</span>
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 space-y-1">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono block">MODALIDAD DE TRABAJO:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 block">Presencial / Descentralizado</span>
                 </div>
               </div>
             </div>
 
             {/* Requisitos Desglosados */}
             <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-              <h2 className="text-xl font-bold font-display text-white flex items-center gap-2 border-b border-white/10 pb-4">
-                <CheckCircle2 className="text-emerald-400" size={22} />
+              <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-4">
+                <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" size={22} />
                 <span>Requisitos de Postulación</span>
               </h2>
 
               <div className="space-y-4">
                 {job.requirements.map((req, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-900/60 border border-white/5 text-sm text-slate-200">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 mt-2 flex-shrink-0 shadow-[0_0_8px_#10b981]" />
+                  <div key={idx} className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/5 text-sm text-slate-700 dark:text-slate-200">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 mt-2 flex-shrink-0 shadow-[0_0_8px_#10b981]" />
                     <span className="leading-relaxed">{req}</span>
                   </div>
                 ))}
@@ -802,28 +792,28 @@ export default async function JobDetailPage({
             {/* ODPE / Desglose de Plazas Descentralizadas (Si aplica) */}
             {job.odpe_vacancies && job.odpe_vacancies.length > 0 && (
               <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-cyan-500/30">
-                <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                  <h2 className="text-xl font-bold font-display text-white flex items-center gap-2">
-                    <MapPin className="text-cyan-400" size={22} />
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-4">
+                  <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+                    <MapPin className="text-cyan-600 dark:text-cyan-400" size={22} />
                     <span>Desglose de Vacantes por ODPE / Provincia</span>
                   </h2>
-                  <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30">
+                  <span className="text-xs font-mono text-cyan-700 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-200 dark:border-cyan-500/30 font-bold">
                     {job.odpe_vacancies.length} Sedes Descentralizadas
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-slate-600 dark:text-slate-300">
                   Selecciona la ODPE o sede de tu preferencia para conocer el número de vacantes requeridas y la fecha límite de postulación específica:
                 </p>
 
                 <div className="max-h-80 overflow-y-auto pr-2 grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
                   {job.odpe_vacancies.map((odpe, idx) => (
-                    <div key={idx} className="p-3.5 rounded-2xl bg-slate-950/80 border border-white/10 flex items-center justify-between gap-2 hover:border-cyan-500/40 transition-colors">
+                    <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-white/10 flex items-center justify-between gap-2 hover:border-cyan-500/40 transition-colors">
                       <div>
-                        <strong className="text-white block text-sm">{odpe.odpe}</strong>
-                        <span className="text-[11px] text-slate-400">Plazo: {odpe.deadline}</span>
+                        <strong className="text-slate-900 dark:text-white block text-sm">{odpe.odpe}</strong>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">Plazo: {odpe.deadline}</span>
                       </div>
-                      <span className="px-2.5 py-1 rounded-xl bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30 flex-shrink-0">
+                      <span className="px-2.5 py-1 rounded-xl bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-200 dark:border-cyan-500/30 flex-shrink-0">
                         {odpe.count} plazas
                       </span>
                     </div>
@@ -834,34 +824,34 @@ export default async function JobDetailPage({
 
             {/* Guía Paso a Paso & Detalles de Postulación */}
             <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-emerald-500/30">
-              <h2 className="text-xl font-bold font-display text-white flex items-center gap-2 border-b border-white/10 pb-4">
-                <Sparkles className="text-amber-400" size={22} />
+              <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-4">
+                <Sparkles className="text-amber-500 dark:text-amber-400" size={22} />
                 <span>¿Cómo Postular? Pasos e Instructivo Oficial</span>
               </h2>
 
-              <div className="space-y-4 text-sm text-slate-200">
-                <p className="text-xs text-slate-300 leading-relaxed">
+              <div className="space-y-4 text-sm text-slate-700 dark:text-slate-200">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                   Para postular correctamente a esta convocatoria, debes realizar tu registro en el sistema oficial de la institución antes de la fecha límite:
                 </p>
 
                 {job.steps_to_apply && job.steps_to_apply.length > 0 ? (
                   <div className="space-y-3 font-mono text-xs">
                     {job.steps_to_apply.map((step, idx) => (
-                      <div key={idx} className="p-3.5 rounded-2xl bg-slate-900/80 border border-white/10 text-emerald-300">
+                      <div key={idx} className="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-slate-900/80 border border-emerald-200 dark:border-white/10 text-emerald-800 dark:text-emerald-300">
                         {step}
                       </div>
                     ))}
                   </div>
                 ) : (
                   <ol className="space-y-3 text-xs font-mono">
-                    <li className="p-3 rounded-xl bg-slate-900/80 border border-white/10">1ro. Ingresar al enlace oficial de postulación.</li>
-                    <li className="p-3 rounded-xl bg-slate-900/80 border border-white/10">2do. Registrarse e iniciar sesión con tu documento de identidad (DNI).</li>
-                    <li className="p-3 rounded-xl bg-slate-900/80 border border-white/10">3ro. Adjuntar tu currículum vitae documentado en formato PDF.</li>
+                    <li className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200">1ro. Ingresar al enlace oficial de postulación.</li>
+                    <li className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200">2do. Registrarse e iniciar sesión con tu documento de identidad (DNI).</li>
+                    <li className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200">3ro. Adjuntar tu currículum vitae documentado en formato PDF.</li>
                   </ol>
                 )}
 
                 {/* Primary Redirection Box */}
-                <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 text-center space-y-4 mt-6 shadow-xl">
+                <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 text-center space-y-4 mt-6 shadow-xl text-white">
                   <h3 className="font-display font-bold text-lg text-white">
                     Postula en la Plataforma Oficial de {job.entity_name}
                   </h3>
@@ -892,12 +882,12 @@ export default async function JobDetailPage({
           <div className="space-y-6">
             
             {/* Bases PDF Download & Viewer Card */}
-            <div className="glass-card p-6 rounded-3xl space-y-4 border border-amber-500/30">
-              <div className="flex items-center gap-3 text-amber-400 font-display font-bold">
+            <div className="glass-card p-6 rounded-3xl space-y-4 border border-amber-500/30 bg-white dark:bg-slate-900/60 shadow-sm dark:shadow-lg">
+              <div className="flex items-center gap-3 text-amber-600 dark:text-amber-400 font-display font-bold">
                 <FileText size={20} />
                 <span>Bases Oficiales (PDF & Google Drive)</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                 Visualiza o descarga el documento oficial de bases del concurso, cronograma y anexos emitidos por {job.entity_name}.
               </p>
               
@@ -963,7 +953,7 @@ export default async function JobDetailPage({
                           {hasDistinctPlazaBases ? (
                             <a
                               href="#plazas-convocadas"
-                              className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                             >
                               <span>📋 Elegir entre las {job.plazas!.length} Plazas</span>
                             </a>
@@ -977,7 +967,7 @@ export default async function JobDetailPage({
                               target="_blank"
                               download
                               rel="nofollow noopener noreferrer"
-                              className="w-full py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 font-bold font-display text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                             >
                               <span>📥 Descargar Archivo Directo</span>
                             </a>
@@ -1109,12 +1099,12 @@ export default async function JobDetailPage({
             </div>
 
             {/* Institutional Guarantee Box */}
-            <div className="glass-card p-6 rounded-3xl space-y-3 border border-emerald-500/20">
-              <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-semibold">
+            <div className="glass-card p-6 rounded-3xl space-y-3 border border-emerald-500/20 bg-white dark:bg-slate-900/60 shadow-sm dark:shadow-md">
+              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold">
                 <ShieldCheck size={16} />
                 <span>Garantía de Transparencia</span>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                 chamba pro es una plataforma agregadora verificada. No solicitamos dinero, cobros ni datos personales. Todo trámite de postulación es 100% gratuito y directo en la web oficial del Estado.
               </p>
             </div>
@@ -1130,8 +1120,8 @@ export default async function JobDetailPage({
 
         {/* Other Related Convocatorias Grid */}
         {relatedJobs.length > 0 && (
-          <div className="space-y-6 pt-8 border-t border-white/10">
-            <h2 className="text-2xl font-bold font-display text-white">
+          <div className="space-y-6 pt-8 border-t border-slate-200 dark:border-white/10">
+            <h2 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
               Otras convocatorias que te pueden interesar
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1141,6 +1131,42 @@ export default async function JobDetailPage({
             </div>
           </div>
         )}
+
+        {/* Sticky Mobile Action Bar (Fixed bottom CTA on mobile devices) */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 p-3 sm:hidden bg-white/95 dark:bg-[#070a12]/95 backdrop-blur-xl border-t border-slate-200 dark:border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] dark:shadow-[0_-10px_30px_rgba(0,0,0,0.7)]">
+          <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
+            <div className="min-w-0 flex-1">
+              <span className="text-xs font-mono font-extrabold text-emerald-600 dark:text-emerald-400 block truncate">
+                {job.salary_text}
+              </span>
+              <span className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold block truncate">
+                {job.entity_name}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              {cleanBasesUrl && isBasesDoc && (
+                <a
+                  href={hasDistinctPlazaBases ? '#plazas-convocadas' : cleanBasesUrl}
+                  target={hasDistinctPlazaBases ? undefined : '_blank'}
+                  rel={hasDistinctPlazaBases ? undefined : 'nofollow noopener noreferrer'}
+                  className="px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold font-mono text-xs border border-slate-200 dark:border-white/10 flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform"
+                >
+                  <FileText size={14} className="text-emerald-600 dark:text-emerald-400" />
+                  <span>Bases</span>
+                </a>
+              )}
+              <a
+                href={cleanApplyUrl}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className="btn-brand-gradient px-4 py-2.5 rounded-xl text-white font-black font-display text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/25 active:scale-95 transition-transform"
+              >
+                <span>{isBasesDoc ? 'Postular' : 'Ver Oferta'}</span>
+                <ExternalLink size={13} />
+              </a>
+            </div>
+          </div>
+        </div>
 
       </div>
     </>

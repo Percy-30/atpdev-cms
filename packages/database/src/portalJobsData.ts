@@ -271,10 +271,10 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "http://convocatorias.pais.gob.pe/convocatorias/externo/convocatorias/Inicio.aspx",
+    "apply_url": "https://www.gob.pe/pais",
     "bases_pdf_url": "https://drive.google.com/file/d/1m4FU_-vo8YgMkFuqJ8wu8NelKh-ayjiU/view?usp=drive_link",
     "guia_postulante_url": "http://convocatorias.pais.gob.pe/convocatorias/documentos/documentos/guiausuario.pdf",
-    "resultados_url": "http://convocatorias.pais.gob.pe/convocatorias/externo/portal/ConvocatoriasPortal.aspx",
+    "resultados_url": "https://www.gob.pe/pais",
     "fuente_url": "https://www.portaltrabajos.pe/2026/08/programa-pais-gestores-institucionales-monitor.html",
     "official_portal_name": "PROGRAMA NACIONAL PLATAFORMAS DE ACCIÓN PARA LA INCLUSIÓN SOCIAL - PAÍS - Portal Oficial",
     "start_date": "2026-08-25",
@@ -16352,9 +16352,9 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "http://38.187.4.52/convocatorias/archivos/1671/1/TDR%20CAS%20N%C3%82%C2%B0%20069-2026%20-%20TECNICO%20ADMINISTRATIVO%20POR%20SUPLENCIA%20TEMPORAL.pdf",
-    "bases_pdf_url": "http://38.187.4.52/convocatorias/archivos/1671/1/TDR%20CAS%20N%C3%82%C2%B0%20069-2026%20-%20TECNICO%20ADMINISTRATIVO%20POR%20SUPLENCIA%20TEMPORAL.pdf",
-    "resultados_url": "http://38.187.4.52/convocatorias/",
+    "apply_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/",
+    "bases_pdf_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/",
+    "resultados_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/08/ugel-n-4-05-interpretes-de-lengua-de-senas.html",
     "official_portal_name": "UNIDAD DE GESTIÓN EDUCATIVA LOCAL 04 - Portal Oficial",
     "start_date": "2026-08-25",
@@ -16371,7 +16371,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "Secundaria completa",
         "experience": "01 año. - 09 meses como intérprete de lengua de señas peruana",
         "salary": "S/. 1864.19",
-        "bases_url": "http://38.187.4.52/convocatorias/archivos/1670/1/TDR%20CAS%20N%C3%82%C2%B0%20068%20-%202026%20INTERPRETE%20DE%20LENGUA%20DE%20SENAS%20PERUANA.pdf"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/"
       },
       {
         "cas_code": "CAS Nº 069",
@@ -16379,7 +16379,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
         "education": "Técnico titulado y/o egresado universitario de las carreras de Administración, Contabilidad, Derecho, archivística y gestión documental",
         "experience": "(03) años en entidades públicas y/o privadas. - Experiencia laboral mínima de (02) años realizando labores administrativas. - Mínimo (01) año en el sector público",
         "salary": "S/. 2500",
-        "bases_url": "http://38.187.4.52/convocatorias/archivos/1671/1/TDR%20CAS%20N%C3%82%C2%B0%20069-2026%20-%20TECNICO%20ADMINISTRATIVO%20POR%20SUPLENCIA%20TEMPORAL.pdf"
+        "bases_url": "https://postulacioncas.minedu.gob.pe/PostulacionCas/"
       }
     ]
   },
@@ -17269,8 +17269,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/18NGFUyCRh/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/18NGFUyCRh/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/07/inei-enla-2026-verificadores-de-actividades.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17305,8 +17305,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/1DDyaXShLZ/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/1DDyaXShLZ/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/07/inei-enla-2026-monitor-nacional-sede.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17341,8 +17341,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/1cyCaLoAPp/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/1cyCaLoAPp/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/07/inei-enla-2026-supervisor-de-almacen-y-soporte.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17377,8 +17377,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/1EAuNMg6Cj/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/1EAuNMg6Cj/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/07/inei-eda-2026-supervisor-de-local-de-evalucion-coordinadores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17413,8 +17413,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/14g1dpNaBUv/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/14g1dpNaBUv/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/06/inei-eda-2026-monitor-nacional-monitor.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17461,8 +17461,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/1C8eeExvwz/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/1C8eeExvwz/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/06/inei-epen-2026-jefe-de-campo.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17519,8 +17519,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/18wGHvTrf7/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/18wGHvTrf7/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/06/inei-epen-2026-analista-de-base-de-datos.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17567,8 +17567,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/share/p/1DKdYAuGzR/",
-    "bases_pdf_url": "https://www.facebook.com/share/p/1DKdYAuGzR/",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/04/inei-ena-2026-entrevistadores-y-supervisores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17603,8 +17603,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2019994215583447",
-    "bases_pdf_url": "https://www.facebook.com/reel/2019994215583447",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/04/inei-enaho-2026-encuestadores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17746,8 +17746,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/1601051634118861",
-    "bases_pdf_url": "https://www.facebook.com/reel/1601051634118861",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2026/02/inei-endes-2026-encuestadoras.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17912,8 +17912,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://docs.google.com/forms/d/e/1FAIpQLSfeXgmuuLq5q8pVmZqM2HNZ1fmnxFrZsVL8F7_KB4DEjV1q7w/viewform",
-    "bases_pdf_url": "https://docs.google.com/forms/d/e/1FAIpQLSfeXgmuuLq5q8pVmZqM2HNZ1fmnxFrZsVL8F7_KB4DEjV1q7w/viewform",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/11/inei-epen-2025-entrevistadores-supervisores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -17960,8 +17960,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/1155754732742567?locale=es_LA",
-    "bases_pdf_url": "https://www.facebook.com/reel/1155754732742567?locale=es_LA",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/10/inei-enaho-2025-encuestadores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18348,8 +18348,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/750654684454896",
-    "bases_pdf_url": "https://www.facebook.com/reel/750654684454896",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-epen-2025-entrevistadores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18406,8 +18406,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2616039092081741",
-    "bases_pdf_url": "https://www.facebook.com/reel/2616039092081741",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-programador-informatico-web.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18442,8 +18442,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2616039092081741",
-    "bases_pdf_url": "https://www.facebook.com/reel/2616039092081741",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-enaho-2025-programador-informatico.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18478,8 +18478,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2616039092081741",
-    "bases_pdf_url": "https://www.facebook.com/reel/2616039092081741",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-enaho-2025-asistente-administrativo.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18514,8 +18514,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2616039092081741",
-    "bases_pdf_url": "https://www.facebook.com/reel/2616039092081741",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-enaho-2025-02-metodologos.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18550,8 +18550,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2616039092081741",
-    "bases_pdf_url": "https://www.facebook.com/reel/2616039092081741",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-enaho-2025-analistas-de-base-de-datos.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -18586,8 +18586,8 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://www.facebook.com/reel/2616039092081741",
-    "bases_pdf_url": "https://www.facebook.com/reel/2616039092081741",
+    "apply_url": "https://uneteservicios.inei.gob.pe/",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "fuente_url": "https://www.portaltrabajos.pe/2025/09/inei-enaho-2025-encuestadores.html",
     "official_portal_name": "INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA - INEI - Portal Oficial",
     "start_date": "2026-08-25",
@@ -19674,7 +19674,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
     "apply_url": "https://consecucion.inei.gob.pe/convocatorias/2014/convoca/default_n.asp?id=25214",
-    "bases_pdf_url": "https://drive.google.com/file/d/17y5paolsgH7_MHi2IDWOPv_jmxxKH9tr/view",
+    "bases_pdf_url": "https://uneteservicios.inei.gob.pe/",
     "anexos_url": "https://drive.google.com/file/d/1DYK-QLaFjC-W7bpbEtDoijI-vMW3O7UD/view",
     "guia_postulante_url": "https://www.portaltrabajos.pe/2025/06/rnp-2025-como-obtener-la-constancia-rnp-para-trabajar-en-el-inei.html",
     "resultados_url": "https://drive.google.com/file/d/1VDXTpHh5Ovq5Ho-wEjE0I8azJZMVw9Qp/view",
@@ -21524,7 +21524,7 @@ export const PORTAL_JOBS_DATA: JobPosting[] = [
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://forms.gle/GfaNZQ4bYff8Gtty9",
+    "apply_url": "https://www.gob.pe/jne",
     "bases_pdf_url": "https://portal.jne.gob.pe/portal_documentos/files/abb22bd1-6fba-4dbb-818f-59c4a2e3dc62.pdf",
     "fuente_url": "https://www.portaltrabajos.pe/2026/05/jne-sep-2026-fiscalizadores-de-local-de-votacion.html",
     "official_portal_name": "JURADO NACIONAL DE ELECCIONES - JNE - Portal Oficial",

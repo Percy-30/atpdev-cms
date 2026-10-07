@@ -292,84 +292,84 @@ export default function RootLayout({
         <main className="min-h-[calc(100vh-180px)]">{children}</main>
 
         {/* Global Footer (Google AdSense & E-E-A-T Compliant) */}
-        <footer className="bg-slate-950 border-t border-white/10 py-16 px-4 sm:px-6 lg:px-8 mt-20 text-slate-400 text-xs">
+        <footer className="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-white/10 py-16 px-4 sm:px-6 lg:px-8 mt-20 text-slate-600 dark:text-slate-400 text-xs transition-colors">
           <div className="max-w-7xl mx-auto space-y-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               
               {/* Col 1: Brand & Transparencia */}
               <div className="space-y-4 md:col-span-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold font-display">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center font-bold font-display shadow-sm">
                     ch
                   </div>
                   <div>
-                    <p className="text-slate-100 font-bold text-sm font-display">chamba pro — atpdev.dev</p>
-                    <p className="text-[11px] text-slate-400">Plataforma Agregadora de Empleos y Convocatorias en Perú</p>
+                    <p className="text-slate-900 dark:text-slate-100 font-bold text-sm font-display">chamba pro — atpdev.dev</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Plataforma Agregadora de Empleos y Convocatorias en Perú</p>
                   </div>
                 </div>
-                <p className="text-slate-400 text-xs leading-relaxed max-w-md">
+                <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed max-w-md">
                   Chamba Pro es una iniciativa tecnológica independiente desarrollada por <strong>ATP DEV</strong>. Nuestro objetivo es acercar las convocatorias de trabajo transparentes a todo el Perú, combatiendo fraudes y redirigiendo 100% a las fuentes oficiales de SERVIR y empresas verificadas.
                 </p>
                 <div className="flex flex-wrap gap-2 text-[11px] font-mono">
-                  <Link href="/convocatorias/cas" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">CAS 1057</Link>
-                  <Link href="/convocatorias/728" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">D.L. 728</Link>
-                  <Link href="/convocatorias/privado" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">Sector Privado</Link>
-                  <Link href="/convocatorias/practicas" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">Prácticas</Link>
-                  <Link href="/convocatorias/locacion" className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors">Locación</Link>
+                  <Link href="/convocatorias/cas" className="px-2 py-0.5 rounded bg-slate-200/80 dark:bg-emerald-500/10 border border-slate-300 dark:border-emerald-500/20 text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:bg-emerald-500/20 transition-colors">CAS 1057</Link>
+                  <Link href="/convocatorias/728" className="px-2 py-0.5 rounded bg-slate-200/80 dark:bg-emerald-500/10 border border-slate-300 dark:border-emerald-500/20 text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:bg-emerald-500/20 transition-colors">D.L. 728</Link>
+                  <Link href="/convocatorias/privado" className="px-2 py-0.5 rounded bg-slate-200/80 dark:bg-emerald-500/10 border border-slate-300 dark:border-emerald-500/20 text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:bg-emerald-500/20 transition-colors">Sector Privado</Link>
+                  <Link href="/convocatorias/practicas" className="px-2 py-0.5 rounded bg-slate-200/80 dark:bg-emerald-500/10 border border-slate-300 dark:border-emerald-500/20 text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:bg-emerald-500/20 transition-colors">Prácticas</Link>
+                  <Link href="/convocatorias/locacion" className="px-2 py-0.5 rounded bg-slate-200/80 dark:bg-emerald-500/10 border border-slate-300 dark:border-emerald-500/20 text-slate-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:bg-emerald-500/20 transition-colors">Locación</Link>
                 </div>
               </div>
 
               {/* Col 2: Herramientas Gratuitas */}
               <div className="space-y-3">
-                <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider font-mono">
+                <h4 className="font-bold text-slate-900 dark:text-slate-200 text-xs uppercase tracking-wider font-mono">
                   Herramientas Gratuitas
                 </h4>
-                <ul className="space-y-2 text-slate-400">
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                   <li>
-                    <Link href="/guias" className="hover:text-emerald-400 transition-colors font-bold text-emerald-300 flex items-center gap-1.5">
-                      <BookOpen size={12} className="text-emerald-400" />
+                    <Link href="/guias" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
+                      <BookOpen size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Guías Laborales y Manuales CAS</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/calculadora-sueldo" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/calculadora-sueldo" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Calculadora de Sueldo Neto CAS
                     </Link>
                   </li>
                   <li>
-                    <Link href="/crear-cv-cas" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/crear-cv-cas" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Creador de CV para el Estado
                     </Link>
                   </li>
                   <li>
-                    <Link href="/simulador-entrevista-ia" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/simulador-entrevista-ia" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Simulador de Entrevista con IA
                     </Link>
                   </li>
                   <li>
-                    <Link href="/comparador-regimenes" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/comparador-regimenes" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Comparador CAS vs 728 vs 276
                     </Link>
                   </li>
                   <li>
-                    <Link href="/plantillas-anexos" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/plantillas-anexos" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Descarga de Anexos SERVIR
                     </Link>
                   </li>
                   <li>
-                    <Link href="/preguntas-entrevista-cas" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/preguntas-entrevista-cas" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Preguntas de Examen CAS
                     </Link>
                   </li>
                   <li>
-                    <Link href="/organizaciones" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                      <Building2 size={12} className="text-emerald-400" />
+                    <Link href="/organizaciones" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <Building2 size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Directorio de Entidades del Estado</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/publicar-empleo" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                      <PlusCircle size={12} className="text-emerald-400" />
+                    <Link href="/publicar-empleo" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <PlusCircle size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Publicar Convocatoria (RRHH)</span>
                     </Link>
                   </li>
@@ -378,36 +378,36 @@ export default function RootLayout({
 
               {/* Col 3: Legal & Cumplimiento Google AdSense */}
               <div className="space-y-3">
-                <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider font-mono">
+                <h4 className="font-bold text-slate-900 dark:text-slate-200 text-xs uppercase tracking-wider font-mono">
                   Marco Legal y Transparencia
                 </h4>
-                <ul className="space-y-2 text-slate-400">
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                   <li>
-                    <Link href="/politica-de-privacidad" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                      <Lock size={12} className="text-emerald-400" />
+                    <Link href="/politica-de-privacidad" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <Lock size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Política de Privacidad</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/terminos-y-condiciones" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                      <Scale size={12} className="text-emerald-400" />
+                    <Link href="/terminos-y-condiciones" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <Scale size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Términos y Condiciones</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/contacto" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                      <Mail size={12} className="text-emerald-400" />
+                    <Link href="/contacto" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <Mail size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Contacto y Soporte</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/quienes-somos" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                      <ShieldCheck size={12} className="text-emerald-400" />
+                    <Link href="/quienes-somos" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <ShieldCheck size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Quiénes Somos y Manifiesto</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/empleos?regimen=CAS" className="hover:text-emerald-400 transition-colors">
+                    <Link href="/empleos?regimen=CAS" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       Convocatorias del Estado (CAS)
                     </Link>
                   </li>
@@ -417,72 +417,72 @@ export default function RootLayout({
             </div>
 
             {/* Regional Linking Hub for Programmatic SEO */}
-            <div className="border-t border-slate-900/80 pt-6 space-y-2.5">
+            <div className="border-t border-slate-200 dark:border-slate-900/80 pt-6 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-wider">
+                <span className="text-[11px] font-mono font-bold text-slate-900 dark:text-slate-300 uppercase tracking-wider">
                   Chamba y Convocatorias por Región en Perú
                 </span>
-                <Link href="/empleos" className="text-[11px] text-emerald-400 hover:underline">
+                <Link href="/empleos" className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">
                   Ver todas las ofertas →
                 </Link>
               </div>
-              <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] text-slate-400">
-                <Link href="/empleos/en/lima" className="hover:text-emerald-400 transition-colors">Lima</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/arequipa" className="hover:text-emerald-400 transition-colors">Arequipa</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/callao" className="hover:text-emerald-400 transition-colors">Callao</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/cusco" className="hover:text-emerald-400 transition-colors">Cusco</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/la-libertad" className="hover:text-emerald-400 transition-colors">La Libertad (Trujillo)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/piura" className="hover:text-emerald-400 transition-colors">Piura</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/lambayeque" className="hover:text-emerald-400 transition-colors">Lambayeque (Chiclayo)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/junin" className="hover:text-emerald-400 transition-colors">Junín (Huancayo)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/ancash" className="hover:text-emerald-400 transition-colors">Áncash (Chimbote/Huaraz)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/ica" className="hover:text-emerald-400 transition-colors">Ica</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/cajamarca" className="hover:text-emerald-400 transition-colors">Cajamarca</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/puno" className="hover:text-emerald-400 transition-colors">Puno</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/san-martin" className="hover:text-emerald-400 transition-colors">San Martín (Tarapoto)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/loreto" className="hover:text-emerald-400 transition-colors">Loreto (Iquitos)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/huanuco" className="hover:text-emerald-400 transition-colors">Huánuco</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/ayacucho" className="hover:text-emerald-400 transition-colors">Ayacucho</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/tacna" className="hover:text-emerald-400 transition-colors">Tacna</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/moquegua" className="hover:text-emerald-400 transition-colors">Moquegua</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/tumbes" className="hover:text-emerald-400 transition-colors">Tumbes</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/ucayali" className="hover:text-emerald-400 transition-colors">Ucayali (Pucallpa)</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/pasco" className="hover:text-emerald-400 transition-colors">Pasco</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/amazonas" className="hover:text-emerald-400 transition-colors">Amazonas</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/apurimac" className="hover:text-emerald-400 transition-colors">Apurímac</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/huancavelica" className="hover:text-emerald-400 transition-colors">Huancavelica</Link>
-                <span className="text-slate-700">•</span>
-                <Link href="/empleos/en/madre-de-dios" className="hover:text-emerald-400 transition-colors">Madre de Dios</Link>
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] text-slate-600 dark:text-slate-400">
+                <Link href="/empleos/en/lima" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Lima</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/arequipa" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Arequipa</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/callao" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Callao</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/cusco" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Cusco</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/la-libertad" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">La Libertad (Trujillo)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/piura" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Piura</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/lambayeque" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Lambayeque (Chiclayo)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/junin" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Junín (Huancayo)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/ancash" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Áncash (Chimbote/Huaraz)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/ica" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ica</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/cajamarca" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Cajamarca</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/puno" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Puno</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/san-martin" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">San Martín (Tarapoto)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/loreto" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Loreto (Iquitos)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/huanuco" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Huánuco</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/ayacucho" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ayacucho</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/tacna" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Tacna</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/moquegua" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Moquegua</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/tumbes" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Tumbes</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/ucayali" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ucayali (Pucallpa)</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/pasco" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Pasco</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/amazonas" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Amazonas</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/apurimac" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Apurímac</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/huancavelica" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Huancavelica</Link>
+                <span className="text-slate-300 dark:text-slate-700">•</span>
+                <Link href="/empleos/en/madre-de-dios" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Madre de Dios</Link>
               </div>
             </div>
 
             {/* Bottom Bar: Disclaimer Legal No Gubernamental */}
-            <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 text-center md:text-left">
+            <div className="border-t border-slate-200 dark:border-slate-900 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 text-center md:text-left">
               <p>
-                © {new Date().getFullYear()} <strong>chamba pro</strong> — Desarrollado por <a href="https://atpdev.dev" target="_blank" className="text-slate-400 hover:text-emerald-400 font-semibold">ATP DEV</a>. Todos los derechos reservados.
+                © {new Date().getFullYear()} <strong>chamba pro</strong> — Desarrollado por <a href="https://atpdev.dev" target="_blank" className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold">ATP DEV</a>. Todos los derechos reservados.
               </p>
               <p className="max-w-xl text-[10px] leading-relaxed">
                 <strong>Aviso Legal:</strong> Chamba Pro es un agregador privado e independiente de ofertas de empleo. No somos una entidad gubernamental ni representamos a SERVIR. Toda postulación se realiza de forma gratuita y directa en los portales oficiales de cada institución. Cumplimiento de la Ley N° 29733.
