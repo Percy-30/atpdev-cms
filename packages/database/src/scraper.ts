@@ -1,4 +1,4 @@
-if (typeof window === 'undefined') {
+if (typeof process !== 'undefined' && process.versions?.node) {
   try {
     const dnsName = 'd' + 'n' + 's';
     const dnsMod = typeof require !== 'undefined' ? require(dnsName) : null;

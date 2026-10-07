@@ -13,17 +13,61 @@
  */
 
 import { Pool, PoolClient, types } from 'pg';
-import type {
-  Participant,
-  Winner,
-  Giveaway,
-  GiveawayRules,
-  UserRole,
-  UserStatus,
-  PlanId,
-  SocialPlatform,
-  SocialAccountStatus,
-} from '@/lib/types';
+export type SocialPlatform = 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads' | 'standalone';
+export type SocialAccountStatus = 'active' | 'revoked' | 'expired' | 'error';
+export type UserRole = 'user' | 'admin' | 'moderator';
+export type UserStatus = 'active' | 'suspended' | 'pending';
+export type PlanId = 'free' | 'pro' | 'enterprise';
+
+export interface GiveawayRules {
+  excludeDuplicates: boolean;
+  minMentions: number;
+  requiredHashtag?: string;
+  blockedUsers: string[];
+  winnersCount: number;
+  substitutesCount: number;
+}
+
+export interface Participant {
+  id: string;
+  username: string;
+  name?: string;
+  avatarUrl?: string;
+  commentText?: string;
+  likesCount?: number;
+  timestamp?: string;
+  isEligible: boolean;
+  exclusionReason?: string;
+}
+
+export interface Winner {
+  id: string;
+  participant: Participant;
+  type: 'winner' | 'substitute';
+  position: number;
+  selectedAt: string;
+}
+
+export interface Giveaway {
+  id: string;
+  title: string;
+  description?: string;
+  platform?: SocialPlatform;
+  postUrl?: string;
+  secondPostUrl?: string;
+  authorUsername?: string;
+  totalCommentsCount?: number;
+  status: 'draft' | 'scheduled' | 'running' | 'completed' | 'finished' | 'cancelled';
+  rules: GiveawayRules;
+  participants?: Participant[];
+  winners: Winner[];
+  substitutes?: Winner[];
+  certificateId?: string;
+  verificationHash?: string;
+  scheduledAt?: string;
+  executedAt?: string;
+  createdAt: string;
+}
 
 // Keep numeric types from being returned as string/number surprises
 types.setTypeParser(1700, (v) => v); // avoid over-eager JSONB parsing issues
@@ -104,6 +148,8 @@ export async function createStorePostgres(pool: Pool, tenantId: string): Promise
 }
 
 class PostgresStore implements StorePostgres {
+  readonly schema = 'sorteos' as const;
+
   constructor(private readonly pool: Pool, readonly name: string) {}
 
   async init(): Promise<void> {
