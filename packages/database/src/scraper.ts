@@ -1,7 +1,7 @@
 if (typeof process !== 'undefined' && process.versions?.node) {
   try {
-    const dnsName = 'd' + 'n' + 's';
-    const dnsMod = typeof require !== 'undefined' ? require(dnsName) : null;
+    const nodeReq = typeof eval !== 'undefined' ? eval('require') : null;
+    const dnsMod = nodeReq ? nodeReq('dns') : null;
     dnsMod?.setDefaultResultOrder?.('ipv4first');
   } catch {}
 }
@@ -587,14 +587,19 @@ async function refreshLiveFeedInBackground(): Promise<void> {
 }
 
 // 4. Live Scraper Engine para ConvocatoriasDeTrabajo.com
+function getNodeModule<T = any>(name: string): T | null {
+  try {
+    if (typeof process !== 'undefined' && process.versions?.node && typeof eval !== 'undefined') {
+      return eval('require')(name);
+    }
+  } catch {}
+  return null;
+}
+
 function getCdCacheFilePath(): string | null {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const fsName = 'f' + 's';
-    const pathName = 'p' + 'a' + 't' + 'h';
-    const fsMod = typeof require !== 'undefined' ? (require(fsName) as typeof import('fs')) : null;
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pathMod = typeof require !== 'undefined' ? (require(pathName) as typeof import('path')) : null;
+    const fsMod = getNodeModule<typeof import('fs')>('fs');
+    const pathMod = getNodeModule<typeof import('path')>('path');
     if (!fsMod || !pathMod) return null;
 
     const cwd = typeof process !== 'undefined' && process.cwd ? process.cwd() : '.';
@@ -619,8 +624,7 @@ function getCdCacheFilePath(): string | null {
 
 export function loadPersistedCdJobs(): JobPosting[] {
   try {
-    const fsName = 'f' + 's';
-    const fsMod = typeof require !== 'undefined' ? (require(fsName) as typeof import('fs')) : null;
+    const fsMod = getNodeModule<typeof import('fs')>('fs');
     if (!fsMod) return [];
     const filePath = getCdCacheFilePath();
     if (filePath && fsMod.existsSync(filePath)) {
@@ -638,8 +642,7 @@ export function loadPersistedCdJobs(): JobPosting[] {
 
 export function persistCdJobs(jobs: JobPosting[]): void {
   try {
-    const fsName = 'f' + 's';
-    const fsMod = typeof require !== 'undefined' ? (require(fsName) as typeof import('fs')) : null;
+    const fsMod = getNodeModule<typeof import('fs')>('fs');
     if (!fsMod || !Array.isArray(jobs) || jobs.length === 0) return;
     const filePath = getCdCacheFilePath();
     if (filePath) {
