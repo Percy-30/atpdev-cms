@@ -1,7 +1,10 @@
-import dns from 'dns';
-try {
-  dns.setDefaultResultOrder?.('ipv4first');
-} catch {}
+if (typeof window === 'undefined') {
+  try {
+    const dnsName = 'd' + 'n' + 's';
+    const dnsMod = typeof require !== 'undefined' ? require(dnsName) : null;
+    dnsMod?.setDefaultResultOrder?.('ipv4first');
+  } catch {}
+}
 
 import { JobPosting, JobPlaza, INITIAL_JOBS } from './jobs';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
