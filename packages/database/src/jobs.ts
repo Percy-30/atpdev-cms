@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { SERVIR_JOBS_DATA } from './servirJobsData';
 
 export type OdpeVacancy = {
   odpe: string;
