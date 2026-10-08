@@ -29,7 +29,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
-  const job = await getJobPostingBySlug(decodedSlug) || await getJobPostingBySlug(slug);
+  const job = await getJobPostingBySlug(decodedSlug, { skipRemoteEnrichment: true }) || await getJobPostingBySlug(slug, { skipRemoteEnrichment: true });
   if (!job) return {};
 
   const pageUrl = `${SITE_URL}/empleos/${slug}`;

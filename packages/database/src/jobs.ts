@@ -2778,13 +2778,15 @@ const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = (globalThis as any).__LOCAL_
 (globalThis as any).__LOCAL_DYNAMIC_JOBS__ = LOCAL_DYNAMIC_JOBS;
 
 // In-Memory Global Cache para búsquedas ultra-rápidas e instantáneas (0ms)
-let GLOBAL_JOBS_CACHE: JobPosting[] | null = null;
-let GLOBAL_JOBS_TIMESTAMP = 0;
-const GLOBAL_CACHE_TTL = 1000 * 60 * 5; // 5 minutos de caché en memoria
+let GLOBAL_JOBS_CACHE: JobPosting[] | null = (globalThis as any).__GLOBAL_JOBS_CACHE__ || null;
+let GLOBAL_JOBS_TIMESTAMP: number = (globalThis as any).__GLOBAL_JOBS_TIMESTAMP__ || 0;
+const GLOBAL_CACHE_TTL = 1000 * 60 * 15; // 15 minutos de caché en memoria compartida
 
 export function invalidateJobsCache(): void {
   GLOBAL_JOBS_CACHE = null;
   GLOBAL_JOBS_TIMESTAMP = 0;
+  (globalThis as any).__GLOBAL_JOBS_CACHE__ = null;
+  (globalThis as any).__GLOBAL_JOBS_TIMESTAMP__ = 0;
 }
 
 registerJobsUpdatedCallback(() => invalidateJobsCache());
@@ -3000,6 +3002,8 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 
   GLOBAL_JOBS_CACHE = uniqueResults;
   GLOBAL_JOBS_TIMESTAMP = Date.now();
+  (globalThis as any).__GLOBAL_JOBS_CACHE__ = uniqueResults;
+  (globalThis as any).__GLOBAL_JOBS_TIMESTAMP__ = GLOBAL_JOBS_TIMESTAMP;
   return uniqueResults;
 }
 
@@ -3027,10 +3031,11 @@ export async function getJobPostingBySlug(
     const hasPlazaDocs = Boolean(
       job.plazas && 
       job.plazas.length > 0 &&
-      job.plazas.every(p => p.bases_url && !isCompetitorUrl(p.bases_url))
+      job.plazas.some(p => p.bases_url && !isCompetitorUrl(p.bases_url))
     );
 
-    const needsEnrichment = !hasBasesDoc || !hasPlazaDocs || !job.official_documents || job.official_documents.length === 0;
+    // Solo requerir enriquecimiento remoto si la oferta NO tiene bases oficiales ni plazas verificadas
+    const needsEnrichment = !hasBasesDoc && !hasPlazaDocs;
 
     if (!options?.skipRemoteEnrichment && cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && needsEnrichment) {
       try {
@@ -3171,18 +3176,21 @@ export async function getJobPostingBySlug(
   const initialJob = INITIAL_JOBS.find(j => j && j.slug === normSlug);
   if (initialJob) return maybeEnrichJob(initialJob);
 
-  // 3. Búsqueda completa en catálogo unificado (incluyendo feed live)
+  // 2b. Búsqueda instantánea en catálogo de ConvocatoriasDeTrabajo (0ms)
+  const cdList = getCachedCdJobsList();
+  const cdMatch = cdList.find(j => j && (j.slug === normSlug || j.id === normSlug || (j.fuente_url && j.fuente_url.toLowerCase().includes(normSlug))));
+  if (cdMatch) return maybeEnrichJob(cdMatch);
+
+  // 2c. Búsqueda instantánea en catálogo oficial SERVIR (0ms)
+  const servirMatch = SERVIR_JOBS_DATA.find(j => j && (j.slug === normSlug || j.id === normSlug));
+  if (servirMatch) return maybeEnrichJob(servirMatch);
+
+  // 3. Búsqueda completa en catálogo unificado
   const allJobs = await getJobPostings();
   const found = allJobs.find(j => j && j.slug === normSlug);
   if (found) return maybeEnrichJob(found);
-
-  // 4. Búsqueda directa en catálogo de ConvocatoriasDeTrabajo / Extracción bajo demanda en vivo
+  // 4. Si aún no estaba en el catálogo, intentar extracción bajo demanda
   if (normSlug.startsWith('oferta-de-empleo-') || /-\d{4,6}$/.test(normSlug)) {
-    const cdList = getCachedCdJobsList();
-    const cdDirect = cdList.find(j => j && (j.slug === normSlug || (j.fuente_url && j.fuente_url.toLowerCase().includes(normSlug))));
-    if (cdDirect) return maybeEnrichJob(cdDirect);
-
-    // Si aún no estaba en el caché, extraer la oferta directamente de la fuente en tiempo real (0 errores 404)
     try {
       const liveCdJob = await fetchAndParseIndividualCdJob(normSlug);
       if (liveCdJob) {

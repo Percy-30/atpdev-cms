@@ -1027,8 +1027,12 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     };
 
-    const res = await fetch(fuenteUrl, { headers, signal: AbortSignal.timeout(8000) });
-    if (!res.ok) return { plazas: [] };
+    const res = await fetch(fuenteUrl, { headers, signal: AbortSignal.timeout(2000) });
+    if (!res.ok) {
+      const fallback = { plazas: [] };
+      CD_ENRICHED_CACHE.set(fuenteUrl, fallback);
+      return fallback;
+    }
     const html = await res.text();
 
     let directBasesUrl: string | undefined;
@@ -1395,8 +1399,9 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
     CD_ENRICHED_CACHE.set(fuenteUrl, result);
     return result;
   } catch (err) {
-    console.warn('Error en extractPlazasAndBasesFromCdUrl:', err);
-    return { plazas: [] };
+    const fallback = { plazas: [] };
+    CD_ENRICHED_CACHE.set(fuenteUrl, fallback);
+    return fallback;
   }
 }
 
