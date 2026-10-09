@@ -688,7 +688,10 @@ export function persistSingleEnrichedCdJob(job: JobPosting): void {
     } else {
       cachedCdJobs.data.unshift(job);
     }
+    cachedCdJobs.timestamp = Date.now();
+    (globalThis as any).__CACHED_CD_JOBS__ = cachedCdJobs;
     persistCdJobs(cachedCdJobs.data);
+    (globalThis as any).__INVALIDATE_GLOBAL_JOBS_CACHE__?.();
   } catch {}
 }
 
