@@ -203,11 +203,10 @@ export default function RootLayout({
         )}
         {/* Google AdSense Script Inyección Oficial */}
         {adsenseId && (
-          <Script
+          <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
             crossOrigin="anonymous"
-            strategy="afterInteractive"
           />
         )}
         {/* Google Sitelinks Searchbox & WebSite Schema */}
