@@ -141,7 +141,7 @@ export const DEFAULT_CHAMBA_CONFIG: SubdomainConfig = {
       'convocatorias cas 2026',
       'servir convocatorias'
     ],
-    canonical_url: 'https://empleos.atpdev.dev'
+    canonical_url: 'https://atpdev.dev'
   },
   modules: {
     scraper_enabled: true,
@@ -159,7 +159,7 @@ export const DEFAULT_CHAMBA_CONFIG: SubdomainConfig = {
     whatsapp: '+51987654321',
     whatsapp_channel_url: 'https://whatsapp.com/channel/0029Vaexample',
     telegram_channel_url: 'https://t.me/chambapro_peru',
-    support_url: 'https://empleos.atpdev.dev/contacto'
+    support_url: 'https://atpdev.dev/contacto'
   },
   updated_at: new Date().toISOString()
 };
