@@ -62,9 +62,32 @@ const faqSchema = {
   ]
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": SITE_URL,
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Simulador de Entrevista IA",
+      "item": `${SITE_URL}/simulador-entrevista-ia`,
+    },
+  ],
+};
+
 export default function AiInterviewPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }}

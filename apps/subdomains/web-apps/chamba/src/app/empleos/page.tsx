@@ -115,8 +115,50 @@ export default async function EmpleosPage({
     return 0;
   });
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Convocatorias de Trabajo",
+        item: `${SITE_URL}/empleos`,
+      },
+    ],
+  };
+
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Convocatorias y Empleos Vigentes en Perú",
+    description: "Lista de convocatorias de trabajo en el Estado (CAS, 728, 276) y sector privado.",
+    numberOfItems: filteredJobs.length,
+    itemListElement: filteredJobs.slice(0, 30).map((job, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      name: `${job.title} — ${job.entity_name}`,
+      url: `${SITE_URL}/empleos/${job.slug}`,
+    })),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      {/* JSON-LD Schemas for Rich Snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       {/* Page Title Header */}
       <div className="space-y-2 border-b border-slate-200 dark:border-white/10 pb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-semibold">

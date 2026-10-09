@@ -34,8 +34,32 @@ export const metadata: Metadata = {
 };
 
 export default function PublicarEmpleoPage() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: SITE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Publicar Oferta de Empleo',
+        item: `${SITE_URL}/publicar-empleo`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#070a12] text-slate-100 pb-20 selection:bg-emerald-400 selection:text-slate-950">
+      {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Background ambient glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-emerald-500/10 blur-[130px] rounded-full" />

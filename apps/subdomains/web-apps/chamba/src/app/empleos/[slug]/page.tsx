@@ -116,7 +116,21 @@ export default async function JobDetailPage({
     employmentType = "FULL_TIME";
   }
 
-  // Formato ISO 8601 estricto para fechas
+  // Detección de teletrabajo / remoto para Google for Jobs
+  const isRemoteJob = Boolean(
+    job.region?.toLowerCase().includes("remoto") ||
+    job.title?.toLowerCase().includes("remoto") ||
+    job.description?.toLowerCase().includes("trabajo remoto") ||
+    job.description?.toLowerCase().includes("teletrabajo")
+  );
+
+  // Extracción robusta de salario para Google for Jobs Rich Snippet
+  const rawSalaryNums = (job.salary_text || '').replace(/[,.]/g, ' ').match(/\d+/g)?.map(Number).filter(n => n >= 800 && n <= 50000);
+  const fallbackSalaryMin = rawSalaryNums && rawSalaryNums.length > 0 ? Math.min(...rawSalaryNums) : undefined;
+  const fallbackSalaryMax = rawSalaryNums && rawSalaryNums.length > 0 ? Math.max(...rawSalaryNums) : undefined;
+  const resolvedSalaryMin = job.salary_min || fallbackSalaryMin;
+  const resolvedSalaryMax = job.salary_max || fallbackSalaryMax || resolvedSalaryMin;
+
   // Formato ISO 8601 estricto para fechas y cálculo de expiración
   const isoDatePosted = job.start_date
     ? (job.start_date.includes("T") ? job.start_date : `${job.start_date}T00:00:00.000Z`)
@@ -161,35 +175,53 @@ export default async function JobDetailPage({
     hiringOrganization: {
       "@type": "Organization",
       name: job.entity_name,
-      sameAs: job.apply_url,
+      sameAs: job.apply_url || SITE_URL,
       logo: job.entity_logo || `${SITE_URL}/icon.svg`,
     },
-    jobLocation: {
-      "@type": "Place",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: job.region,
-        addressRegion: job.region,
-        addressCountry: "PE",
-      },
-    },
-    applicantLocationRequirements: {
-      "@type": "Country",
-      name: "PE",
-    },
+    ...(isRemoteJob
+      ? {
+          jobLocationType: "TELECOMMUTE",
+          applicantLocationRequirements: {
+            "@type": "Country",
+            name: "PE",
+          },
+        }
+      : {
+          jobLocation: {
+            "@type": "Place",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: `${job.entity_name}, ${job.region}`,
+              addressLocality: job.region,
+              addressRegion: job.region,
+              addressCountry: "PE",
+            },
+          },
+          applicantLocationRequirements: {
+            "@type": "Country",
+            name: "PE",
+          },
+        }),
     industry: job.category || (job.sector_type?.includes("CAS") ? "Administración Pública y Estado" : "Servicios"),
     educationRequirements: job.education_level ? {
       "@type": "EducationalOccupationalCredential",
       credentialCategory: job.education_level,
-    } : undefined,
-    baseSalary: job.salary_min ? {
+    } : {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "Secundaria, Técnico o Universitario según bases oficiales",
+    },
+    experienceRequirements: {
+      "@type": "OccupationalExperienceRequirements",
+      monthsOfExperience: 12,
+    },
+    baseSalary: resolvedSalaryMin ? {
       "@type": "MonetaryAmount",
       currency: "PEN",
       value: {
         "@type": "QuantitativeValue",
-        value: job.salary_min,
-        minValue: job.salary_min,
-        maxValue: job.salary_max || job.salary_min,
+        value: resolvedSalaryMin,
+        minValue: resolvedSalaryMin,
+        maxValue: resolvedSalaryMax || resolvedSalaryMin,
         unitText: "MONTH",
       },
     } : undefined,

@@ -139,6 +139,7 @@ export default function RootLayout({
   const theme = config.theme || ({} as any);
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-5414009811868137";
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
   const accentHex = theme.accent_color || theme.primary_color || "#10b981";
   const glowStyle = theme.glow_style || "spotlight-border";
   const neonThickness = theme.neon_thickness || "4px";
@@ -181,22 +182,21 @@ export default function RootLayout({
             href={`https://fonts.googleapis.com/css2?${[theme.font_headline, theme.font_body, theme.font_label].filter((f): f is string => Boolean(f)).map((f: string) => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700;800;900`).join('&')}&display=swap`}
           />
         )}
-        {/* Google Analytics 4 (GA4) */}
-        {gaId && (
+        {/* Google Analytics 4 (GA4) & Google Ads Tag */}
+        {(gaId || googleAdsId) && (
           <>
             <Script
               async
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId || googleAdsId}`}
               strategy="afterInteractive"
             />
-            <Script id="google-analytics-init" strategy="afterInteractive">
+            <Script id="google-tags-init" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${gaId}', {
-                  page_path: window.location.pathname,
-                });
+                ${gaId ? `gtag('config', '${gaId}', { page_path: window.location.pathname });` : ''}
+                ${googleAdsId ? `gtag('config', '${googleAdsId}');` : ''}
               `}
             </Script>
           </>

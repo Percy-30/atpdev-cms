@@ -268,6 +268,38 @@ export default async function RegionJobsPage({
     })),
   };
 
+  // Structured Data: FAQPage
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `¿Dónde encontrar convocatorias de trabajo vigentes en ${regionInfo.name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `En Chamba Pro agrupamos diariamente las ofertas de empleo y convocatorias CAS en ${regionInfo.name} con bases oficiales de Gobiernos Regionales, municipalidades, DIRESA, UGELs y empresas privadas.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `¿Qué entidades públicas contratan personal en ${regionInfo.name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `En ${regionInfo.name} convocan periódicamente el Gobierno Regional, municipalidades provinciales y distritales, EsSalud, Poder Judicial, Ministerio Público, SUNAT y los sectores de Salud y Educación.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `¿Cómo postular a empleos del Estado en ${regionInfo.name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Ingresa a la convocatoria de tu interés en Chamba Pro, descarga las bases en PDF con los requisitos y cronograma, y envía tu postulación a través de la mesa de partes digital o portal oficial de la entidad convocante.`,
+        },
+      },
+    ],
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* JSON-LD Schemas */}
@@ -278,6 +310,10 @@ export default async function RegionJobsPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       {/* Navigation Breadcrumb */}

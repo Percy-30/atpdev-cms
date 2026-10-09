@@ -8,12 +8,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const guias = getAllGuias();
   const baseUrl = SITE_URL;
 
-  const jobUrls = jobs.map((job) => ({
-    url: `${baseUrl}/empleos/${job.slug}`,
-    lastModified: new Date(job.created_at || Date.now()),
-    changeFrequency: 'daily' as const,
-    priority: 0.9,
-  }));
+  const todayIso = new Date().toISOString().split('T')[0];
+
+  const jobUrls = jobs.map((job) => {
+    const isExpired = job.status === 'Finalizado' || (job.end_date && job.end_date < todayIso);
+    return {
+      url: `${baseUrl}/empleos/${job.slug}`,
+      lastModified: new Date(job.created_at || Date.now()),
+      changeFrequency: (isExpired ? 'monthly' : 'daily') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      priority: isExpired ? 0.4 : 0.9,
+    };
+  });
 
   const guiasUrls = guias.map((guia) => ({
     url: `${baseUrl}/guias/${guia.slug}`,

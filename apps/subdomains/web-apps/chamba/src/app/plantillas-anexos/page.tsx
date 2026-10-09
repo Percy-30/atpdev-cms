@@ -1,17 +1,48 @@
-'use client';
-
-import React, { useState } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ChevronRight, FileText, Copy, Check, Download, Sparkles, ShieldCheck, FileCode, CheckCircle2 } from 'lucide-react';
+import { ChevronRight, Sparkles } from 'lucide-react';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
+import PlantillasClient, { PlantillaItem } from './PlantillasClient';
+import { SITE_URL } from '@/lib/siteConfig';
 
-const PLANTILLAS = [
+export const metadata: Metadata = {
+  title: 'Plantillas y Anexos Oficiales CAS 2026 en Word y Texto',
+  description: 'Descarga gratis declaraciones juradas de no antecedentes, no REDAM, ficha de postulante y formatos oficiales exigidos en convocatorias CAS del Estado Peruano.',
+  keywords: [
+    'declaracion jurada cas formato',
+    'anexos convocatorias cas 2026',
+    'declaracion jurada de antecedentes penales formato peru',
+    'declaracion jurada redam word',
+    'ficha postulante cas estado peruano',
+    'plantillas anexos servir cas'
+  ],
+  alternates: {
+    canonical: `${SITE_URL}/plantillas-anexos`,
+  },
+  openGraph: {
+    title: 'Plantillas y Anexos Oficiales CAS 2026 — Chamba Pro',
+    description: 'Formatos estándar de declaraciones juradas y fichas de inscripción para postular al Estado Peruano.',
+    url: `${SITE_URL}/plantillas-anexos`,
+    siteName: 'chamba pro',
+    type: 'website',
+    locale: 'es_PE',
+    images: [`${SITE_URL}/opengraph-image`],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Plantillas y Anexos Oficiales CAS 2026 — Chamba Pro',
+    description: 'Declaraciones juradas y formatos oficiales listos para copiar y descargar.',
+    images: [`${SITE_URL}/opengraph-image`],
+  },
+};
+
+const PLANTILLAS: PlantillaItem[] = [
   {
     id: 'dj-antecedentes',
     title: 'Declaración Jurada de No Registrar Antecedentes (Penales, Policiales y Judiciales)',
     category: 'Anexo Obligatorio CAS / 728',
     description: 'Formato estándar exigido por entidades públicas (SUNAT, MINEDU, Poder Judicial, ONPE, etc.) para constatar la inexistencia de antecedentes.',
-    content: `DECLARACIÓN JURADA DE NO REGISTRAR ANTEECEDENTES
+    content: `DECLARACIÓN JURADA DE NO REGISTRAR ANTECEDENTES
 (Ley N° 29607 y D.S. N° 075-2008-PCM)
 
 Yo, [NOMBRES Y APELLIDOS COMPLETOS], identificado(a) con DNI N° [NÚMERO DE DNI], con domicilio legal en [DIRECCIÓN COMPLETA], departamento de [DEPARTAMENTO], provincia de [PROVINCIA], distrito de [DISTRITO].
@@ -87,27 +118,61 @@ DNI N°: [NÚMERO DE DNI]`,
   },
 ];
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Inicio',
+      item: SITE_URL,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Plantillas y Anexos CAS',
+      item: `${SITE_URL}/plantillas-anexos`,
+    },
+  ],
+};
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Qué declaraciones juradas son obligatorias para postular a convocatorias CAS?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Las declaraciones juradas básicas exigidas por las bases de convocatorias CAS incluyen: Declaración Jurada de no registrar antecedentes penales/policiales, Declaración Jurada de no estar en el REDAM (deudores alimentarios), Declaración Jurada de no nepotismo y Ficha de postulación con presunción de veracidad.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Debo legalizar notarialmente los anexos y declaraciones juradas CAS?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. En virtud del Principio de Presunción de Veracidad (Ley N° 27444), las declaraciones juradas se presentan con firma manuscrita simple o digital. Solo si resultas ganador del concurso la entidad podrá solicitar la verificación o fedateo correspondiente.',
+      },
+    },
+  ],
+};
+
 export default function PlantillasAnexosPage() {
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  const handleCopy = (id: string, text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2500);
-  };
-
-  const handleDownload = (id: string, title: string, text: string) => {
-    const element = document.createElement("a");
-    const file = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    element.href = URL.createObjectURL(file);
-    element.download = `${id.toUpperCase()}_OFICIAL_PERU.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  };
-
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* JSON-LD Schemas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
         <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
@@ -122,7 +187,7 @@ export default function PlantillasAnexosPage() {
           <span>Formatos Gratuitos Listos para Copiar y Descargar</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
-          Plantillas y Anexos Oficiales CAS
+          Plantillas y Anexos Oficiales CAS 2026
         </h1>
         <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
           Descarga o copia declaraciones juradas y fichas de inscripción oficiales obligatorias para postular a entidades del Estado.
@@ -132,69 +197,8 @@ export default function PlantillasAnexosPage() {
       {/* Top Banner AdSlot */}
       <AdBannerSlot type="leaderboard" className="my-4" />
 
-      {/* Templates List */}
-      <div className="space-y-8">
-        {PLANTILLAS.map((plantilla, idx) => (
-          <React.Fragment key={plantilla.id}>
-            <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/15 bg-gradient-to-b from-slate-900 to-[#0b0f19]">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
-                <div>
-                  <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[11px] font-mono font-bold border border-emerald-500/30">
-                    {plantilla.category}
-                  </span>
-                  <h2 className="text-xl font-bold font-display text-white mt-2">
-                    {plantilla.title}
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-1">{plantilla.description}</p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleDownload(plantilla.id, plantilla.title, plantilla.content)}
-                    className="px-4 py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 font-mono text-xs font-bold transition-all border border-cyan-500/40 flex items-center gap-2 cursor-pointer"
-                  >
-                    <Download size={16} />
-                    <span>Descargar .TXT</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(plantilla.id, plantilla.content)}
-                    className={`px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
-                      copiedId === plantilla.id
-                        ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/30'
-                        : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                    }`}
-                  >
-                    {copiedId === plantilla.id ? (
-                      <>
-                        <Check size={16} />
-                        <span>¡TEXTO COPIADO!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={16} />
-                        <span>Copiar Formato</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Formatted Code / Text Preview */}
-              <div className="relative">
-                <pre className="p-4 sm:p-6 rounded-2xl bg-slate-950/90 border border-white/10 text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
-                  {plantilla.content}
-                </pre>
-              </div>
-            </div>
-
-            {/* In-feed ad banner between templates */}
-            {idx === 1 && <AdBannerSlot type="in-feed" className="my-6" />}
-          </React.Fragment>
-        ))}
-      </div>
+      {/* Interactive Templates Client Component */}
+      <PlantillasClient plantillas={PLANTILLAS} />
 
       {/* Bottom Billboard AdSlot */}
       <AdBannerSlot type="billboard" className="mt-8" />

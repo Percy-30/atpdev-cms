@@ -23,8 +23,50 @@ export const metadata: Metadata = {
 export default function GuiasIndexPage() {
   const guias = getAllGuias();
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: SITE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Guías Laborales',
+        item: `${SITE_URL}/guias`,
+      },
+    ],
+  };
+
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Guías Laborales Oficiales para el Estado Peruano',
+    description: 'Manuales, normatividad y guías prácticas para postular a convocatorias públicas en Perú.',
+    numberOfItems: guias.length,
+    itemListElement: guias.map((guia, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: guia.title,
+      url: `${SITE_URL}/guias/${guia.slug}`,
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#070a12] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+      {/* Structured Data Scripts */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       {/* Hero Header */}
       <section className="relative overflow-hidden pt-12 pb-16 border-b border-slate-200 dark:border-white/10 bg-white/60 dark:bg-transparent">
         <div className="absolute inset-0 bg-radial-at-c from-emerald-500/10 via-transparent to-transparent pointer-events-none" />

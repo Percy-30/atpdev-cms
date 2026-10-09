@@ -22,8 +22,52 @@ export const metadata: Metadata = {
 
 export default async function QuienesSomosPage() {
   const config = await getSubdomainConfig('chamba');
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: SITE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Quiénes Somos',
+        item: `${SITE_URL}/quienes-somos`,
+      },
+    ],
+  };
+
+  const aboutPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'Quiénes Somos — Chamba Pro',
+    url: `${SITE_URL}/quienes-somos`,
+    description: 'Manifiesto de transparencia, misión editorial y lucha contra el fraude laboral en convocatorias en Perú.',
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'chamba pro',
+      legalName: 'ATP DEV',
+      url: SITE_URL,
+      foundingLocation: 'Perú',
+    },
+  };
+
   return (
     <div className="min-h-screen bg-[#070d14] text-slate-100 font-sans py-12 px-4 sm:px-6 lg:px-8">
+      {/* JSON-LD Schemas for E-E-A-T */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }}
+      />
       <div className="max-w-5xl mx-auto space-y-16">
         
         {/* Header Hero Section */}

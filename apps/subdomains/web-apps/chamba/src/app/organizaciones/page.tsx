@@ -30,8 +30,50 @@ export default async function OrganizacionesPage() {
   const totalJobs = organizations.reduce((acc, o) => acc + o.jobCount, 0);
   const totalVacancies = organizations.reduce((acc, o) => acc + o.vacanciesCount, 0);
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: SITE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Organizaciones y Entidades',
+        item: `${SITE_URL}/organizaciones`,
+      },
+    ],
+  };
+
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Directorio de Entidades Públicas con Convocatorias en Perú',
+    description: 'Directorio de instituciones públicas y ministerios del Estado con convocatorias CAS y 728 vigentes.',
+    numberOfItems: organizations.length,
+    itemListElement: organizations.slice(0, 30).map((org, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: org.name,
+      url: `${SITE_URL}/empleos?q=${encodeURIComponent(org.name)}`,
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-[#070a12] text-slate-100 pb-20 selection:bg-emerald-400 selection:text-slate-950">
+      {/* Structured Data Scripts */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       {/* Background ambient glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-500/10 blur-[130px] rounded-full" />

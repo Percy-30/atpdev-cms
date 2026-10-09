@@ -5,8 +5,16 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: 'Mediapartners-Google',
+        userAgent: [
+          'Googlebot',
+          'Googlebot-Image',
+          'Google-InspectionTool',
+          'Mediapartners-Google',
+          'AdsBot-Google',
+          'AdsBot-Google-Mobile',
+        ],
         allow: '/',
+        disallow: ['/api/', '/admin/'],
       },
       {
         userAgent: '*',
@@ -15,5 +23,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

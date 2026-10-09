@@ -200,6 +200,38 @@ export default async function ConvocatoriaCategoriaPage({
     })),
   };
 
+  // Structured Data: FAQPage for Google Rich Accordions
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `¿Cuáles son los principales beneficios del régimen ${catInfo.name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: catInfo.benefits.join('. ') + '.',
+        },
+      },
+      {
+        "@type": "Question",
+        name: `¿Cómo postular a las convocatorias de ${catInfo.name} en el Estado Peruano?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Para postular a una plaza bajo ${catInfo.name}, descarga las bases oficiales y cronograma en PDF desde Chamba Pro, prepara tu CV documentado y anexos de ley, e ingresa al portal institucional de postulación en la fecha señalada.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `¿Es gratuito el proceso de postulación a empleos de ${catInfo.name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Sí, todos los procesos de selección bajo ${catInfo.name} en el Estado Peruano son 100% gratuitos y se rigen por los principios de mérito y transparencia de SERVIR.`,
+        },
+      },
+    ],
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* JSON-LD Schemas */}
@@ -210,6 +242,10 @@ export default async function ConvocatoriaCategoriaPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       {/* Navigation Breadcrumb */}
