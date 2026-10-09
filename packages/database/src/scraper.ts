@@ -646,6 +646,18 @@ export function persistCdJobs(jobs: JobPosting[]): void {
     if (!fsMod || !Array.isArray(jobs) || jobs.length === 0) return;
     const filePath = getCdCacheFilePath();
     if (filePath) {
+      if (fsMod.existsSync(filePath)) {
+        try {
+          const currentRaw = fsMod.readFileSync(filePath, 'utf-8');
+          if (currentRaw && currentRaw.trim()) {
+            const currentDisk = JSON.parse(currentRaw);
+            if (Array.isArray(currentDisk) && currentDisk.length > 20 && jobs.length < currentDisk.length * 0.5) {
+              console.warn(`[persistCdJobs] Protección de datos activa: intento de truncar catálogo de ${currentDisk.length} a ${jobs.length}. Se omite escritura.`);
+              return;
+            }
+          }
+        } catch {}
+      }
       fsMod.writeFileSync(filePath, JSON.stringify(jobs, null, 2), 'utf-8');
     }
   } catch (err) {
@@ -664,6 +676,12 @@ let isRefreshingCd = false;
 export function persistSingleEnrichedCdJob(job: JobPosting): void {
   try {
     if (!job || !job.slug) return;
+    if (!cachedCdJobs.data || cachedCdJobs.data.length === 0) {
+      const disk = loadPersistedCdJobs();
+      if (disk && disk.length > 0) {
+        cachedCdJobs.data = disk;
+      }
+    }
     const existingIdx = cachedCdJobs.data.findIndex(j => j.slug === job.slug || j.id === job.id);
     if (existingIdx !== -1) {
       cachedCdJobs.data[existingIdx] = { ...cachedCdJobs.data[existingIdx], ...job };
@@ -1027,11 +1045,9 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     };
 
-    const res = await fetch(fuenteUrl, { headers, signal: AbortSignal.timeout(2000) });
+    const res = await fetch(fuenteUrl, { headers, signal: AbortSignal.timeout(8000) });
     if (!res.ok) {
-      const fallback = { plazas: [] };
-      CD_ENRICHED_CACHE.set(fuenteUrl, fallback);
-      return fallback;
+      return { plazas: [] };
     }
     const html = await res.text();
 
@@ -1046,15 +1062,32 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
     // 1. Escanear enlaces del cuerpo principal de la oferta
     const allPageLinks = [...html.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
     for (const lm of allPageLinks) {
-      const lUrl = lm[1].trim();
+      let lUrl = lm[1].trim();
       const lText = lm[2].replace(/<[^>]+>/g, '').trim();
-      const lowUrl = lUrl.toLowerCase();
-      const lowText = lText.toLowerCase();
 
       if (
         !lUrl ||
         lUrl.startsWith('#') ||
-        lUrl.startsWith('javascript:') ||
+        lUrl.startsWith('javascript:')
+      ) {
+        continue;
+      }
+
+      // Resolver URLs relativas antes de procesar para evitar enlaces rotos
+      if (!lUrl.startsWith('http://') && !lUrl.startsWith('https://')) {
+        if (lUrl.startsWith('//')) {
+          lUrl = `https:${lUrl}`;
+        } else if (lUrl.startsWith('/')) {
+          lUrl = `https://www.convocatoriasdetrabajo.com${lUrl}`;
+        } else {
+          lUrl = `https://www.convocatoriasdetrabajo.com/${lUrl}`;
+        }
+      }
+
+      const lowUrl = lUrl.toLowerCase();
+      const lowText = lText.toLowerCase();
+
+      if (
         lowUrl.includes('convocatoriasdetrabajo.com') ||
         lowUrl.includes('whatsapp.com') ||
         lowUrl.includes('wa.me') ||
@@ -1062,6 +1095,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         lowUrl.includes('instagram.com') ||
         lowUrl.includes('linkedin.com') ||
         lowUrl.includes('twitter.com') ||
+        lowUrl.includes('x.com') ||
         lowUrl.includes('t.me') ||
         lowUrl.includes('telegram') ||
         lowUrl.includes('tiktok.com') ||
@@ -1086,7 +1120,7 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
         if (!directBasesUrl && (lowText.includes('base') || lowText.includes('convocatoria') || lowText.includes('cronograma'))) {
           directBasesUrl = lUrl;
         }
-      } else if (isOfficialDomain || lowUrl.includes('bumeran.com.pe/empleos/') || lowUrl.includes('computrabajo.com.pe/ofertas-de-trabajo/') || lowUrl.includes('hiringroom.com/jobs/')) {
+      } else if (isOfficialDomain) {
         if (!directBasesUrl || lowText.includes('postul') || lowText.includes('base') || lowText.includes('convocatoria')) {
           directBasesUrl = lUrl;
         }
