@@ -24,5 +24,9 @@ export function isValidPostUrl(platform: string, url: string): boolean {
   if (platform === 'instagram') return u.includes('instagram.com/');
   if (platform === 'facebook') return u.includes('facebook.com/') || u.includes('fb.watch');
   if (platform === 'youtube') return u.includes('youtube.com/') || u.includes('youtu.be/');
+  if (platform === 'tiktok') return u.includes('tiktok.com/');
+  if (platform === 'x' || platform === 'twitter') return u.includes('twitter.com/') || u.includes('x.com/');
+  if (platform === 'threads') return u.includes('threads.net/');
   return u.startsWith('http');
 }
+

@@ -13,7 +13,8 @@ import {
   ArrowLeft,
   Sparkles
 } from 'lucide-react';
-import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIcons';
+import { InstagramIcon, FacebookIcon, YoutubeIcon, TikTokIcon, XIcon, ThreadsIcon } from '@/components/SocialIcons';
+
 import { Giveaway } from '@/lib/types';
 import ConfettiEffect from '@/components/ConfettiEffect';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
@@ -113,14 +114,21 @@ export default function SorteoPublicoPage({ params }: { params: Promise<{ id: st
     switch (giveaway.network) {
       case 'instagram':
         return <InstagramIcon className="w-4 h-4 text-pink-500" />;
-      case 'facebook':
-        return <FacebookIcon className="w-4 h-4 text-blue-500" />;
+      case 'tiktok':
+        return <TikTokIcon className="w-4 h-4 text-cyan-400" />;
       case 'youtube':
         return <YoutubeIcon className="w-4 h-4 text-red-500" />;
+      case 'facebook':
+        return <FacebookIcon className="w-4 h-4 text-blue-500" />;
+      case 'x':
+        return <XIcon className="w-4 h-4 text-slate-900 dark:text-white" />;
+      case 'threads':
+        return <ThreadsIcon className="w-4 h-4 text-purple-400" />;
       default:
         return <Sparkles className="w-4 h-4 text-pink-600 dark:text-purple-400" />;
     }
   };
+
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">

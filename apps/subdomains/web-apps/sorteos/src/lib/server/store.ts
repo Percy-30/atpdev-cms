@@ -25,8 +25,10 @@ import type {
 export type UserStatus = 'active' | 'suspended' | 'deleted';
 export type UserRole = 'user' | 'admin' | 'super-admin';
 export type PlanId = 'free' | 'pro' | 'business' | 'enterprise';
-export type SocialPlatform = 'instagram' | 'facebook' | 'youtube';
+export type SocialPlatform = 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads';
 export type SocialAccountStatus = 'connected' | 'expired' | 'revoked';
+
+
 
 export interface UserRecord {
   id: string;
@@ -191,6 +193,7 @@ interface SocialAccountRepo {
   listByUser(userId: string): SocialAccountRecord[];
   get(id: string): SocialAccountRecord | undefined;
   list(): SocialAccountRecord[];
+  delete(id: string): boolean;
 }
 
 interface ParticipantRepo {
@@ -312,6 +315,7 @@ function newDb(): Store {
       listByUser(userId: string) { return Array.from(socialAccounts.values()).filter((a) => a.userId === userId); },
       get(id: string) { return socialAccounts.get(id); },
       list() { return Array.from(socialAccounts.values()); },
+      delete(id: string) { return socialAccounts.delete(id); },
     },
     giveaways: {
       get(id: string) { return giveaways.get(id); },
@@ -371,7 +375,8 @@ function newDb(): Store {
   };
 }
 
-export const db: Store = newDb();
+const globalForStore = globalThis as unknown as { __sorteos_db?: Store };
+export const db: Store = globalForStore.__sorteos_db ?? (globalForStore.__sorteos_db = newDb());
 
 export function monthKey(d = new Date()): string {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;

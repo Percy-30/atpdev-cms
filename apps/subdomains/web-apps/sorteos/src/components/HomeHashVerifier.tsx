@@ -23,7 +23,7 @@ export const HomeHashVerifier: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm relative overflow-hidden space-y-4 text-center">
+    <div className="interactive-card w-full max-w-2xl mx-auto bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm relative overflow-hidden space-y-4 text-center">
       <div className="space-y-1">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />

@@ -51,11 +51,14 @@ export const Footer: React.FC = () => {
             <p className="text-xs font-mono uppercase tracking-wider text-slate-900 dark:text-white font-bold">{t('footer_social_title')}</p>
             <ul className="space-y-2 text-xs text-slate-600 dark:text-zinc-400">
               <li><Link href="/sorteos/nuevo?platform=instagram" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('footer_sorteo_ig')}</Link></li>
-              <li><Link href="/sorteos/nuevo?platform=facebook" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('footer_sorteo_fb')}</Link></li>
+              <li><Link href="/sorteos/nuevo?platform=tiktok" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">{t('footer_sorteo_tiktok')}</Link></li>
               <li><Link href="/sorteos/nuevo?platform=youtube" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">{t('footer_sorteo_yt')}</Link></li>
+              <li><Link href="/sorteos/nuevo?platform=facebook" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('footer_sorteo_fb')}</Link></li>
+              <li><Link href="/sorteos/nuevo?platform=x" className="hover:text-slate-900 dark:hover:text-white transition-colors">{t('footer_sorteo_x')}</Link></li>
+              <li><Link href="/sorteos/nuevo?platform=threads" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">{t('footer_sorteo_threads')}</Link></li>
               <li><Link href="/planes" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('nav_pricing')}</Link></li>
-              <li><Link href="/blog" className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors">{t('footer_legal_guides')}</Link></li>
             </ul>
+
           </div>
 
           {/* Col 3: Legal & Seguridad */}

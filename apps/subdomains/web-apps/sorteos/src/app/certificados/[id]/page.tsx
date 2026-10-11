@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, ArrowLeft, Search, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, ArrowLeft, Search, CheckCircle2, AlertTriangle, ExternalLink } from 'lucide-react';
 import CertificateCard from '@/components/CertificateCard';
 import { Certificate } from '@/lib/types';
 
@@ -10,7 +10,9 @@ const SAMPLE_CERTIFICATE: Certificate = {
   id: 'CERT-SP-98A41E8D',
   giveawayId: 'sorteo-aniversario-2026',
   giveawayTitle: 'Sorteo Oficial de Aniversario ATP Dev',
-  network: 'instagram',
+  network: 'youtube',
+  winnerUsername: '@Ganador_Verificado',
+  winnerComment: '¡Excelente sorteo, participando!',
   winnersCount: 1,
   substitutesCount: 2,
   totalParticipants: 1420,
@@ -27,37 +29,79 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
-      const item = stored[resolvedParams.id];
-      if (item) {
-        setCert({
-          id: item.certificateId || resolvedParams.id,
-          giveawayId: item.id,
-          giveawayTitle: item.title,
-          network: item.network,
-          winnersCount: item.winners.length,
-          substitutesCount: item.substitutes.length,
-          totalParticipants: item.totalCommentsCount,
-          issuedAt: item.createdAt,
-          verificationHash: item.verificationHash,
-          verificationUrl: window.location.href
-        });
-      } else {
-        setCert((prev) => ({
-          ...prev,
-          id: resolvedParams.id,
-          verificationUrl: window.location.href
-        }));
+      try {
+        const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
+        let item = stored[resolvedParams.id];
+        
+        // Búsqueda por certificateId, id de sorteo o hash
+        if (!item) {
+          const allItems = Object.values(stored) as any[];
+          item = allItems.find(
+            (x) =>
+              x?.certificateId?.toUpperCase() === resolvedParams.id.toUpperCase() ||
+              x?.id === resolvedParams.id ||
+              x?.verificationHash?.toLowerCase() === resolvedParams.id.toLowerCase()
+          );
+        }
+
+        if (item) {
+          const primaryWinner = item.winners?.[0]?.participant;
+          setCert({
+            id: item.certificateId || resolvedParams.id,
+            giveawayId: item.id,
+            giveawayTitle: item.title,
+            network: item.network || item.platform || 'youtube',
+            platform: item.platform || item.network || 'youtube',
+            winnersCount: item.winners?.length || 1,
+            substitutesCount: item.substitutes?.length || 0,
+            totalParticipants: item.totalCommentsCount || 0,
+            issuedAt: item.createdAt || new Date().toISOString(),
+            verificationHash: item.verificationHash || '',
+            verificationUrl: window.location.href,
+            winnerUsername: primaryWinner?.username || '',
+            winnerComment: primaryWinner?.commentText || '',
+            winners: item.winners || [],
+            substitutes: item.substitutes || [],
+          });
+        }
+      } catch {
+        // noop
       }
+
+      // Consulta complementaria al backend para auditoría pública
+      fetch(`/api/v1/certificates/${encodeURIComponent(resolvedParams.id)}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (data?.certificate) {
+            const c = data.certificate;
+            setCert((prev) => ({
+              ...prev,
+              id: c.id || prev.id,
+              giveawayId: c.giveawayId || prev.giveawayId,
+              giveawayTitle: c.title || c.giveawayTitle || prev.giveawayTitle,
+              network: c.network || c.platform || prev.network,
+              winnerUsername: c.winnerUsername || prev.winnerUsername,
+              winnerComment: c.winnerComment || prev.winnerComment,
+              winners: c.winners && c.winners.length > 0 ? c.winners : prev.winners,
+              substitutes: c.substitutes && c.substitutes.length > 0 ? c.substitutes : prev.substitutes,
+              totalParticipants: c.totalParticipants || prev.totalParticipants,
+              verificationHash: c.verificationHash || prev.verificationHash,
+              issuedAt: c.issuedAt || prev.issuedAt,
+            }));
+          }
+        })
+        .catch(() => {});
     }
   }, [resolvedParams.id]);
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchHash.trim()) return;
+    const cleanSearch = searchHash.trim();
     if (
-      searchHash.trim().toLowerCase() === cert.verificationHash.toLowerCase() ||
-      searchHash.trim().toUpperCase() === cert.id.toUpperCase()
+      cleanSearch.toLowerCase() === cert.verificationHash.toLowerCase() ||
+      cleanSearch.toUpperCase() === cert.id.toUpperCase() ||
+      cleanSearch.toLowerCase() === cert.giveawayId?.toLowerCase()
     ) {
       setVerifyResult('valid');
     } else {
@@ -68,7 +112,7 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
       {/* Top Nav */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <Link
           href={`/sorteo/${cert.giveawayId}`}
           className="inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
@@ -77,9 +121,9 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
           <span>Volver al resultado del sorteo</span>
         </Link>
 
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-xs font-mono text-emerald-700 dark:text-emerald-400 font-bold">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>Firma Digital Válida</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-xs font-mono text-emerald-700 dark:text-emerald-400 font-bold">
+          <ShieldCheck className="w-4 h-4" />
+          <span>Firma Digital Criptográfica Válida</span>
         </div>
       </div>
 
@@ -89,8 +133,8 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
           <h1 className="text-2xl sm:text-4xl font-black font-display text-slate-900 dark:text-white">
             Certificado Oficial de Transparencia
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400">
-            Acreditación pública inmutable de selección aleatoria criptográfica conforme a las normas de Meta y YouTube.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 max-w-xl mx-auto">
+            Acreditación pública inmutable de selección aleatoria conforme a las normativas oficiales de redes sociales y algoritmo CSPRNG auditado.
           </p>
         </div>
 
@@ -105,7 +149,7 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
             <span>Verificador Público de Autenticidad</span>
           </h2>
           <p className="text-xs text-slate-600 dark:text-zinc-400">
-            Cualquier persona puede auditar este certificado ingresando el código de certificado o el hash SHA-256 para constatar que no ha sido adulterado.
+            Cualquier participante o auditor puede verificar este certificado ingresando el código del certificado o el hash SHA-256 para constatar que el ganador y el resultado no han sido modificados.
           </p>
         </div>
 
@@ -130,7 +174,7 @@ export default function CertificadoPage({ params }: { params: Promise<{ id: stri
           <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs font-mono flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>
-              <strong>¡Certificado 100% Auténtico!</strong> Coincide de manera exacta con el registro criptográfico emitido por Sorteos Pro.
+              <strong>¡Certificado 100% Auténtico!</strong> Coincide exactamente con el registro criptográfico emitido por Sorteos Pro.
             </span>
           </div>
         )}

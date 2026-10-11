@@ -1,5 +1,5 @@
-export type SocialPlatform = 'instagram' | 'facebook' | 'youtube' | 'standalone';
-export type SocialNetwork = 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'standalone';
+export type SocialPlatform = 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads' | 'standalone';
+export type SocialNetwork = 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads' | 'standalone';
 
 export type StandaloneToolType = 'lista' | 'ruleta' | 'dados' | 'moneda' | 'numeros' | 'equipos';
 
@@ -24,6 +24,7 @@ export interface Participant {
   timestamp?: string;
   isEligible: boolean;
   exclusionReason?: string;
+  network?: SocialNetwork;
 }
 
 export interface Winner {
@@ -40,7 +41,10 @@ export interface Giveaway {
   description?: string;
   platform?: SocialPlatform;
   network?: SocialNetwork;
+  secondaryNetwork?: SocialNetwork;
+  networks?: SocialNetwork[];
   postUrl?: string;
+  secondPostUrl?: string;
   authorUsername?: string;
   totalCommentsCount?: number;
   status: GiveawayStatus;
@@ -61,8 +65,12 @@ export interface Certificate {
   giveawayTitle: string;
   platform?: SocialPlatform;
   network?: string;
+  networks?: string[];
   winnerUsername?: string;
   winnerName?: string;
+  winnerComment?: string;
+  winners?: Winner[];
+  substitutes?: Winner[];
   winnersCount?: number;
   substitutesCount?: number;
   totalParticipants?: number;

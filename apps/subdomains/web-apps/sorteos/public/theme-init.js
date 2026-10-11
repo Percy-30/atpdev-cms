@@ -1,12 +1,32 @@
 (function () {
   try {
-    var theme = localStorage.getItem('sorteos_theme');
-    if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
+    var doc = document.documentElement;
+    var serverTheme = doc.getAttribute('data-server-theme') || (doc.classList.contains('dark') ? 'dark' : (doc.classList.contains('light') ? 'light' : null));
+    var storedTheme = localStorage.getItem('sorteos_theme');
+    var lastServerTheme = localStorage.getItem('sorteos_server_theme');
+
+    var effectiveTheme = 'dark'; // default to official dark theme
+
+    if (serverTheme) {
+      if (!storedTheme || lastServerTheme !== serverTheme) {
+        effectiveTheme = serverTheme;
+        try {
+          localStorage.setItem('sorteos_theme', serverTheme);
+          localStorage.setItem('sorteos_server_theme', serverTheme);
+        } catch (e) {}
+      } else {
+        effectiveTheme = storedTheme;
+      }
+    } else if (storedTheme) {
+      effectiveTheme = storedTheme;
+    }
+
+    if (effectiveTheme === 'dark') {
+      doc.classList.add('dark');
+      doc.classList.remove('light');
     } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+      doc.classList.add('light');
+      doc.classList.remove('dark');
     }
 
     // Auto-detect browser language if not previously set by user
@@ -29,8 +49,8 @@
       }
     }
     if (lang) {
-      document.documentElement.lang = lang;
-      if (lang === 'ar') document.documentElement.dir = 'rtl';
+      doc.lang = lang;
+      if (lang === 'ar') doc.dir = 'rtl';
     }
   } catch (e) {}
 })();

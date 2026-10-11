@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Disc, 
   RotateCcw, 
@@ -8,14 +8,18 @@ import {
   Trophy, 
   Plus, 
   Trash2, 
-  Tv 
+  Tv,
+  Volume2,
+  VolumeX,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 import { RouletteCanvas } from '@/components/RouletteCanvas';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
 import ConfettiEffect from '@/components/ConfettiEffect';
 import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
-import { playWinnerFanfare } from '@/lib/soundEffects';
+import { isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
 
 const DEFAULT_OPTIONS = [
@@ -37,6 +41,24 @@ export default function RuletaPage() {
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const [showLiveStream, setShowLiveStream] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
+  const [muted, setMuted] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMuted(isAudioMuted());
+  }, []);
+
+  const handleToggleSound = () => {
+    setMuted(toggleAudioMute());
+  };
+
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  };
 
   const handleAddOption = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +82,6 @@ export default function RuletaPage() {
 
   const handleWinnerSelected = (selected: string) => {
     setWinner(selected);
-    playWinnerFanfare();
   };
 
   return (
@@ -83,32 +104,48 @@ export default function RuletaPage() {
           {t('roulette_desc')}
         </p>
 
-        {/* Live Presentation Button if winner exists */}
-        {winner && (
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <button
-              type="button"
-              onClick={() => setShowExportModal(true)}
-              className="py-2.5 px-4 rounded-xl bg-[#d91a7a] hover:bg-[#c2186b] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
-            >
-              <Share2 className="w-4 h-4" />
-              <span>{t('btn_export')}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowLiveStream(true)}
-              className="py-2.5 px-4 rounded-xl bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <Tv className="w-4 h-4" />
-              <span>{t('btn_live_mode')}</span>
-            </button>
-          </div>
-        )}
+        {/* Small Audio & Screen Controls */}
+        <div className="flex items-center justify-center gap-2 mt-3">
+          <button
+            type="button"
+            onClick={handleToggleSound}
+            aria-label={muted ? 'Activar sonido' : 'Silenciar sonido'}
+            title={muted ? 'Activar sonido' : 'Silenciar sonido'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
+          >
+            {muted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-pink-600 dark:text-pink-400" />}
+          </button>
+          <button
+            type="button"
+            onClick={handleToggleFullscreen}
+            aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
+          >
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-pink-600 dark:text-pink-400" /> : <Maximize2 className="w-4 h-4" />}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowExportModal(true)}
+            className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+            <span>{t('btn_export')}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowLiveStream(true)}
+            className="py-1.5 px-3 rounded-lg bg-pink-50 hover:bg-pink-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-pink-700 dark:text-purple-300 border border-pink-200 dark:border-purple-500/30 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+          >
+            <Tv className="w-3.5 h-3.5" />
+            <span>{t('btn_live_mode')}</span>
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Roulette Wheel Canvas */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 sm:p-10 bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm relative">
+        <div className="interactive-card lg:col-span-7 flex flex-col items-center justify-center p-6 sm:p-10 bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm relative">
           {winner && (
             <div className="w-full mb-6 p-4 rounded-xl bg-pink-50 dark:bg-pink-500/10 border border-pink-200 dark:border-pink-500/30 text-center space-y-1 animate-in fade-in duration-200">
               <span className="text-xs font-bold uppercase text-pink-600 dark:text-pink-400 tracking-wider flex items-center justify-center gap-1">
@@ -139,7 +176,7 @@ export default function RuletaPage() {
 
         {/* Right: Options Manager & Presets */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-white/10 shadow-sm">
+          <div className="interactive-card bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-white/10 shadow-sm">
             <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">{t('options_config_title')}</h2>
 
             {/* Presets */}
@@ -232,26 +269,22 @@ export default function RuletaPage() {
       </div>
 
       {/* Live Stream Stage Modal */}
-      {winner && (
-        <LiveStreamStage
-          isOpen={showLiveStream}
-          onClose={() => setShowLiveStream(false)}
-          title="Ruleta de la Suerte Digital"
-          winner={winner}
-          platform="Ruleta Sorteos Pro"
-        />
-      )}
+      <LiveStreamStage
+        isOpen={showLiveStream}
+        onClose={() => setShowLiveStream(false)}
+        title="Ruleta de la Suerte Digital"
+        winner={winner || options[0] || 'Premio de Ruleta'}
+        platform="Ruleta Sorteos Pro"
+      />
 
       {/* Story / Post Export Modal */}
-      {winner && (
-        <WinnerExportModal
-          isOpen={showExportModal}
-          onClose={() => setShowExportModal(false)}
-          winnerName={winner}
-          drawTitle="Ruleta de la Suerte"
-          platform="Ruleta Digital"
-        />
-      )}
+      <WinnerExportModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        winnerName={winner || options[0] || 'Premio de Ruleta'}
+        drawTitle="Ruleta de la Suerte"
+        platform="Ruleta Digital"
+      />
     </div>
   );
 }

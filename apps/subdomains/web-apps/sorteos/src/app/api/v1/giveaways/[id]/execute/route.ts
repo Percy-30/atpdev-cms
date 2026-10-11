@@ -34,7 +34,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   // RF-020: importación desde fuente conectada
   if (raw.length === 0) {
     const platform = String(g.platform || g.network || 'instagram');
-    if (['instagram', 'facebook', 'youtube'].includes(platform)) {
+    if (['instagram', 'facebook', 'youtube', 'tiktok', 'x', 'threads'].includes(platform)) {
       const connected = db.socialAccounts.list().find(
         (a) => a.userId === auth.userId && a.platform === platform && a.status === 'connected'
       );

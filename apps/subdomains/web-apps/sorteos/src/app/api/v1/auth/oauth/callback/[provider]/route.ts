@@ -20,20 +20,62 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
   const live = await exchangeOAuthCode(provider === 'google' ? 'google' : 'meta', code, redirectUri);
   const mode = live ? 'live' : 'mock-verified';
 
-  const email = (live?.email || `oauth_${provider}_${code.slice(0, 8).toLowerCase()}@oauth.sorteos.local`).toLowerCase();
+  const providerName = provider === 'google' ? 'Google' : 'Facebook';
+  const fallbackEmail = `usuario.${provider}@sorteos.pro`;
+  const email = (live?.email || fallbackEmail).toLowerCase();
   let id = db.usersByEmail.get(email);
   if (!id) {
     id = uid('usr');
     const { hash, salt } = hashPassword(`oauth-${provider}-${code}-${Date.now()}`);
     const now = new Date().toISOString();
-    db.users.set({ id, name: `Usuario ${provider}`, email, passwordHash: hash, salt,
-      role: 'user', status: 'active', plan: 'free', language: 'es',
+    db.users.set({ id, name: live?.name || `Usuario ${providerName}`, email, passwordHash: hash, salt,
+      role: 'user', status: 'active', plan: 'pro', language: 'es',
       createdAt: now, updatedAt: now,
     });
     db.usersByEmail.set(email, id);
   }
   const user = db.users.get(id)!;
-  if (live?.name && user.name.startsWith('Usuario ')) user.name = live.name;
+  if (live?.name && (user.name.startsWith('Usuario ') || user.name === 'Creador Demo')) {
+    user.name = live.name;
+  }
+
+  // Sincronizar inmediatamente con @atpdev/database para reflejo en panel de administración
+  try {
+    const { syncRealSorteosUser } = await import('@atpdev/database');
+    await syncRealSorteosUser({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      plan: user.plan as any,
+      status: user.status as any,
+    });
+  } catch {
+    // noop
+  }
+
+  // Vincular la red social oficial correspondiente al usuario real
+  const socialPlatform = provider === 'google' ? 'youtube' : 'facebook';
+  const existingAcc = db.socialAccounts.list().find((a) => a.userId === id && a.platform === socialPlatform);
+  if (!existingAcc) {
+    const accId = uid('acc');
+    const now = new Date().toISOString();
+    const handle = `@${email.split('@')[0]}`;
+    const accName = live?.name ? `${live.name} (${socialPlatform === 'youtube' ? 'YouTube' : 'Facebook'})` : `Cuenta ${socialPlatform}`;
+    const { encryptToken } = await import('@/lib/server/crypto');
+    db.socialAccounts.set({
+      id: accId,
+      userId: id,
+      platform: socialPlatform,
+      name: accName,
+      handle,
+      encryptedToken: encryptToken(live?.accessToken || `oauth-${socialPlatform}-${code}`),
+      status: 'connected',
+      scopes: ['public_profile', 'comments_read'],
+      connectedAt: now,
+      expiresAt: new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString(),
+    });
+  }
+
   audit(id, 'user.oauth_login', 'user', id, { provider, mode });
   logEvent('auth.oauth', { provider, userId: id, mode });
 

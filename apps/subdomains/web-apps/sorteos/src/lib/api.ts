@@ -12,7 +12,18 @@ export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
 export function setToken(t: string) {
-  if (typeof window !== 'undefined') localStorage.setItem(TOKEN_KEY, t);
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(TOKEN_KEY, t);
+    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new CustomEvent('auth-changed', { detail: { token: t } }));
+  }
+}
+export function removeToken() {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(TOKEN_KEY);
+    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new CustomEvent('auth-changed', { detail: { token: null } }));
+  }
 }
 export function getDemoId(): string {
   if (typeof window === 'undefined') return 'default';
@@ -25,9 +36,13 @@ export function getDemoId(): string {
 }
 
 export async function api<T>(path: string, opts: { method?: string; body?: unknown; auth?: boolean } = {}): Promise<T> {
-  const headers: Record<string, string> = { 'Content-Type': 'application/json', 'x-demo-user': getDemoId() };
   const token = getToken();
-  if (opts.auth !== false && token) headers['Authorization'] = `Bearer ${token}`;
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (token && opts.auth !== false) {
+    headers['Authorization'] = `Bearer ${token}`;
+  } else {
+    headers['x-demo-user'] = getDemoId();
+  }
   const res = await fetch(path, {
     method: opts.method || 'GET',
     headers,

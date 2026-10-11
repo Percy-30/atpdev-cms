@@ -9,11 +9,16 @@
     --text-main: #0f172a;
     --text-muted: #64748b;
     --border-color: #e2e8f0;
-    --accent-purple: #7c3aed;
-    --accent-pink: #d91a7a;
+    --primary: #8b5cf6;
+    --accent-primary: #8b5cf6;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
     --accent-gold: #f59e0b;
     --accent-emerald: #10b981;
-    --accent-cyan: #0284c7;
+    --accent-cyan: #06b6d4;
+    --neon-thickness: 4px;
+    --neon-glow: 18px;
+    --radius-scale: 1.5rem;
   }
 
   .dark {
@@ -22,6 +27,8 @@
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --border-color: rgba(255, 255, 255, 0.1);
+    --primary: #8b5cf6;
+    --accent-primary: #8b5cf6;
     --accent-purple: #8b5cf6;
     --accent-pink: #ec4899;
     --accent-gold: #f59e0b;
@@ -47,7 +54,7 @@
     background-color: #070a12;
     background-image: 
       radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-      radial-gradient(ellipse 90% 60% at 50% -20%, rgba(139, 92, 246, 0.18), transparent 70%);
+      radial-gradient(ellipse 90% 60% at 50% -20%, color-mix(in srgb, var(--primary, #8b5cf6) 20%, transparent), transparent 70%);
     color: #f8fafc;
   }
 
@@ -73,7 +80,7 @@
     background: #94a3b8;
   }
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 92, 246, 0.6);
+    background: color-mix(in srgb, var(--primary, #8b5cf6) 60%, transparent);
   }
 }
 
@@ -114,22 +121,22 @@
 
 .dark .glass-card-hover:hover {
   background: rgba(17, 24, 39, 0.95);
-  border-color: rgba(139, 92, 246, 0.45);
+  border-color: color-mix(in srgb, var(--primary, #8b5cf6) 45%, transparent);
   transform: translateY(-2px);
-  box-shadow: 0 16px 40px -12px rgba(139, 92, 246, 0.25);
+  box-shadow: 0 16px 40px -12px color-mix(in srgb, var(--primary, #8b5cf6) 25%, transparent);
 }
 
-/* Gradients Text */
+/* Gradients Text (Synchronized with --primary) */
 .title-neon-glow {
-  background: linear-gradient(135deg, #0f172a 0%, #db2777 55%, #7c3aed 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: linear-gradient(135deg, #0f172a 0%, var(--primary, #db2777) 55%, color-mix(in srgb, var(--primary, #db2777) 70%, #7c3aed) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
 .dark .title-neon-glow {
-  background: linear-gradient(135deg, #ffffff 0%, #f472b6 50%, #c084fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary, #f472b6) 50%, color-mix(in srgb, var(--primary, #f472b6) 70%, #c084fc) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
 .gold-neon-glow {
@@ -151,9 +158,9 @@
   color: #7e22ce;
 }
 .dark .purple-gradient-badge {
-  background: rgba(139, 92, 246, 0.15);
-  border: 1px solid rgba(139, 92, 246, 0.4);
-  color: #c084fc;
+  background: color-mix(in srgb, var(--primary, #8b5cf6) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary, #8b5cf6) 40%, transparent);
+  color: var(--primary, #c084fc);
 }
 
 .gold-gradient-badge {
@@ -184,12 +191,12 @@
   color: #be185d;
 }
 .dark .pink-gradient-badge {
-  background: rgba(236, 72, 153, 0.15);
-  border: 1px solid rgba(236, 72, 153, 0.4);
-  color: #f472b6;
+  background: color-mix(in srgb, var(--primary, #ec4899) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary, #ec4899) 40%, transparent);
+  color: var(--primary, #f472b6);
 }
 
-/* ─── BOTONES PRO ─────────────────────────────────────────────────── */
+/* ─── BOTONES PRO ELITE ────────────────────────────────────────────── */
 .btn-pro-primary {
   display: inline-flex;
   align-items: center;
@@ -200,24 +207,28 @@
   font-weight: 700;
   font-family: var(--font-space), var(--font-inter), sans-serif;
   letter-spacing: -0.01em;
-  color: #ffffff;
-  background: #d91a7a;
-  border-radius: 0.875rem;
-  border: none;
-  box-shadow: 0 4px 14px 0 rgba(217, 26, 122, 0.35);
+  color: var(--primary-contrast, #ffffff) !important;
+  background: var(--primary, #d91a7a) !important;
+  border-radius: var(--radius-scale, 0.875rem) !important;
+  border: 1px solid color-mix(in srgb, var(--primary, #d91a7a) 30%, white) !important;
+  box-shadow: 0 4px 14px 0 color-mix(in srgb, var(--primary, #d91a7a) 35%, transparent) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   user-select: none;
 }
 
 .btn-pro-primary:hover {
-  background: #c2186b;
+  filter: brightness(1.1);
   transform: translateY(-1px);
-  box-shadow: 0 8px 22px 0 rgba(217, 26, 122, 0.45);
+  box-shadow: 0 8px 22px 0 color-mix(in srgb, var(--primary, #d91a7a) 50%, transparent) !important;
 }
 
 .btn-pro-primary:active {
   transform: translateY(1px);
+}
+
+.btn-pro-primary * {
+  color: var(--primary-contrast, #ffffff) !important;
 }
 
 .btn-pro-secondary {
@@ -231,7 +242,7 @@
   font-family: var(--font-space), var(--font-inter), sans-serif;
   color: #334155;
   background: #ffffff;
-  border-radius: 0.875rem;
+  border-radius: var(--radius-scale, 0.875rem) !important;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -274,7 +285,7 @@
   font-family: var(--font-space), var(--font-inter), sans-serif;
   color: #ffffff;
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  border-radius: 0.875rem;
+  border-radius: var(--radius-scale, 0.875rem) !important;
   border: none;
   box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.35);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -329,17 +340,143 @@
 }
 
 .tool-switcher-pill.active {
-  color: #db2777;
-  background: #fdf2f8;
-  border-color: #f472b6;
-  box-shadow: 0 2px 8px 0 rgba(219, 39, 119, 0.15);
+  color: var(--primary, #db2777) !important;
+  background: color-mix(in srgb, var(--primary, #db2777) 12%, #ffffff) !important;
+  border-color: var(--primary, #db2777) !important;
+  box-shadow: 0 2px 8px 0 color-mix(in srgb, var(--primary, #db2777) 20%, transparent) !important;
 }
 
 .dark .tool-switcher-pill.active {
-  color: #ffffff;
-  background: linear-gradient(135deg, rgba(217, 26, 122, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
-  border-color: rgba(217, 26, 122, 0.6);
-  box-shadow: 0 0 15px rgba(217, 26, 122, 0.25);
+  color: #ffffff !important;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary, #ec4899) 30%, transparent) 0%, rgba(139, 92, 246, 0.3) 100%) !important;
+  border-color: var(--primary, #ec4899) !important;
+  box-shadow: 0 0 15px color-mix(in srgb, var(--primary, #ec4899) 30%, transparent) !important;
+}
+
+/* ============================================================
+   DYNAMIC BRAND ACCENT COLOR MAPPING (THEME STUDIO SYNC)
+   ============================================================ */
+.bg-pink-600,
+.bg-pink-500,
+.bg-\[\#d91a7a\] {
+  background-color: var(--primary, #ec4899) !important;
+}
+.hover\:bg-pink-600:hover,
+.hover\:bg-pink-700:hover,
+.hover\:bg-\[\#c2186b\]:hover,
+.hover\:bg-\[\#d91a7a\]:hover {
+  background-color: var(--primary, #ec4899) !important;
+  filter: brightness(0.92) !important;
+}
+.text-pink-600,
+.text-pink-500,
+.text-pink-400,
+.text-pink-300,
+.text-pink-700,
+.text-\[\#d91a7a\] {
+  color: var(--primary, #ec4899) !important;
+}
+.border-pink-600,
+.border-pink-500,
+.border-\[\#d91a7a\] {
+  border-color: var(--primary, #ec4899) !important;
+}
+.focus\:border-\[\#d91a7a\]:focus {
+  border-color: var(--primary, #ec4899) !important;
+}
+.border-pink-500\/20,
+.border-pink-500\/30,
+.border-pink-500\/40,
+.border-pink-800\/50,
+.border-pink-800\/60 {
+  border-color: color-mix(in srgb, var(--primary, #ec4899) 35%, transparent) !important;
+}
+.bg-pink-500\/10,
+.bg-pink-500\/15,
+.bg-pink-500\/20,
+.bg-pink-950\/40,
+.bg-pink-950\/50,
+.bg-pink-950\/60,
+.bg-pink-50 {
+  background-color: color-mix(in srgb, var(--primary, #ec4899) 12%, transparent) !important;
+}
+.shadow-pink-500\/20,
+.shadow-pink-500\/25,
+.shadow-pink-500\/30 {
+  box-shadow: 0 10px 25px -5px color-mix(in srgb, var(--primary, #ec4899) 30%, transparent) !important;
+}
+::selection {
+  background-color: var(--primary, #ec4899) !important;
+  color: #ffffff !important;
+}
+
+/* ============================================================
+   SORTEOS PRO - LIGHT MODE THEME OVERRIDES (PROFESSIONAL PARITY)
+   ============================================================ */
+html.light {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+}
+
+html.light body {
+  background-color: #f8fafc !important;
+  background-image: 
+    radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse 90% 60% at 50% -20%, color-mix(in srgb, var(--primary, #8b5cf6) 8%, transparent), transparent 70%) !important;
+  color: #0f172a !important;
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .glass-card {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .glass-card-hover:hover {
+  background-color: #ffffff !important;
+  border-color: color-mix(in srgb, var(--primary, #8b5cf6) 50%, #cbd5e1) !important;
+  box-shadow: 0 12px 30px -8px color-mix(in srgb, var(--primary, #8b5cf6) 15%, transparent) !important;
+}
+
+/* Form controls in Light Mode */
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: var(--primary, #8b5cf6) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary, #8b5cf6) 20%, transparent) !important;
+}
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Footer in Light Mode */
+html.light footer {
+  background-color: #f1f5f9 !important;
+  border-top-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+html.light footer a {
+  color: #475569 !important;
+}
+html.light footer a:hover {
+  color: var(--primary, #8b5cf6) !important;
 }
 
 /* 3D Transform Utilities for Coin, Dice and Interactive Components */
@@ -383,5 +520,548 @@
 
 /* Fullscreen presentation backdrop */
 .presentation-backdrop {
-  background: radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.22) 0%, rgba(7, 10, 18, 0.98) 75%, #03060c 100%);
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--primary, #8b5cf6) 25%, transparent) 0%, rgba(7, 10, 18, 0.98) 75%, #03060c 100%);
+}
+
+/* ANIMATED BACKGROUND (Fondo Animado Activo) */
+@keyframes animatedBackgroundDrift {
+  0% {
+    background-position: 0% 0%;
+    filter: saturate(1.05) brightness(1);
+  }
+  50% {
+    background-position: 100% 100%;
+    filter: saturate(1.25) brightness(1.08);
+  }
+  100% {
+    background-position: 0% 0%;
+    filter: saturate(1.05) brightness(1);
+  }
+}
+
+@keyframes ambientAuroraFlow {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.45;
+  }
+  33% {
+    transform: translate(30px, -35px) scale(1.1);
+    opacity: 0.7;
+  }
+  66% {
+    transform: translate(-25px, 25px) scale(0.95);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.45;
+  }
+}
+
+body[data-has-custom-bg="true"] {
+  background-size: 112% 112% !important;
+  animation: animatedBackgroundDrift 24s ease-in-out infinite alternate !important;
+  will-change: background-position, filter;
+  position: relative;
+}
+
+body[data-has-custom-bg="true"]::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle 500px at 20% 30%, color-mix(in srgb, var(--primary, #f50a5c) 25%, transparent) 0%, transparent 70%),
+    radial-gradient(circle 600px at 80% 70%, color-mix(in srgb, var(--secondary, #e530e8) 22%, transparent) 0%, transparent 70%),
+    radial-gradient(circle 450px at 50% 50%, color-mix(in srgb, var(--tertiary, #f59e0b) 15%, transparent) 0%, transparent 70%);
+  animation: ambientAuroraFlow 16s ease-in-out infinite alternate;
+  filter: blur(40px);
+}
+
+body[data-has-custom-bg="true"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(7, 10, 18, 0.72) 0%, rgba(7, 10, 18, 0.88) 100%);
+  backdrop-filter: blur(12px);
+}
+
+body[data-has-custom-bg="true"] > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   SORTEOS PRO - LABORATORIO DE INTERACCIÓN & EFECTOS DE NEÓN
+   ============================================================ */
+
+/* 1. SPOTLIGHT BORDER (Reflector Neón) */
+[data-interaction*="spotlight-border"] .interactive-card,
+[data-interaction*="spotlight-border"] .glass-card,
+[data-interaction*="spotlight-border"] [data-interactive="true"],
+[data-interaction*="spotlight-border"] .rounded-2xl.border,
+[data-interaction*="spotlight-border"] .rounded-3xl.border,
+[data-interaction*="spotlight-border"] [class*="rounded-2xl"][class*="border"],
+[data-interaction*="spotlight-border"] [class*="rounded-3xl"][class*="border"] {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="spotlight-border"] .interactive-card::before,
+[data-interaction*="spotlight-border"] .glass-card::before,
+[data-interaction*="spotlight-border"] [data-interactive="true"]::before,
+[data-interaction*="spotlight-border"] .rounded-2xl.border::before,
+[data-interaction*="spotlight-border"] .rounded-3xl.border::before,
+[data-interaction*="spotlight-border"] [class*="rounded-2xl"][class*="border"]::before,
+[data-interaction*="spotlight-border"] [class*="rounded-3xl"][class*="border"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), var(--primary, #8b5cf6), transparent 75%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: opacity;
+}
+[data-interaction*="spotlight-border"] .interactive-card:hover::before,
+[data-interaction*="spotlight-border"] .glass-card:hover::before,
+[data-interaction*="spotlight-border"] [data-interactive="true"]:hover::before,
+[data-interaction*="spotlight-border"] .rounded-2xl.border:hover::before,
+[data-interaction*="spotlight-border"] .rounded-3xl.border:hover::before,
+[data-interaction*="spotlight-border"] [class*="rounded-2xl"][class*="border"]:hover::before,
+[data-interaction*="spotlight-border"] [class*="rounded-3xl"][class*="border"]:hover::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) var(--primary, #8b5cf6));
+}
+
+/* 1.5. FULL NEON BORDER (Borde Neón Completo) */
+[data-interaction*="full-border"] .interactive-card,
+[data-interaction*="full-border"] .glass-card,
+[data-interaction*="full-border"] [data-interactive="true"],
+[data-interaction*="full-border"] .rounded-2xl.border,
+[data-interaction*="full-border"] .rounded-3xl.border,
+[data-interaction*="full-border"] [class*="rounded-2xl"][class*="border"],
+[data-interaction*="full-border"] [class*="rounded-3xl"][class*="border"] {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="full-border"] .interactive-card::before,
+[data-interaction*="full-border"] .glass-card::before,
+[data-interaction*="full-border"] [data-interactive="true"]::before,
+[data-interaction*="full-border"] .rounded-2xl.border::before,
+[data-interaction*="full-border"] .rounded-3xl.border::before,
+[data-interaction*="full-border"] [class*="rounded-2xl"][class*="border"]::before,
+[data-interaction*="full-border"] [class*="rounded-3xl"][class*="border"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: var(--primary, #8b5cf6);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 calc(var(--neon-glow, 18px) * 0.45) var(--primary, #8b5cf6));
+  transition: opacity 0.25s ease, filter 0.25s ease;
+  will-change: opacity, filter;
+}
+[data-interaction*="full-border"] .interactive-card:hover::before,
+[data-interaction*="full-border"] .glass-card:hover::before,
+[data-interaction*="full-border"] [data-interactive="true"]:hover::before,
+[data-interaction*="full-border"] .rounded-2xl.border:hover::before,
+[data-interaction*="full-border"] .rounded-3xl.border:hover::before,
+[data-interaction*="full-border"] [class*="rounded-2xl"][class*="border"]:hover::before,
+[data-interaction*="full-border"] [class*="rounded-3xl"][class*="border"]:hover::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 18px) var(--primary, #8b5cf6));
+}
+
+/* MULTICOLOR & ARMONICO (FULL BORDER) */
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .interactive-card::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .glass-card::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] [data-interactive="true"]::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] [class*="rounded-2xl"][class*="border"]::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] [class*="rounded-3xl"][class*="border"]::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 280) 95% 60%),
+    hsl(calc(var(--hue, 280) + 60) 95% 55%),
+    hsl(calc(var(--hue, 280) + 120) 95% 50%)
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 14px) hsl(var(--hue, 280) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: running;
+}
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .interactive-card:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] .glass-card:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] [data-interactive="true"]:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] [class*="rounded-2xl"][class*="border"]:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-multi"] [class*="rounded-3xl"][class*="border"]:hover::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 22px) hsl(var(--hue, 280) 95% 60%));
+}
+
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .interactive-card::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .glass-card::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] [data-interactive="true"]::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] [class*="rounded-2xl"][class*="border"]::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] [class*="rounded-3xl"][class*="border"]::before {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--hue, 280) 85% 55%),
+    hsl(calc(var(--hue, 280) + 45) 80% 50%)
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 14px) hsl(var(--hue, 280) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: running;
+}
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .interactive-card:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] .glass-card:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] [data-interactive="true"]:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] [class*="rounded-2xl"][class*="border"]:hover::before,
+[data-interaction*="full-border"][data-interaction*="neon-harmonic"] [class*="rounded-3xl"][class*="border"]:hover::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 var(--neon-glow, 22px) hsl(var(--hue, 280) 85% 55%));
+}
+
+@property --hue {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 280;
+}
+
+@keyframes hueRotateHarmonic {
+  0%   { --hue: 280; }
+  33%  { --hue: 340; }
+  66%  { --hue: 200; }
+  100% { --hue: 280; }
+}
+
+@keyframes hueRotateMulti {
+  0%   { --hue: 0; }
+  25%  { --hue: 90; }
+  50%  { --hue: 180; }
+  75%  { --hue: 270; }
+  100% { --hue: 360; }
+}
+
+/* MULTICOLOR & ARMONICO (SPOTLIGHT BORDER) */
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .interactive-card::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .glass-card::before {
+  background: radial-gradient(
+    320px circle at var(--x) var(--y),
+    hsl(var(--hue, 280) 95% 60%),
+    hsl(calc(var(--hue, 280) + 60) 95% 55%),
+    transparent 75%
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 280) 95% 60%));
+  animation: hueRotateMulti 8s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .interactive-card:hover::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-multi"] .glass-card:hover::before {
+  animation-play-state: running;
+}
+
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .interactive-card::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .glass-card::before {
+  background: radial-gradient(
+    300px circle at var(--x) var(--y),
+    hsl(var(--hue, 280) 85% 55%),
+    hsl(calc(var(--hue, 280) + 45) 80% 50%),
+    transparent 75%
+  );
+  filter: drop-shadow(0 0 var(--neon-glow, 16px) hsl(var(--hue, 280) 85% 55%));
+  animation: hueRotateHarmonic 6s linear infinite;
+  animation-play-state: paused;
+}
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .interactive-card:hover::before,
+[data-interaction*="spotlight-border"][data-interaction*="neon-harmonic"] .glass-card:hover::before {
+  animation-play-state: running;
+}
+
+/* 2. ELECTRIC SPOTLIGHT & ELECTRIC FULL BORDER */
+[data-interaction*="electric"] .interactive-card,
+[data-interaction*="electric"] .glass-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="electric"] .interactive-card::before,
+[data-interaction*="electric"] .glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: radial-gradient(420px circle at var(--x) var(--y), var(--primary, #8b5cf6), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 16px) var(--primary, #8b5cf6));
+  transition: opacity 0.3s ease;
+}
+[data-interaction*="electric"] .interactive-card:hover::before,
+[data-interaction*="electric"] .glass-card:hover::before {
+  opacity: 1;
+}
+
+[data-interaction*="electric-full"] .interactive-card,
+[data-interaction*="electric-full"] .glass-card {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+}
+[data-interaction*="electric-full"] .interactive-card::before,
+[data-interaction*="electric-full"] .glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: var(--neon-thickness, 4px);
+  background: var(--primary, #8b5cf6);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  filter: url(#atp-electric-jitter) drop-shadow(0 0 var(--neon-glow, 18px) var(--primary, #8b5cf6));
+  transition: opacity 0.3s ease;
+}
+[data-interaction*="electric-full"] .interactive-card:hover::before,
+[data-interaction*="electric-full"] .glass-card:hover::before {
+  opacity: 1;
+}
+
+/* 3. SPOTLIGHT FULL (Relleno Neón) */
+[data-interaction*="spotlight-full"] .interactive-card,
+[data-interaction*="spotlight-full"] .glass-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  overflow: hidden;
+}
+[data-interaction*="spotlight-full"] .interactive-card::after,
+[data-interaction*="spotlight-full"] .glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(500px circle at var(--x) var(--y), color-mix(in srgb, var(--primary, #8b5cf6) 20%, transparent), transparent 80%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+[data-interaction*="spotlight-full"] .interactive-card:hover::after,
+[data-interaction*="spotlight-full"] .glass-card:hover::after {
+  opacity: 1;
+}
+
+/* 4. TILT 3D */
+[data-interaction*="tilt"] .interactive-card,
+[data-interaction*="tilt"] .glass-card {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+/* 5. RIPPLE (Ondas Clic) */
+[data-interaction*="ripple"] .interactive-card,
+[data-interaction*="ripple"] .glass-card,
+[data-interaction*="ripple"] [class*="rounded-2xl"][class*="border"],
+[data-interaction*="ripple"] [class*="rounded-3xl"][class*="border"] {
+  position: relative;
+  overflow: hidden;
+}
+.interaction-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: rippleAnim 0.85s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary, #8b5cf6) 40%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 20;
+}
+@keyframes rippleAnim {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
+}
+
+.interaction-ripple-global {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  border: 2px solid var(--primary, #f50a5c);
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary, #f50a5c) 40%, transparent) 0%, transparent 70%);
+  box-shadow: 0 0 16px var(--primary, #f50a5c), inset 0 0 10px var(--primary, #f50a5c);
+  animation: rippleWaveGlobal 0.85s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+  pointer-events: none;
+  z-index: 999999;
+}
+@keyframes rippleWaveGlobal {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+    border-width: 3px;
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* 6. BURST (Explosión Clic) */
+.interaction-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: burstAnim 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 20;
+  box-shadow: 0 0 10px currentColor;
+}
+@keyframes burstAnim {
+  0% { transform: translate(0, 0) scale(1.6); opacity: 1; }
+  100% { transform: translate(var(--vx), var(--vy)) scale(0); opacity: 0; }
+}
+
+.interaction-particle-global {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%) scale(1.4);
+  animation: burstParticleGlobal 0.75s cubic-bezier(0.2, 0.9, 0.35, 1) forwards;
+  will-change: transform, opacity;
+}
+@keyframes burstParticleGlobal {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1.6);
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--vx), var(--vy)) rotate(var(--rot, 360deg)) scale(0.1);
+    opacity: 0;
+  }
+}
+
+/* 7. TEXT GLITCH (CYBERPUNK CHROMATIC ABERRATION) */
+[data-interaction*="glitch"] h1:hover,
+[data-interaction*="glitch"] h2:hover,
+[data-interaction*="glitch"] h3:hover,
+[data-interaction*="glitch"] h4:hover,
+[data-interaction*="glitch"] h5:hover,
+[data-interaction*="glitch"] h6:hover,
+[data-interaction*="glitch"] .font-display:hover,
+[data-interaction*="glitch"] .glitch-target:hover,
+[data-interaction*="glitch"] .announcement-bar span:hover,
+[data-interaction*="glitch"] .interactive-card:hover h1,
+[data-interaction*="glitch"] .interactive-card:hover h2,
+[data-interaction*="glitch"] .interactive-card:hover h3,
+[data-interaction*="glitch"] .interactive-card:hover h4,
+[data-interaction*="glitch"] .interactive-card:hover .font-display,
+[data-interaction*="glitch"] .glass-card:hover h1,
+[data-interaction*="glitch"] .glass-card:hover h2,
+[data-interaction*="glitch"] .glass-card:hover h3,
+[data-interaction*="glitch"] .glass-card:hover h4,
+[data-interaction*="glitch"] .glass-card:hover .font-display,
+[data-interaction*="glitch"] [data-interactive="true"]:hover h1,
+[data-interaction*="glitch"] [data-interactive="true"]:hover h2,
+[data-interaction*="glitch"] [data-interactive="true"]:hover .font-display,
+[data-interaction*="glitch"] [class*="rounded-2xl"][class*="border"]:hover h1,
+[data-interaction*="glitch"] [class*="rounded-2xl"][class*="border"]:hover h2,
+[data-interaction*="glitch"] [class*="rounded-2xl"][class*="border"]:hover .font-display,
+[data-interaction*="glitch"] [class*="rounded-3xl"][class*="border"]:hover h1,
+[data-interaction*="glitch"] [class*="rounded-3xl"][class*="border"]:hover h2,
+[data-interaction*="glitch"] [class*="rounded-3xl"][class*="border"]:hover .font-display {
+  animation: cyberpunkGlitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  display: inline-block;
+  position: relative;
+}
+
+@keyframes cyberpunkGlitch {
+  0% {
+    transform: translate(0);
+    text-shadow: none;
+    clip-path: inset(0 0 0 0);
+  }
+  15% {
+    transform: translate(-3px, 1px);
+    text-shadow: -2px 0 #ff0055, 2px 0 #00e5ff;
+    clip-path: inset(20% 0 35% 0);
+  }
+  30% {
+    transform: translate(2px, -2px);
+    text-shadow: 2px 0 #ff0055, -2px 0 #00e5ff;
+    clip-path: inset(50% 0 10% 0);
+  }
+  45% {
+    transform: translate(-1px, 2px);
+    text-shadow: -2px 0 #00e5ff, 2px 0 #ff0055;
+    clip-path: inset(10% 0 60% 0);
+  }
+  60% {
+    transform: translate(3px, 0px);
+    text-shadow: 3px 0 #ff0055, -3px 0 #00e5ff;
+    clip-path: inset(70% 0 5% 0);
+  }
+  75% {
+    transform: translate(-2px, -1px);
+    text-shadow: -2px 0 #ff0055, 2px 0 #00e5ff;
+    clip-path: inset(30% 0 40% 0);
+  }
+  90% {
+    transform: translate(1px, 1px);
+    text-shadow: 1px 0 #00e5ff, -1px 0 #ff0055;
+    clip-path: inset(5% 0 80% 0);
+  }
+  100% {
+    transform: translate(0);
+    text-shadow: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes form-shake {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-6px); }
+  30%, 60%, 90% { transform: translateX(6px); }
+}
+
+.animate-shake {
+  animation: form-shake 0.4s ease-in-out;
 }

@@ -12,19 +12,11 @@ import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playDiceSound, playWinnerFanfare, isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
 
-interface DiceCubeProps {
-  value: number;
-  isRolling: boolean;
-  rollAngleX: number;
-  rollAngleY: number;
-  rollAngleZ: number;
-}
-
 const renderDotsForFace = (val: number) => {
   return (
-    <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-1 items-center justify-items-center p-3 select-none">
+    <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-1 items-center justify-items-center select-none">
       {val === 1 && (
-        <div className="col-start-2 row-start-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-600 shadow-inner" />
+        <div className="col-start-2 row-start-2 w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full bg-red-600 shadow-inner" />
       )}
       {val === 2 && (
         <>
@@ -62,7 +54,7 @@ const renderDotsForFace = (val: number) => {
           <div className="col-start-3 row-start-1 w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 rounded-full bg-zinc-900" />
           <div className="col-start-1 row-start-2 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-zinc-900" />
           <div className="col-start-3 row-start-2 w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 rounded-full bg-zinc-900" />
-          <div className="col-start-1 row-start-3 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-zinc-900" />
+          <div className="col-start-1 row-start-3 w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 rounded-full bg-zinc-900" />
           <div className="col-start-3 row-start-3 w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 rounded-full bg-zinc-900" />
         </>
       )}
@@ -70,84 +62,29 @@ const renderDotsForFace = (val: number) => {
   );
 };
 
-const Dice3DCube: React.FC<DiceCubeProps> = ({ value, isRolling, rollAngleX, rollAngleY, rollAngleZ }) => {
-  const d = 40;
+interface Dice3DCardProps {
+  value: number;
+  isRolling: boolean;
+  index: number;
+}
 
-  const targetAngles: Record<number, { x: number; y: number }> = {
-    1: { x: 0, y: 0 },
-    6: { x: 0, y: 180 },
-    2: { x: -90, y: 0 },
-    5: { x: 90, y: 0 },
-    3: { x: 0, y: -90 },
-    4: { x: 0, y: 90 },
-  };
-
-  const currentTarget = targetAngles[value] || { x: 0, y: 0 };
-  const finalX = rollAngleX + currentTarget.x;
-  const finalY = rollAngleY + currentTarget.y;
-  const finalZ = rollAngleZ;
-
+const Dice3DCard: React.FC<Dice3DCardProps> = ({ value, isRolling, index }) => {
   return (
-    <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center perspective-1000 select-none">
-      <div
-        className="w-20 h-20 sm:w-22 sm:h-22 relative transform-style-3d transition-transform duration-800"
-        style={{
-          transform: `rotateX(${finalX}deg) rotateY(${finalY}deg) rotateZ(${finalZ}deg)`,
-          transformStyle: 'preserve-3d',
-          WebkitTransformStyle: 'preserve-3d',
-          transition: isRolling
-            ? 'transform 800ms cubic-bezier(0.18, 0.89, 0.32, 1.28)'
-            : 'transform 300ms ease-out',
-        }}
-      >
-        {/* Face 1 (Frontal) */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-zinc-200 border-2 border-white/80 shadow-md backface-hidden"
-          style={{ transform: `translateZ(${d}px)` }}
-        >
-          {renderDotsForFace(1)}
-        </div>
-
-        {/* Face 6 (Posterior) */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-zinc-200 border-2 border-white/80 shadow-md backface-hidden"
-          style={{ transform: `rotateY(180deg) translateZ(${d}px)` }}
-        >
-          {renderDotsForFace(6)}
-        </div>
-
-        {/* Face 2 (Superior) */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-zinc-200 border-2 border-white/80 shadow-md backface-hidden"
-          style={{ transform: `rotateX(90deg) translateZ(${d}px)` }}
-        >
-          {renderDotsForFace(2)}
-        </div>
-
-        {/* Face 5 (Inferior) */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-zinc-200 border-2 border-white/80 shadow-md backface-hidden"
-          style={{ transform: `rotateX(-90deg) translateZ(${d}px)` }}
-        >
-          {renderDotsForFace(5)}
-        </div>
-
-        {/* Face 3 (Derecha) */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-zinc-200 border-2 border-white/80 shadow-md backface-hidden"
-          style={{ transform: `rotateY(90deg) translateZ(${d}px)` }}
-        >
-          {renderDotsForFace(3)}
-        </div>
-
-        {/* Face 4 (Izquierda) */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-zinc-200 border-2 border-white/80 shadow-md backface-hidden"
-          style={{ transform: `rotateY(-90deg) translateZ(${d}px)` }}
-        >
-          {renderDotsForFace(4)}
-        </div>
+    <div
+      role="img"
+      aria-label={`Dado ${index + 1} con valor ${value}`}
+      className={`relative select-none transition-all duration-300 ${
+        isRolling
+          ? 'animate-dice-shake scale-105'
+          : 'hover:scale-105 hover:-translate-y-1'
+      }`}
+    >
+      {/* 3D Dice Realistic Body with depth shadows and glossy face */}
+      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-slate-50 to-zinc-200 dark:from-white dark:via-zinc-100 dark:to-zinc-200 border-2 border-white/90 shadow-[0_12px_28px_-4px_rgba(0,0,0,0.22),0_4px_10px_-2px_rgba(0,0,0,0.12)] p-3 sm:p-3.5 ring-1 ring-slate-900/10">
+        {renderDotsForFace(value)}
       </div>
+      {/* Bottom 3D Ground Shadow */}
+      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-14 sm:w-18 h-2.5 bg-black/15 dark:bg-black/40 rounded-full blur-[3px] pointer-events-none" />
     </div>
   );
 };
@@ -156,10 +93,6 @@ export default function DadosPage() {
   const { t } = useLanguage();
   const [diceCount, setDiceCount] = useState<number>(2);
   const [diceValues, setDiceValues] = useState<number[]>([3, 4]);
-  const [rollAngles, setRollAngles] = useState<Array<{ x: number; y: number; z: number }>>([
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 0 },
-  ]);
   const [isRolling, setIsRolling] = useState<boolean>(false);
   const [history, setHistory] = useState<{ values: number[]; total: number }[]>([
     { values: [3, 4], total: 7 },
@@ -190,15 +123,18 @@ export default function DadosPage() {
     setIsRolling(true);
     playDiceSound();
 
-    const nextAngles = Array.from({ length: diceCount }, (_, i) => {
-      const prev = rollAngles[i] || { x: 0, y: 0, z: 0 };
-      const turnsX = (Math.floor(prev.x / 360) + 3 + Math.floor(Math.random() * 2)) * 360;
-      const turnsY = (Math.floor(prev.y / 360) + 3 + Math.floor(Math.random() * 2)) * 360;
-      return { x: turnsX, y: turnsY, z: (prev.z + 180) % 360 };
-    });
-    setRollAngles(nextAngles);
+    // Visual scramble effect while rolling
+    let elapsed = 0;
+    const interval = setInterval(() => {
+      elapsed += 60;
+      setDiceValues(Array.from({ length: diceCount }, () => Math.floor(Math.random() * 6) + 1));
+      if (elapsed >= 700) {
+        clearInterval(interval);
+      }
+    }, 60);
 
     setTimeout(() => {
+      clearInterval(interval);
       const results = rollDice(diceCount);
       setDiceValues(results);
       const total = results.reduce((a, b) => a + b, 0);
@@ -209,7 +145,7 @@ export default function DadosPage() {
       if (results.every((r) => r === 6) || total === diceCount * 6) {
         playWinnerFanfare();
       }
-    }, 800);
+    }, 750);
   };
 
   const totalSum = diceValues.reduce((a, b) => a + b, 0);
@@ -273,7 +209,7 @@ export default function DadosPage() {
       </div>
 
       {/* Main Board */}
-      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-10 space-y-6 border border-slate-200 dark:border-white/10 shadow-sm text-center relative overflow-hidden">
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-10 space-y-6 border border-slate-200 dark:border-white/10 shadow-sm text-center relative overflow-visible">
         {/* Dice Count Selector */}
         <div className="flex items-center justify-center gap-2">
           <span className="text-xs font-semibold text-slate-600 dark:text-zinc-400 mr-2">{t('dice_count_label')}</span>
@@ -286,7 +222,6 @@ export default function DadosPage() {
               onClick={() => {
                 setDiceCount(num);
                 setDiceValues(Array.from({ length: num }, () => 1));
-                setRollAngles(Array.from({ length: num }, () => ({ x: 0, y: 0, z: 0 })));
               }}
               className={`w-9 h-9 rounded-xl font-bold font-mono text-xs transition-all cursor-pointer ${
                 diceCount === num
@@ -300,15 +235,13 @@ export default function DadosPage() {
         </div>
 
         {/* 3D Dice Display Stage */}
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 py-6 min-h-[160px] bg-slate-50/70 dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 py-8 px-4 sm:px-8 min-h-[180px] bg-slate-50/70 dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5">
           {diceValues.map((val, idx) => (
-            <Dice3DCube
+            <Dice3DCard
               key={idx}
               value={val}
               isRolling={isRolling}
-              rollAngleX={rollAngles[idx]?.x || 0}
-              rollAngleY={rollAngles[idx]?.y || 0}
-              rollAngleZ={rollAngles[idx]?.z || 0}
+              index={idx}
             />
           ))}
         </div>

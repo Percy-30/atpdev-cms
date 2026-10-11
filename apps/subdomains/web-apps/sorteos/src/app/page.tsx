@@ -207,7 +207,7 @@ export default function HomePage() {
             return (
               <div
                 key={tool.href}
-                className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-7 flex flex-col justify-between gap-6 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-white/20 transition-all group relative overflow-hidden"
+                className="interactive-card bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-7 flex flex-col justify-between gap-6 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-white/20 transition-all group relative overflow-hidden"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -257,7 +257,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-8 space-y-4 text-center border border-slate-200 dark:border-white/10 shadow-sm relative">
+          <div className="interactive-card bg-white dark:bg-[#0f172a] rounded-3xl p-8 space-y-4 text-center border border-slate-200 dark:border-white/10 shadow-sm relative">
             <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold text-xl flex items-center justify-center mx-auto">
               1
             </div>
@@ -267,7 +267,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-8 space-y-4 text-center border border-slate-200 dark:border-white/10 shadow-sm relative">
+          <div className="interactive-card bg-white dark:bg-[#0f172a] rounded-3xl p-8 space-y-4 text-center border border-slate-200 dark:border-white/10 shadow-sm relative">
             <div className="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-500/20 text-pink-700 dark:text-pink-300 font-bold text-xl flex items-center justify-center mx-auto">
               2
             </div>
@@ -277,7 +277,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-8 space-y-4 text-center border border-slate-200 dark:border-white/10 shadow-sm relative">
+          <div className="interactive-card bg-white dark:bg-[#0f172a] rounded-3xl p-8 space-y-4 text-center border border-slate-200 dark:border-white/10 shadow-sm relative">
             <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold text-xl flex items-center justify-center mx-auto">
               3
             </div>
@@ -307,7 +307,7 @@ export default function HomePage() {
           {PRICING_PLANS.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-3xl p-7 flex flex-col justify-between gap-6 border transition-all ${
+              className={`interactive-card rounded-3xl p-7 flex flex-col justify-between gap-6 border transition-all ${
                 plan.isPopular
                   ? 'bg-white dark:bg-[#0f172a] border-[#d91a7a] dark:border-purple-500 shadow-xl shadow-pink-500/10 scale-105 relative'
                   : 'bg-white dark:bg-[#0f172a] border-slate-200 dark:border-white/10 shadow-sm'
