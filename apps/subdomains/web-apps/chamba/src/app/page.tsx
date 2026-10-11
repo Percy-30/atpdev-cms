@@ -67,104 +67,105 @@ export default async function HomePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Quick Filter Categories */}
-        <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-white/5 pb-4">
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles size={13} />
-                <span>Clasificación Oficial de Convocatorias</span>
+        {/* Quick Filter Categories */}
+        <section className="space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+            <div>
+              <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck size={14} />
+                <span>Modalidades de Contratación</span>
               </span>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-slate-900 dark:text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-0.5">
                 Explorar por Régimen Laboral y Sector
               </h2>
             </div>
             <Link 
               href="/empleos" 
-              className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1.5 font-mono font-semibold self-start sm:self-auto"
+              className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 font-semibold self-start sm:self-auto"
             >
               <span>Ver todas las vacantes</span>
               <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
             <Link
               href="/convocatorias/cas"
-              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group bg-white dark:bg-slate-900/70 border border-amber-500/25 dark:border-amber-500/20 hover:border-amber-500/50 shadow-sm dark:shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(245,158,11,0.25)] relative overflow-hidden"
+              className="p-4 sm:p-5 rounded-xl flex flex-col justify-between gap-3 group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center font-black font-mono text-xs sm:text-sm shadow-sm dark:shadow-[0_0_15px_rgba(245,158,11,0.2)] group-hover:scale-110 transition-transform">
+                <span className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
                   CAS
-                </div>
-                <span className="text-[9px] sm:text-[10px] font-mono text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
-                  Sector Público
+                </span>
+                <span className="text-[10px] text-amber-700 dark:text-amber-400 font-semibold px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800">
+                  Estado
                 </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                   D.L. 1057 (CAS)
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Convocatorias del Estado y Gobiernos Regionales</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Convocatorias del Estado y Gobiernos Regionales</p>
               </div>
             </Link>
 
             <Link
               href="/convocatorias/728"
-              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group bg-white dark:bg-slate-900/70 border border-emerald-500/25 dark:border-emerald-500/20 hover:border-emerald-500/50 shadow-sm dark:shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(16,185,129,0.25)] relative overflow-hidden"
+              className="p-4 sm:p-5 rounded-xl flex flex-col justify-between gap-3 group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black font-mono text-xs sm:text-sm shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform">
+                <span className="w-9 h-9 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
                   728
-                </div>
-                <span className="text-[9px] sm:text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
+                </span>
+                <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
                   Planilla
                 </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                   D.L. 728 (Planilla)
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Estabilidad laboral y beneficios completos de ley</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Estabilidad laboral y beneficios completos de ley</p>
               </div>
             </Link>
 
             <Link
               href="/convocatorias/privado"
-              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group bg-white dark:bg-slate-900/70 border border-cyan-500/25 dark:border-cyan-500/20 hover:border-cyan-500/50 shadow-sm dark:shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(6,182,212,0.25)] relative overflow-hidden"
+              className="p-4 sm:p-5 rounded-xl flex flex-col justify-between gap-3 group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/30 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-black font-mono text-xs sm:text-sm shadow-sm dark:shadow-[0_0_15px_rgba(6,182,212,0.2)] group-hover:scale-110 transition-transform">
+                <span className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 flex items-center justify-center font-bold text-xs">
                   PRIV
-                </div>
-                <span className="text-[9px] sm:text-[10px] font-mono text-cyan-700 dark:text-cyan-400 font-bold px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/20">
+                </span>
+                <span className="text-[10px] text-blue-700 dark:text-blue-400 font-semibold px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
                   Corporativo
                 </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   Sector Privado
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Banca, telecomunicaciones e industrias verificadas</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Banca, telecomunicaciones e industrias verificadas</p>
               </div>
             </Link>
 
             <Link
               href="/empleos/en/lima"
-              className="glass-card glass-card-hover p-4 sm:p-6 rounded-3xl flex flex-col justify-between gap-4 group bg-white dark:bg-slate-900/70 border border-purple-500/25 dark:border-purple-500/20 hover:border-purple-500/50 shadow-sm dark:shadow-lg hover:shadow-[0_12px_30px_-10px_rgba(168,85,247,0.25)] relative overflow-hidden"
+              className="p-4 sm:p-5 rounded-xl flex flex-col justify-between gap-3 group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/30 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_15px_rgba(168,85,247,0.2)] group-hover:scale-110 transition-transform">
-                  <MapPin size={20} />
-                </div>
-                <span className="text-[9px] sm:text-[10px] font-mono text-purple-700 dark:text-purple-400 font-bold px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/20">
-                  Sede Central
+                <span className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center">
+                  <MapPin size={18} />
+                </span>
+                <span className="text-[10px] text-slate-600 dark:text-slate-400 font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  Capital
                 </span>
               </div>
               <div>
-                <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
                   Lima & Callao
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Mayor concentración de vacantes ministeriales</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">Sedes centrales de ministerios e instituciones</p>
               </div>
             </Link>
           </div>
@@ -172,32 +173,29 @@ export default async function HomePage() {
 
         {/* Featured Job Listings Grid */}
         <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-5">
-            <div className="space-y-2.5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-semibold tracking-wide shadow-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold shadow-xs">
+                <ShieldCheck size={14} className="text-emerald-600 dark:text-emerald-400" />
                 <span>Actualizado hoy • Convocatorias 100% verificadas</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black font-display tracking-tight text-slate-900 dark:text-white flex flex-wrap items-center gap-2">
-                <span>Vacantes Destacadas</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">y Convocatorias Vigentes</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white flex flex-wrap items-center gap-2">
+                <span>Convocatorias Destacadas</span>
+                <span className="text-emerald-600 dark:text-emerald-400">y Plazas Vigentes</span>
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                Todas las oportunidades laborales son validadas con RUC activo y derivación directa a los portales oficiales de SERVIR, Gob.pe y empresas verificadas del Perú.
+                Oportunidades laborales validadas con RUC activo y derivación directa a los portales oficiales de SERVIR, Gob.pe y entidades públicas y privadas del Perú.
               </p>
             </div>
             <Link
               href="/empleos"
-              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 hover:bg-emerald-50 dark:hover:bg-emerald-500/15 border border-slate-200 dark:border-white/10 hover:border-emerald-300 dark:hover:border-emerald-500/40 text-slate-800 dark:text-slate-100 hover:text-emerald-700 dark:hover:text-emerald-300 text-xs font-bold font-display shadow-sm dark:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] self-start sm:self-auto shrink-0"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-xs font-semibold shadow-xs transition-colors self-start sm:self-auto shrink-0"
             >
-              <span>Explorar todas las vacantes</span>
-              <span className="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-400 font-mono text-[11px] font-bold">
+              <span>Explorar todas</span>
+              <span className="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold text-[11px]">
                 {jobs.length}
               </span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400" />
+              <ArrowRight size={13} className="text-slate-400" />
             </Link>
           </div>
 
@@ -233,160 +231,161 @@ export default async function HomePage() {
         </section>
 
         {/* High Utility Tools Banner (Calculadora, Examen CAS, Entrevista IA, Generador CV, Comparador, Plantillas) */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* High Utility Tools Banner */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           <Link
             href="/calculadora-sueldo"
-            className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-200 dark:border-emerald-500/30 bg-white dark:bg-gradient-to-br dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 space-y-4 group shadow-sm hover:shadow-md dark:shadow-none hover:border-emerald-500/50"
+            className="p-5 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all space-y-3.5 group shadow-xs"
           >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center font-bold shadow-sm">
-              <Calculator size={24} />
+            <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center font-bold">
+              <Calculator size={22} />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+              <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                 Calculadora de Sueldo Neto
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Simula tu líquido al banco y retenciones de AFP/ONP en CAS 1057 y 728.
+                Calcula tu salario líquido y aportes obligatorios de AFP, ONP y 5ta categoría en CAS 1057 y 728.
               </p>
             </div>
-            <div className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-              <span>Probar Calculadora</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+              <span>Calcular salario</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
           <Link
             href="/preguntas-entrevista-cas"
-            className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-200 dark:border-amber-500/30 bg-white dark:bg-gradient-to-br dark:from-amber-950/40 dark:via-slate-900 dark:to-slate-900 space-y-4 group shadow-sm hover:shadow-md dark:shadow-none hover:border-amber-500/50"
+            className="p-5 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-amber-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all space-y-3.5 group shadow-xs"
           >
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30 flex items-center justify-center font-bold shadow-sm">
-              <HelpCircle size={24} />
+            <div className="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 flex items-center justify-center font-bold">
+              <HelpCircle size={22} />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+              <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                 Examen & Preguntas CAS
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Balotario interactivo con base legal de Ley 27444 y Contrataciones del Estado.
+                Balotarios interactivos basados en Ley 27444, Contrataciones del Estado y Ética Pública.
               </p>
             </div>
-            <div className="text-xs font-mono text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1">
-              <span>Resolver Examen</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="text-xs text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
+              <span>Practicar examen</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
           <Link
             href="/simulador-entrevista-ia"
-            className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-200 dark:border-emerald-500/30 bg-white dark:bg-gradient-to-br dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 space-y-4 group shadow-sm hover:shadow-md dark:shadow-none hover:border-emerald-500/50"
+            className="p-5 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all space-y-3.5 group shadow-xs"
           >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center font-bold shadow-sm">
-              <Bot size={24} />
+            <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center font-bold">
+              <Bot size={22} />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                Simulador Entrevista IA
+              <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                Simulador de Entrevista Laboral
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Entrena tus respuestas en vivo frente al Comité de Selección con Inteligencia Artificial.
+                Entrena tus respuestas ante jurados evaluadores de ministerios, SUNAT, Poder Judicial y gobiernos locales.
               </p>
             </div>
-            <div className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-              <span>Entrenar con IA</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold flex items-center gap-1">
+              <span>Iniciar simulación</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
           <Link
             href="/crear-cv-cas"
-            className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-200 dark:border-emerald-500/30 bg-white dark:bg-gradient-to-br dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 space-y-4 group shadow-sm hover:shadow-md dark:shadow-none hover:border-emerald-500/50"
+            className="p-5 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all space-y-3.5 group shadow-xs"
           >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center font-bold shadow-sm">
-              <FileSpreadsheet size={24} />
+            <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center font-bold">
+              <FileSpreadsheet size={22} />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                Generador CV CAS Servir
+              <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                Generador CV Formato SERVIR
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Genera tu Ficha Resumen de Hoja de Vida según el formato oficial exigido por SERVIR.
+                Genera tu Ficha Resumen de Hoja de Vida estandarizada para postulaciones públicas en PDF y Word.
               </p>
             </div>
-            <div className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-              <span>Generar mi CV</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+              <span>Crear CV oficial</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
           <Link
             href="/comparador-regimenes"
-            className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-200 dark:border-cyan-500/30 bg-white dark:bg-gradient-to-br dark:from-cyan-950/40 dark:via-slate-900 dark:to-slate-900 space-y-4 group shadow-sm hover:shadow-md dark:shadow-none hover:border-cyan-500/50"
+            className="p-5 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all space-y-3.5 group shadow-xs"
           >
-            <div className="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/30 flex items-center justify-center font-bold shadow-sm">
-              <Scale size={24} />
+            <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-bold">
+              <Scale size={22} />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+              <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 Comparador de Regímenes
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Compara lado a lado derechos de CTS, Gratificación y Vacaciones entre CAS, 728 y 276.
+                Compara lado a lado derechos de CTS, Gratificación y Vacaciones entre CAS, D.L. 728 y 276.
               </p>
             </div>
-            <div className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-bold flex items-center gap-1">
-              <span>Ver Matriz Comparativa</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold flex items-center gap-1">
+              <span>Ver comparativa</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
 
           <Link
             href="/plantillas-anexos"
-            className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-200 dark:border-cyan-500/30 bg-white dark:bg-gradient-to-br dark:from-cyan-950/40 dark:via-slate-900 dark:to-slate-900 space-y-4 group shadow-sm hover:shadow-md dark:shadow-none hover:border-cyan-500/50"
+            className="p-5 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-teal-500/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all space-y-3.5 group shadow-xs"
           >
-            <div className="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/30 flex items-center justify-center font-bold shadow-sm">
-              <FileText size={24} />
+            <div className="w-11 h-11 rounded-xl bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 border border-teal-200 dark:border-teal-800 flex items-center justify-center font-bold">
+              <FileText size={22} />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+              <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                 Plantillas & Anexos CAS
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Formatos editables y listos para copiar de Declaraciones Juradas del Estado.
+                Descarga formatos editables de Declaraciones Juradas, Anexo de No Impedimento y Bonificaciones.
               </p>
             </div>
-            <div className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-bold flex items-center gap-1">
-              <span>Copiar Plantillas</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="text-xs text-teal-600 dark:text-teal-400 font-semibold flex items-center gap-1">
+              <span>Descargar formatos</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </div>
           </Link>
         </section>
 
-        {/* Why Chamba Pro Differentiator Banner */}
-        <section className="glass-card p-8 sm:p-10 rounded-3xl border border-emerald-200 dark:border-emerald-500/30 relative overflow-hidden bg-gradient-to-br from-emerald-50/80 via-white to-teal-50 dark:from-slate-900 dark:via-slate-900 dark:to-emerald-950/40 shadow-sm dark:shadow-xl">
-          <div className="max-w-3xl space-y-6 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-400 text-xs font-mono font-semibold">
-              <CheckCircle2 size={14} />
-              <span>Transparencia & Cero Fricción</span>
+        {/* Why Chamba Pro Trust Section */}
+        <section className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/90 shadow-xs">
+          <div className="max-w-3xl space-y-5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
+              <CheckCircle2 size={14} className="text-emerald-600 dark:text-emerald-400" />
+              <span>Transparencia y Seguridad Laboral</span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
-              ¿Por qué chamba pro es superior a los directorios tradicionales?
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              Garantía de Veracidad y Acceso Libre a Convocatorias
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700 dark:text-slate-300 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
               <div className="flex items-start gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-2 flex-shrink-0"></span>
-                <span><strong>Sin cobros ni registros obligatorios:</strong> Acceso libre e inmediato a la información oficial de la vacante.</span>
+                <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                <span><strong>Sin cobros ni registros:</strong> Acceso 100% abierto a las bases oficiales de cada convocatoria.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-2 flex-shrink-0"></span>
-                <span><strong>Derivación 100% Oficial:</strong> El botón "Ver oferta oficial" te lleva directamente a la web de la entidad o empresa.</span>
+                <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                <span><strong>Derivación directa:</strong> Enlace al portal institucional oficial de la entidad o empresa contratante.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-2 flex-shrink-0"></span>
-                <span><strong>Verificación RUC:</strong> Filtramos ofertas sospechosas para proteger a los postulantes de fraudes.</span>
+                <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                <span><strong>Filtro antifraude:</strong> Validación rigurosa de RUC y datos de contacto oficiales.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-2 flex-shrink-0"></span>
-                <span><strong>Optimizado para Google for Jobs:</strong> Estructurado técnico con schema.org JobPosting oficial.</span>
+                <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                <span><strong>Bases en PDF:</strong> Acceso a documentos oficiales de requerimiento, cronograma y anexos.</span>
               </div>
             </div>
           </div>
@@ -394,7 +393,7 @@ export default async function HomePage() {
 
         {/* Featured Guías Laborales Section (E-E-A-T & High Quality Content) */}
         <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
             <div>
               <span className="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
                 <BookOpen size={13} />
@@ -420,11 +419,11 @@ export default async function HomePage() {
             {getAllGuias().slice(0, 3).map((guia) => (
               <article
                 key={guia.slug}
-                className="group relative flex flex-col justify-between rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/70 p-5 shadow-sm hover:shadow-lg dark:hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/50 transition-all"
+                className="group relative flex flex-col justify-between rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xs hover:border-emerald-500/50 hover:bg-slate-50/50 dark:hover:bg-slate-850 transition-all"
               >
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-[11px] font-mono">
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-semibold border border-emerald-200 dark:border-emerald-500/20">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold border border-emerald-200 dark:border-emerald-800">
                       {guia.category}
                     </span>
                     <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
@@ -432,19 +431,19 @@ export default async function HomePage() {
                       {guia.readTime}
                     </span>
                   </div>
-                  <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug">
+                  <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug">
                     <Link href={`/guias/${guia.slug}`}>
                       <span className="absolute inset-0" aria-hidden="true" />
                       {guia.title}
                     </Link>
                   </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
                     {guia.description}
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                   <span>Actualizado {guia.updatedAt}</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                     Leer <ArrowRight size={11} />
                   </span>
                 </div>
@@ -455,32 +454,32 @@ export default async function HomePage() {
 
         {/* Semantic FAQ Section for SEO & AdSense Content Quality */}
         <section className="space-y-6">
-          <div className="border-b border-slate-200 dark:border-white/10 pb-4">
-            <span className="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
+            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
               <HelpCircle size={13} />
               <span>Preguntas Frecuentes de Postulantes</span>
             </span>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-slate-900 dark:text-white tracking-tight mt-1">
-              Todo lo que necesitas saber sobre convocatorias y chamba en Perú
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-0.5">
+              Todo lo que necesitas saber sobre convocatorias y empleo en el Perú
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
               Respuestas oficiales sobre el proceso de postulación, regímenes laborales del Estado y uso de nuestras herramientas gratuitas.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 space-y-2 shadow-sm">
-              <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
+            <div className="p-5 sm:p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 shadow-xs">
+              <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
                 <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                <span>¿Dónde encontrar convocatorias de trabajo y chamba formal en el Estado?</span>
+                <span>¿Dónde encontrar convocatorias de trabajo y empleo formal en el Estado?</span>
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-6">
                 En chamba pro reunimos diariamente las convocatorias públicas vigentes reguladas por la Autoridad Nacional del Servicio Civil (SERVIR), Ministerios, Municipalidades y Gobiernos Regionales, así como vacantes de empresas privadas verificadas, con enlaces directos a las bases oficiales en PDF.
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 space-y-2 shadow-sm">
-              <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
+            <div className="p-5 sm:p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 shadow-xs">
+              <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
                 <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span>¿Cuál es la diferencia entre un contrato CAS 1057 y D.L. 728?</span>
               </h3>
@@ -489,8 +488,8 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 space-y-2 shadow-sm">
-              <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
+            <div className="p-5 sm:p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 shadow-xs">
+              <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
                 <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span>¿Es gratuito postular a los empleos mostrados en chamba pro?</span>
               </h3>
@@ -499,8 +498,8 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 space-y-2 shadow-sm">
-              <h3 className="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
+            <div className="p-5 sm:p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 shadow-xs">
+              <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-start gap-2">
                 <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span>¿Cómo preparar mi CV y declaraciones juradas para convocatorias públicas?</span>
               </h3>

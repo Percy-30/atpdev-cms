@@ -17,15 +17,15 @@ const HERRAMIENTAS = [
     desc: 'Formatos oficiales SERVIR y Privado en PDF y Word (.DOC) editable.',
     href: '/crear-cv-cas',
     icon: FileSpreadsheet,
-    color: 'from-blue-500 to-indigo-600',
-    badge: 'Popular',
+    color: 'from-blue-600 to-indigo-700',
+    badge: 'Oficial',
   },
   {
     title: 'Calculadora de Sueldo',
     desc: 'Calcula tu salario neto con descuentos de AFP, ONP y 5ta categoría.',
     href: '/calculadora-sueldo',
     icon: Calculator,
-    color: 'from-emerald-500 to-teal-600',
+    color: 'from-emerald-600 to-teal-700',
     badge: 'Gratis',
   },
   {
@@ -33,29 +33,29 @@ const HERRAMIENTAS = [
     desc: 'Diferencias clave de derechos y beneficios: CAS 1057, 728 y 276.',
     href: '/comparador-regimenes',
     icon: Scale,
-    color: 'from-amber-500 to-orange-600',
+    color: 'from-amber-600 to-orange-700',
   },
   {
-    title: 'Simulador Entrevista IA',
-    desc: 'Practica preguntas reales ante jurados evaluadores de SUNAT, MINEDU, etc.',
+    title: 'Simulador de Entrevista Laboral',
+    desc: 'Practica preguntas frecuentes y balotarios ante comités de evaluación.',
     href: '/simulador-entrevista-ia',
     icon: Bot,
-    color: 'from-purple-500 to-pink-600',
-    badge: 'IA 2026',
+    color: 'from-indigo-600 to-slate-800',
+    badge: 'Práctica',
   },
   {
     title: 'Organizaciones del Estado',
     desc: 'Directorio de ministerios, gobiernos regionales, UGELs y municipios.',
     href: '/organizaciones',
     icon: Building2,
-    color: 'from-cyan-500 to-blue-600',
+    color: 'from-slate-700 to-slate-900',
   },
   {
     title: 'Plantillas y Anexos',
     desc: 'Descarga declaraciones juradas y formatos tipo de postulación oficial.',
     href: '/plantillas-anexos',
     icon: FileText,
-    color: 'from-rose-500 to-red-600',
+    color: 'from-teal-600 to-cyan-700',
   },
 ];
 
@@ -86,19 +86,19 @@ export function HeaderNav() {
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#070a12]/90 backdrop-blur-2xl border-b border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3.5 group shrink-0">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-2xl blur-sm opacity-40 group-hover:opacity-100 transition duration-500" />
-            <div className="relative w-11 h-11 rounded-xl bg-emerald-50 dark:bg-slate-950 border border-emerald-200 dark:border-white/15 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-              <Briefcase className="text-emerald-600 dark:text-emerald-400 font-bold" size={22} />
-            </div>
+        <Link href="/" className="flex items-center gap-3 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 dark:bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+            <Briefcase size={20} className="text-white" />
           </div>
           <div>
-            <span className="font-display font-black text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-              chamba <span className="text-emerald-700 dark:text-emerald-400 font-mono text-xs px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/40 shadow-sm">pro</span>
+            <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+              chamba<span className="text-emerald-600 dark:text-emerald-400">pro</span>
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                PE
+              </span>
             </span>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block -mt-1 tracking-widest uppercase">
-              Perú • Convocatorias Oficiales
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block -mt-0.5 font-medium tracking-wide">
+              Convocatorias Oficiales del Perú
             </span>
           </div>
         </Link>
@@ -155,7 +155,7 @@ export function HeaderNav() {
 
             {/* Dropdown Mega Menu */}
             {toolsOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-3xl bg-white/98 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-200 dark:border-white/15 shadow-2xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150">
                 {HERRAMIENTAS.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.href;
@@ -164,14 +164,14 @@ export function HeaderNav() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setToolsOpen(false)}
-                      className={`p-3 rounded-2xl border transition-all flex items-start gap-3 group text-left ${
+                      className={`p-3 rounded-xl border transition-all flex items-start gap-3 group text-left ${
                         active 
-                          ? 'bg-emerald-50 dark:bg-white/10 border-emerald-200 dark:border-white/25 shadow-sm' 
-                          : 'bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-200 dark:hover:border-white/15'
+                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/80 shadow-xs' 
+                          : 'bg-slate-50 dark:bg-slate-800/50 border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700'
                       }`}
                     >
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-md shrink-0 group-hover:scale-105 transition-transform`}>
-                        <Icon size={19} />
+                      <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-xs shrink-0`}>
+                        <Icon size={18} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5">
@@ -179,7 +179,7 @@ export function HeaderNav() {
                             {item.title}
                           </span>
                           {item.badge && (
-                            <span className="text-[9.5px] font-mono px-1.5 py-0.2 rounded-md bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">
+                            <span className="text-[9.5px] font-medium px-1.5 py-0.2 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                               {item.badge}
                             </span>
                           )}
@@ -200,8 +200,8 @@ export function HeaderNav() {
             href="/quienes-somos" 
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
               pathname === '/quienes-somos'
-                ? 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
-                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
+                ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border-slate-200 dark:border-slate-700 shadow-xs'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700'
             }`}
           >
             <ShieldCheck size={16} className="text-slate-500 dark:text-slate-400" />
@@ -209,27 +209,27 @@ export function HeaderNav() {
           </Link>
         </nav>
 
-        {/* Actions Hub (Big, Clear Buttons like iLovePDF) */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* Actions Hub */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
           <ChambaThemeToggle />
 
           {/* Publicar Empleo */}
           <Link
             href="/publicar-empleo"
-            className="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 text-xs font-bold font-display text-slate-700 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white transition-all shadow-sm cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer"
           >
             <PlusCircle size={15} className="text-emerald-600 dark:text-emerald-400" />
-            <span>Publicar Empleo</span>
+            <span>Publicar Convocatoria</span>
           </Link>
 
-          {/* Explorar Vacantes - Big, Bold Primary Button */}
+          {/* Explorar Convocatorias - Primary Button */}
           <Link
             href="/empleos"
-            className="btn-brand-gradient relative group overflow-hidden px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-black font-display transition-all flex items-center gap-2.5 shadow-md hover:shadow-lg cursor-pointer hover:scale-[1.03] active:scale-[0.98]"
+            className="px-4 sm:px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors flex items-center gap-2 shadow-xs cursor-pointer"
           >
-            <Compass size={18} className="text-white dark:text-slate-950 stroke-[2.5] shrink-0 group-hover:rotate-45 transition-transform duration-300" />
-            <span className="text-white dark:text-slate-950 font-black tracking-tight">Explorar Vacantes</span>
-            <ArrowRight size={15} className="text-white dark:text-slate-950 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
+            <Compass size={17} className="text-white" />
+            <span>Explorar Convocatorias</span>
+            <ArrowRight size={14} className="text-white" />
           </Link>
 
           {/* Mobile Drawer */}

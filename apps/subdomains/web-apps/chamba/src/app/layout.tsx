@@ -17,8 +17,6 @@ import {
 import { HeaderNav } from "@/components/HeaderNav";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { ChambaThemeListener } from "@/components/ChambaThemeListener";
-import { ChambaGlowWrapper } from "@/components/ChambaGlowWrapper";
-import { ChambaCustomCursor } from "@/components/ChambaCustomCursor";
 import { getSubdomainConfig } from "@atpdev/database";
 import { SITE_URL } from "@/lib/siteConfig";
 import "./globals.css";
@@ -254,32 +252,20 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body data-interaction={glowStyle} className="bg-[#070a12] print:bg-white text-slate-100 print:text-slate-900 antialiased selection:bg-emerald-400 selection:text-slate-950">
+      <body className="bg-slate-50 dark:bg-[#070a12] text-slate-900 dark:text-slate-100 antialiased selection:bg-emerald-600 selection:text-white transition-colors">
         <ChambaThemeListener />
-        <ChambaCustomCursor />
-        <ChambaGlowWrapper className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col">
         {/* Top Announcement Bar */}
         {config.branding?.announcement_enabled && (
           <div 
-            className="announcement-bar relative overflow-hidden text-white text-xs font-semibold py-2 px-4 text-center flex items-center justify-center gap-2.5 border-b print:hidden"
-            style={{
-              backgroundColor: `${accentHex}10`,
-              borderColor: `${accentHex}30`
-            }}
+            className="announcement-bar relative overflow-hidden bg-emerald-50/80 dark:bg-emerald-950/40 border-b border-emerald-200/80 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-200 text-xs py-2 px-4 text-center flex items-center justify-center gap-2 print:hidden"
           >
-            <div 
-              className="absolute inset-0 pointer-events-none" 
-              style={{ background: `radial-gradient(ellipse at center, ${accentHex}25, transparent 70%)` }}
-            />
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: accentHex }}></span>
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: accentHex }}></span>
+            <ShieldCheck size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="font-semibold text-emerald-900 dark:text-emerald-300">
+              Convocatorias Oficiales Perú 2026:
             </span>
-            <span className="font-mono text-[11px] font-bold uppercase tracking-wider" style={{ color: accentHex }}>
-              Servicio Verificado 2026:
-            </span>
-            <span className="text-slate-200 font-medium">
-              {config.branding.announcement_text || "Postulación 100% directa a bases oficiales de SERVIR, Ministerios y Empresas líderes"}
+            <span className="text-slate-700 dark:text-slate-300">
+              {config.branding.announcement_text || "Postulación directa con bases en PDF verificadas en SERVIR y portales institucionales"}
             </span>
           </div>
         )}
@@ -492,7 +478,7 @@ export default function RootLayout({
 
         {/* Global Regulatory Cookie Consent Banner */}
         <CookieConsentBanner />
-        </ChambaGlowWrapper>
+        </div>
       </body>
     </html>
   );

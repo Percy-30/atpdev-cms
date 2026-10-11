@@ -26,10 +26,7 @@ export function JobCard({ job }: JobCardProps) {
   );
 
   return (
-    <div className="glass-card glass-card-hover p-6 rounded-3xl flex flex-col justify-between gap-5 relative group overflow-hidden border border-slate-200/90 dark:border-white/10 hover:border-emerald-500/50 transition-all bg-white dark:bg-gradient-to-b dark:from-slate-900/95 dark:via-[#0c1424] dark:to-[#070b14] shadow-sm hover:shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_20px_45px_-10px_rgba(16,185,129,0.25)]">
-      {/* Top Ambient Glow Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
+    <div className="glass-card glass-card-hover p-5 sm:p-6 rounded-2xl flex flex-col justify-between gap-5 relative group overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 transition-all bg-white dark:bg-slate-900/90 shadow-xs hover:shadow-md">
       {/* Top Banner & Entity Header */}
       <Link
         href={`/empleos/${job.slug}`}
@@ -37,7 +34,7 @@ export function JobCard({ job }: JobCardProps) {
         aria-label={`Convocatoria de empleo ${job.title} en ${job.entity_name}`}
         title={`Convocatoria de empleo ${job.title} en ${job.entity_name}`}
       >
-        <div className="rounded-2xl p-3 bg-slate-50 dark:bg-slate-950/70 border border-slate-200/80 dark:border-white/10 group-hover/entity:border-emerald-500/40 transition-all shadow-inner">
+        <div className="rounded-xl p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 group-hover/entity:border-emerald-500/40 transition-all">
           <EntityLogo entityName={job.entity_name} logoUrl={job.entity_logo} size="banner" />
         </div>
         <div className="flex items-center justify-between gap-2 mt-2.5 px-0.5">
@@ -117,7 +114,7 @@ export function JobCard({ job }: JobCardProps) {
       </div>
 
       {/* Footer Row with countdown and single clear Details CTA */}
-      <div className="pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between gap-2 text-xs">
+      <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 text-xs">
         {/* Dynamic Countdown Clock (Green, Orange, Red, Blue) */}
         <JobCountdownClock endDate={job.end_date} status={job.status} size="sm" />
 
@@ -128,7 +125,7 @@ export function JobCard({ job }: JobCardProps) {
               href={rawBases}
               target="_blank"
               rel="nofollow noopener noreferrer"
-              className="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-emerald-50 dark:bg-slate-800/90 dark:hover:bg-emerald-950/40 text-slate-700 hover:text-emerald-700 dark:text-slate-300 dark:hover:text-emerald-300 font-bold font-mono text-xs transition-all flex items-center gap-1 border border-slate-200 dark:border-white/10 hover:border-emerald-400/50 shadow-sm"
+              className="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-emerald-50 dark:bg-slate-800 dark:hover:bg-emerald-950/40 text-slate-700 hover:text-emerald-700 dark:text-slate-300 dark:hover:text-emerald-300 font-bold font-mono text-xs transition-all flex items-center gap-1 border border-slate-200 dark:border-slate-700 hover:border-emerald-400/50 shadow-xs"
               title="Abrir o descargar documento oficial de bases"
             >
               <FileText size={12} className="text-emerald-600 dark:text-emerald-400" />
@@ -137,11 +134,11 @@ export function JobCard({ job }: JobCardProps) {
           )}
           <Link
             href={`/empleos/${job.slug}`}
-            className="btn-brand-gradient px-4 py-2 rounded-xl font-bold font-display text-xs transition-all duration-200 flex items-center justify-center gap-1.5 hover:scale-[1.03] active:scale-[0.98] group/btn cursor-pointer shadow-md text-white"
+            className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 group/btn cursor-pointer shadow-xs"
             aria-label={`Ver detalles, bases y requisitos de ${job.title}`}
           >
             <span>Ver Convocatoria</span>
-            <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
+            <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
           </Link>
         </div>
       </div>

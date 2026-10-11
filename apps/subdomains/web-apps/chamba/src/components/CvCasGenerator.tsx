@@ -640,7 +640,7 @@ export function CvCasGenerator() {
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-white/10 shadow-2xl print:hidden flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1.5 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+            <ShieldCheck size={15} className="text-emerald-400" />
             <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
               Documento Calibrado & Verificado
             </span>

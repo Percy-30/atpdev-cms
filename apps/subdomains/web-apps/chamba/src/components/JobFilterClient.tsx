@@ -120,7 +120,7 @@ export function JobFilterClient({
           </div>
           <span>Filtros de Búsqueda</span>
           {isPending && (
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping ml-1 inline-block" />
+            <span className="w-3 h-3 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin ml-1.5 inline-block" />
           )}
         </h3>
         {hasActiveFilters && (
