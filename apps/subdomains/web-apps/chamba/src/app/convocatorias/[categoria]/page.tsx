@@ -306,20 +306,39 @@ export default async function ConvocatoriaCategoriaPage({
       {/* Job Listings Grid */}
       <div className="space-y-6">
         {matchedJobs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {matchedJobs.slice(0, 3).map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {matchedJobs.slice(0, 3).map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))}
 
-            {/* In-Feed Native Ad Slot */}
-            <div className="col-span-full">
-              <AdBannerSlot type="in-feed" />
+              {/* In-Feed Native Ad Slot */}
+              <div className="col-span-full">
+                <AdBannerSlot type="in-feed" />
+              </div>
+
+              {matchedJobs.slice(3, 24).map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))}
             </div>
 
-            {matchedJobs.slice(3).map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
+            {matchedJobs.length > 24 && (
+              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm text-center space-y-3">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Mostrando las primeras <strong>24</strong> de <strong>{matchedJobs.length}</strong> convocatorias vigentes de <strong>{catInfo.name}</strong>.
+                </p>
+                <div>
+                  <Link
+                    href={`/empleos?regimen=${encodeURIComponent(catInfo.sector_match)}`}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors shadow-sm"
+                  >
+                    <span>Explorar todas las {matchedJobs.length} plazas con buscador y filtros</span>
+                    <ChevronRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="p-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm text-center space-y-4 max-w-xl mx-auto my-12">
             <div className="w-14 h-14 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto">
