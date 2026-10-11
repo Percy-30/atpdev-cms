@@ -10,26 +10,34 @@ import {
   CircleDollarSign, 
   Hash, 
   Users2,
-  Gift
+  Gift,
+  FileText,
+  Sparkles,
+  HelpCircle,
+  Heart
 } from 'lucide-react';
 
 import { useLanguage } from '@/context/LanguageContext';
-import { TranslationKey } from '@/lib/translations';
 
 interface ToolItem {
-  key: TranslationKey;
+  label: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const TOOLS: ToolItem[] = [
-  { key: 'tool_names', href: '/herramientas/lista', icon: ListOrdered },
-  { key: 'tool_roulette', href: '/herramientas/ruleta', icon: Disc },
-  { key: 'tool_dice', href: '/herramientas/dados', icon: Dices },
-  { key: 'tool_coin', href: '/herramientas/moneda', icon: CircleDollarSign },
-  { key: 'tool_numbers', href: '/herramientas/numeros', icon: Hash },
-  { key: 'tool_teams', href: '/herramientas/equipos', icon: Users2 },
-  { key: 'tool_secret_santa', href: '/herramientas/amigo-invisible', icon: Gift },
+  { label: 'Nombres', href: '/herramientas/lista', icon: ListOrdered },
+  { label: 'Ruleta', href: '/herramientas/ruleta', icon: Disc },
+  { label: 'Raspa y Gana', href: '/herramientas/raspa-gana', icon: Sparkles },
+  { label: 'Dados 3D', href: '/herramientas/dados', icon: Dices },
+  { label: 'Moneda', href: '/herramientas/moneda', icon: CircleDollarSign },
+  { label: 'Números', href: '/herramientas/numeros', icon: Hash },
+  { label: 'Equipos', href: '/herramientas/equipos', icon: Users2 },
+  { label: 'Amigo Secreto', href: '/herramientas/amigo-invisible', icon: Gift },
+  { label: 'Bases Legales', href: '/herramientas/bases-legales', icon: FileText },
+  { label: 'Trivia', href: '/herramientas/trivia', icon: HelpCircle },
+  { label: 'Engagement', href: '/herramientas/engagement', icon: Heart },
+  { label: 'Hashtags', href: '/herramientas/hashtags', icon: Hash },
 ];
 
 export const ToolSwitcher: React.FC = () => {
@@ -53,7 +61,7 @@ export const ToolSwitcher: React.FC = () => {
                 className={`tool-switcher-pill shrink-0 ${isActive ? 'active' : ''}`}
               >
                 <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-pink-600 dark:text-white' : 'text-slate-400 dark:text-zinc-500'}`} />
-                <span>{t(item.key)}</span>
+                <span>{item.label}</span>
               </Link>
             );
           })}

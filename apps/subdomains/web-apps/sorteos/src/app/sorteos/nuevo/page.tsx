@@ -275,6 +275,25 @@ interface AdditionalSource {
     setMounted(true);
     let cancelled = false;
 
+    // Leer parámetros de URL inmediatamente (platform, mode)
+    if (typeof window !== 'undefined') {
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const plat = sp.get('platform');
+        if (plat) {
+          const found = NETWORK_CONFIGS.find((n) => n.id === plat);
+          if (found) {
+            setNetwork(found.id);
+          }
+        }
+        if (sp.get('mode') === 'multi') {
+          setIsMultiNetwork(true);
+        }
+      } catch {
+        // noop
+      }
+    }
+
     // Sincronización inmediata con localStorage tras montar en cliente
     if (typeof window !== 'undefined') {
       try {

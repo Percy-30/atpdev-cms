@@ -267,3 +267,6 @@ export function playWinnerFanfare(): void {
     osc.stop(now + idx * 0.12 + 0.7);
   });
 }
+
+/** Alias para celebraciones generales */
+export const playCelebrationSound = playWinnerFanfare;
