@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Sparkles, Shield, ExternalLink } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { api, getToken } from '@/lib/api';
+import { ADSENSE_CLIENT_ID } from '@/lib/siteConfig';
 
 interface AdBannerProps {
   slot?: string;
@@ -35,6 +36,16 @@ export function AdBanner({ slot = '5414009811868137', format = 'horizontal', cla
     return () => window.removeEventListener('auth-changed', checkProStatus);
   }, []);
 
+  useEffect(() => {
+    if (isPro === false) {
+      try {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      } catch {
+        // adsbygoogle already pushed or blocked
+      }
+    }
+  }, [isPro]);
+
   // Si es usuario PRO, NO SE MUESTRA NINGÚN ANUNCIO (experiencia 100% limpia)
   if (isPro === true) {
     return null;
@@ -44,6 +55,8 @@ export function AdBanner({ slot = '5414009811868137', format = 'horizontal', cla
   if (isPro === null) {
     return null;
   }
+
+  const cleanClientId = ADSENSE_CLIENT_ID.startsWith('ca-') ? ADSENSE_CLIENT_ID : `ca-${ADSENSE_CLIENT_ID}`;
 
   // Banner para usuarios FREE o invitados
   return (
@@ -61,19 +74,16 @@ export function AdBanner({ slot = '5414009811868137', format = 'horizontal', cla
         </Link>
       </div>
 
-      {/* Contenedor del anuncio (AdSense o Banner Promocional) */}
-      <div className="py-6 px-4 rounded-xl bg-white dark:bg-[#070a12] border border-dashed border-slate-300 dark:border-white/10 flex flex-col items-center justify-center gap-2">
+      {/* Contenedor del anuncio oficial de AdSense */}
+      <div className="py-4 px-2 rounded-xl bg-white dark:bg-[#070a12] border border-slate-200 dark:border-white/10 flex flex-col items-center justify-center min-h-[100px] overflow-hidden">
         <ins
           className="adsbygoogle"
           style={{ display: 'block', minHeight: '90px', width: '100%' }}
-          data-ad-client="ca-pub-5414009811868137"
+          data-ad-client={cleanClientId}
           data-ad-slot={slot}
-          data-ad-format="auto"
+          data-ad-format={format === 'rectangle' ? 'rectangle' : 'auto'}
           data-full-width-responsive="true"
         />
-        <div className="text-xs text-slate-500 dark:text-zinc-400 font-mono">
-          Espacio publicitario para cuentas del Plan Gratuito
-        </div>
       </div>
     </div>
   );

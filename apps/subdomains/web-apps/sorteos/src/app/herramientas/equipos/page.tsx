@@ -15,6 +15,7 @@ import {
   playCardFlip, playWinnerFanfare, isAudioMuted, toggleAudioMute 
 } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 const TEAM_NAMES_PRESETS = [
   ['🔴 Titanes Rojos', '🔵 Centinelas Azules', '🟢 Dragones Verdes', '🟡 Fénix Dorados', '🟣 Halcones Violetas', '⚪ Lobos Blancos'],
@@ -357,6 +358,11 @@ export default function EquiposPage() {
           )}
         </div>
       )}
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
+      </div>
 
       {/* Live Stream Stage */}
       {teams.length > 0 && (

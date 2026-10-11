@@ -11,6 +11,7 @@ import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playDiceSound, playWinnerFanfare, isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 const renderDotsForFace = (val: number) => {
   return (
@@ -289,6 +290,11 @@ export default function DadosPage() {
           </div>
         </div>
       )}
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
+      </div>
 
       {/* Live Stream Stage */}
       <LiveStreamStage

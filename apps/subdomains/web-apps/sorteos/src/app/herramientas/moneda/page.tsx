@@ -6,6 +6,7 @@ import { flipCoin, generateSha256Hash } from '@/lib/randomEngine';
 import { ToolSwitcher } from '@/components/ToolSwitcher';
 import { playCoinFlipSound, playCoinLandSound, isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 export default function MonedaPage() {
   const { t } = useLanguage();
@@ -255,6 +256,11 @@ export default function MonedaPage() {
           </div>
         </div>
       )}
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
+      </div>
     </div>
   );
 }

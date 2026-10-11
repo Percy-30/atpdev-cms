@@ -15,6 +15,7 @@ import {
   playBallBounce, playWinnerFanfare, isAudioMuted, toggleAudioMute 
 } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 const BALL_GRADIENTS = [
   'from-amber-400 via-yellow-500 to-amber-600 text-amber-950 shadow-amber-500/30',
@@ -387,6 +388,11 @@ export default function NumerosPage() {
           )}
         </div>
       )}
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
+      </div>
 
       {/* Live Stream Stage */}
       {results.length > 0 && (

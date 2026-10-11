@@ -2,9 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, ArrowLeft } from 'lucide-react';
 
+import { SITE_NAME, CONTACT_EMAIL } from '@/lib/siteConfig';
+
 export const metadata = {
-  title: 'Términos y Condiciones | Sorteos Pro - Plataforma SaaS de Sorteos',
-  description: 'Términos y condiciones legales de uso de la plataforma Sorteos Pro y cumplimiento con las directrices de Meta y YouTube.'
+  title: `Términos y Condiciones | ${SITE_NAME}`,
+  description: `Términos y condiciones legales de uso de la plataforma ${SITE_NAME} y cumplimiento con directrices de plataformas y comercio digital.`
 };
 
 export default function TerminosPage() {
@@ -73,9 +75,9 @@ export default function TerminosPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-display text-white">6. Contacto Legal</h2>
+          <h2 className="text-lg font-bold font-display text-white">6. Contacto y Soporte Legal</h2>
           <p>
-            Para consultas respecto a estos términos o requerimientos judiciales de auditoría, escribir a <span className="text-purple-400 font-mono">legal@atpdev.pe</span>.
+            Para consultas respecto a estos términos, derechos ARCO o requerimientos de auditoría, puedes escribir a nuestro canal oficial <span className="text-pink-400 font-mono font-bold">{CONTACT_EMAIL}</span> o visitar nuestro formulario de <Link href="/contacto" className="text-pink-400 underline font-semibold hover:text-pink-300">atención y contacto</Link>.
           </p>
         </section>
       </div>

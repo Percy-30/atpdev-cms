@@ -26,6 +26,7 @@ import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { playWheelTick, playWinnerFanfare } from '@/lib/soundEffects';
 import { generateSha256Hash } from '@/lib/randomEngine';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 export default function SorteoListaPage() {
   const { t } = useLanguage();
@@ -464,6 +465,11 @@ export default function SorteoListaPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
       </div>
 
       {/* Live Stream Stage */}

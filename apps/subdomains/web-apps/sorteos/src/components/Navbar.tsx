@@ -192,6 +192,13 @@ export const Navbar: React.FC = () => {
             >
               {t('nav_help')}
             </Link>
+
+            <Link 
+              href="/contacto" 
+              className="px-3 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors"
+            >
+              Contacto
+            </Link>
           </nav>
 
           {/* Right Actions */}
@@ -380,6 +387,20 @@ export const Navbar: React.FC = () => {
               className="px-3 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white"
             >
               {t('nav_help')}
+            </Link>
+            <Link
+              href="/quienes-somos"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white"
+            >
+              Quiénes Somos
+            </Link>
+            <Link
+              href="/contacto"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white"
+            >
+              Contacto y Soporte
             </Link>
 
             {isLoggedIn ? (

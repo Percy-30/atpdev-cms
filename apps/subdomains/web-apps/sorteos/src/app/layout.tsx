@@ -7,7 +7,16 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { SorteosThemeListener } from "@/components/SorteosThemeListener";
 import { SorteosGlowWrapper } from "@/components/SorteosGlowWrapper";
 import { SorteosCustomCursor } from "@/components/SorteosCustomCursor";
+import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { getSubdomainConfig } from "@atpdev/database";
+import { 
+  SITE_URL, 
+  SITE_NAME, 
+  SITE_TITLE, 
+  SITE_DESCRIPTION, 
+  ADSENSE_CLIENT_ID, 
+  CONTACT_EMAIL 
+} from "@/lib/siteConfig";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -37,13 +46,12 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sorteos.atpdev.pe'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Sorteos Pro — Plataforma SaaS de Sorteos Verificables en Redes Sociales",
-    template: "%s | Sorteos Pro",
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "Crea sorteos transparentes y certificados en Instagram, Facebook y YouTube en menos de 3 minutos. Herramientas gratis de ruleta, lista de nombres, dados y monedas con hash criptográfico anti-fraude.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "sorteos instagram",
     "hacer sorteo instagram gratis",
@@ -53,10 +61,51 @@ export const metadata: Metadata = {
     "generador de ganadores",
     "sorteos youtube comentarios",
     "sorteo certificado",
-    "sorteos online"
+    "sorteos online",
+    "tirar dados online",
+    "cara o cruz online",
+    "sorteo de equipos"
   ],
-  other: {
-    "google-adsense-account": "ca-pub-5414009811868137",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "es_ES",
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} — Plataforma de Sorteos Verificables`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [`${SITE_URL}/opengraph-image`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    other: {
+      "google-adsense-account": ADSENSE_CLIENT_ID,
+    },
   },
   icons: {
     icon: "/icon.svg",
@@ -99,6 +148,78 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Core Resource Hints */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+
+        {/* Google AdSense Script Oficial en HEAD */}
+        {ADSENSE_CLIENT_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
+
+        {/* Structured Data: WebSite Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: SITE_NAME,
+              alternateName: "SorteosPro",
+              url: SITE_URL,
+              description: SITE_DESCRIPTION,
+              inLanguage: "es-ES",
+            }),
+          }}
+        />
+
+        {/* Structured Data: SoftwareApplication Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: SITE_NAME,
+              applicationCategory: "UtilitiesApplication",
+              operatingSystem: "All",
+              url: SITE_URL,
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
+              },
+            }),
+          }}
+        />
+
+        {/* Structured Data: Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: SITE_NAME,
+              legalName: "ATP DEV",
+              url: SITE_URL,
+              logo: `${SITE_URL}/icon.svg`,
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer support",
+                email: CONTACT_EMAIL,
+                availableLanguage: ["Spanish", "English"],
+              },
+            }),
+          }}
+        />
+
         {/* Dynamic Subdomain Theme Custom Properties (SSR Hydration) */}
         <style id="sorteos-ssr-theme" dangerouslySetInnerHTML={{
           __html: `
@@ -195,12 +316,6 @@ export default function RootLayout({
           src="/theme-init.js"
           strategy="beforeInteractive"
         />
-        <Script
-          id="google-adsense"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5414009811868137"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
         <SorteosThemeListener />
         <SorteosCustomCursor />
         <LanguageProvider>
@@ -224,6 +339,7 @@ export default function RootLayout({
             </main>
           </SorteosGlowWrapper>
           <Footer />
+          <CookieConsentBanner />
         </LanguageProvider>
       </body>
     </html>

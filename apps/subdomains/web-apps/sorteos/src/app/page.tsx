@@ -11,6 +11,7 @@ import { InstagramIcon, FacebookIcon, YoutubeIcon } from '@/components/SocialIco
 import { HomeHashVerifier } from '@/components/HomeHashVerifier';
 import { PRICING_PLANS } from '@/lib/types';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 export default function HomePage() {
   const { t } = useLanguage();
@@ -391,6 +392,11 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* ─── ADSENSE BANNER ────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <AdBanner format="horizontal" />
       </section>
 
     </div>

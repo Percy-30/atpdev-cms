@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { BookOpen, Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react';
+import { AdBanner } from '@/components/AdBanner';
 
 const ARTICLES = [
   {
@@ -158,6 +159,11 @@ export default function BlogPage() {
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+      </div>
+
+      {/* AdSense Banner */}
+      <div className="pt-4">
+        <AdBanner format="horizontal" />
       </div>
     </div>
   );

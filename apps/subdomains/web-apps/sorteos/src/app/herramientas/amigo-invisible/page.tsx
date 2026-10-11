@@ -15,6 +15,7 @@ import {
   playCardFlip, playWinnerFanfare, isAudioMuted, toggleAudioMute 
 } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 interface Match {
   giver: string;
@@ -404,6 +405,11 @@ export default function AmigoInvisiblePage() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
       </div>
 
       {/* Live Stream Stage */}

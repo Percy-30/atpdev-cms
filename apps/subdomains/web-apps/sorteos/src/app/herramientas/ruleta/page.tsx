@@ -21,6 +21,7 @@ import { LiveStreamStage } from '@/components/LiveStreamStage';
 import { WinnerExportModal } from '@/components/WinnerExportModal';
 import { isAudioMuted, toggleAudioMute } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
+import { AdBanner } from '@/components/AdBanner';
 
 const DEFAULT_OPTIONS = [
   'Premio Mayor 🎁',
@@ -285,6 +286,11 @@ export default function RuletaPage() {
         drawTitle="Ruleta de la Suerte"
         platform="Ruleta Digital"
       />
+
+      {/* AdSense Ad Placement */}
+      <div className="pt-6">
+        <AdBanner format="horizontal" />
+      </div>
     </div>
   );
 }
