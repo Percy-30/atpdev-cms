@@ -6,7 +6,15 @@ if (typeof process !== 'undefined' && process.versions?.node) {
   } catch {}
 }
 
-import { JobPosting, JobPlaza, INITIAL_JOBS } from './jobs';
+import { 
+  JobPosting, 
+  JobPlaza, 
+  INITIAL_JOBS,
+  getOfficialEntityPortalUrl,
+  isCompetitorUrl,
+  isGenericPublicationUrl,
+  sanitizeOfficialUrl
+} from './jobs';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 import { SERVIR_JOBS_DATA } from './servirJobsData';
 
@@ -682,7 +690,22 @@ export function persistCdJobs(jobs: JobPosting[]): void {
       } catch {}
     }
 
-    fsMod.writeFileSync(filePath, JSON.stringify(mergedJobs, null, 2), 'utf-8');
+    const sanitizedJobs = mergedJobs.map(j => {
+      const fallbackPortal = getOfficialEntityPortalUrl(j.entity_name, j.sector_type);
+      const cleanApply = sanitizeOfficialUrl(j.apply_url, fallbackPortal, j.entity_name, j.sector_type);
+      const cleanBases = (j.bases_pdf_url && !isCompetitorUrl(j.bases_pdf_url) && !isGenericPublicationUrl(j.bases_pdf_url))
+        ? sanitizeOfficialUrl(j.bases_pdf_url, cleanApply, j.entity_name, j.sector_type)
+        : cleanApply;
+      return {
+        ...j,
+        apply_url: cleanApply,
+        bases_pdf_url: cleanBases,
+        fuente_url: cleanApply,
+        scrape_source_url: cleanApply,
+      };
+    });
+
+    fsMod.writeFileSync(filePath, JSON.stringify(sanitizedJobs, null, 2), 'utf-8');
   } catch (err) {
     console.warn('Error saving scraped_cd_jobs.json:', err);
   }
@@ -881,10 +904,10 @@ export async function refreshConvocatoriasDeTrabajoInBackground(): Promise<JobPo
           'Contratación según régimen laboral con todos los beneficios de ley.',
           'Aportes al seguro de salud ESSALUD y régimen previsional.'
         ],
-        apply_url: fuente_url,
-        bases_pdf_url: fuente_url,
-        fuente_url,
-        scrape_source_url: fuente_url,
+        apply_url: sanitizeOfficialUrl(fuente_url, getOfficialEntityPortalUrl(entity, sector_type), entity, sector_type),
+        bases_pdf_url: getOfficialEntityPortalUrl(entity, sector_type),
+        fuente_url: getOfficialEntityPortalUrl(entity, sector_type),
+        scrape_source_url: getOfficialEntityPortalUrl(entity, sector_type),
         official_portal_name: `${entity} - Portal Convocatorias`,
         start_date: today,
         end_date,
@@ -1011,15 +1034,19 @@ export async function fetchAndParseIndividualCdJob(slugOrUrl: string): Promise<J
         'Contratación según régimen laboral con todos los beneficios de ley.',
         'Aportes al seguro de salud ESSALUD y régimen previsional.'
       ],
-      apply_url: enriched.directApplyUrl || targetUrl,
-      bases_pdf_url: enriched.directBasesUrl || (enriched.plazas && enriched.plazas[0]?.bases_url && !enriched.plazas[0]?.bases_url.includes('convocatoriasdetrabajo.com') ? enriched.plazas[0]?.bases_url : undefined),
+      apply_url: sanitizeOfficialUrl(enriched.directApplyUrl || targetUrl, getOfficialEntityPortalUrl(entity, sector_type), entity, sector_type),
+      bases_pdf_url: (enriched.directBasesUrl && !isCompetitorUrl(enriched.directBasesUrl) && !isGenericPublicationUrl(enriched.directBasesUrl))
+        ? sanitizeOfficialUrl(enriched.directBasesUrl, getOfficialEntityPortalUrl(entity, sector_type), entity, sector_type)
+        : (enriched.plazas && enriched.plazas[0]?.bases_url && !isCompetitorUrl(enriched.plazas[0]?.bases_url) && !isGenericPublicationUrl(enriched.plazas[0]?.bases_url))
+          ? sanitizeOfficialUrl(enriched.plazas[0]?.bases_url, getOfficialEntityPortalUrl(entity, sector_type), entity, sector_type)
+          : getOfficialEntityPortalUrl(entity, sector_type),
       cronograma_url: enriched.directCronogramaUrl,
       anexos_url: enriched.directAnexosUrl,
       resultados_url: enriched.directResultadosUrl,
       comunicados_url: enriched.directComunicadosUrl,
       official_documents: enriched.official_documents,
-      fuente_url: targetUrl,
-      scrape_source_url: targetUrl,
+      fuente_url: getOfficialEntityPortalUrl(entity, sector_type),
+      scrape_source_url: getOfficialEntityPortalUrl(entity, sector_type),
       official_portal_name: `${entity} - Portal Convocatorias`,
       start_date: today,
       end_date,
