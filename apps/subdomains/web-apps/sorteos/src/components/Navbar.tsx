@@ -63,31 +63,11 @@ export const Navbar: React.FC = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [menuTop, setMenuTop] = useState<number>(104);
-
-  const toolsDropdownRef = useRef<HTMLDivElement>(null);
+  const toolsBtnRef = useRef<HTMLButtonElement>(null);
+  const toolsMenuRef = useRef<HTMLDivElement>(null);
   const helpDropdownRef = useRef<HTMLDivElement>(null);
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
-
-  const updateMenuPosition = () => {
-    if (toolsDropdownRef.current) {
-      const rect = toolsDropdownRef.current.getBoundingClientRect();
-      setMenuTop(Math.round(rect.bottom + 8));
-    }
-  };
-
-  useEffect(() => {
-    if (toolsOpen) {
-      updateMenuPosition();
-      window.addEventListener('scroll', updateMenuPosition, { passive: true });
-      window.addEventListener('resize', updateMenuPosition, { passive: true });
-      return () => {
-        window.removeEventListener('scroll', updateMenuPosition);
-        window.removeEventListener('resize', updateMenuPosition);
-      };
-    }
-  }, [toolsOpen]);
 
   const loadUser = async () => {
     const token = getToken();
@@ -123,7 +103,10 @@ export const Navbar: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      if (toolsDropdownRef.current && !toolsDropdownRef.current.contains(target)) {
+      if (
+        toolsBtnRef.current && !toolsBtnRef.current.contains(target) &&
+        toolsMenuRef.current && !toolsMenuRef.current.contains(target)
+      ) {
         setToolsOpen(false);
       }
       if (helpDropdownRef.current && !helpDropdownRef.current.contains(target)) {
@@ -218,10 +201,7 @@ export const Navbar: React.FC = () => {
   );
 
   return (
-    <header 
-      style={{ transform: 'translateZ(0)' }}
-      className="sticky top-0 z-40 bg-white/95 dark:bg-[#070a12]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-xs transition-colors duration-200"
-    >
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#070a12]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-white/10 shadow-xs transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16 sm:h-18">
           
@@ -239,90 +219,22 @@ export const Navbar: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             
             {/* ─── APLICACIONES MEGA-MENU TRIGGER ───────────────────────── */}
-            <div ref={toolsDropdownRef}>
-              <button
-                id="nav-btn-aplicaciones"
-                type="button"
-                onClick={() => setToolsOpen(!toolsOpen)}
-                className={`flex items-center gap-2 px-3.5 py-2 text-sm font-semibold rounded-xl transition-all cursor-pointer ${
-                  toolsOpen 
-                    ? 'text-pink-600 dark:text-pink-400 bg-pink-50/80 dark:bg-pink-500/10' 
-                    : 'text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5'
-                }`}
-                aria-expanded={toolsOpen}
-              >
-                <LayoutGrid className="w-4 h-4 text-pink-600 dark:text-pink-400" />
-                <span>{t('nav_apps') || 'Aplicaciones'}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-pink-600' : 'text-slate-400'}`} />
-              </button>
-
-              {/* 4-COLUMN MEGA-DROPDOWN */}
-              {toolsOpen && (
-                <div 
-                  id="mega-menu-aplicaciones"
-                  style={{ top: `${menuTop}px` }}
-                  className="fixed left-1/2 -translate-x-1/2 w-[920px] max-w-[calc(100vw-2rem)] bg-white dark:bg-[#0b0f19] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 p-6 z-50 animate-in fade-in duration-150"
-                >
-                  <div className="grid grid-cols-4 gap-5">
-                    {/* Columna 1: Sorteos */}
-                    <div className="space-y-1">
-                      <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
-                        Sorteos
-                      </h4>
-                      <div className="space-y-0.5">
-                        {megaColSorteos.map(renderAppItem)}
-                      </div>
-                    </div>
-
-                    {/* Columna 2: Promociones */}
-                    <div className="space-y-1">
-                      <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
-                        Promociones
-                      </h4>
-                      <div className="space-y-0.5">
-                        {megaColPromociones.map(renderAppItem)}
-                      </div>
-                    </div>
-
-                    {/* Columna 3: Otras Apps */}
-                    <div className="space-y-1">
-                      <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
-                        Otras Apps
-                      </h4>
-                      <div className="space-y-0.5">
-                        {megaColOtras.map(renderAppItem)}
-                      </div>
-                    </div>
-
-                    {/* Columna 4: Utilidades */}
-                    <div className="space-y-1">
-                      <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
-                        Utilidades
-                      </h4>
-                      <div className="space-y-0.5">
-                        {megaColUtilidades.map(renderAppItem)}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Footer Info Strip */}
-                  <div className="mt-6 pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      <span>Todos los sorteos y herramientas cuentan con certificación criptográfica inmutable SHA-256.</span>
-                    </div>
-                    <Link
-                      href="/verificar"
-                      onClick={() => setToolsOpen(false)}
-                      className="font-bold text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1"
-                    >
-                      <span>Verificar Certificado</span>
-                      <span>→</span>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+            <button
+              id="nav-btn-aplicaciones"
+              ref={toolsBtnRef}
+              type="button"
+              onClick={() => setToolsOpen(!toolsOpen)}
+              className={`flex items-center gap-2 px-3.5 py-2 text-sm font-semibold rounded-xl transition-all cursor-pointer ${
+                toolsOpen 
+                  ? 'text-pink-600 dark:text-pink-400 bg-pink-50/80 dark:bg-pink-500/10' 
+                  : 'text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5'
+              }`}
+              aria-expanded={toolsOpen}
+            >
+              <LayoutGrid className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+              <span>{t('nav_apps') || 'Aplicaciones'}</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-pink-600' : 'text-slate-400'}`} />
+            </button>
 
             {/* Automation New Badge Link */}
             <Link 
@@ -526,6 +438,73 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* ─── 4-COLUMN MEGA-DROPDOWN FLOATING OVERLAY ─────────────────── */}
+        {toolsOpen && (
+          <div 
+            ref={toolsMenuRef}
+            id="mega-menu-aplicaciones"
+            className="hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[940px] max-w-[calc(100vw-2rem)] bg-white dark:bg-[#0b0f19] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 p-6 z-50 animate-in fade-in duration-150"
+          >
+            <div className="grid grid-cols-4 gap-5">
+              {/* Columna 1: Sorteos */}
+              <div className="space-y-1">
+                <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
+                  Sorteos
+                </h4>
+                <div className="space-y-0.5">
+                  {megaColSorteos.map(renderAppItem)}
+                </div>
+              </div>
+
+              {/* Columna 2: Promociones */}
+              <div className="space-y-1">
+                <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
+                  Promociones
+                </h4>
+                <div className="space-y-0.5">
+                  {megaColPromociones.map(renderAppItem)}
+                </div>
+              </div>
+
+              {/* Columna 3: Otras Apps */}
+              <div className="space-y-1">
+                <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
+                  Otras Apps
+                </h4>
+                <div className="space-y-0.5">
+                  {megaColOtras.map(renderAppItem)}
+                </div>
+              </div>
+
+              {/* Columna 4: Utilidades */}
+              <div className="space-y-1">
+                <h4 className="text-[11px] font-bold font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3 px-2">
+                  Utilidades
+                </h4>
+                <div className="space-y-0.5">
+                  {megaColUtilidades.map(renderAppItem)}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Footer Info Strip */}
+            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Todos los sorteos y herramientas cuentan con certificación criptográfica inmutable SHA-256.</span>
+              </div>
+              <Link
+                href="/verificar"
+                onClick={() => setToolsOpen(false)}
+                className="font-bold text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1"
+              >
+                <span>Verificar Certificado</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ─── MOBILE DRAWER MENU ─────────────────────────────────────────── */}
