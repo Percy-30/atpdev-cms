@@ -268,5 +268,56 @@ export function playWinnerFanfare(): void {
   });
 }
 
+/** Sonido de respuesta correcta en trivia */
+export function playCorrectChime(): void {
+  if (isAudioMuted()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const notes = [659.25, 830.61, 987.77];
+  notes.forEach((freq, idx) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+    gain.gain.setValueAtTime(0.001, now + idx * 0.08);
+    gain.gain.linearRampToValueAtTime(0.2, now + idx * 0.08 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.35);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now + idx * 0.08);
+    osc.stop(now + idx * 0.08 + 0.38);
+  });
+}
+
+/** Sonido de respuesta incorrecta / buzzer */
+export function playWrongBuzz(): void {
+  if (isAudioMuted()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(150, now);
+  osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+
+  gain.gain.setValueAtTime(0.18, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(now);
+  osc.stop(now + 0.3);
+}
+
 /** Alias para celebraciones generales */
 export const playCelebrationSound = playWinnerFanfare;
