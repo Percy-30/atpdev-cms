@@ -43,11 +43,11 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
+    default: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
     template: "%s | chamba pro",
   },
   description:
-    "Buscador oficial de convocatorias de trabajo, empleos y chamba en Perú 2026. Convocatorias vigentes en el Estado (CAS 1057, D.L. 728, 276) y sector privado con bases oficiales.",
+    "Convocatorias de trabajo y chamba en Perú 2026: plazas CAS 1057, 728 y sector privado. Bases oficiales, requisitos y salarios en portales del Estado.",
   keywords: [
     "chamba",
     "chamba peru",
@@ -87,8 +87,8 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "chamba pro — Buscador de Convocatorias, Empleos y Trabajo en Perú",
-    description: "Buscador de convocatorias CAS 1057, 728 y sector privado en Perú. Ofertas verificadas con postulación directa en portales oficiales del Estado.",
+    title: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
+    description: "Convocatorias de trabajo y chamba en Perú 2026: plazas CAS 1057, 728 y sector privado. Bases oficiales, requisitos y salarios en portales del Estado.",
     url: SITE_URL,
     siteName: "chamba pro",
     locale: "es_PE",
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
-    description: "Encuentra chamba verificada y convocatorias CAS 1057, 728 y sector privado en Perú con enlace a bases oficiales.",
+    description: "Convocatorias de trabajo y chamba en Perú 2026: plazas CAS 1057, 728 y sector privado. Bases oficiales, requisitos y salarios en portales del Estado.",
     images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {

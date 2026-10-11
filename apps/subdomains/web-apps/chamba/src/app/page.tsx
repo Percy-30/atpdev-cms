@@ -13,11 +13,33 @@ import { getAllGuias } from "@/data/guias";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "chamba pro — Buscador de Convocatorias de Trabajo, Empleos y Chamba en Perú 2026",
+    absolute: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
   },
-  description: "Buscador líder de convocatorias de trabajo y chamba verificada en Perú: CAS 1057, D.L. 728, 276 y sector privado. Consulta bases oficiales, requisitos y salarios vigentes.",
+  description: "Convocatorias de trabajo y chamba en Perú 2026: plazas CAS 1057, 728 y sector privado. Bases oficiales, requisitos y salarios en portales del Estado.",
   alternates: {
     canonical: SITE_URL,
+  },
+  openGraph: {
+    title: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
+    description: "Convocatorias de trabajo y chamba en Perú 2026: plazas CAS 1057, 728 y sector privado. Bases oficiales, requisitos y salarios en portales del Estado.",
+    url: SITE_URL,
+    siteName: "chamba pro",
+    locale: "es_PE",
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "chamba pro — Convocatorias de Trabajo y Empleos Perú 2026",
+    description: "Convocatorias de trabajo y chamba en Perú 2026: plazas CAS 1057, 728 y sector privado. Bases oficiales, requisitos y salarios en portales del Estado.",
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 
