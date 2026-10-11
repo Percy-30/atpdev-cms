@@ -154,68 +154,53 @@ export default function RootLayout({
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
-        {/* Google AdSense Script Oficial en HEAD */}
-        {ADSENSE_CLIENT_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
-
-        {/* Structured Data: WebSite Schema */}
+        {/* Unified Structured Data (Schema.org @graph): WebSite, SoftwareApplication & Organization */}
         <script
+          id="ld-json-schema"
+          key="ld-json-schema"
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: SITE_NAME,
-              alternateName: "SorteosPro",
-              url: SITE_URL,
-              description: SITE_DESCRIPTION,
-              inLanguage: "es-ES",
-            }),
-          }}
-        />
-
-        {/* Structured Data: SoftwareApplication Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: SITE_NAME,
-              applicationCategory: "UtilitiesApplication",
-              operatingSystem: "All",
-              url: SITE_URL,
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-              },
-            }),
-          }}
-        />
-
-        {/* Structured Data: Organization Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: SITE_NAME,
-              legalName: "ATP DEV",
-              url: SITE_URL,
-              logo: `${SITE_URL}/icon.svg`,
-              contactPoint: {
-                "@type": "ContactPoint",
-                contactType: "customer support",
-                email: CONTACT_EMAIL,
-                availableLanguage: ["Spanish", "English"],
-              },
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": `${SITE_URL}/#website`,
+                  name: SITE_NAME,
+                  alternateName: "SorteosPro",
+                  url: SITE_URL,
+                  description: SITE_DESCRIPTION,
+                  inLanguage: "es-ES",
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "@id": `${SITE_URL}/#app`,
+                  name: SITE_NAME,
+                  applicationCategory: "UtilitiesApplication",
+                  operatingSystem: "All",
+                  url: SITE_URL,
+                  offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                  },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": `${SITE_URL}/#organization`,
+                  name: SITE_NAME,
+                  legalName: "ATP DEV",
+                  url: SITE_URL,
+                  logo: `${SITE_URL}/icon.svg`,
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    contactType: "customer support",
+                    email: CONTACT_EMAIL,
+                    availableLanguage: ["Spanish", "English"],
+                  },
+                },
+              ],
             }),
           }}
         />
@@ -316,6 +301,14 @@ export default function RootLayout({
           src="/theme-init.js"
           strategy="beforeInteractive"
         />
+        {ADSENSE_CLIENT_ID && (
+          <Script
+            id="google-adsense"
+            strategy="afterInteractive"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
         <SorteosThemeListener />
         <SorteosCustomCursor />
         <LanguageProvider>
