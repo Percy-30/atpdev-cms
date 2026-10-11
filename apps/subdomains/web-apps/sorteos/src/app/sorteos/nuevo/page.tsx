@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   HelpCircle,
   Flame,
+  Gift,
   AtSign,
   X,
   Loader2,
@@ -34,6 +35,9 @@ import { filterParticipants, executeVerifiableDraw } from '@/lib/randomEngine';
 import ConfettiEffect from '@/components/ConfettiEffect';
 import { useLanguage } from '@/context/LanguageContext';
 import { api } from '@/lib/api';
+import { AppSorteosConfigCard } from '@/components/AppSorteosConfigCard';
+import { AppSorteosPostPreview } from '@/components/AppSorteosPostPreview';
+import { Countdown3DOverlay } from '@/components/Countdown3DOverlay';
 
 interface SocialAccount {
   id: string;
@@ -374,6 +378,12 @@ interface AdditionalSource {
     excludeDuplicates: true,
     minMentions: 0,
     requiredHashtag: '',
+    requiredMention: '',
+    themeColor: '#d91a7a',
+    animationType: 'countdown',
+    hasPrizes: false,
+    prizes: ['Premio Principal #1'],
+    bonusChances: false,
     blockedUsers: ['bot_spammer_3000'],
     winnersCount: 1,
     substitutesCount: 2
@@ -384,6 +394,7 @@ interface AdditionalSource {
 
   // Sorteo en ejecución
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [showCountdownOverlay, setShowCountdownOverlay] = useState<boolean>(false);
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [finishedGiveaway, setFinishedGiveaway] = useState<Giveaway | null>(null);
 
@@ -850,79 +861,81 @@ interface AdditionalSource {
     setStep(3);
   };
 
-  // Paso 3 -> Paso 4: Ejecutar sorteo con CSPRNG
-  const handleExecuteDraw = async () => {
+  // Paso 3 -> Paso 4: Ejecutar sorteo con cuenta regresiva y CSPRNG
+  const handleStartDrawCountdown = () => {
     if (filteredEligible.length === 0) return;
+    setShowCountdownOverlay(true);
+  };
 
+  const handleFinishDrawExecution = async () => {
+    setShowCountdownOverlay(false);
     setIsDrawing(true);
-    setTimeout(async () => {
-      try {
-        const drawResult = await executeVerifiableDraw(filteredEligible, rules.winnersCount, rules.substitutesCount);
-        const giveawayId = `sw-${Date.now().toString(36)}`;
-        const certificateId = `cert-${drawResult.verificationHash.slice(0, 10).toUpperCase()}`;
+    try {
+      const drawResult = await executeVerifiableDraw(filteredEligible, rules.winnersCount, rules.substitutesCount);
+      const giveawayId = `sw-${Date.now().toString(36)}`;
+      const certificateId = `cert-${drawResult.verificationHash.slice(0, 10).toUpperCase()}`;
 
-        const combinedNetworksList = isMultiNetwork
-          ? Array.from(new Set([network, ...additionalSources.map((s) => s.network)]))
-          : [network];
+      const combinedNetworksList = isMultiNetwork
+        ? Array.from(new Set([network, ...additionalSources.map((s) => s.network)]))
+        : [network];
 
-        const createdGiveaway: Giveaway = {
+      const createdGiveaway: Giveaway = {
+        id: giveawayId,
+        title: giveawayTitle || (isMultiNetwork
+          ? `Sorteo Multi-Red (${combinedNetworksList.map(n => NETWORK_CONFIGS.find(c => c.id === n)?.name.split(' ')[0] || n).join(' + ')})`
+          : t('wizard_campaign_default_title')),
+        network,
+        networks: combinedNetworksList,
+        postUrl,
+        authorUsername: currentConnectedAccount?.name || 'Creador Oficial',
+        totalCommentsCount: rawComments.length,
+        rules,
+        winners: drawResult.winners,
+        substitutes: drawResult.substitutes,
+        status: 'finished',
+        createdAt: drawResult.timestamp,
+        certificateId,
+        verificationHash: drawResult.verificationHash
+      };
+
+      // Guardar en localStorage para disponibilidad local inmediata
+      if (typeof window !== 'undefined') {
+        try {
+          const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
+          stored[giveawayId] = createdGiveaway;
+          stored[certificateId] = createdGiveaway;
+          localStorage.setItem('sorteos_pro_db', JSON.stringify(stored));
+        } catch {
+          // noop
+        }
+      }
+
+      // Registrar en backend para actualizar cuota de consumo y reflejarse en Dashboard y Admin
+      api('/api/v1/giveaways', {
+        method: 'POST',
+        body: {
           id: giveawayId,
-          title: giveawayTitle || (isMultiNetwork
-            ? `Sorteo Multi-Red (${combinedNetworksList.map(n => NETWORK_CONFIGS.find(c => c.id === n)?.name.split(' ')[0] || n).join(' + ')})`
-            : t('wizard_campaign_default_title')),
-          network,
-          networks: combinedNetworksList,
-          postUrl,
-          authorUsername: currentConnectedAccount?.name || 'Creador Oficial',
+          title: createdGiveaway.title,
+          platform: network,
+          postUrl: postUrl || 'https://www.youtube.com',
           totalCommentsCount: rawComments.length,
+          status: 'completed',
           rules,
           winners: drawResult.winners,
           substitutes: drawResult.substitutes,
-          status: 'finished',
-          createdAt: drawResult.timestamp,
           certificateId,
-          verificationHash: drawResult.verificationHash
-        };
-
-        // Guardar en localStorage para disponibilidad local inmediata
-        if (typeof window !== 'undefined') {
-          try {
-            const stored = JSON.parse(localStorage.getItem('sorteos_pro_db') || '{}');
-            stored[giveawayId] = createdGiveaway;
-            stored[certificateId] = createdGiveaway;
-            localStorage.setItem('sorteos_pro_db', JSON.stringify(stored));
-          } catch {
-            // noop
-          }
+          verificationHash: drawResult.verificationHash,
         }
+      }).catch(() => null);
 
-        // Registrar en backend para actualizar cuota de consumo y reflejarse en Dashboard y Admin
-        api('/api/v1/giveaways', {
-          method: 'POST',
-          body: {
-            id: giveawayId,
-            title: createdGiveaway.title,
-            platform: network,
-            postUrl: postUrl || 'https://www.youtube.com',
-            totalCommentsCount: rawComments.length,
-            status: 'completed',
-            rules,
-            winners: drawResult.winners,
-            substitutes: drawResult.substitutes,
-            certificateId,
-            verificationHash: drawResult.verificationHash,
-          }
-        }).catch(() => null);
-
-        setFinishedGiveaway(createdGiveaway);
-        setShowConfetti(true);
-        setStep(4);
-      } catch (err: any) {
-        alert(err.message || 'Error al ejecutar el sorteo');
-      } finally {
-        setIsDrawing(false);
-      }
-    }, 1500);
+      setFinishedGiveaway(createdGiveaway);
+      setShowConfetti(true);
+      setStep(4);
+    } catch (err: any) {
+      alert(err.message || 'Error al ejecutar el sorteo');
+    } finally {
+      setIsDrawing(false);
+    }
   };
 
   return (
@@ -1463,52 +1476,72 @@ interface AdditionalSource {
             )}
           </div>
 
-          {/* Bottom Action Bar — 100% Uniforme para todas las redes (RF-011 / UX) */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 dark:border-white/5">
-            <div className="text-xs text-slate-500 dark:text-zinc-400 font-mono">
-              {isMultiNetwork ? (
-                <span className="text-purple-600 dark:text-purple-400 font-bold flex items-center gap-1.5 flex-wrap">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>
-                    Sorteo Multi-Red ({[network, ...additionalSources.map((s) => s.network)].map((n) => NETWORK_CONFIGS.find((c) => c.id === n)?.name.split(' ')[0] || n).join(' + ')})
+          {/* AppSorteos Post Preview Card (Screenshot 1) */}
+          {postUrl.trim().length > 8 && !isMultiNetwork ? (
+            <div className="pt-6 border-t border-slate-200 dark:border-white/10">
+              <AppSorteosPostPreview
+                network={network}
+                postUrl={postUrl}
+                authorName={postMeta?.author || currentConnectedAccount?.name || 'Profesoe Akla'}
+                postTitle={postMeta?.title || giveawayTitle || 'SITIOS WEB QUE DEBERÍAN SER ILEGALES'}
+                thumbnailUrl={postMeta?.postId ? undefined : undefined}
+                totalComments={postMeta?.totalComments || 16}
+                isLoading={isLoadingComments}
+                onLoadComments={handleImportComments}
+                onBack={() => {
+                  setPostUrl('');
+                  setPostMeta(null);
+                }}
+              />
+            </div>
+          ) : (
+            /* Bottom Action Bar — 100% Uniforme para todas las redes (RF-011 / UX) */
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 dark:border-white/5">
+              <div className="text-xs text-slate-500 dark:text-zinc-400 font-mono">
+                {isMultiNetwork ? (
+                  <span className="text-purple-600 dark:text-purple-400 font-bold flex items-center gap-1.5 flex-wrap">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>
+                      Sorteo Multi-Red ({[network, ...additionalSources.map((s) => s.network)].map((n) => NETWORK_CONFIGS.find((c) => c.id === n)?.name.split(' ')[0] || n).join(' + ')})
+                    </span>
                   </span>
-                </span>
-              ) : (
-                <span>Sorteo oficial verificado con algoritmo CSPRNG auditado</span>
-              )}
-            </div>
+                ) : (
+                  <span>Sorteo oficial verificado con algoritmo CSPRNG auditado</span>
+                )}
+              </div>
 
-            <div className="flex items-center gap-3 w-full sm:w-auto justify-end ml-auto">
-              <button
-                type="button"
-                disabled={
-                  isLoadingComments ||
-                  !postUrl ||
-                  Boolean(detectUrlPlatform(postUrl) && detectUrlPlatform(postUrl) !== network) ||
-                  (isMultiNetwork && additionalSources.some((s) => !s.postUrl.trim()))
-                }
-                onClick={handleImportComments}
-                className={`btn-pro-primary text-sm sm:text-base py-3 px-7 rounded-2xl cursor-pointer flex items-center gap-2.5 shadow-md ${
-                  isLoadingComments ||
-                  !postUrl ||
-                  Boolean(detectUrlPlatform(postUrl) && detectUrlPlatform(postUrl) !== network) ||
-                  (isMultiNetwork && additionalSources.some((s) => !s.postUrl.trim()))
-                    ? 'opacity-50 cursor-not-allowed !transform-none'
-                    : 'hover:shadow-lg'
-                }`}
-              >
-                <RefreshCw className={`w-4 h-4 ${isLoadingComments ? 'animate-spin' : ''}`} />
-                <span>
-                  {isLoadingComments
-                    ? 'Extrayendo comentarios...'
-                    : isMultiNetwork
-                    ? `Cargar Comentarios Combinados (${1 + additionalSources.length} Fuentes)`
-                    : 'Cargar Comentarios'}
-                </span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-end ml-auto">
+                <button
+                  type="button"
+                  disabled={
+                    isLoadingComments ||
+                    !postUrl ||
+                    Boolean(detectUrlPlatform(postUrl) && detectUrlPlatform(postUrl) !== network) ||
+                    (isMultiNetwork && additionalSources.some((s) => !s.postUrl.trim()))
+                  }
+                  onClick={handleImportComments}
+                  className={`btn-pro-primary text-sm sm:text-base py-3 px-7 rounded-2xl cursor-pointer flex items-center gap-2.5 shadow-md ${
+                    isLoadingComments ||
+                    !postUrl ||
+                    Boolean(detectUrlPlatform(postUrl) && detectUrlPlatform(postUrl) !== network) ||
+                    (isMultiNetwork && additionalSources.some((s) => !s.postUrl.trim()))
+                      ? 'opacity-50 cursor-not-allowed !transform-none'
+                      : 'hover:shadow-lg'
+                  }`}
+                >
+                  <RefreshCw className={`w-4 h-4 ${isLoadingComments ? 'animate-spin' : ''}`} />
+                  <span>
+                    {isLoadingComments
+                      ? 'Extrayendo comentarios...'
+                      : isMultiNetwork
+                      ? `Cargar Comentarios Combinados (${1 + additionalSources.length} Fuentes)`
+                      : 'Cargar Comentarios'}
+                  </span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
@@ -1749,159 +1782,36 @@ interface AdditionalSource {
         </div>
       )}
 
-      {/* STEP 3: Configure Rules & Filtering Engine */}
+      {/* STEP 3: Configure Rules & Filtering Engine (AppSorteos Style) */}
       {step === 3 && (
-        <div className="bg-white dark:bg-[#0f172a] rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm space-y-8">
-          <div className="border-b border-slate-100 dark:border-white/5 pb-4">
-            <h2 className="text-lg font-bold font-display text-slate-900 dark:text-white">
-              {t('wizard_step3_title')}
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-              {t('wizard_rules_desc')}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Reglas de Filtrado */}
-            <div className="space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-pink-600 dark:text-purple-400 font-bold">
-                {t('wizard_rules_filter_title')}
-              </h3>
-
-              <label htmlFor="exclude-duplicates-checkbox" className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 cursor-pointer select-none">
-                <input
-                  id="exclude-duplicates-checkbox"
-                  name="excludeDuplicates"
-                  type="checkbox"
-                  checked={rules.excludeDuplicates}
-                  onChange={(e) => setRules({ ...rules, excludeDuplicates: e.target.checked })}
-                  className="mt-0.5 w-4 h-4 rounded text-pink-600 dark:text-purple-600 border-slate-300 dark:border-zinc-700 focus:ring-pink-500"
-                />
-                <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">{t('wizard_exclude_duplicates')}</div>
-                  <div className="text-[11px] text-slate-500 dark:text-zinc-400">
-                    {t('wizard_rules_duplicate_desc')}
-                  </div>
-                </div>
-              </label>
-
-              <div>
-                <label htmlFor="min-mentions-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  {t('wizard_min_mentions')}
-                </label>
-                <input
-                  id="min-mentions-input"
-                  name="minMentions"
-                  type="number"
-                  min={0}
-                  max={5}
-                  value={rules.minMentions}
-                  onChange={(e) => setRules({ ...rules, minMentions: parseInt(e.target.value) || 0 })}
-                  aria-label="Mínimo de menciones requeridas"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="required-hashtag-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  {t('wizard_required_hashtag')}
-                </label>
-                <input
-                  id="required-hashtag-input"
-                  name="requiredHashtag"
-                  type="text"
-                  value={rules.requiredHashtag}
-                  onChange={(e) => setRules({ ...rules, requiredHashtag: e.target.value })}
-                  placeholder="Ej: #sorteopro (opcional)"
-                  aria-label="Hashtag obligatorio en el comentario"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
-                />
-              </div>
-            </div>
-
-            {/* Configuración de Ganadores */}
-            <div className="space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-pink-600 dark:text-purple-400 font-bold">
-                {t('wizard_rules_prizes_title')}
-              </h3>
-
-              <div>
-                <label htmlFor="winners-count-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  {t('wizard_winners_count')}
-                </label>
-                <input
-                  id="winners-count-input"
-                  name="winnersCount"
-                  type="number"
-                  min={1}
-                  max={20}
-                  value={rules.winnersCount}
-                  onChange={(e) => setRules({ ...rules, winnersCount: Math.max(1, parseInt(e.target.value) || 1) })}
-                  aria-label="Cantidad de Ganadores Principales"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="substitutes-count-input" className="block text-xs font-mono text-slate-600 dark:text-zinc-400 mb-1.5">
-                  {t('wizard_substitutes_count')}
-                </label>
-                <input
-                  id="substitutes-count-input"
-                  name="substitutesCount"
-                  type="number"
-                  min={0}
-                  max={10}
-                  value={rules.substitutesCount}
-                  onChange={(e) => setRules({ ...rules, substitutesCount: parseInt(e.target.value) || 0 })}
-                  aria-label="Cantidad de Suplentes de Respaldo"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white font-mono text-xs focus:outline-none focus:border-pink-500 dark:focus:border-purple-500"
-                />
-              </div>
-
-              {/* Status Preview */}
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 text-xs font-mono">
-                <div className="flex justify-between">
-                  <span className="text-slate-500 dark:text-zinc-400">{t('wizard_rules_total_comments')}</span>
-                  <span className="text-slate-900 dark:text-white font-bold">{rawComments.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-emerald-600 dark:text-emerald-400">{t('wizard_rules_eligible')}</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">{filteredEligible.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-rose-600 dark:text-red-400">{t('wizard_rules_discarded')}</span>
-                  <span className="text-rose-600 dark:text-red-400 font-bold">{filteredExcluded.length}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/5">
-            <button
-              type="button"
-              onClick={() => setStep(2)}
-              className="btn-pro-secondary text-xs py-2.5 px-5 rounded-xl flex items-center gap-2 cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>{t('wizard_btn_back')}</span>
-            </button>
-
-            <button
-              type="button"
-              disabled={isDrawing || filteredEligible.length === 0}
-              onClick={handleExecuteDraw}
-              className={`btn-pro-gold text-base py-4 px-10 rounded-2xl flex items-center gap-2 cursor-pointer ${
-                isDrawing || filteredEligible.length === 0 ? 'opacity-60 cursor-not-allowed !transform-none' : ''
-              }`}
-            >
-              <RefreshCw className={`w-5 h-5 ${isDrawing ? 'animate-spin' : ''}`} />
-              <span>{isDrawing ? t('wizard_btn_executing') : t('wizard_btn_execute')}</span>
-            </button>
-          </div>
-        </div>
+        <AppSorteosConfigCard
+          network={network}
+          authorName={postMeta?.author || currentConnectedAccount?.name || 'Creador Oficial'}
+          authorHandle={postMeta?.postId || currentConnectedAccount?.handle}
+          giveawayTitle={giveawayTitle}
+          onUpdateTitle={setGiveawayTitle}
+          rules={rules}
+          onChangeRules={(newRules) => {
+            setRules(newRules);
+            const { eligible, excluded } = filterParticipants(rawComments, newRules);
+            setFilteredEligible(eligible);
+            setFilteredExcluded(excluded);
+          }}
+          eligibleCount={filteredEligible.length}
+          totalCommentsCount={rawComments.length}
+          onExecute={handleStartDrawCountdown}
+          isDrawing={isDrawing}
+          onBack={() => setStep(2)}
+        />
       )}
+
+      {/* Cuenta Regresiva 3D con Entropía e Inmersión */}
+      <Countdown3DOverlay
+        active={showCountdownOverlay}
+        seconds={3}
+        title={giveawayTitle || `Sorteo de @${postMeta?.author || 'Creador'}`}
+        onComplete={handleFinishDrawExecution}
+      />
 
       {/* STEP 4: Draw Finished & Verifiable Certificate */}
       {step === 4 && finishedGiveaway && (
@@ -1926,8 +1836,8 @@ interface AdditionalSource {
                 <span>{t('wizard_winners_official')}</span>
               </div>
               <div className="space-y-2">
-                {finishedGiveaway.winners.map((w) => (
-                  <div key={w.id} className="p-3 rounded-xl bg-white dark:bg-black/40 border border-amber-200 dark:border-amber-500/20 shadow-xs">
+                {finishedGiveaway.winners.map((w, index) => (
+                  <div key={w.id} className="p-3 rounded-xl bg-white dark:bg-black/40 border border-amber-200 dark:border-amber-500/20 shadow-xs space-y-1">
                     <div className="flex items-center justify-between">
                       <div className="text-sm font-bold text-amber-800 dark:text-amber-300 font-mono">@{w.participant.username}</div>
                       {w.participant.network && (
@@ -1936,6 +1846,12 @@ interface AdditionalSource {
                         </span>
                       )}
                     </div>
+                    {finishedGiveaway.rules.hasPrizes && finishedGiveaway.rules.prizes && finishedGiveaway.rules.prizes[index] && (
+                      <div className="text-xs font-bold text-pink-600 dark:text-purple-400 flex items-center gap-1">
+                        <Gift className="w-3.5 h-3.5" />
+                        <span>Premio: {finishedGiveaway.rules.prizes[index]}</span>
+                      </div>
+                    )}
                     <div className="text-xs text-slate-600 dark:text-zinc-400 truncate mt-0.5">&ldquo;{w.participant.commentText}&rdquo;</div>
                   </div>
                 ))}

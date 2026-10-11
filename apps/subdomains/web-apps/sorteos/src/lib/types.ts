@@ -9,6 +9,13 @@ export interface GiveawayRules {
   excludeDuplicates: boolean;
   minMentions: number;
   requiredHashtag?: string;
+  requiredMention?: string;
+  hasPrizes?: boolean;
+  prizes?: string[];
+  themeColor?: string;
+  customLogoUrl?: string;
+  animationType?: 'countdown' | 'wheel' | 'card' | 'lottery';
+  bonusChances?: boolean;
   blockedUsers: string[];
   winnersCount: number;
   substitutesCount: number;

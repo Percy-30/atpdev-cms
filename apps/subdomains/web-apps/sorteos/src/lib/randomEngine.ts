@@ -106,6 +106,20 @@ export function filterParticipants(
       }
     }
 
+    // 5. Mención específica requerida (@cuenta)
+    if (rules.requiredMention && rules.requiredMention.trim().length > 0) {
+      const mention = rules.requiredMention.trim().toLowerCase();
+      const cleanMention = mention.startsWith('@') ? mention : `@${mention}`;
+      if (!p.commentText || !p.commentText.toLowerCase().includes(cleanMention)) {
+        excluded.push({
+          ...p,
+          isEligible: false,
+          exclusionReason: `No menciona a la cuenta requerida ${cleanMention}`
+        });
+        continue;
+      }
+    }
+
     // Cumple todas las reglas
     seenUsers.add(p.username.toLowerCase());
     eligible.push({ ...p, isEligible: true });
