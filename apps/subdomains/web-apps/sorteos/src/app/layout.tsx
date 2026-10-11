@@ -8,6 +8,7 @@ import { SorteosThemeListener } from "@/components/SorteosThemeListener";
 import { SorteosGlowWrapper } from "@/components/SorteosGlowWrapper";
 import { SorteosCustomCursor } from "@/components/SorteosCustomCursor";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
+import { GoogleAdSense } from "@/components/GoogleAdSense";
 import { getSubdomainConfig } from "@atpdev/database";
 import { 
   SITE_URL, 
@@ -301,14 +302,7 @@ export default function RootLayout({
           src="/theme-init.js"
           strategy="beforeInteractive"
         />
-        {ADSENSE_CLIENT_ID && (
-          <Script
-            id="google-adsense"
-            strategy="afterInteractive"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
+        <GoogleAdSense clientId={ADSENSE_CLIENT_ID} />
         <SorteosThemeListener />
         <SorteosCustomCursor />
         <LanguageProvider>
