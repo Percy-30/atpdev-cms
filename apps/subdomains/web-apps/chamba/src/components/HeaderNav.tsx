@@ -97,7 +97,7 @@ export function HeaderNav() {
                 PE
               </span>
             </span>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 block -mt-0.5 font-medium tracking-wide">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block -mt-0.5 font-medium tracking-wide truncate max-w-[150px] sm:max-w-none">
               Convocatorias Oficiales del Perú
             </span>
           </div>
@@ -210,22 +210,22 @@ export function HeaderNav() {
         </nav>
 
         {/* Actions Hub */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <ChambaThemeToggle />
 
           {/* Publicar Empleo */}
           <Link
             href="/publicar-empleo"
-            className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer"
+            className="hidden xl:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer"
           >
             <PlusCircle size={15} className="text-emerald-600 dark:text-emerald-400" />
             <span>Publicar Convocatoria</span>
           </Link>
 
-          {/* Explorar Convocatorias - Primary Button */}
+          {/* Explorar Convocatorias - Visible from sm upwards to prevent overflowing header on mobile phones */}
           <Link
             href="/empleos"
-            className="px-4 sm:px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors flex items-center gap-2 shadow-xs cursor-pointer"
+            className="hidden sm:flex px-4 sm:px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors items-center gap-2 shadow-xs cursor-pointer shrink-0"
           >
             <Compass size={17} className="text-white" />
             <span>Explorar Convocatorias</span>
