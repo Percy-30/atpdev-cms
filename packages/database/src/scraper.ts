@@ -1254,15 +1254,32 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
 
           const subLinks = [...opHtml.matchAll(/<a[^>]+href=['"]([^'"]+)['"][^>]*>([\s\S]*?)<\/a>/gi)];
           for (const sm of subLinks) {
-            const rawHref = sm[1].trim();
+            let rawHref = sm[1].trim();
             const textContent = sm[2].replace(/<[^>]+>/g, '').trim();
-            const lowHref = rawHref.toLowerCase();
-            const lowText = textContent.toLowerCase();
 
             if (
               !rawHref ||
               rawHref.startsWith('#') ||
-              rawHref.startsWith('javascript:') ||
+              rawHref.startsWith('javascript:')
+            ) {
+              continue;
+            }
+
+            // Normalizar URLs relativas antes de procesar para evaluar correctamente dominios y evitar rutas relativas rotas
+            if (!rawHref.startsWith('http://') && !rawHref.startsWith('https://')) {
+              if (rawHref.startsWith('//')) {
+                rawHref = `https:${rawHref}`;
+              } else if (rawHref.startsWith('/')) {
+                rawHref = `https://www.convocatoriasdetrabajo.com${rawHref}`;
+              } else {
+                rawHref = `https://www.convocatoriasdetrabajo.com/${rawHref}`;
+              }
+            }
+
+            const lowHref = rawHref.toLowerCase();
+            const lowText = textContent.toLowerCase();
+
+            if (
               lowHref.includes('convocatoriasdetrabajo.com') ||
               lowHref.includes('whatsapp.com') ||
               lowHref.includes('wa.me') ||
@@ -1391,11 +1408,12 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
             p.experience = subExpMatch[1].trim();
           }
 
-          // Si la plaza aún no tiene bases_url asignado con doc:
-          if (!p.bases_url || p.bases_url.includes('convocatoriasdetrabajo.com')) {
+          // Si la plaza aún no tiene bases_url asignado con doc o si tiene una URL no válida/competidora:
+          if (!p.bases_url || !p.bases_url.startsWith('http') || p.bases_url.includes('convocatoriasdetrabajo.com')) {
             const perfilMatch = opHtml.match(/<a[^>]+href=['"]([^'"]+)['"][^>]*>[\s\S]*?(?:perfil|tdr|descargar|bases)[\s\S]*?<\/a>/i);
-            if (perfilMatch && !perfilMatch[1].toLowerCase().includes('convocatoriasdetrabajo.com')) {
-              p.bases_url = perfilMatch[1].trim();
+            const candidatePerfil = perfilMatch ? perfilMatch[1].trim() : '';
+            if (candidatePerfil && (candidatePerfil.startsWith('http://') || candidatePerfil.startsWith('https://')) && !candidatePerfil.toLowerCase().includes('convocatoriasdetrabajo.com')) {
+              p.bases_url = candidatePerfil;
             } else {
               const pdfMatch = opHtml.match(/href=['"](https?:\/\/[^'"]+\.(?:pdf|docx?)[^'"]*)['"]/i) ||
                                opHtml.match(/href=['"](https:\/\/drive\.google\.com\/[^\/?#]+(?:\/[^\/?#]+)*)['"]/i);
@@ -1410,11 +1428,11 @@ export async function extractPlazasAndBasesFromCdUrl(fuenteUrl: string): Promise
       }));
     }
 
-    // 4. Asegurar que NINGUNA plaza apunte al sitio externo; asignar directBasesUrl o fallback oficial
+    // 4. Asegurar que NINGUNA plaza apunte al sitio externo o contenga URLs relativas no absolutas; asignar directBasesUrl o fallback oficial
     const fallbackTarget = directBasesUrl || directCronogramaUrl || directAnexosUrl || directResultadosUrl || directApplyUrl;
     if (fallbackTarget) {
       for (const p of plazas) {
-        if (!p.bases_url || p.bases_url.includes('convocatoriasdetrabajo.com')) {
+        if (!p.bases_url || !p.bases_url.startsWith('http') || p.bases_url.includes('convocatoriasdetrabajo.com')) {
           p.bases_url = fallbackTarget;
         }
       }

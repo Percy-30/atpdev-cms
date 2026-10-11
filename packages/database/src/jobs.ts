@@ -2659,6 +2659,7 @@ export function sanitizeOfficialUrl(
   const cleanCandidate = (u?: string): string | null => {
     if (!u) return null;
     const low = u.toLowerCase().trim();
+    if (!low.startsWith('http://') && !low.startsWith('https://')) return null;
     if (isCompetitorUrl(low)) return null;
     if (isDeadOrBrokenUrl(low)) {
       return fixDeadDomainUrl(u, entityName, sectorType);

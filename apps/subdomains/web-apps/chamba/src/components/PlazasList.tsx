@@ -2,21 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import type { JobPlaza } from '@atpdev/database';
+import { isCompetitorUrl } from '@atpdev/database';
 import { FileText, ExternalLink, Search, GraduationCap, Briefcase, Banknote, ShieldCheck, Eye } from 'lucide-react';
-
-const COMPETITOR_DOMAINS = [
-  'convocatoriasdetrabajo',
-  'portaltrabajos',
-  'chamba.pe',
-  'empleosperu.pe',
-  'trabajaperu.pe',
-];
-
-function isCompetitorUrl(url?: string): boolean {
-  if (!url) return false;
-  const low = url.toLowerCase().trim();
-  return COMPETITOR_DOMAINS.some((d) => low.includes(d));
-}
 
 interface PlazasListProps {
   plazas: JobPlaza[];
@@ -182,7 +169,10 @@ export function PlazasList({ plazas, entityName, defaultApplyUrl, globalBasesPdf
           </div>
         ) : (
           filteredPlazas.map((plaza, idx) => {
-            const pdfUrl = plaza.bases_url || defaultApplyUrl;
+            const candidateBases = (plaza.bases_url && plaza.bases_url.startsWith('http') && !isCompetitorUrl(plaza.bases_url)) 
+              ? plaza.bases_url 
+              : undefined;
+            const pdfUrl = candidateBases || (defaultApplyUrl && defaultApplyUrl.startsWith('http') && !isCompetitorUrl(defaultApplyUrl) ? defaultApplyUrl : undefined);
             const lowPlazaUrl = (pdfUrl || '').toLowerCase();
             const isPlazaDoc = (
               lowPlazaUrl.includes('.pdf') ||

@@ -254,9 +254,9 @@ export default async function JobDetailPage({
   };
 
   // 1. Enlace a bases oficiales (PDF, Google Drive o documento específico)
-  const candidateBases = (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url))
+  const candidateBases = (job.bases_pdf_url && job.bases_pdf_url.startsWith('http') && !isCompetitorUrl(job.bases_pdf_url))
     ? job.bases_pdf_url
-    : (job.plazas?.find(p => p.bases_url && (
+    : (job.plazas?.find(p => p.bases_url && p.bases_url.startsWith('http') && !isCompetitorUrl(p.bases_url) && (
         p.bases_url.toLowerCase().includes('.pdf') || 
         p.bases_url.includes('drive.google.com') || 
         p.bases_url.includes('docs.google.com')
@@ -932,9 +932,13 @@ export default async function JobDetailPage({
                   ));
 
                   const rawPdfUrl = 
-                    (job.bases_pdf_url && !isCompetitorUrl(job.bases_pdf_url))
+                    (job.bases_pdf_url && job.bases_pdf_url.startsWith('http') && !isCompetitorUrl(job.bases_pdf_url))
                       ? job.bases_pdf_url
-                      : (plazaDirectDoc?.bases_url || (job.plazas && job.plazas[0]?.bases_url) || job.apply_url);
+                      : (plazaDirectDoc?.bases_url && plazaDirectDoc.bases_url.startsWith('http') && !isCompetitorUrl(plazaDirectDoc.bases_url) 
+                          ? plazaDirectDoc.bases_url 
+                          : ((job.plazas && job.plazas[0]?.bases_url && job.plazas[0].bases_url.startsWith('http') && !isCompetitorUrl(job.plazas[0].bases_url)) 
+                              ? job.plazas[0].bases_url 
+                              : job.apply_url));
 
                   const pdfTargetUrl = sanitizeOfficialUrl(
                     rawPdfUrl,

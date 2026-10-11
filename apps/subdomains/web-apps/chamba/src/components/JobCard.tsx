@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { JobPosting } from "@atpdev/database";
+import { JobPosting, isCompetitorUrl } from "@atpdev/database";
 import { ShieldCheck, MapPin, Users, GraduationCap, ArrowRight, FileText } from "lucide-react";
 import { EntityLogo } from "@/components/EntityLogo";
 import { JobCountdownClock } from "@/components/JobCountdownClock";
@@ -9,11 +9,13 @@ interface JobCardProps {
 }
 
 export function JobCard({ job }: JobCardProps) {
-  const rawBases = job.bases_pdf_url || job.plazas?.find(p => p.bases_url && (
-    p.bases_url.toLowerCase().includes('.pdf') ||
-    p.bases_url.includes('drive.google.com') ||
-    p.bases_url.includes('docs.google.com')
-  ))?.bases_url;
+  const rawBases = (job.bases_pdf_url && job.bases_pdf_url.startsWith('http') && !isCompetitorUrl(job.bases_pdf_url))
+    ? job.bases_pdf_url
+    : job.plazas?.find(p => p.bases_url && p.bases_url.startsWith('http') && !isCompetitorUrl(p.bases_url) && (
+        p.bases_url.toLowerCase().includes('.pdf') ||
+        p.bases_url.includes('drive.google.com') ||
+        p.bases_url.includes('docs.google.com')
+      ))?.bases_url;
 
   const isDirectBases = Boolean(
     rawBases && (
