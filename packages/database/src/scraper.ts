@@ -645,21 +645,44 @@ export function persistCdJobs(jobs: JobPosting[]): void {
     const fsMod = getNodeModule<typeof import('fs')>('fs');
     if (!fsMod || !Array.isArray(jobs) || jobs.length === 0) return;
     const filePath = getCdCacheFilePath();
-    if (filePath) {
-      if (fsMod.existsSync(filePath)) {
-        try {
-          const currentRaw = fsMod.readFileSync(filePath, 'utf-8');
-          if (currentRaw && currentRaw.trim()) {
-            const currentDisk = JSON.parse(currentRaw);
-            if (Array.isArray(currentDisk) && currentDisk.length > 20 && jobs.length < currentDisk.length * 0.5) {
-              console.warn(`[persistCdJobs] Protección de datos activa: intento de truncar catálogo de ${currentDisk.length} a ${jobs.length}. Se omite escritura.`);
-              return;
+    if (!filePath) return;
+
+    let mergedJobs = jobs;
+    if (fsMod.existsSync(filePath)) {
+      try {
+        const currentRaw = fsMod.readFileSync(filePath, 'utf-8');
+        if (currentRaw && currentRaw.trim()) {
+          const currentDisk = JSON.parse(currentRaw);
+          if (Array.isArray(currentDisk) && currentDisk.length > 0) {
+            const jobMap = new Map<string, JobPosting>();
+            for (const j of currentDisk) {
+              const key = j.slug || j.id;
+              if (key) jobMap.set(key, j);
             }
+            for (const j of jobs) {
+              const key = j.slug || j.id;
+              if (key) {
+                const existing = jobMap.get(key);
+                if (existing) {
+                  jobMap.set(key, {
+                    ...existing,
+                    ...j,
+                    plazas: (j.plazas && j.plazas.length > 0) ? j.plazas : existing.plazas,
+                    bases_pdf_url: j.bases_pdf_url || existing.bases_pdf_url,
+                    apply_url: j.apply_url || existing.apply_url,
+                  });
+                } else {
+                  jobMap.set(key, j);
+                }
+              }
+            }
+            mergedJobs = Array.from(jobMap.values());
           }
-        } catch {}
-      }
-      fsMod.writeFileSync(filePath, JSON.stringify(jobs, null, 2), 'utf-8');
+        }
+      } catch {}
     }
+
+    fsMod.writeFileSync(filePath, JSON.stringify(mergedJobs, null, 2), 'utf-8');
   } catch (err) {
     console.warn('Error saving scraped_cd_jobs.json:', err);
   }
