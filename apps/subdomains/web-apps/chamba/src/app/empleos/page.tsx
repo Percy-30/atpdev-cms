@@ -9,19 +9,49 @@ import { SITE_URL } from "@/lib/siteConfig";
 
 export const revalidate = 0;
 
-export const metadata: Metadata = {
-  title: "Buscador de Convocatorias de Trabajo Perú 2026",
-  description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en ministerios, municipalidades y entidades públicas.",
-  alternates: {
-    canonical: `${SITE_URL}/empleos`,
-  },
-  openGraph: {
-    title: "Buscador de Convocatorias de Trabajo Perú 2026 | chamba pro",
-    description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en el Estado.",
-    url: `${SITE_URL}/empleos`,
-    type: "website",
-  },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const q = params.q?.trim();
+  const region = params.region?.trim();
+  const regimen = params.regimen?.trim();
+
+  let title = "Buscador de Convocatorias de Trabajo Perú 2026";
+  if (q) {
+    title = `Convocatorias de "${q}" en Perú 2026 | chamba pro`;
+  } else if (region && regimen) {
+    title = `Convocatorias ${regimen} en ${region} 2026 | chamba pro`;
+  } else if (region) {
+    title = `Convocatorias de Trabajo en ${region} 2026 | chamba pro`;
+  } else if (regimen) {
+    title = `Convocatorias ${regimen} Perú 2026 | chamba pro`;
+  }
+
+  return {
+    title,
+    description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en ministerios, municipalidades y entidades públicas.",
+    alternates: {
+      canonical: `${SITE_URL}/empleos`,
+    },
+    robots: {
+      index: !q,
+      follow: true,
+      googleBot: {
+        index: !q,
+        follow: true,
+      },
+    },
+    openGraph: {
+      title,
+      description: "Encuentra convocatorias de trabajo vigentes en Perú: CAS, 728, 276 y locación de servicios en el Estado.",
+      url: `${SITE_URL}/empleos`,
+      type: "website",
+    },
+  };
+}
 
 export default async function EmpleosPage({
   searchParams,

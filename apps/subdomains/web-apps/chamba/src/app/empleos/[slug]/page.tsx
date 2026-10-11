@@ -197,10 +197,6 @@ export default async function JobDetailPage({
               addressCountry: "PE",
             },
           },
-          applicantLocationRequirements: {
-            "@type": "Country",
-            name: "PE",
-          },
         }),
     industry: job.category || (job.sector_type?.includes("CAS") ? "Administración Pública y Estado" : "Servicios"),
     educationRequirements: job.education_level ? {
@@ -1169,7 +1165,11 @@ export default async function JobDetailPage({
         )}
 
         {/* Sticky Mobile Action Bar (Fixed bottom CTA on mobile devices) */}
-        <div className="fixed bottom-0 left-0 right-0 z-40 p-3 sm:hidden bg-white/95 dark:bg-[#070a12]/95 backdrop-blur-xl border-t border-slate-200 dark:border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] dark:shadow-[0_-10px_30px_rgba(0,0,0,0.7)]">
+        <div 
+          id="mobile-job-cta"
+          className="fixed bottom-0 left-0 right-0 z-40 p-3 sm:hidden bg-white/95 dark:bg-[#070a12]/95 backdrop-blur-xl border-t border-slate-200 dark:border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] dark:shadow-[0_-10px_30px_rgba(0,0,0,0.7)]"
+          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)' }}
+        >
           <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
             <div className="min-w-0 flex-1">
               <span className="text-xs font-mono font-extrabold text-emerald-600 dark:text-emerald-400 block truncate">
