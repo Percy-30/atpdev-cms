@@ -17,6 +17,8 @@ export type JobPlaza = {
   vacancies?: number;
 };
 
+export type Plaza = JobPlaza;
+
 export type EducationLevel = 
   | 'Secundaria' 
   | 'Técnico' 

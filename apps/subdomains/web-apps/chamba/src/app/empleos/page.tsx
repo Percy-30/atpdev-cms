@@ -160,16 +160,16 @@ export default async function EmpleosPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
       {/* Page Title Header */}
-      <div className="space-y-2 border-b border-slate-200 dark:border-white/10 pb-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-semibold">
-          <Briefcase size={14} />
-          <span>Búsqueda Inteligente • Actualización Oficial 2026</span>
+      <div className="space-y-2 border-b border-slate-200 dark:border-slate-800 pb-5">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
+          <Briefcase size={13} className="text-emerald-600 dark:text-emerald-400" />
+          <span>Búsqueda Oficial de Convocatorias en Perú</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-black font-display text-slate-900 dark:text-white">
-          Buscador de Ofertas y Convocatorias en Perú
+        <h1 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">
+          Buscador de Ofertas y Convocatorias Laborales
         </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">
-          Filtra por institución, régimen laboral (CAS 1057, 728, 276), región, nivel educativo y rango salarial.
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+          Filtra por institución, régimen laboral (CAS 1057, D.L. 728, 276), departamento geográfico, nivel educativo y rango salarial.
         </p>
       </div>
 
@@ -177,10 +177,10 @@ export default async function EmpleosPage({
       <AdBannerSlot type="leaderboard" />
 
       {/* Main Grid: Filters Sidebar + Job Listings */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-        {/* Interactive Filter Sidebar (Scrolls naturally with page) */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 items-start">
+        {/* Interactive Filter Sidebar */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="glass-card p-4 sm:p-6 rounded-3xl space-y-6 bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-xl">
+          <div className="p-4 sm:p-5 rounded-2xl space-y-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs">
             <JobFilterClient
               initialQ={q}
               initialRegion={region}
@@ -197,24 +197,24 @@ export default async function EmpleosPage({
         </div>
 
         {/* Results Container */}
-        <div className="lg:col-span-3 space-y-6">
-          <div className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm">
-            <span>Mostrando <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{filteredJobs.length}</strong> de {allJobs.length} convocatorias</span>
-            {filteredJobs.length === 0 && <span className="text-amber-600 dark:text-amber-400 font-bold">Sin resultados exactos</span>}
+        <div className="lg:col-span-3 space-y-5">
+          <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <span>Mostrando <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{filteredJobs.length}</strong> de {allJobs.length} convocatorias activas</span>
+            {filteredJobs.length === 0 && <span className="text-amber-600 dark:text-amber-400 font-semibold">Sin resultados exactos</span>}
           </div>
 
           {filteredJobs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {filteredJobs.map((job) => (
                 <JobCard key={job.id} job={job} />
               ))}
             </div>
           ) : (
-            <div className="glass-card p-12 rounded-3xl text-center space-y-4 border border-dashed border-slate-300 dark:border-white/20 bg-white dark:bg-slate-900/40">
-              <Search size={40} className="text-slate-400 dark:text-slate-500 mx-auto" />
-              <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white">No se encontraron convocatorias</h3>
+            <div className="p-10 rounded-2xl text-center space-y-3 border border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <Search size={36} className="text-slate-400 mx-auto" />
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">No se encontraron convocatorias</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-                Intenta ajustar los criterios de búsqueda o limpiar los filtros seleccionados para ver más resultados.
+                Intenta ajustar los criterios de búsqueda o restablecer los filtros seleccionados para ver más resultados.
               </p>
             </div>
           )}

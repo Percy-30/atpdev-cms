@@ -429,10 +429,10 @@ export function CvForm({ data, onChange }: Props) {
 
       {/* SECCIÓN 1: DATOS PERSONALES */}
       {activeSection === 'personal' && (
-        <div className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
-            <h3 className="text-sm font-bold font-display text-white flex items-center gap-2">
-              <User size={16} className="text-emerald-400" />
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
+            <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+              <User size={16} className="text-emerald-600 dark:text-emerald-400" />
               <span>Datos Personales & Identificación</span>
             </h3>
             <div className="flex items-center gap-2">
@@ -675,10 +675,10 @@ export function CvForm({ data, onChange }: Props) {
 
       {/* SECCIÓN 2: PERFIL PROFESIONAL */}
       {activeSection === 'profile' && (
-        <div className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
-            <h3 className="text-sm font-bold font-display text-white flex items-center gap-2">
-              <Sparkles size={16} className="text-emerald-400" />
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
+            <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+              <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400" />
               <span>Resumen Profesional / Perfil Ejecutivo</span>
             </h3>
             <div className="flex items-center gap-2">
@@ -750,11 +750,11 @@ export function CvForm({ data, onChange }: Props) {
 
       {/* SECCIÓN 3: FORMACIÓN ACADÉMICA */}
       {activeSection === 'education' && (
-        <div className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
             <div>
-              <h3 className="text-sm font-bold font-display text-white flex items-center gap-2">
-                <GraduationCap size={16} className="text-emerald-400" />
+              <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+                <GraduationCap size={16} className="text-emerald-600 dark:text-emerald-400" />
                 <span>Formación Académica ({data.education.length})</span>
               </h3>
               <p className="text-[11px] text-slate-400 mt-0.5">
@@ -928,11 +928,11 @@ export function CvForm({ data, onChange }: Props) {
 
       {/* SECCIÓN 4: EXPERIENCIA LABORAL */}
       {activeSection === 'experience' && (
-        <div className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
             <div>
-              <h3 className="text-sm font-bold font-display text-white flex items-center gap-2">
-                <Briefcase size={16} className="text-emerald-400" />
+              <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+                <Briefcase size={16} className="text-emerald-600 dark:text-emerald-400" />
                 <span>Experiencia Laboral ({data.experiences.length})</span>
               </h3>
               <p className="text-[11px] text-slate-400 mt-0.5">
@@ -1140,11 +1140,11 @@ export function CvForm({ data, onChange }: Props) {
 
       {/* SECCIÓN 5: CURSOS Y CAPACITACIONES */}
       {activeSection === 'courses' && (
-        <div className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
             <div>
-              <h3 className="text-sm font-bold font-display text-white flex items-center gap-2">
-                <BookOpen size={16} className="text-emerald-400" />
+              <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+                <BookOpen size={16} className="text-emerald-600 dark:text-emerald-400" />
                 <span>Capacitaciones & Horas Lectivas ({data.courses.length})</span>
               </h3>
               <p className="text-[11px] text-slate-400 mt-0.5">
@@ -1300,13 +1300,13 @@ export function CvForm({ data, onChange }: Props) {
 
       {/* SECCIÓN 6: HABILIDADES & IDIOMAS */}
       {activeSection === 'skills' && (
-        <div className="glass-card p-6 rounded-3xl border border-white/10 space-y-6 shadow-xl">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
           {/* Competencias Clave */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 flex-wrap gap-2">
               <div>
-                <h3 className="text-sm font-bold font-display text-white flex items-center gap-2">
-                  <Sparkles size={16} className="text-emerald-400" />
+                <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+                  <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400" />
                   <span>Competencias & Habilidades Clave ({data.skills.length})</span>
                 </h3>
                 <p className="text-[11px] text-slate-400 mt-0.5">

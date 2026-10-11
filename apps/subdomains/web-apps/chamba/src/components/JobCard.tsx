@@ -26,7 +26,7 @@ export function JobCard({ job }: JobCardProps) {
   );
 
   return (
-    <div className="glass-card glass-card-hover p-5 sm:p-6 rounded-2xl flex flex-col justify-between gap-5 relative group overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 transition-all bg-white dark:bg-slate-900/90 shadow-xs hover:shadow-md">
+    <div className="p-5 sm:p-6 rounded-xl flex flex-col justify-between gap-5 relative group overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 transition-all bg-white dark:bg-slate-900 shadow-sm hover:shadow-md">
       {/* Top Banner & Entity Header */}
       <Link
         href={`/empleos/${job.slug}`}

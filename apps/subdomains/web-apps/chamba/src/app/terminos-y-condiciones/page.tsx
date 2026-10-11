@@ -38,77 +38,77 @@ export default function TerminosCondicionesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070d14] text-slate-100 font-sans py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       {/* JSON-LD Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="max-w-4xl mx-auto space-y-12">
+      <div className="max-w-4xl mx-auto space-y-10">
         {/* Navigation Breadcrumb */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-mono text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
         >
           <ArrowLeft size={14} />
           <span>Volver al inicio de Chamba Pro</span>
         </Link>
 
         {/* Header Hero */}
-        <div className="space-y-4 border-b border-white/10 pb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-semibold">
+        <div className="space-y-4 border-b border-slate-200 dark:border-slate-800 pb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 text-xs font-mono font-semibold">
             <Scale size={14} />
             <span>Condiciones de Servicio & Descargo Legal</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black font-display text-slate-900 dark:text-white tracking-tight">
             Términos y Condiciones de Uso
           </h1>
-          <p className="text-sm text-slate-400 leading-relaxed max-w-2xl">
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
             Bienvenido a <strong>Chamba Pro</strong>. Al acceder, navegar y utilizar los servicios provistos en este sitio web (incluidos <code>atpdev.dev</code> y <code>chamba.atpdev.dev</code>), aceptas los siguientes términos de forma íntegra y sin reservas.
           </p>
         </div>
 
         {/* Content Sections */}
-        <div className="space-y-8 text-sm text-slate-300 leading-relaxed">
+        <div className="space-y-6 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
           
           {/* Section 1: Descargo de no afiliación oficial */}
-          <section className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-amber-500/30 bg-gradient-to-br from-amber-950/20 to-slate-900">
-            <h2 className="text-lg font-bold text-amber-400 flex items-center gap-2 font-display">
+          <section className="bg-amber-50/60 dark:bg-amber-950/20 p-6 sm:p-8 rounded-2xl space-y-4 border border-amber-200 dark:border-amber-800/40 shadow-sm">
+            <h2 className="text-lg font-bold text-amber-800 dark:text-amber-400 flex items-center gap-2 font-display">
               <AlertTriangle size={20} />
               <span>1. Descargo Expreso de No Afiliación Gubernamental (Disclaimer)</span>
             </h2>
-            <p>
+            <p className="text-slate-700 dark:text-slate-300">
               <strong>Chamba Pro es una iniciativa privada, independiente y estrictamente informativa.</strong> Este sitio web NO es un portal oficial del Estado Peruano, no representa a la Autoridad Nacional del Servicio Civil (SERVIR), ni a ningún ministerio, entidad pública o empresa privada.
             </p>
-            <p>
+            <p className="text-slate-700 dark:text-slate-300">
               Toda la información sobre convocatorias CAS (D.L. 1057), régimen 728, 276 o locación de servicios es recopilada de fuentes de acceso público oficial del Estado (portales de transparencia, diarios oficiales y páginas de convocatorias). La decisión final, evaluación y selección de personal corresponde con exclusividad a las entidades convocantes.
             </p>
           </section>
 
           {/* Section 2: Gratuidad total y prevención de fraudes */}
-          <section className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/10">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 font-display">
-              <ShieldCheck className="text-emerald-400" size={18} />
+          <section className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl space-y-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 font-display">
+              <ShieldCheck className="text-emerald-600 dark:text-emerald-400" size={18} />
               <span>2. Política de Gratuidad Total y Alerta Anti-Estafas</span>
             </h2>
             <p>
               El uso de Chamba Pro, la consulta de puestos laborales, la descarga de bases oficiales y el uso de nuestras herramientas (Calculadora de Sueldo, Generador de CV, Simulador IA) es <strong>100% gratuito</strong>.
             </p>
             <p>
-              <strong>Advertencia al postulante:</strong> Ninguna institución pública del Estado Peruano cobra dinero por postular a un puesto de trabajo ni por "apartar una plaza". Si alguien te solicita pagos para tramitar tu postulación, estás frente a un intento de estafa. Chamba Pro promueve activamente la meritocracia y la transparencia en el empleo.
+              <strong>Advertencia al postulante:</strong> Ninguna institución pública del Estado Peruano cobra dinero por postular a un puesto de trabajo ni por &quot;apartar una plaza&quot;. Si alguien te solicita pagos para tramitar tu postulación, estás frente a un intento de estafa. Chamba Pro promueve activamente la meritocracia y la transparencia en el empleo.
             </p>
           </section>
 
           {/* Section 3: Uso de Herramientas Interactivas */}
-          <section className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/10">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 font-display">
-              <CheckCircle2 className="text-emerald-400" size={18} />
+          <section className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl space-y-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 font-display">
+              <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" size={18} />
               <span>3. Uso de Herramientas y Simuladores</span>
             </h2>
             <p>
               Las herramientas interactivas disponibles en el sitio:
             </p>
-            <ul className="space-y-2 list-disc list-inside text-slate-300">
+            <ul className="space-y-2 list-disc list-inside text-slate-600 dark:text-slate-300">
               <li>
                 <strong>Calculadora de Sueldo Neto CAS:</strong> Proporciona estimaciones ilustrativas basadas en las tasas vigentes de retención de ONP (13%), AFP (fondo + comisión aproximada) e impuesto a la renta de 4ta/5ta categoría. No sustituye a una liquidación de nómina emitida por la Oficina de Recursos Humanos de tu empleador.
               </li>
@@ -119,9 +119,9 @@ export default function TerminosCondicionesPage() {
           </section>
 
           {/* Section 4: Publicidad y Enlaces Externos */}
-          <section className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/10">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 font-display">
-              <ExternalLink className="text-emerald-400" size={18} />
+          <section className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl space-y-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 font-display">
+              <ExternalLink className="text-emerald-600 dark:text-emerald-400" size={18} />
               <span>4. Red de Publicidad (Google AdSense) y Enlaces a Terceros</span>
             </h2>
             <p>
@@ -133,14 +133,14 @@ export default function TerminosCondicionesPage() {
           </section>
 
           {/* Section 5: Modificaciones del Servicio */}
-          <section className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/10">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 font-display">
-              <HelpCircle className="text-emerald-400" size={18} />
+          <section className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl space-y-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 font-display">
+              <HelpCircle className="text-emerald-600 dark:text-emerald-400" size={18} />
               <span>5. Contacto y Reclamaciones</span>
             </h2>
             <p>
               Nos reservamos el derecho de modificar o actualizar estos términos en cualquier momento. Si tienes dudas o deseas reportar una convocatoria desactualizada o fraudulenta, contáctanos a través de nuestro{' '}
-              <Link href="/contacto" className="text-emerald-400 font-bold hover:underline">
+              <Link href="/contacto" className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">
                 Canal de Contacto y Soporte
               </Link>.
             </p>

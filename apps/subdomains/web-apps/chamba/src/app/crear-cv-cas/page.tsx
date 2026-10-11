@@ -196,123 +196,116 @@ export default function CrearCvCasPage() {
 
       <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 space-y-6 sm:space-y-8">
         {/* Breadcrumb Navigation */}
-        <nav aria-label="Ruta de navegación" className="print:hidden flex items-center justify-center gap-2 text-xs font-mono text-slate-400">
-          <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
-          <ChevronRight size={12} className="text-slate-600" />
-          <Link href="/empleos" className="hover:text-emerald-400 transition-colors">Herramientas</Link>
-          <ChevronRight size={12} className="text-slate-600" />
-          <span className="text-slate-200 font-semibold">Generador de CV SERVIR CAS</span>
+        <nav aria-label="Ruta de navegación" className="print:hidden flex items-center justify-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+          <Link href="/" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Inicio</Link>
+          <ChevronRight size={12} className="text-slate-400" />
+          <Link href="/empleos" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Herramientas</Link>
+          <ChevronRight size={12} className="text-slate-400" />
+          <span className="text-slate-800 dark:text-slate-200 font-semibold">Generador de CV SERVIR CAS</span>
         </nav>
 
-        {/* Centered Hero Header — Professional, High-Impact & Clean */}
+        {/* Centered Hero Header */}
         <header className="print:hidden text-center space-y-3.5 max-w-4xl mx-auto">
           {/* Centered Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-sm">
-            <Sparkles size={14} />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-mono font-semibold shadow-sm">
+            <ShieldCheck size={14} className="text-emerald-600 dark:text-emerald-400" />
             <span>Formatos Oficiales SERVIR CAS & Sector Privado</span>
           </div>
 
           {/* Centered H1 Title */}
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black font-display text-white tracking-tight leading-tight">
-            Generador de CV Profesional{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-              Perú 2026
-            </span>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-slate-900 dark:text-white tracking-tight leading-tight">
+            Generador de CV Formato SERVIR y ATS
           </h1>
 
           {/* Centered Short Subtitle */}
-          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Diseña y descarga gratis tu hoja de vida en <strong>PDF A4 exacto</strong> o <strong>Word (.DOC) editable</strong> con las plantillas oficiales exigidas por el Estado y empresas.
           </p>
 
           {/* Centered Trust Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-mono text-slate-300">
-            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-emerald-300 flex items-center gap-1.5 shadow-sm">
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-mono text-slate-600 dark:text-slate-300">
+            <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 shadow-sm">
               ✓ Ficha Resumen SERVIR
             </span>
-            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-blue-300 flex items-center gap-1.5 shadow-sm">
+            <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sky-700 dark:text-sky-300 flex items-center gap-1.5 shadow-sm">
               ✓ Formato Harvard ATS
             </span>
-            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 flex items-center gap-1.5 shadow-sm">
+            <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 flex items-center gap-1.5 shadow-sm">
               ✓ 100% Gratuito y Privado
             </span>
           </div>
         </header>
-
-
 
         {/* Interactive Pro Generator Studio */}
         <main>
           <CvCasGenerator />
         </main>
 
-        {/* Google AdSense / Sponsor Slot 2: Between Tool and Educational Guide */}
+        {/* Google AdSense / Sponsor Slot 2 */}
         <div className="print:hidden">
           <AdBannerSlot type="in-feed" className="my-8" />
         </div>
 
-        {/* ========================================================================= */}
-        {/* COMPREHENSIVE SEO CONTENT & GUIDELINES (Google Ranking & AdSense Value) */}
-        {/* ========================================================================= */}
-        <section className="print:hidden space-y-8 pt-6 border-t border-white/10 text-slate-200">
-          {/* Section 1: Normativa SERVIR */}
+        {/* Guidelines & Documentation */}
+        <section className="print:hidden space-y-8 pt-6 border-t border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+          {/* Section 1 & 2 Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-            <div className="p-6 rounded-3xl bg-slate-900/70 border border-white/10 space-y-3.5 shadow-xl">
-              <div className="flex items-center gap-2.5 text-emerald-400">
+            <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3.5 shadow-sm">
+              <div className="flex items-center gap-2.5 text-emerald-600 dark:text-emerald-400">
                 <Landmark size={22} />
-                <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                <h2 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white">
                   Estructura de la Ficha Resumen SERVIR para el Estado Peruano
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 Las convocatorias públicas en Perú bajo el régimen del <strong>Decreto Legislativo N° 1057 (CAS)</strong>, la Ley N° 728 y el D.L. N° 276 requieren presentar obligatoriamente la <strong>Ficha Resumen de Hoja de Vida</strong>. El comité de selección utiliza este documento como base para calificar los factores de evaluación curricular:
               </p>
-              <ul className="space-y-2 text-xs text-slate-300">
+              <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span><strong>Datos de Identificación y Colegiatura:</strong> Registro de DNI, RUC personal, teléfonos, dirección y número de colegiatura con condición de habilitado (si el puesto lo requiere por ley).</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span><strong>Formación Académica Acreditada:</strong> Grados registrados en SUNEDU (Secundaria, Técnico, Bachiller, Titulado, Maestría o Doctorado) especificando fechas de expedición del diploma.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span><strong>Experiencia General vs. Específica:</strong> Desglose exacto de periodos laborados, diferenciando la experiencia total de la experiencia directamente vinculada a las funciones del puesto.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span><strong>Declaración Jurada (Ley N° 27444):</strong> Cláusula formal que valida bajo juramento que toda la información consignada es verídica y verificable con certificados de trabajo o contratos.</span>
                 </li>
               </ul>
             </div>
 
             {/* Section 2: Formatos ATS Harvard y Sector Privado */}
-            <div className="p-6 rounded-3xl bg-slate-900/70 border border-white/10 space-y-3.5 shadow-xl">
-              <div className="flex items-center gap-2.5 text-blue-400">
+            <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3.5 shadow-sm">
+              <div className="flex items-center gap-2.5 text-sky-600 dark:text-sky-400">
                 <Briefcase size={22} />
-                <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                <h2 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white">
                   Plantillas para el Sector Privado y Filtros ATS
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 En medianas y grandes empresas, consultorías y firmas multinacionales, los currículums son filtrados por sistemas de software de seguimiento de candidatos (<strong>ATS - Applicant Tracking Systems</strong>) antes de llegar a manos del reclutador humano:
               </p>
-              <ul className="space-y-2 text-xs text-slate-300">
+              <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-blue-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
                   <span><strong>Formato Harvard ATS:</strong> Diseño lineal de 1 sola columna con tipografías estandarizadas, sin tablas complejas ni gráficos pesados que puedan confundir a los algoritmos de lectura.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-blue-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
                   <span><strong>Modelo Moderno Ejecutivo:</strong> Disposición en dos columnas con fotografía profesional tipo carné, ideal para cargos gerenciales, comerciales y postulaciones directas por correo o LinkedIn.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-blue-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
                   <span><strong>Tech & Contemporáneo:</strong> Orientado a especialistas en desarrollo de software, ciencia de datos, marketing digital y startups, con énfasis visual en stacks de herramientas.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 size={16} className="text-blue-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
                   <span><strong>Logros Cuantificables:</strong> Se recomienda redactar cada experiencia con verbos de acción y cifras (% de ahorro, incremento de ventas, tiempos reducidos).</span>
                 </li>
               </ul>
@@ -320,78 +313,72 @@ export default function CrearCvCasPage() {
           </div>
 
           {/* Section 3: Preguntas Frecuentes (FAQ) */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/90 border border-white/10 space-y-6 shadow-2xl">
+          <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-200 dark:border-emerald-800/60 shadow-sm">
                 <HelpCircle size={22} />
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-black font-display text-white">
+                <h2 className="text-lg sm:text-xl font-bold font-display text-slate-900 dark:text-white">
                   Preguntas Frecuentes sobre el Curriculum Vitae en Perú
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-600 dark:text-slate-400">
                   Respuestas claras sobre normativas laborales, formatos aceptados y exportación
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
-                <h3 className="font-bold text-xs sm:text-sm text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles size={14} className="shrink-0" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   ¿El generador tiene costo o coloca marcas de agua?
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  No. Esta herramienta desarrollada por <strong>chamba pro</strong> es 100% gratuita. Tus documentos se generan completamente limpios, sin logotipos impuestos ni restricciones de descarga.
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  No. Esta herramienta desarrollada por <strong>Chamba Pro</strong> es 100% gratuita. Tus documentos se generan completamente limpios, sin logotipos impuestos ni restricciones de descarga.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
-                <h3 className="font-bold text-xs sm:text-sm text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles size={14} className="shrink-0" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   ¿Qué plantilla elijo para Convocatorias del Estado?
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Debes seleccionar la plantilla <strong>&quot;Oficial SERVIR / CAS&quot;</strong>. Es la única que cumple la estructura formal exigida por ministerios, municipalidades y entidades públicas peruanas bajo la Ley N° 27444.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
-                <h3 className="font-bold text-xs sm:text-sm text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles size={14} className="shrink-0" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   ¿Cómo calcula el Estado el tiempo de experiencia?
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Para profesionales universitarios o técnicos, la experiencia se contabiliza desde la fecha de expedición de la constancia de egresado. Si no presentas egresado, la comisión contará desde el diploma de bachiller o título.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
-                <h3 className="font-bold text-xs sm:text-sm text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles size={14} className="shrink-0" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   ¿Por qué descargar en Word (.DOC)?
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Descargar en Word te permite tener un archivo nativo editable en Microsoft Word o Google Docs. Puedes personalizar tipografías, añadir anexos adicionales o adecuarlo a las bases específicas de cada concurso público.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
-                <h3 className="font-bold text-xs sm:text-sm text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles size={14} className="shrink-0" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   ¿Mis datos personales se guardan en internet?
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   No. El generador procesa toda la información de manera local y aislada dentro de tu propio navegador. Ningún número de DNI, teléfono o dato privado es transmitido ni guardado en servidores externos.
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-2">
-                <h3 className="font-bold text-xs sm:text-sm text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles size={14} className="shrink-0" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 space-y-2">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   ¿Es obligatoria la foto en el CV en Perú?
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   En el Estado (Ficha SERVIR) la foto es opcional, aunque la mayoría de postulantes adjunta su foto carné formal. En el sector privado moderno, los formatos ATS no requieren foto para evitar sesgos en la selección.
                 </p>
               </div>
@@ -399,29 +386,29 @@ export default function CrearCvCasPage() {
           </div>
 
           {/* Section 4: Internal Links to Other Tools */}
-          <div className="p-6 rounded-3xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-6 rounded-2xl bg-slate-900 text-white dark:bg-slate-950 border border-slate-800 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Award size={16} className="text-emerald-400" />
-                Explora más herramientas gratuitas para tu postulación laboral
+                Explora más herramientas oficiales para tu postulación laboral
               </h3>
-              <p className="text-xs text-slate-400">
-                Simula entrevistas de trabajo con Inteligencia Artificial o calcula tu sueldo neto CAS descontando AFP / ONP y renta de 4ta categoría.
+              <p className="text-xs text-slate-300">
+                Simula entrevistas de trabajo técnicas o calcula tu sueldo neto CAS descontando AFP / ONP y renta.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2 shrink-0">
               <Link
                 href="/calculadora-sueldo"
-                className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-white/10 transition-colors"
+                className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-colors"
               >
                 <span>Calculadora Sueldo CAS</span>
                 <ArrowRight size={13} />
               </Link>
               <Link
                 href="/buscador"
-                className="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black flex items-center gap-1.5 transition-all shadow-md shadow-emerald-500/20"
+                className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
               >
-                <span>Ver Convocatorias CAS 2026</span>
+                <span>Ver Convocatorias CAS</span>
                 <ArrowRight size={13} />
               </Link>
             </div>

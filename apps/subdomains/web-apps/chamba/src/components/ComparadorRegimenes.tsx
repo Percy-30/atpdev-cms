@@ -76,43 +76,46 @@ export function ComparadorRegimenes() {
 
   return (
     <div className="space-y-6">
-      {/* Header Filter Pill Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-slate-900 border border-white/10">
-        <span className="text-xs font-mono text-slate-300 font-bold flex items-center gap-2">
-          <Scale size={18} className="text-emerald-400" />
-          <span>Matriz Comparativa de Derechos Laborales en Perú 2026</span>
+      {/* Header Pill Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+          <Scale size={18} className="text-emerald-600 dark:text-emerald-400" />
+          <span>Matriz Comparativa Oficial de Regímenes Laborales en Perú</span>
+        </span>
+        <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+          Marco Normativo Laboral Vigente
         </span>
       </div>
 
       {/* Responsive Comparison Table */}
-      <div className="glass-card rounded-3xl border border-white/15 overflow-hidden shadow-2xl bg-gradient-to-b from-slate-900 via-slate-900 to-[#070b12]">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="bg-slate-950/90 border-b border-white/15 text-slate-200 uppercase tracking-wider">
-                <th className="p-4 font-extrabold w-1/4">Derecho / Beneficio</th>
-                <th className="p-4 font-extrabold text-amber-400 bg-amber-500/10">CAS 1057</th>
-                <th className="p-4 font-extrabold text-emerald-400 bg-emerald-500/10">D.L. 728</th>
-                <th className="p-4 font-extrabold text-cyan-400 bg-cyan-500/10">D.L. 276</th>
-                <th className="p-4 font-extrabold text-rose-400 bg-rose-500/10">Locación (RHO)</th>
+              <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                <th className="p-4 font-bold w-1/4">Derecho / Beneficio</th>
+                <th className="p-4 font-bold text-amber-800 dark:text-amber-300 bg-amber-50/70 dark:bg-amber-950/40">CAS 1057</th>
+                <th className="p-4 font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50/70 dark:bg-emerald-950/40">D.L. 728</th>
+                <th className="p-4 font-bold text-sky-800 dark:text-sky-300 bg-sky-50/70 dark:bg-sky-950/40">D.L. 276</th>
+                <th className="p-4 font-bold text-rose-800 dark:text-rose-300 bg-rose-50/70 dark:bg-rose-950/40">Locación (RHO)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10 text-slate-300">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
               {COMPARISON.map((row, idx) => (
-                <tr key={idx} className="hover:bg-white/5 transition-colors">
-                  <td className="p-4 font-bold text-white bg-slate-900/60 font-display text-sm">
+                <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-4 font-bold text-slate-900 dark:text-white bg-slate-50/60 dark:bg-slate-900/60 font-display text-sm">
                     {row.feature}
                   </td>
-                  <td className="p-4 bg-amber-500/5 leading-relaxed border-l border-white/5">
+                  <td className="p-4 bg-amber-50/20 dark:bg-amber-950/10 leading-relaxed border-l border-slate-200 dark:border-slate-800">
                     {row.cas}
                   </td>
-                  <td className="p-4 bg-emerald-500/5 leading-relaxed border-l border-white/5 font-semibold text-emerald-200">
+                  <td className="p-4 bg-emerald-50/20 dark:bg-emerald-950/10 leading-relaxed border-l border-slate-200 dark:border-slate-800 font-medium text-emerald-900 dark:text-emerald-200">
                     {row.dl728}
                   </td>
-                  <td className="p-4 bg-cyan-500/5 leading-relaxed border-l border-white/5">
+                  <td className="p-4 bg-sky-50/20 dark:bg-sky-950/10 leading-relaxed border-l border-slate-200 dark:border-slate-800">
                     {row.dl276}
                   </td>
-                  <td className="p-4 bg-rose-500/5 leading-relaxed border-l border-white/5 text-rose-300">
+                  <td className="p-4 bg-rose-50/20 dark:bg-rose-950/10 leading-relaxed border-l border-slate-200 dark:border-slate-800 text-rose-800 dark:text-rose-300">
                     {row.rho}
                   </td>
                 </tr>

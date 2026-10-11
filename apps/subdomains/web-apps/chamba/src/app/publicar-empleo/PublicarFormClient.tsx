@@ -710,8 +710,8 @@ export default function PublicarFormClient() {
   // Pantalla de Éxito Editorial
   if (successData) {
     return (
-      <div className="rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-amber-500/40 p-8 sm:p-12 text-center space-y-6 shadow-[0_20px_50px_rgba(245,158,11,0.12)]">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto border border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.25)]">
+      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-500/40 p-8 sm:p-12 text-center space-y-6 shadow-sm">
+        <div className="w-16 h-16 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto border border-amber-200 dark:border-amber-500/40 shadow-sm">
           <Clock size={36} className="animate-pulse" />
         </div>
 
@@ -855,18 +855,18 @@ export default function PublicarFormClient() {
       {hasSubmitted && errorKeys.length > 0 && (
         <div 
           key={shakeTrigger} 
-          className="p-5 rounded-3xl bg-rose-950/50 border-2 border-rose-500 text-rose-200 shadow-[0_0_35px_rgba(244,63,94,0.25)] animate-shake space-y-3"
+          className="p-5 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-300 dark:border-rose-500 text-rose-900 dark:text-rose-200 shadow-sm animate-shake space-y-3"
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0 mt-0.5">
+              <div className="p-2 rounded-xl bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 shrink-0 mt-0.5">
                 <AlertCircle size={20} />
               </div>
               <div>
-                <h3 className="font-bold text-white text-sm font-display">
+                <h3 className="font-bold text-slate-900 dark:text-white text-sm font-display">
                   Atención: Hay {errorKeys.length} {errorKeys.length === 1 ? 'campo pendiente o inválido' : 'campos pendientes o inválidos'}
                 </h3>
-                <p className="text-xs text-rose-300/90 mt-0.5">
+                <p className="text-xs text-rose-700 dark:text-rose-300 mt-0.5">
                   Los campos señalados con línea roja deben ser completados correctamente para enviar la convocatoria oficial:
                 </p>
               </div>
@@ -874,7 +874,7 @@ export default function PublicarFormClient() {
             <button 
               type="button" 
               onClick={() => setFieldErrors({})}
-              className="p-1 rounded-lg hover:bg-rose-500/20 text-rose-400 transition-colors cursor-pointer"
+              className="p-1 rounded-lg hover:bg-rose-200/50 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer"
               title="Cerrar aviso"
             >
               <X size={16} />
@@ -888,11 +888,11 @@ export default function PublicarFormClient() {
                 key={key}
                 type="button"
                 onClick={() => scrollToField(key)}
-                className="px-3 py-1.5 rounded-xl bg-rose-900/60 hover:bg-rose-800 text-xs font-mono text-rose-100 border border-rose-500/40 hover:border-rose-400 flex items-center gap-1.5 transition-all cursor-pointer shadow-sm group"
+                className="px-3 py-1.5 rounded-xl bg-white dark:bg-rose-900/60 hover:bg-rose-50 dark:hover:bg-rose-800 text-xs font-mono text-rose-800 dark:text-rose-100 border border-rose-300 dark:border-rose-500/40 flex items-center gap-1.5 transition-all cursor-pointer shadow-sm group"
               >
                 <span className="w-2 h-2 rounded-full bg-rose-500 group-hover:scale-125 transition-transform" />
                 <span>{FIELD_LABELS[key] || key}</span>
-                <ChevronRight size={12} className="text-rose-400 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight size={12} className="text-rose-500 dark:text-rose-400 group-hover:translate-x-0.5 transition-transform" />
               </button>
             ))}
           </div>
@@ -900,8 +900,8 @@ export default function PublicarFormClient() {
       )}
 
       {/* SECCIÓN 1: DATOS DE LA ENTIDAD O EMPRESA */}
-      <div className={`rounded-3xl bg-slate-900/60 border p-6 sm:p-8 space-y-6 transition-colors ${
-        section1HasErrors && hasSubmitted ? 'border-rose-500/40 bg-rose-950/10' : 'border-white/10'
+      <div className={`rounded-2xl bg-white dark:bg-slate-900 border p-6 sm:p-8 space-y-6 transition-colors shadow-sm ${
+        section1HasErrors && hasSubmitted ? 'border-rose-500/50 dark:border-rose-500/40 bg-rose-50/20 dark:bg-rose-950/10' : 'border-slate-200 dark:border-slate-800'
       }`}>
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5 text-white font-bold font-display text-base">
@@ -1331,8 +1331,8 @@ export default function PublicarFormClient() {
       </div>
 
       {/* SECCIÓN 2: DATOS DE LA CONVOCATORIA Y PERFIL DEL PUESTO */}
-      <div className={`rounded-3xl bg-slate-900/60 border p-6 sm:p-8 space-y-6 transition-colors ${
-        section2HasErrors && hasSubmitted ? 'border-rose-500/40 bg-rose-950/10' : 'border-white/10'
+      <div className={`rounded-2xl bg-white dark:bg-slate-900 border p-6 sm:p-8 space-y-6 transition-colors shadow-sm ${
+        section2HasErrors && hasSubmitted ? 'border-rose-500/50 dark:border-rose-500/40 bg-rose-50/20 dark:bg-rose-950/10' : 'border-slate-200 dark:border-slate-800'
       }`}>
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5 text-white font-bold font-display text-base">
@@ -1714,8 +1714,8 @@ export default function PublicarFormClient() {
       </div>
 
       {/* SECCIÓN 3: ENLACES OFICIALES Y BASES */}
-      <div className={`rounded-3xl bg-slate-900/60 border p-6 sm:p-8 space-y-6 transition-colors ${
-        section3HasErrors && hasSubmitted ? 'border-rose-500/40 bg-rose-950/10' : 'border-white/10'
+      <div className={`rounded-2xl bg-white dark:bg-slate-900 border p-6 sm:p-8 space-y-6 transition-colors shadow-sm ${
+        section3HasErrors && hasSubmitted ? 'border-rose-500/50 dark:border-rose-500/40 bg-rose-50/20 dark:bg-rose-950/10' : 'border-slate-200 dark:border-slate-800'
       }`}>
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5 text-white font-bold font-display text-base">
@@ -1827,8 +1827,8 @@ export default function PublicarFormClient() {
       </div>
 
       {/* SECCIÓN 4: CONTACTO DE RECURSOS HUMANOS */}
-      <div className={`rounded-3xl bg-slate-900/60 border p-6 sm:p-8 space-y-6 transition-colors ${
-        section4HasErrors && hasSubmitted ? 'border-rose-500/40 bg-rose-950/10' : 'border-white/10'
+      <div className={`rounded-2xl bg-white dark:bg-slate-900 border p-6 sm:p-8 space-y-6 transition-colors shadow-sm ${
+        section4HasErrors && hasSubmitted ? 'border-rose-500/50 dark:border-rose-500/40 bg-rose-50/20 dark:bg-rose-950/10' : 'border-slate-200 dark:border-slate-800'
       }`}>
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5 text-white font-bold font-display text-base">
@@ -1940,13 +1940,13 @@ export default function PublicarFormClient() {
       </div>
 
       {/* BOTÓN DE ACCIÓN Y GARANTÍA EDITORIAL */}
-      <div className="p-6 rounded-3xl bg-slate-900/80 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xl">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
         <div className="space-y-1 text-center sm:text-left">
-          <p className="text-xs text-white font-bold font-display flex items-center justify-center sm:justify-start gap-2">
-            <ShieldCheck size={18} className="text-emerald-400 shrink-0" />
+          <p className="text-xs text-slate-900 dark:text-white font-bold font-display flex items-center justify-center sm:justify-start gap-2">
+            <ShieldCheck size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>Verificación Editorial Oficial en Menos de 2 Horas</span>
           </p>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">
             Publicación 100% gratuita para instituciones del Estado. Su convocatoria se indexará en el buscador general.
           </p>
         </div>

@@ -201,26 +201,26 @@ export function AiInterviewSimulator() {
   };
 
   return (
-    <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-b from-slate-900 via-slate-900 to-[#0b0f19] space-y-6">
+    <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-6">
       
       {/* Header and Entity Selector Tabs */}
-      <div className="space-y-4 border-b border-white/10 pb-6">
+      <div className="space-y-4 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30 mb-2">
-            <Bot size={15} className="text-emerald-400" />
-            <span>Asistente de Inteligencia Artificial para Postulantes</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-mono font-semibold border border-slate-200 dark:border-slate-700 mb-2.5">
+            <Bot size={15} className="text-emerald-600 dark:text-emerald-400" />
+            <span>Herramienta de Preparación Técnica para Postulantes</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight">
-            Simulador de Entrevista de Selección CAS / Estado
+          <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
+            Simulador de Entrevista de Selección CAS y Sector Público
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1">
-            Entrénate con preguntas técnicas y dilemas reales formulados por comités evaluadores de las principales entidades públicas del Perú.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+            Entrénate con preguntas técnicas, balotarios y dilemas ético-legales formulados habitualmente por los comités evaluadores del Estado peruano.
           </p>
         </div>
 
-        {/* Entity Selector Tabs (Large, Clear, High-Contrast) */}
+        {/* Entity Selector Tabs */}
         <div>
-          <label className="block text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-2.5">
             1. Selecciona la Institución para tu Simulación:
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -232,19 +232,19 @@ export function AiInterviewSimulator() {
                   setSelectedEntity(t.entity);
                   handleReset();
                 }}
-                className={`p-3.5 rounded-2xl text-left transition-all cursor-pointer border flex flex-col justify-between gap-1.5 ${
+                className={`p-3.5 rounded-xl text-left transition-all cursor-pointer border flex flex-col justify-between gap-1.5 ${
                   selectedEntity === t.entity
-                    ? 'bg-emerald-500 text-slate-950 font-black border-emerald-400 shadow-[0_4px_20px_rgba(16,185,129,0.35)] scale-[1.02]'
-                    : 'bg-slate-900/90 text-slate-200 border-white/10 hover:border-white/25 hover:bg-slate-800'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-100 border-emerald-500 ring-1 ring-emerald-500 shadow-sm'
+                    : 'bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-mono font-black uppercase tracking-wider ${selectedEntity === t.entity ? 'text-slate-950' : 'text-emerald-400'}`}>
+                  <span className={`text-xs font-mono font-bold uppercase tracking-wider ${selectedEntity === t.entity ? 'text-emerald-700 dark:text-emerald-300' : 'text-slate-900 dark:text-white'}`}>
                     {t.entity}
                   </span>
-                  <Building2 size={16} className={selectedEntity === t.entity ? 'text-slate-950' : 'text-slate-500'} />
+                  <Building2 size={16} className={selectedEntity === t.entity ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'} />
                 </div>
-                <span className={`text-xs font-semibold truncate ${selectedEntity === t.entity ? 'text-slate-900' : 'text-slate-300'}`}>
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-400 truncate">
                   {t.role}
                 </span>
               </button>
@@ -253,26 +253,26 @@ export function AiInterviewSimulator() {
         </div>
       </div>
 
-      {/* AI Generated Question Box */}
-      <div className="p-6 rounded-3xl bg-slate-950 border border-white/15 space-y-3.5 shadow-xl">
+      {/* Official Question Box */}
+      <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 space-y-3.5 shadow-sm">
         <div className="flex items-center justify-between gap-2 flex-wrap">
-          <span className="text-xs sm:text-sm font-mono font-bold text-amber-400 flex items-center gap-2">
+          <span className="text-xs sm:text-sm font-semibold text-amber-700 dark:text-amber-400 flex items-center gap-2">
             <Building2 size={16} />
             <span>Comité Evaluador: {currentTemplate.entity} — {currentTemplate.role}</span>
           </span>
-          <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
-            ⚡ Pregunta Oficial Tipo CAS 2026
+          <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-semibold">
+            Pregunta Oficial de Concurso Público
           </span>
         </div>
 
-        <p className="text-base sm:text-lg font-bold font-display text-white leading-relaxed">
-          "{currentTemplate.question}"
+        <p className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white leading-relaxed">
+          &ldquo;{currentTemplate.question}&rdquo;
         </p>
 
-        <div className="pt-2 flex flex-wrap items-center gap-2.5 text-xs font-mono text-slate-400">
-          <span className="text-slate-200 font-bold">Criterios requeridos por el Jurado:</span>
+        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+          <span className="font-semibold text-slate-800 dark:text-slate-200">Criterios de evaluación del jurado:</span>
           {currentTemplate.evaluationCriteria.map((c, i) => (
-            <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-200">
+            <span key={i} className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
               ✓ {c}
             </span>
           ))}
@@ -281,31 +281,31 @@ export function AiInterviewSimulator() {
 
       {/* User Response Area */}
       <div className="space-y-4">
-        <label className="block text-xs sm:text-sm font-mono font-bold text-slate-200">
-          📝 2. Escribe tu respuesta como si estuvieras frente al Jurado Evaluador:
+        <label className="block text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
+          2. Redacta tu respuesta como si estuvieras en la entrevista personal ante el jurado:
         </label>
         <textarea
           rows={5}
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
           placeholder="Escribe aquí tu respuesta sustentada con base legal, procedimientos y enfoque al ciudadano..."
-          className="w-full p-4 sm:p-5 rounded-2xl bg-slate-950 border border-white/15 text-sm sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 font-sans leading-relaxed shadow-inner"
+          className="w-full p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-sm sm:text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 font-sans leading-relaxed shadow-sm"
         />
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <button
             type="button"
             onClick={() => setUserAnswer(currentTemplate.sampleModelAnswer)}
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+            className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-emerald-700 dark:text-emerald-400 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
           >
-            <span>💡 Cargar Respuesta Modelo de Prueba ({currentTemplate.entity})</span>
+            <span>💡 Cargar Respuesta Modelo de Referencia ({currentTemplate.entity})</span>
           </button>
 
           {userAnswer && (
             <button
               type="button"
               onClick={handleReset}
-              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 text-xs font-mono transition-colors border border-rose-500/20 flex items-center justify-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-700 dark:text-rose-400 text-xs font-semibold transition-colors border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <RotateCcw size={14} />
               <span>Limpiar Respuesta</span>
@@ -313,90 +313,82 @@ export function AiInterviewSimulator() {
           )}
         </div>
 
-        {/* Massive Primary Action Button (iLovePDF High-Impact Style) */}
+        {/* Primary Action Button */}
         <div className="pt-2">
           <button
             type="button"
             onClick={handleRunEvaluation}
             disabled={!userAnswer.trim() || isAnalyzing}
-            className="w-full h-15 sm:h-16 px-8 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-base sm:text-lg transition-all shadow-[0_10px_35px_rgba(16,185,129,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.01] active:scale-[0.99] group border border-emerald-300/60"
+            className="w-full h-14 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer"
           >
             {isAnalyzing ? (
               <>
-                <Sparkles size={22} className="animate-spin text-slate-950" />
-                <span className="tracking-tight">Analizando y Calificando con Inteligencia Artificial...</span>
+                <Sparkles size={20} className="animate-spin text-white" />
+                <span>Analizando respuesta con criterios de selección del Estado...</span>
               </>
             ) : (
               <>
-                <Bot size={22} className="stroke-[2.5]" />
-                <span className="tracking-tight">Evaluar mi Respuesta con Inteligencia Artificial</span>
-                <ArrowRight size={20} className="stroke-[2.5] group-hover:translate-x-1.5 transition-transform" />
+                <Bot size={20} />
+                <span>Evaluar Respuesta y Simular Dictamen del Jurado</span>
+                <ArrowRight size={18} />
               </>
             )}
           </button>
         </div>
       </div>
 
-      {/* AI Evaluation Report Result */}
+      {/* Evaluation Report Result */}
       {evaluation && (
-        <div className={`p-6 rounded-2xl bg-slate-950 border space-y-4 animate-in fade-in duration-300 ${
+        <div className={`p-6 rounded-xl border space-y-4 animate-in fade-in duration-300 ${
           evaluation.statusType === 'error'
-            ? 'border-rose-500/60 bg-rose-950/10'
+            ? 'border-rose-300 dark:border-rose-900 bg-rose-50/70 dark:bg-rose-950/20'
             : evaluation.statusType === 'warning'
-            ? 'border-amber-500/60 bg-amber-950/10'
+            ? 'border-amber-300 dark:border-amber-900 bg-amber-50/70 dark:bg-amber-950/20'
             : evaluation.statusType === 'excelente'
-            ? 'border-emerald-500/60 bg-emerald-950/10'
-            : 'border-cyan-500/60 bg-cyan-950/10'
+            ? 'border-emerald-300 dark:border-emerald-900 bg-emerald-50/70 dark:bg-emerald-950/20'
+            : 'border-sky-300 dark:border-sky-900 bg-sky-50/70 dark:bg-sky-950/20'
         }`}>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-            <div className="flex items-center gap-3">
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center font-black font-mono text-2xl border ${
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+            <div className="flex items-center gap-3.5">
+              <div className={`w-14 h-14 rounded-xl flex items-center justify-center font-bold font-mono text-xl border ${
                 evaluation.statusType === 'error'
-                  ? 'bg-rose-500/20 text-rose-400 border-rose-500/50'
+                  ? 'bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800'
                   : evaluation.statusType === 'warning'
-                  ? 'bg-amber-500/20 text-amber-400 border-amber-500/50'
+                  ? 'bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800'
                   : evaluation.statusType === 'excelente'
-                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50'
-                  : 'bg-cyan-500/20 text-cyan-400 border-cyan-500/50'
+                  ? 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800'
+                  : 'bg-sky-100 dark:bg-sky-950/50 text-sky-700 dark:text-sky-400 border-sky-300 dark:border-sky-800'
               }`}>
                 {evaluation.score}%
               </div>
               <div>
-                <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block">Puntaje del Jurado</span>
-                <span className="text-sm font-bold font-display text-white">{evaluation.verdict}</span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide block">Dictamen del Comité Evaluador</span>
+                <span className="text-sm font-bold font-display text-slate-900 dark:text-white">{evaluation.verdict}</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
-            <div className={`space-y-2 p-4 rounded-xl border ${
-              evaluation.statusType === 'error'
-                ? 'bg-slate-900/80 border-slate-800'
-                : 'bg-emerald-950/20 border-emerald-500/30'
-            }`}>
-              <span className="font-mono font-bold text-emerald-400 flex items-center gap-1.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="space-y-2 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <span className="font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
                 <CheckCircle2 size={16} />
                 <span>Aspectos Positivos Destacados:</span>
               </span>
-              <ul className="space-y-1 text-slate-300 list-disc list-inside">
+              <ul className="space-y-1.5 text-slate-700 dark:text-slate-300 list-disc list-inside">
                 {evaluation.positives.map((p, i) => (
                   <li key={i}>{p}</li>
                 ))}
               </ul>
             </div>
 
-            <div className={`space-y-2 p-4 rounded-xl border ${
-              evaluation.statusType === 'error'
-                ? 'bg-rose-950/30 border-rose-500/40'
-                : 'bg-amber-950/20 border-amber-500/30'
-            }`}>
-              <span className={`font-mono font-bold flex items-center gap-1.5 ${
-                evaluation.statusType === 'error' ? 'text-rose-400' : 'text-amber-400'
+            <div className="space-y-2 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <span className={`font-bold flex items-center gap-1.5 ${
+                evaluation.statusType === 'error' ? 'text-rose-700 dark:text-rose-400' : 'text-amber-700 dark:text-amber-400'
               }`}>
                 {evaluation.statusType === 'error' ? <XCircle size={16} /> : <AlertTriangle size={16} />}
-                <span>{evaluation.statusType === 'error' ? 'Acción Requerida:' : 'Recomendaciones para Subir Puntaje:'}</span>
+                <span>{evaluation.statusType === 'error' ? 'Acción Requerida:' : 'Recomendaciones de Mejora:'}</span>
               </span>
-              <ul className="space-y-1 text-slate-300 list-disc list-inside">
+              <ul className="space-y-1.5 text-slate-700 dark:text-slate-300 list-disc list-inside">
                 {evaluation.improvements.map((imp, i) => (
                   <li key={i}>{imp}</li>
                 ))}

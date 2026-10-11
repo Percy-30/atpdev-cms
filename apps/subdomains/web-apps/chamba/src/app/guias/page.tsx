@@ -176,9 +176,9 @@ export default function GuiasIndexPage() {
 
       {/* Educational Banner for Quality and E-E-A-T */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="rounded-3xl border border-emerald-200 dark:border-emerald-500/30 bg-gradient-to-br from-emerald-50/80 via-white to-teal-50 dark:from-emerald-950/40 dark:via-slate-900/80 dark:to-slate-950 p-8 sm:p-10 shadow-md dark:shadow-2xl relative overflow-hidden">
+        <div className="rounded-2xl border border-emerald-200 dark:border-emerald-800/40 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm relative overflow-hidden">
           <div className="max-w-2xl space-y-4 relative z-10">
-            <span className="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 text-xs font-mono font-bold uppercase tracking-wider">
               Compromiso Editorial Chamba Pro
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white">

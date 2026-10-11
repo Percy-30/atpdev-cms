@@ -227,19 +227,19 @@ export function CvCasGenerator() {
       />
 
       {/* Executive Command Header Bar (Print hidden) */}
-      <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl print:hidden space-y-4">
+      <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm print:hidden space-y-4">
         {/* Top Row: Title, live status & professional toolbar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center font-bold shadow-sm shrink-0">
               <Sparkles size={20} className="stroke-[2.5]" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-base sm:text-lg font-black font-display text-white tracking-tight">
+                <h2 className="text-base sm:text-lg font-black font-display text-slate-900 dark:text-white tracking-tight">
                   Editor de CV Profesional
                 </h2>
-                <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-[10.5px] font-bold">
+                <span className="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-400 font-mono text-[10.5px] font-bold">
                   ⚡ Calibrado A4 Oficial
                 </span>
               </div>
@@ -491,7 +491,7 @@ export function CvCasGenerator() {
           </div>
 
           {/* Printable Container with Pro Studio Desk Mat */}
-          <div className="w-full overflow-x-auto p-2 sm:p-5 rounded-3xl bg-slate-950/95 border border-white/10 shadow-2xl flex flex-col items-center print:border-none print:bg-transparent print:p-0 print:m-0 print:overflow-visible bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px]">
+          <div className="w-full overflow-x-auto p-2 sm:p-5 rounded-2xl bg-slate-100 dark:bg-slate-950/95 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center print:border-none print:bg-transparent print:p-0 print:m-0 print:overflow-visible">
             <div
               id="cv-print-area"
               style={{
@@ -581,27 +581,27 @@ export function CvCasGenerator() {
 
       {/* Modal de Confirmación para Limpiar Formulario */}
       {showClearModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm print:hidden animate-in fade-in duration-200">
-          <div className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-white/15 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm print:hidden animate-in fade-in duration-200">
+          <div className="w-full max-w-md p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/40 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0 font-bold">
                 <Trash2 size={24} />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white font-display">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">
                   ¿Deseas limpiar todo el formulario?
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Esta acción iniciará un CV 100% en blanco.
                 </p>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-200 leading-relaxed">
+            <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/30 text-xs text-rose-800 dark:text-rose-200 leading-relaxed">
               ⚠️ <strong>Atención:</strong> Se vaciarán todos los datos personales, resumen, grados académicos, experiencia laboral y habilidades que hayas redactado.
             </div>
 
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-slate-600 dark:text-slate-300">
               💡 <em>Consejo:</em> Si deseas conservar tu información actual, puedes presionar <strong>&quot;Guardar JSON&quot;</strong> antes de vaciar el formulario.
             </p>
 
@@ -609,7 +609,7 @@ export function CvCasGenerator() {
               <button
                 type="button"
                 onClick={handleExportJson}
-                className="w-full sm:w-auto px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 border border-white/10 cursor-pointer"
+                className="w-full sm:w-auto px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-200 dark:border-slate-700 cursor-pointer"
                 title="Descargar copia de seguridad en JSON"
               >
                 <Download size={14} />
@@ -619,14 +619,14 @@ export function CvCasGenerator() {
               <button
                 type="button"
                 onClick={() => setShowClearModal(false)}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 type="button"
                 onClick={handleClearAll}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-black shadow-lg shadow-rose-950/50 flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Trash2 size={14} />
                 <span>Sí, Vaciar Todo</span>
@@ -637,18 +637,18 @@ export function CvCasGenerator() {
       )}
 
       {/* Bottom Conversion Banner (iLovePDF High-Impact Style, Print Hidden) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-white/10 shadow-2xl print:hidden flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm print:hidden flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1.5 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <ShieldCheck size={15} className="text-emerald-400" />
-            <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
+            <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400" />
+            <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
               Documento Calibrado & Verificado
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight">
+          <h3 className="text-xl sm:text-2xl font-black font-display text-slate-900 dark:text-white tracking-tight">
             ¿Tu CV está listo para postular?
           </h3>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
             Genera de inmediato tu archivo en formato oficial para adjuntar a las convocatorias de SERVIR, ministerios o el sector corporativo.
           </p>
         </div>

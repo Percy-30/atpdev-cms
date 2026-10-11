@@ -344,7 +344,7 @@ export default async function GuiaDetailPage({ params }: PageProps) {
 
         {/* Interactive Tools Recommendation */}
         {guia.relatedTools && guia.relatedTools.length > 0 && (
-          <section className="mt-12 rounded-3xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50/40 dark:bg-slate-900/80 p-6 sm:p-8">
+          <section className="mt-12 rounded-2xl border border-emerald-200 dark:border-emerald-800/40 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm">
             <div className="flex items-center gap-2.5 mb-4">
               <Wrench className="text-emerald-600 dark:text-emerald-400" size={20} />
               <h2 className="text-lg sm:text-xl font-bold font-display text-slate-900 dark:text-white">

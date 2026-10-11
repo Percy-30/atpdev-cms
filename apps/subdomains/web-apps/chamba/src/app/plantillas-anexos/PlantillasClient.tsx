@@ -35,17 +35,17 @@ export default function PlantillasClient({ plantillas }: { plantillas: Plantilla
     <div className="space-y-8">
       {plantillas.map((plantilla, idx) => (
         <React.Fragment key={plantilla.id}>
-          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-white/15 bg-gradient-to-b from-slate-900 to-[#0b0f19]">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 rounded-2xl space-y-4 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold">
                   <FileText size={20} />
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold block">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold block">
                     {plantilla.category}
                   </span>
-                  <h2 className="text-base sm:text-lg font-bold font-display text-white">
+                  <h2 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white">
                     {plantilla.title}
                   </h2>
                 </div>
@@ -55,12 +55,12 @@ export default function PlantillasClient({ plantillas }: { plantillas: Plantilla
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleCopy(plantilla.id, plantilla.content)}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-mono font-semibold text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-mono font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
                 >
                   {copiedId === plantilla.id ? (
                     <>
-                      <Check size={14} className="text-emerald-400" />
-                      <span className="text-emerald-400">¡Copiado!</span>
+                      <Check size={14} className="text-emerald-600 dark:text-emerald-400" />
+                      <span className="text-emerald-600 dark:text-emerald-400">¡Copiado!</span>
                     </>
                   ) : (
                     <>
@@ -72,7 +72,7 @@ export default function PlantillasClient({ plantillas }: { plantillas: Plantilla
 
                 <button
                   onClick={() => handleDownload(plantilla.id, plantilla.title, plantilla.content)}
-                  className="px-3.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/40 border border-amber-200 dark:border-amber-800/50 text-xs font-mono font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
                 >
                   <Download size={14} />
                   <span>Descargar TXT</span>
@@ -80,13 +80,13 @@ export default function PlantillasClient({ plantillas }: { plantillas: Plantilla
               </div>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               {plantilla.description}
             </p>
 
             {/* Formatted Code / Text Preview */}
             <div className="relative">
-              <pre className="p-4 sm:p-6 rounded-2xl bg-slate-950/90 border border-white/10 text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
+              <pre className="p-4 sm:p-6 rounded-xl bg-slate-50 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-800 dark:text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
                 {plantilla.content}
               </pre>
             </div>

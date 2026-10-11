@@ -174,22 +174,22 @@ export default function PlantillasAnexosPage() {
       />
 
       {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
-        <Link href="/" className="hover:text-emerald-400 transition-colors">Inicio</Link>
+      <nav className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+        <Link href="/" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Inicio</Link>
         <ChevronRight size={12} />
-        <span className="text-slate-200 font-semibold">Centro de Plantillas & Anexos CAS</span>
+        <span className="text-slate-800 dark:text-slate-200 font-semibold">Centro de Plantillas & Anexos CAS</span>
       </nav>
 
       {/* Main Header (Centered & Professional) */}
       <div className="space-y-3 text-center max-w-3xl mx-auto pt-2 pb-2">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold shadow-sm">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 text-amber-800 dark:text-amber-400 text-xs font-mono font-bold shadow-sm">
           <Sparkles size={14} />
           <span>Formatos Gratuitos Listos para Copiar y Descargar</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-black font-display text-slate-900 dark:text-white tracking-tight">
           Plantillas y Anexos Oficiales CAS 2026
         </h1>
-        <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
           Descarga o copia declaraciones juradas y fichas de inscripción oficiales obligatorias para postular a entidades del Estado.
         </p>
       </div>

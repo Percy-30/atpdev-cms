@@ -85,24 +85,24 @@ export function CalculadoraSueldo() {
   }
 
   return (
-    <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-8 bg-gradient-to-b from-slate-900 via-slate-900 to-[#0b0f19]">
-      <div className="flex items-center justify-between border-b border-white/10 pb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-            <Calculator size={26} />
+    <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-200 dark:border-emerald-800/60 shadow-sm">
+            <Calculator size={24} />
           </div>
           <div>
-            <h2 className="text-xl sm:text-2xl font-black font-display text-white">
-              Calculadora de Sueldo Neto & Beneficios 2026
+            <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white">
+              Calculadora de Sueldo Neto & Beneficios
             </h2>
-            <p className="text-xs text-slate-400 font-mono">
-              Simulador exacto según legislación laboral peruana (CAS 1057, D.L. 728, D.L. 276 y Locación)
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Cálculo según marco normativo peruano (D.L. 1057 CAS, D.L. 728, D.L. 276 y Locación de Servicios)
             </p>
           </div>
         </div>
-        <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
-          <Sparkles size={14} />
-          <span>UIT 2026: S/ {UIT.toLocaleString()}</span>
+        <span className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-mono font-semibold">
+          <ShieldCheck size={14} className="text-emerald-600 dark:text-emerald-400" />
+          <span>UIT de Referencia: S/ {UIT.toLocaleString()}</span>
         </span>
       </div>
 
@@ -111,9 +111,9 @@ export function CalculadoraSueldo() {
         <div className="lg:col-span-6 space-y-6">
           {/* Sueldo Bruto Input */}
           <div className="space-y-2">
-            <label className="text-xs font-mono font-bold text-slate-300 uppercase flex items-center justify-between">
-              <span>Sueldo Bruto Mensual (Soles PEN)</span>
-              <span className="text-emerald-400 font-extrabold text-sm">S/ {sueldoBruto.toLocaleString()}</span>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center justify-between">
+              <span>Sueldo Bruto Mensual (PEN)</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">S/ {sueldoBruto.toLocaleString()}</span>
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold font-mono text-lg">S/</span>
@@ -121,20 +121,20 @@ export function CalculadoraSueldo() {
                 type="number"
                 value={sueldoBruto}
                 onChange={(e) => setSueldoBruto(Math.max(0, Number(e.target.value)))}
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-950/80 border border-white/15 text-white font-mono font-bold text-xl focus:outline-none focus:border-emerald-500 transition-colors shadow-inner"
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-mono font-bold text-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors shadow-sm"
                 placeholder="4500"
               />
             </div>
-            <div className="flex gap-2 pt-1">
+            <div className="flex flex-wrap gap-2 pt-1">
               {[2000, 3500, 5000, 7500, 10000].map((val) => (
                 <button
                   key={val}
                   type="button"
                   onClick={() => setSueldoBruto(val)}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition-all ${
+                  className={`px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all ${
                     sueldoBruto === val
-                      ? 'bg-emerald-500 text-slate-950 shadow-[0_0_10px_rgba(16,185,129,0.4)]'
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                      ? 'bg-emerald-600 text-white shadow-sm'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                   }`}
                 >
                   S/ {val >= 1000 ? `${val / 1000}k` : val}
@@ -145,28 +145,28 @@ export function CalculadoraSueldo() {
 
           {/* Selector de Régimen Laboral */}
           <div className="space-y-2">
-            <label className="text-xs font-mono font-bold text-slate-300 uppercase">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide">
               Régimen Laboral
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
-                { key: 'CAS', label: 'CAS 1057', badge: 'Estado' },
-                { key: '728', label: 'D.L. 728', badge: 'Planilla' },
-                { key: '276', label: 'D.L. 276', badge: 'Público' },
+                { key: 'CAS', label: 'CAS 1057', badge: 'Sector Público' },
+                { key: '728', label: 'D.L. 728', badge: 'Planilla Priv./Púb.' },
+                { key: '276', label: 'D.L. 276', badge: 'Carrera Adm.' },
                 { key: 'Locacion', label: 'Locación (RHO)', badge: 'Honorarios' },
               ].map((item) => (
                 <button
                   key={item.key}
                   type="button"
                   onClick={() => setRegimen(item.key as any)}
-                  className={`p-3 rounded-2xl border text-left transition-all relative overflow-hidden ${
+                  className={`p-3 rounded-xl border text-left transition-all ${
                     regimen === item.key
-                      ? 'bg-emerald-500/20 border-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.2)]'
-                      : 'bg-slate-950/60 border-white/10 text-slate-400 hover:border-white/20'
+                      ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500 text-emerald-950 dark:text-emerald-100 ring-1 ring-emerald-500 shadow-sm'
+                      : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
                   }`}
                 >
-                  <span className="block font-bold text-xs font-display text-white">{item.label}</span>
-                  <span className="text-[10px] font-mono text-emerald-400 block mt-0.5">{item.badge}</span>
+                  <span className="block font-bold text-xs text-slate-900 dark:text-white">{item.label}</span>
+                  <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 block mt-0.5">{item.badge}</span>
                 </button>
               ))}
             </div>
@@ -174,8 +174,8 @@ export function CalculadoraSueldo() {
 
           {/* Sistema de Pensiones (AFP / ONP) */}
           {regimen !== 'Locacion' && (
-            <div className="space-y-3 p-4 rounded-2xl bg-slate-950/60 border border-white/10">
-              <label className="text-xs font-mono font-bold text-slate-300 uppercase block">
+            <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide block">
                 Sistema de Pensiones
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -184,10 +184,10 @@ export function CalculadoraSueldo() {
                     key={sys}
                     type="button"
                     onClick={() => setPension(sys as any)}
-                    className={`py-2.5 rounded-xl font-mono text-xs font-bold transition-all ${
+                    className={`py-2.5 rounded-lg font-mono text-xs font-semibold transition-all ${
                       pension === sys
-                        ? 'bg-emerald-500 text-slate-950 shadow-md'
-                        : 'bg-slate-900 text-slate-400 border border-white/10 hover:text-white'
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
                     {sys} {sys === 'ONP' ? '(13%)' : sys === 'AFP' ? '(~12.8%)' : ''}
@@ -197,7 +197,7 @@ export function CalculadoraSueldo() {
 
               {pension === 'AFP' && (
                 <div className="pt-2">
-                  <span className="text-[11px] font-mono text-slate-400 block mb-1.5">Selecciona tu Administradora AFP:</span>
+                  <span className="text-[11px] text-slate-600 dark:text-slate-400 block mb-1.5 font-medium">Administradora AFP:</span>
                   <div className="grid grid-cols-4 gap-2 text-xs font-mono font-bold">
                     {(['Integra', 'Prima', 'Profuturo', 'Habitat'] as const).map((afp) => (
                       <button
@@ -206,8 +206,8 @@ export function CalculadoraSueldo() {
                         onClick={() => setAfpType(afp)}
                         className={`py-1.5 rounded-lg border transition-all ${
                           afpType === afp
-                            ? 'bg-amber-500/20 border-amber-500 text-amber-300'
-                            : 'bg-slate-900 border-white/5 text-slate-400 hover:border-white/20'
+                            ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-900 dark:text-amber-200 shadow-sm'
+                            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
                         }`}
                       >
                         {afp}
@@ -223,39 +223,39 @@ export function CalculadoraSueldo() {
         {/* Right Calculation Output Card */}
         <div className="lg:col-span-6 space-y-6">
           {/* Main Net Result Box */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-950 via-slate-950 to-slate-900 border border-emerald-500/40 shadow-2xl relative overflow-hidden space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider font-bold">
-                ESTIMACIÓN DE SUELDO NETO LÍQUIDO
+          <div className="p-6 sm:p-7 rounded-2xl bg-slate-900 text-white dark:bg-slate-950 border border-slate-800 shadow-lg relative overflow-hidden space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider font-semibold">
+                Estimación de Sueldo Neto Líquido
               </span>
-              <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold border border-emerald-500/30">
-                MENSUAL AL BANCO
+              <span className="px-2.5 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 text-[10px] font-mono font-medium">
+                Mensual en Cuenta
               </span>
             </div>
 
             <div>
               <div className="text-4xl sm:text-5xl font-black font-display text-white tracking-tight">
                 S/ {Math.round(sueldoNeto).toLocaleString()}
-                <span className="text-sm font-mono text-slate-400 font-normal ml-2">/ mes</span>
+                <span className="text-sm font-sans text-slate-400 font-normal ml-2">/ mes</span>
               </div>
-              <p className="text-xs text-slate-300 mt-1">
-                Dinero efectivo aproximado que recibirás en tu cuenta bancaria a fin de mes.
+              <p className="text-xs text-slate-400 mt-1">
+                Monto líquido estimado abonado directamente a tu cuenta bancaria.
               </p>
             </div>
 
             {/* Deductions Breakdown */}
-            <div className="space-y-2 pt-2 border-t border-white/10 text-xs font-mono">
+            <div className="space-y-2 pt-2 border-t border-slate-800 text-xs font-mono">
               <div className="flex items-center justify-between text-slate-300">
                 <span>(+) Sueldo Bruto Contratado:</span>
                 <span className="font-bold text-white">S/ {sueldoBruto.toLocaleString()}</span>
               </div>
               {regimen !== 'Locacion' && (
-                <div className="flex items-center justify-between text-amber-400">
+                <div className="flex items-center justify-between text-amber-300">
                   <span>(-) Fondo de Pensiones ({pension} {(pctPension * 100).toFixed(1)}%):</span>
                   <span className="font-bold">- S/ {Math.round(descuentoPension).toLocaleString()}</span>
                 </div>
               )}
-              <div className="flex items-center justify-between text-cyan-400">
+              <div className="flex items-center justify-between text-sky-300">
                 <span>
                   (-) Impuesto Renta ({regimen === 'Locacion' ? '4ta Cat. 8%' : '5ta Cat. Progresivo'}):
                 </span>
@@ -265,39 +265,39 @@ export function CalculadoraSueldo() {
           </div>
 
           {/* Annual Labor Benefits Breakdown */}
-          <div className="p-6 rounded-3xl bg-slate-950/80 border border-white/10 space-y-4">
-            <h3 className="text-sm font-bold font-display text-white flex items-center gap-2 border-b border-white/10 pb-3">
-              <Award className="text-amber-400" size={18} />
-              <span>Beneficios Anuales según Régimen {regimen}</span>
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 space-y-4">
+            <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+              <Award className="text-amber-500 dark:text-amber-400" size={18} />
+              <span>Beneficios de Ley según Régimen {regimen}</span>
             </h3>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
-                <span className="text-[10px] text-slate-400 font-mono block">AGUINALDO / GRATIFICACIÓN</span>
-                <span className="font-bold text-emerald-400 text-sm block">
-                  {gratificacionJulio > 0 ? `S/ ${Math.round(gratificacionJulio).toLocaleString()} (x2 año)` : 'No Aplica'}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block">AGUINALDO / GRATIFICACIÓN</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm block">
+                  {gratificacionJulio > 0 ? `S/ ${Math.round(gratificacionJulio).toLocaleString()} (x2 al año)` : 'No aplica'}
                 </span>
                 <span className="text-[10px] text-slate-500 block">Julio y Diciembre</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
-                <span className="text-[10px] text-slate-400 font-mono block">CTS (COMPENSACIÓN TIEMPO)</span>
-                <span className="font-bold text-cyan-400 text-sm block">
-                  {ctsAnual > 0 ? `S/ ${Math.round(ctsAnual).toLocaleString()} / año` : 'No Aplica en CAS'}
+              <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block">CTS (COMPENSACIÓN)</span>
+                <span className="font-bold text-sky-600 dark:text-sky-400 text-sm block">
+                  {ctsAnual > 0 ? `S/ ${Math.round(ctsAnual).toLocaleString()} / año` : 'No aplica en CAS'}
                 </span>
                 <span className="text-[10px] text-slate-500 block">Mayo y Noviembre</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
-                <span className="text-[10px] text-slate-400 font-mono block">VACACIONES PAGADAS</span>
-                <span className="font-bold text-amber-400 text-sm block">{vacacionesDias} Días Calendario</span>
-                <span className="text-[10px] text-slate-500 block">Por cada año de servicio</span>
+              <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block">VACACIONES REMUNERADAS</span>
+                <span className="font-bold text-amber-600 dark:text-amber-400 text-sm block">{vacacionesDias} Días Calendario</span>
+                <span className="text-[10px] text-slate-500 block">Por cada año de servicios</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-slate-900/80 border border-white/5 space-y-1">
-                <span className="text-[10px] text-slate-400 font-mono block">COBERTURA SALUD</span>
-                <span className="font-bold text-white text-sm block">EsSalud 9%</span>
-                <span className="text-[10px] text-slate-500 block">Aporte a cargo del empleador</span>
+              <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block">COBERTURA DE SALUD</span>
+                <span className="font-bold text-slate-900 dark:text-white text-sm block">EsSalud 9%</span>
+                <span className="text-[10px] text-slate-500 block">Aporte patronal obligatorio</span>
               </div>
             </div>
           </div>
