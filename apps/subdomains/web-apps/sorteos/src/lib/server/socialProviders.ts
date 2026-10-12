@@ -291,38 +291,147 @@ async function fetchYoutubeLive(videoId: string): Promise<Participant[] | null> 
   }
 }
 
-async function fetchMetaLive(platform: 'instagram' | 'facebook', postUrl: string): Promise<Participant[] | null> {
-  const token = process.env.META_ACCESS_TOKEN;
-  if (!token) return null;
-  try {
-    // Mejor esfuerzo: el ID del objeto se resuelve si la URL trae fbid/media-id.
-    const m = postUrl.match(/(\d{8,})/);
-    if (!m) return null;
-    const out: Participant[] = [];
-    let url: string | null =
-      `https://graph.facebook.com/v19.0/${m[1]}/comments?fields=from{name,username},message,created_time&limit=100&access_token=${encodeURIComponent(token)}`;
-    for (let i = 0; i < 5 && url && out.length < 500; i++) {
-      const res = await fetch(url);
-      if (!res.ok) return null;
-      const json = (await res.json()) as {
-        data?: Array<{ id: string; from?: { name?: string; username?: string }; message?: string; created_time?: string }>;
-        paging?: { next?: string };
-      };
-      for (const c of json.data || []) {
-        out.push({
-          id: `${platform}-${c.id}`,
-          username: c.from?.username || c.from?.name || 'desconocido',
-          commentText: c.message || '',
-          isEligible: true,
-          timestamp: c.created_time || new Date().toISOString(),
-        });
+function extractInstagramShortcode(url: string): string | null {
+  const m = url.match(/(?:instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+))/i);
+  return m ? m[1] : null;
+}
+
+async function fetchMetaLive(
+  platform: 'instagram' | 'facebook',
+  postUrl: string,
+  accountToken?: string
+): Promise<Participant[] | null> {
+  const shortcode = extractInstagramShortcode(postUrl);
+  const token =
+    accountToken ||
+    process.env.META_ACCESS_TOKEN ||
+    (process.env.META_APP_ID && process.env.META_APP_SECRET
+      ? `${process.env.META_APP_ID}|${process.env.META_APP_SECRET}`
+      : null);
+
+  // 1. Intento con Instagram GraphQL Web Scraper si hay Cookie / Session configurada
+  const igCookie =
+    process.env.INSTAGRAM_COOKIE ||
+    (process.env.INSTAGRAM_SESSION_ID ? `sessionid=${process.env.INSTAGRAM_SESSION_ID}` : null);
+
+  if (platform === 'instagram' && shortcode && igCookie) {
+    try {
+      const gqlUrl = `https://www.instagram.com/graphql/query/?query_hash=b3055c01b4b222b8a47dc12b090e4e64&variables=${encodeURIComponent(
+        JSON.stringify({ shortcode, first: 50 })
+      )}`;
+      const res = await fetch(gqlUrl, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'X-IG-App-ID': '936619743392459',
+          Cookie: igCookie,
+          Accept: '*/*',
+        },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as any;
+        const edges = data.data?.shortcode_media?.edge_media_to_parent_comment?.edges || [];
+        if (Array.isArray(edges) && edges.length > 0) {
+          return edges.map((e: any) => ({
+            id: `ig-${e.node.id || Date.now()}`,
+            username: (e.node.owner?.username || 'usuario_instagram').replace(/^@/, ''),
+            commentText: e.node.text || '',
+            isEligible: true,
+            timestamp: e.node.created_at
+              ? new Date(e.node.created_at * 1000).toISOString()
+              : new Date().toISOString(),
+            network: 'instagram',
+          }));
+        }
       }
-      url = json.paging?.next || null;
+    } catch {
+      // Continuar a Graph API
     }
-    return out;
-  } catch {
-    return null;
   }
+
+  // 2. Intento oficial con Meta Graph API v19.0
+  if (token) {
+    try {
+      // A) Si es Instagram y tenemos shortcode, intentar resolver el post de cuentas conectadas
+      if (platform === 'instagram' && shortcode) {
+        // Intentar resolver páginas asociadas al token
+        const pagesRes = await fetch(
+          `https://graph.facebook.com/v19.0/me/accounts?fields=id,instagram_business_account&access_token=${encodeURIComponent(token)}`,
+          { signal: AbortSignal.timeout(6000) }
+        ).catch(() => null);
+
+        if (pagesRes?.ok) {
+          const pagesData = (await pagesRes.json()) as any;
+          for (const page of pagesData.data || []) {
+            const igId = page.instagram_business_account?.id;
+            if (!igId) continue;
+
+            const mediaRes = await fetch(
+              `https://graph.facebook.com/v19.0/${igId}/media?fields=id,shortcode,comments_count&limit=50&access_token=${encodeURIComponent(token)}`,
+              { signal: AbortSignal.timeout(6000) }
+            ).catch(() => null);
+
+            if (mediaRes?.ok) {
+              const mediaData = (await mediaRes.json()) as any;
+              const matched = (mediaData.data || []).find((m: any) => m.shortcode === shortcode);
+              if (matched?.id) {
+                const commentsRes = await fetch(
+                  `https://graph.facebook.com/v19.0/${matched.id}/comments?fields=id,from{name,username},text,timestamp&limit=100&access_token=${encodeURIComponent(token)}`,
+                  { signal: AbortSignal.timeout(6000) }
+                ).catch(() => null);
+
+                if (commentsRes?.ok) {
+                  const commentsData = (await commentsRes.json()) as any;
+                  if (Array.isArray(commentsData.data) && commentsData.data.length > 0) {
+                    return commentsData.data.map((c: any) => ({
+                      id: `ig-${c.id}`,
+                      username: (c.from?.username || c.from?.name || 'usuario_instagram').replace(/^@/, ''),
+                      commentText: c.text || '',
+                      isEligible: true,
+                      timestamp: c.timestamp || new Date().toISOString(),
+                      network: 'instagram',
+                    }));
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // B) Resolución directa por ID numérico en Graph API
+      const m = postUrl.match(/(\d{8,})/);
+      if (m) {
+        const out: Participant[] = [];
+        let url: string | null =
+          `https://graph.facebook.com/v19.0/${m[1]}/comments?fields=from{name,username},message,created_time&limit=100&access_token=${encodeURIComponent(token)}`;
+        for (let i = 0; i < 5 && url && out.length < 500; i++) {
+          const res = await fetch(url);
+          if (!res.ok) break;
+          const json = (await res.json()) as {
+            data?: Array<{ id: string; from?: { name?: string; username?: string }; message?: string; created_time?: string }>;
+            paging?: { next?: string };
+          };
+          for (const c of json.data || []) {
+            out.push({
+              id: `${platform}-${c.id}`,
+              username: c.from?.username || c.from?.name || 'desconocido',
+              commentText: c.message || '',
+              isEligible: true,
+              timestamp: c.created_time || new Date().toISOString(),
+            });
+          }
+          url = json.paging?.next || null;
+        }
+        if (out.length > 0) return out;
+      }
+    } catch {
+      // noop
+    }
+  }
+
+  return null;
 }
 
 async function fetchYoutubeInnertubeLive(videoId: string): Promise<{ comments: Participant[] | null; meta?: PostMetadata }> {
@@ -467,12 +576,18 @@ async function fetchTikTokLive(postUrl: string): Promise<{ comments: Participant
     // Paginar hasta 300 comentarios en vivo vía JSON API de TikTok
     for (let page = 0; page < 6 && hasMore && participants.length < 300; page++) {
       const commentApiUrl = `https://www.tiktok.com/api/comment/list/?aid=1988&aweme_id=${encodeURIComponent(awemeId)}&count=50&cursor=${cursor}`;
+      const reqHeaders: Record<string, string> = {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        Referer: 'https://www.tiktok.com/',
+        Accept: 'application/json, text/plain, */*',
+      };
+      if (process.env.TIKTOK_COOKIE) {
+        reqHeaders['Cookie'] = process.env.TIKTOK_COOKIE;
+      }
+
       const res = await fetch(commentApiUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-          'Referer': 'https://www.tiktok.com/',
-          'Accept': 'application/json, text/plain, */*',
-        },
+        headers: reqHeaders,
         signal: AbortSignal.timeout(6000),
       });
 
@@ -735,6 +850,7 @@ class MockAdapter implements SocialProviderAdapter {
   }
   async fetchComments(postUrl: string, accountToken?: string): Promise<FetchResult> {
     const t0 = Date.now();
+    let isTrulyLive = false;
     let liveComments: Participant[] | null = null;
     let meta: PostMetadata | undefined = undefined;
 
@@ -742,75 +858,59 @@ class MockAdapter implements SocialProviderAdapter {
       const vid = await resolveYoutubeVideoId(postUrl);
       if (vid) {
         liveComments = await fetchYoutubeLive(vid);
+        if (liveComments && liveComments.length > 0) isTrulyLive = true;
         if (!liveComments || liveComments.length === 0) {
           const ytResult = await fetchYoutubeInnertubeLive(vid);
           liveComments = ytResult.comments;
           meta = ytResult.meta;
+          if (liveComments && liveComments.length > 0) isTrulyLive = true;
         }
-      }
-      if (!liveComments || liveComments.length === 0) {
-        liveComments = generateContextualParticipants('youtube', postUrl, 10);
-        meta = {
-          title: 'Video de YouTube',
-          author: 'Canal de YouTube',
-          totalComments: liveComments.length,
-          requiresAuth: false,
-        };
       }
     } else if (this.platform === 'facebook') {
       const fbResult = await fetchFacebookLive(postUrl, accountToken);
       liveComments = fbResult.comments;
       meta = fbResult.meta;
+      if (fbResult.comments && fbResult.comments.length > 0 && !fbResult.comments[0].id.includes('facebook-')) {
+        isTrulyLive = true;
+      }
     } else if (this.platform === 'tiktok') {
       const ttResult = await fetchTikTokLive(postUrl);
-      liveComments = ttResult.comments;
-      meta = ttResult.meta;
-      if (!liveComments || liveComments.length === 0) {
-        liveComments = generateContextualParticipants('tiktok', postUrl, 12);
-        meta = {
-          title: 'Video de TikTok',
-          author: '@creador_tiktok',
-          totalComments: liveComments.length,
-          requiresAuth: false,
-        };
+      if (ttResult.comments && ttResult.comments.length > 0) {
+        liveComments = ttResult.comments;
+        meta = ttResult.meta;
+        isTrulyLive = true;
       }
     } else if (this.platform === 'instagram') {
-      liveComments = await fetchMetaLive(this.platform, postUrl);
-      if (!liveComments || liveComments.length === 0) {
-        liveComments = generateContextualParticipants('instagram', postUrl, 12);
+      const igResult = await fetchMetaLive(this.platform, postUrl, accountToken);
+      if (igResult && igResult.length > 0) {
+        liveComments = igResult;
         meta = {
-          title: 'Publicación en Instagram',
-          author: '@creador_instagram',
+          title: 'Publicación Oficial de Instagram',
+          author: '@cuenta_instagram',
           totalComments: liveComments.length,
           requiresAuth: false,
         };
+        isTrulyLive = true;
       }
-    } else if (this.platform === 'x' || this.platform === 'threads') {
-      liveComments = generateContextualParticipants(this.platform, postUrl, 10);
-      meta = {
-        title: `Publicación en ${this.platform.toUpperCase()}`,
-        author: `@creador_${this.platform}`,
-        totalComments: liveComments.length,
-        requiresAuth: false,
-      };
     }
 
     const latencyMs = Date.now() - t0;
-    if (liveComments && liveComments.length > 0) {
+    if (isTrulyLive && liveComments && liveComments.length > 0) {
       logEvent('social.fetch', { provider: this.platform, latencyMs, mode: 'live', postUrl, count: liveComments.length });
       return { comments: liveComments, latencyMs, provider: this.platform, mode: 'live', meta };
     }
 
     const fallbackCount = meta?.totalComments && meta.totalComments > 0 ? meta.totalComments : 15;
     const fallbackList = generateContextualParticipants(this.platform, postUrl, fallbackCount);
+    logEvent('social.fetch', { provider: this.platform, latencyMs, mode: 'mock-verified', postUrl, count: fallbackList.length });
     return {
       comments: fallbackList,
-      latencyMs: Date.now() - t0,
+      latencyMs,
       provider: this.platform,
-      mode: 'live',
+      mode: 'mock-verified',
       meta: meta || {
-        title: `Publicación de ${this.platform.toUpperCase()}`,
-        author: `@cuenta_${this.platform}`,
+        title: `Publicación en ${this.platform.toUpperCase()}`,
+        author: `@creador_${this.platform}`,
         totalComments: fallbackCount,
         requiresAuth: false,
       }

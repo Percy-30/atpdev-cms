@@ -1642,7 +1642,32 @@ interface AdditionalSource {
             </div>
           )}
 
-          {/* Barra de Gestión de Participantes en Paso 2 */}
+          {/* Banner de aviso y acción para comentarios reales */}
+          {commentSourceMode === 'mock-verified' && (
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold text-amber-800 dark:text-amber-300">
+                    Modo Demostración / Simulación de Prueba
+                  </p>
+                  <p className="text-[11px] text-amber-700/90 dark:text-amber-300/80 mt-0.5">
+                    Las políticas de privacidad de Meta/TikTok requieren sesión para leer comentarios sin autorización. Si eres el organizador, puedes pegar los comentarios 100% reales de tu post en 5 segundos.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setStep(1);
+                  setShowManualPaste(true);
+                }}
+                className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-mono text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 shadow-xs"
+              >
+                📋 Pegar comentarios reales
+              </button>
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10">
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono font-bold text-slate-800 dark:text-zinc-200">
