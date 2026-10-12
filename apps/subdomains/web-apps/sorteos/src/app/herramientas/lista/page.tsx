@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   ListOrdered, 
   Trash2, 
@@ -57,6 +57,22 @@ export default function SorteoListaPage() {
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Cargar participantes exportados desde Trivias u otras herramientas
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('sorteo_imported_names');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setRawText(parsed.join('\n'));
+          setTitle('Sorteo Oficial - Aprobados de Trivia');
+        }
+      }
+    } catch (e) {
+      console.error('Error al cargar nombres importados:', e);
+    }
+  }, []);
 
   // Parse lines into participants
   const getCleanParticipants = (): string[] => {

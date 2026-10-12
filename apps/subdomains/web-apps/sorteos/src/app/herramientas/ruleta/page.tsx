@@ -47,6 +47,19 @@ export default function RuletaPage() {
 
   useEffect(() => {
     setMuted(isAudioMuted());
+
+    // Cargar nombres importados desde Trivia u otras herramientas si existen
+    try {
+      const stored = localStorage.getItem('sorteo_imported_names');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length >= 2) {
+          setOptions(parsed);
+        }
+      }
+    } catch (e) {
+      console.error('Error al cargar opciones importadas en ruleta:', e);
+    }
   }, []);
 
   const handleToggleSound = () => {
