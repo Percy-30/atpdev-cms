@@ -524,6 +524,39 @@ interface AdditionalSource {
     }
   };
 
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+
+  const handleLoadMoreComments = async () => {
+    if (!postUrl.trim() || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const res = await api<{
+        success: boolean;
+        comments: Participant[];
+        meta?: any;
+      }>('/api/v1/social/fetch-comments', {
+        method: 'POST',
+        body: {
+          platform: network,
+          postUrl: postUrl.trim(),
+        },
+      });
+      if (res.comments && res.comments.length > 0) {
+        setRawComments((prev) => {
+          const existingIds = new Set(prev.map((p) => p.id));
+          const newOnes = res.comments
+            .filter((c) => !existingIds.has(c.id))
+            .map((c) => ({ ...c, network }));
+          return [...prev, ...newOnes];
+        });
+      }
+    } catch {
+      // noop
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
   // Parser Universal inteligente de comentarios (Soporta JSON de Facebook/TikTok/YouTube/Instagram, CSV, TSV y Texto Plano)
   const parseAnyCommentInput = (rawText: string, defaultNetwork: string = 'social'): Participant[] => {
     const trimmed = rawText.trim();
@@ -1631,7 +1664,9 @@ interface AdditionalSource {
                   <span>Publicación: {postMeta.author || 'Página Oficial'}</span>
                 </span>
                 <span className="text-[11px] font-mono text-purple-600 dark:text-purple-400 font-bold">
-                  {postMeta.totalComments || rawComments.length} comentarios detectados
+                  {postMeta.totalComments
+                    ? `${Number(postMeta.totalComments).toLocaleString('es-ES')} comentarios detectados en ${network.toUpperCase()}`
+                    : `${rawComments.length} comentarios detectados`}
                 </span>
               </div>
               {postMeta.title && (
@@ -1669,18 +1704,42 @@ interface AdditionalSource {
             </div>
           )}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-mono font-bold text-slate-800 dark:text-zinc-200">
-                Participantes listos: <span className="text-purple-600 dark:text-purple-400 font-extrabold">{rawComments.length}</span>
+                Participantes listos:{' '}
+                <span className="text-purple-600 dark:text-purple-400 font-extrabold">
+                  {rawComments.length.toLocaleString('es-ES')}
+                </span>
+                {postMeta?.totalComments && postMeta.totalComments > rawComments.length && (
+                  <span className="text-slate-500 dark:text-zinc-400 font-normal ml-1">
+                    (de{' '}
+                    <strong className="text-slate-800 dark:text-zinc-200">
+                      {Number(postMeta.totalComments).toLocaleString('es-ES')}
+                    </strong>{' '}
+                    comentarios totales)
+                  </span>
+                )}
               </span>
               {rawComments.length > 0 && (
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold">
-                  {commentSourceMode === 'manual' ? '100% Verificados' : 'Cargados'}
+                  {commentSourceMode === 'manual' ? '100% Verificados' : 'Cargados en Vivo'}
                 </span>
               )}
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
+              {network === 'youtube' && postMeta?.totalComments && postMeta.totalComments > rawComments.length && (
+                <button
+                  type="button"
+                  disabled={isLoadingMore}
+                  onClick={handleLoadMoreComments}
+                  className="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/20 font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isLoadingMore ? 'animate-spin' : ''}`} />
+                  <span>{isLoadingMore ? 'Cargando...' : '+ Cargar más (+100)'}</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 onClick={() => setIsAddParticipantModalOpen(true)}

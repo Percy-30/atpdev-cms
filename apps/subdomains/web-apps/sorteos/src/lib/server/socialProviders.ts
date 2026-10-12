@@ -434,95 +434,146 @@ async function fetchMetaLive(
   return null;
 }
 
-async function fetchYoutubeInnertubeLive(videoId: string): Promise<{ comments: Participant[] | null; meta?: PostMetadata }> {
+async function fetchYoutubeInnertubeLive(
+  videoId: string,
+  maxPages: number = 5,
+  initialContinuationToken?: string
+): Promise<{ comments: Participant[] | null; meta?: PostMetadata }> {
   try {
-    const videoPageUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
-    const pageRes = await fetch(videoPageUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Accept-Language': 'es-419,es;q=0.9,en;q=0.8',
-      },
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!pageRes.ok) return { comments: null };
-    const html = await pageRes.text();
+    let apiKey: string | null = null;
+    let clientVersion = '2.20240101.00.00';
+    let continuationToken: string | null = initialContinuationToken || null;
+    let postTitle = 'Video de YouTube';
+    let authorName = 'Canal de YouTube';
 
-    const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
-    const clientVersionMatch = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
-    const continuationMatch = html.match(/"continuationCommand":\{"token":"([^"]+)"/);
-
-    if (!apiKeyMatch || !continuationMatch) return { comments: null };
-
-    const nextUrl = `https://www.youtube.com/youtubei/v1/next?key=${apiKeyMatch[1]}`;
-    const nextRes = await fetch(nextUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-      },
-      body: JSON.stringify({
-        context: {
-          client: {
-            clientName: 'WEB',
-            clientVersion: clientVersionMatch ? clientVersionMatch[1] : '2.20240101.00.00',
-          },
+    // 1. Si no hay continuationToken inicial, cargar la página HTML para obtener API Key y primer token
+    if (!continuationToken) {
+      const videoPageUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
+      const pageRes = await fetch(videoPageUrl, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Accept-Language': 'es-419,es;q=0.9,en;q=0.8',
         },
-        continuation: continuationMatch[1],
-      }),
-      signal: AbortSignal.timeout(8000),
-    });
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!pageRes.ok) return { comments: null };
+      const html = await pageRes.text();
 
-    if (!nextRes.ok) return { comments: null };
-    const nextData = (await nextRes.json()) as any;
+      const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
+      const clientVersionMatch = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
+      const continuationMatch = html.match(/"continuationCommand":\{"token":"([^"]+)"/);
 
-    const participants: Participant[] = [];
-    const mutations = (nextData.frameworkUpdates?.entityBatchUpdate?.mutations || []) as Array<{
-      payload?: {
-        commentEntityPayload?: {
-          author?: { displayName?: string; avatarThumbnailUrl?: string };
-          properties?: { commentId?: string; content?: { content?: string }; publishedTime?: string };
-        };
-      };
-    }>;
+      if (!apiKeyMatch || !continuationMatch) return { comments: null };
 
-    for (const item of mutations) {
-      const cep = item.payload?.commentEntityPayload;
-      if (cep && cep.properties?.content?.content) {
-        const username = (cep.author?.displayName || 'usuario_youtube').replace(/^@/, '');
-        participants.push({
-          id: cep.properties.commentId || `yt-${Date.now()}-${participants.length}`,
-          username,
-          commentText: cep.properties.content.content,
-          isEligible: true,
-          timestamp: cep.properties.publishedTime || new Date().toISOString(),
-        });
-      }
+      apiKey = apiKeyMatch[1];
+      if (clientVersionMatch) clientVersion = clientVersionMatch[1];
+      continuationToken = continuationMatch[1];
+
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      if (titleMatch) postTitle = titleMatch[1].replace(/ - YouTube$/, '').trim();
+      const authorMatch = html.match(/"author":"([^"]+)"/);
+      if (authorMatch) authorName = authorMatch[1];
     }
 
-    if (participants.length === 0 && nextData.onResponseReceivedEndpoints) {
-      for (const ep of nextData.onResponseReceivedEndpoints) {
-        const items = ep.reloadContinuationItemsCommand?.continuationItems || ep.appendContinuationItemsAction?.continuationItems || [];
-        for (const it of items) {
-          const r = it.commentThreadRenderer?.comment?.commentRenderer;
-          if (r) {
-            const author = r.authorText?.simpleText || (r.authorText?.runs?.map((x: any) => x.text).join('')) || 'usuario';
-            const text = r.contentText?.runs?.map((x: any) => x.text).join('') || r.contentText?.simpleText || '';
-            participants.push({
-              id: `yt-${r.commentId || participants.length}`,
-              username: author.replace(/^@/, ''),
-              commentText: text,
-              isEligible: true,
-              timestamp: r.publishedTimeText?.runs?.[0]?.text || new Date().toISOString(),
-            });
+    if (!apiKey && !continuationToken) return { comments: null };
+
+    const participants: Participant[] = [];
+    let realTotalComments = 0;
+    let pagesFetched = 0;
+
+    // 2. Paginar múltiples tandas en vivo para recopilar comentarios reales
+    while (continuationToken && pagesFetched < maxPages && participants.length < 500) {
+      const nextUrl = `https://www.youtube.com/youtubei/v1/next?key=${apiKey}`;
+      const nextRes = await fetch(nextUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+        },
+        body: JSON.stringify({
+          context: {
+            client: {
+              clientName: 'WEB',
+              clientVersion,
+            },
+          },
+          continuation: continuationToken,
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+
+      if (!nextRes.ok) break;
+      const nextData = (await nextRes.json()) as any;
+
+      // Extraer el conteo oficial total de comentarios del video en la primera tanda
+      if (pagesFetched === 0) {
+        const nextStr = JSON.stringify(nextData);
+        const countTextMatch = nextStr.match(/"countText":\{"runs":\[\{"text":"([^"]+)"/);
+        if (countTextMatch) {
+          const cleanNum = countTextMatch[1].replace(/[^0-9]/g, '');
+          if (cleanNum) realTotalComments = parseInt(cleanNum, 10);
+        }
+      }
+
+      // Extraer comentarios de frameworkUpdates (mutations)
+      const mutations = (nextData.frameworkUpdates?.entityBatchUpdate?.mutations || []) as Array<{
+        payload?: {
+          commentEntityPayload?: {
+            author?: { displayName?: string; avatarThumbnailUrl?: string };
+            properties?: { commentId?: string; content?: { content?: string }; publishedTime?: string };
+          };
+        };
+      }>;
+
+      let extractedInThisBatch = 0;
+      for (const item of mutations) {
+        const cep = item.payload?.commentEntityPayload;
+        if (cep && cep.properties?.content?.content) {
+          const username = (cep.author?.displayName || 'usuario_youtube').replace(/^@/, '');
+          participants.push({
+            id: cep.properties.commentId || `yt-${Date.now()}-${participants.length}`,
+            username,
+            commentText: cep.properties.content.content,
+            isEligible: true,
+            timestamp: cep.properties.publishedTime || new Date().toISOString(),
+          });
+          extractedInThisBatch++;
+        }
+      }
+
+      // Extraer comentarios de onResponseReceivedEndpoints (fallback renderer)
+      if (extractedInThisBatch === 0 && nextData.onResponseReceivedEndpoints) {
+        for (const ep of nextData.onResponseReceivedEndpoints) {
+          const items =
+            ep.reloadContinuationItemsCommand?.continuationItems ||
+            ep.appendContinuationItemsAction?.continuationItems ||
+            [];
+          for (const it of items) {
+            const r = it.commentThreadRenderer?.comment?.commentRenderer;
+            if (r) {
+              const author =
+                r.authorText?.simpleText || r.authorText?.runs?.map((x: any) => x.text).join('') || 'usuario';
+              const text = r.contentText?.runs?.map((x: any) => x.text).join('') || r.contentText?.simpleText || '';
+              participants.push({
+                id: `yt-${r.commentId || participants.length}`,
+                username: author.replace(/^@/, ''),
+                commentText: text,
+                isEligible: true,
+                timestamp: r.publishedTimeText?.runs?.[0]?.text || new Date().toISOString(),
+              });
+              extractedInThisBatch++;
+            }
           }
         }
       }
-    }
 
-    const titleMatch = html.match(/<title>([^<]+)<\/title>/);
-    const postTitle = titleMatch ? titleMatch[1].replace(/ - YouTube$/, '').trim() : 'Video de YouTube';
-    const authorMatch = html.match(/"author":"([^"]+)"/);
-    const authorName = authorMatch ? authorMatch[1] : 'Canal de YouTube';
+      // Obtener el siguiente continuation token
+      const nextStr = JSON.stringify(nextData);
+      const nextTokenMatch = nextStr.match(/"continuationCommand":\{"token":"([^"]+)"/);
+      continuationToken = nextTokenMatch ? nextTokenMatch[1] : null;
+      pagesFetched++;
+    }
 
     if (participants.length > 0) {
       return {
@@ -530,10 +581,10 @@ async function fetchYoutubeInnertubeLive(videoId: string): Promise<{ comments: P
         meta: {
           title: postTitle,
           author: authorName,
-          totalComments: participants.length,
+          totalComments: realTotalComments > 0 ? realTotalComments : participants.length,
           postId: videoId,
           requiresAuth: false,
-        }
+        },
       };
     }
     return { comments: null };
