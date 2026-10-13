@@ -192,6 +192,11 @@ interface AdditionalSource {
   const [newParticipantUser, setNewParticipantUser] = useState<string>('');
   const [newParticipantComment, setNewParticipantComment] = useState<string>('');
 
+  // Modal inteligente para importar / reemplazar comentarios directamente en Paso 2
+  const [isPasteAllModalOpen, setIsPasteAllModalOpen] = useState<boolean>(false);
+  const [pasteModalText, setPasteModalText] = useState<string>('');
+  const [pasteMergeMode, setPasteMergeMode] = useState<'merge' | 'replace'>('merge');
+
   // Modal para conectar/verificar cuenta social directamente desde aquí
   const [connectModalOpen, setConnectModalOpen] = useState<boolean>(false);
   const [customName, setCustomName] = useState<string>('');
@@ -930,6 +935,40 @@ interface AdditionalSource {
     setNewParticipantUser('');
     setNewParticipantComment('');
     setIsAddParticipantModalOpen(false);
+  };
+
+  const handleProcessPasteModal = () => {
+    if (!pasteModalText.trim()) return;
+    const parsed = parseAnyCommentInput(pasteModalText, network);
+    if (parsed.length > 0) {
+      if (pasteMergeMode === 'merge' && rawComments.length > 0) {
+        const seen = new Set(
+          rawComments.map((c) => `${c.username.toLowerCase().trim()}:${(c.commentText || '').toLowerCase().trim()}`)
+        );
+        const newOnes = parsed.filter(
+          (c) => !seen.has(`${c.username.toLowerCase().trim()}:${(c.commentText || '').toLowerCase().trim()}`)
+        );
+        setRawComments((prev) => [...prev, ...newOnes]);
+      } else {
+        setRawComments(parsed);
+      }
+      setCommentSourceMode('manual');
+      setIsPasteAllModalOpen(false);
+      setPasteModalText('');
+    }
+  };
+
+  const handlePasteClipboardIntoModal = async () => {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          setPasteModalText(text);
+        }
+      }
+    } catch {
+      // noop
+    }
   };
 
   // Usar participantes de demostración si el usuario lo solicita explícitamente
@@ -1776,15 +1815,55 @@ interface AdditionalSource {
               <button
                 type="button"
                 onClick={() => {
-                  setStep(1);
-                  setShowManualPaste(true);
+                  setPasteModalText('');
+                  setIsPasteAllModalOpen(true);
                 }}
-                className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-mono text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 shadow-xs"
+                className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-mono text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 shadow-xs flex items-center gap-1.5"
               >
-                📋 Pegar comentarios reales
+                <Clipboard className="w-3.5 h-3.5" />
+                <span>Pegar comentarios reales</span>
               </button>
             </div>
           )}
+
+          {/* Banner de Asistencia Multi-Plataforma (Filtro Público de Meta/TikTok/X/Threads) */}
+          {network !== 'youtube' && postMeta?.totalComments && postMeta.totalComments > rawComments.length && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-indigo-500/10 to-blue-500/10 border border-purple-500/20 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    {network === 'facebook' && <FacebookIcon className="w-4 h-4 text-blue-500 shrink-0" />}
+                    {network === 'instagram' && <InstagramIcon className="w-4 h-4 text-pink-500 shrink-0" />}
+                    {network === 'tiktok' && <TikTokIcon className="w-4 h-4 text-cyan-400 shrink-0" />}
+                    {network === 'x' && <XIcon className="w-4 h-4 text-slate-900 dark:text-white shrink-0" />}
+                    {network === 'threads' && <ThreadsIcon className="w-4 h-4 text-purple-500 shrink-0" />}
+                    <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white font-display">
+                      {NETWORK_CONFIGS.find((n) => n.id === network)?.name || network}: {rawComments.length} de {postMeta.totalComments} comentarios cargados en vivo
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20">
+                      Filtro de Red Social
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">
+                    En publicaciones públicas sin sesión, {NETWORK_CONFIGS.find((n) => n.id === network)?.name || 'la red'} solo entrega los comentarios más relevantes ({rawComments.length}). La publicación tiene detectados <strong className="text-purple-600 dark:text-purple-300 font-mono font-bold">{postMeta.totalComments} comentarios reales</strong>. Si deseas incluir al 100% de los concursantes, puedes importarlos fácilmente aquí.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPasteModalText('');
+                    setIsPasteAllModalOpen(true);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-mono text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 shadow-sm flex items-center gap-2"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Importar los {postMeta.totalComments} comentarios</span>
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Panel de Carga Progresiva / Ampliación de Participantes (Hasta 5.000 reales) */}
           {(network === 'youtube' || postMeta?.continuationToken) && (postMeta?.totalComments ? postMeta.totalComments > rawComments.length : true) && (
             <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 border border-purple-500/20 space-y-3">
@@ -1917,8 +1996,8 @@ interface AdditionalSource {
               <button
                 type="button"
                 onClick={() => {
-                  setStep(1);
-                  setShowManualPaste(true);
+                  setPasteModalText('');
+                  setIsPasteAllModalOpen(true);
                 }}
                 className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
               >
@@ -1930,9 +2009,9 @@ interface AdditionalSource {
 
           {/* Comments List Preview (Optimizado para ultra rendimiento con miles de comentarios) */}
           <div className="space-y-2.5 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
-            {rawComments.slice(0, 100).map((c) => (
+            {rawComments.slice(0, 100).map((c, idx) => (
               <div
-                key={c.id}
+                key={`${c.id}-${idx}`}
                 className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 flex items-start justify-between gap-3 text-xs group hover:border-slate-300 dark:hover:border-white/10 transition-colors"
               >
                 <div className="space-y-1 flex-1">
@@ -2029,6 +2108,127 @@ interface AdditionalSource {
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+          )}
+
+          {/* Modal Inteligente para Pegar / Importar Comentarios en Paso 2 */}
+          {isPasteAllModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+              <div className="w-full max-w-xl bg-white dark:bg-[#0f172a] rounded-3xl border border-slate-200 dark:border-white/10 shadow-2xl p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-3">
+                  <div className="flex items-center gap-2.5">
+                    <FileText className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <div>
+                      <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white">
+                        Importar Comentarios Completos
+                      </h3>
+                      <p className="text-[11px] font-mono text-slate-500 dark:text-zinc-400">
+                        {postMeta?.totalComments
+                          ? `Total detectado en el post: ${postMeta.totalComments} comentarios`
+                          : 'Copia y pega la lista de comentarios'}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsPasteAllModalOpen(false)}
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-zinc-300">
+                      Pega el texto, CSV o JSON copiado de Facebook:
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handlePasteClipboardIntoModal}
+                      className="text-xs font-mono text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1 cursor-pointer font-bold"
+                    >
+                      <span>📋 Pegar portapapeles</span>
+                    </button>
+                  </div>
+                  <textarea
+                    rows={8}
+                    value={pasteModalText}
+                    onChange={(e) => setPasteModalText(e.target.value)}
+                    placeholder={`Puedes copiar directamente de la publicación de Facebook:\n\nJosue Gonzalez · 2 h\nEn él fútbol no debe existir la rivalidad...\n\nJonathan Orozco · 1 h\nCuando se fue tenian 5 champions...`}
+                    className="w-full p-3.5 rounded-2xl text-xs font-mono bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-purple-500 custom-scrollbar resize-none"
+                  />
+                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 font-mono">
+                    💡 Nuestro analizador inteligente detecta autores, comentarios y limpia automáticamente palabras como &ldquo;Responder&rdquo;, &ldquo;Me gusta&rdquo; y fechas.
+                  </p>
+
+                  {/* Selector de Modo de Incorporación */}
+                  {rawComments.length > 0 && (
+                    <div className="pt-2 border-t border-slate-100 dark:border-white/5 space-y-1.5">
+                      <label className="block text-[11px] font-mono font-bold text-slate-700 dark:text-zinc-300">
+                        ¿Cómo deseas incorporar los comentarios?
+                      </label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setPasteMergeMode('merge')}
+                          className={`p-2.5 rounded-xl border text-left font-mono text-xs transition-all cursor-pointer flex items-center gap-2 ${
+                            pasteMergeMode === 'merge'
+                              ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300 font-bold ring-1 ring-purple-500'
+                              : 'border-slate-200 dark:border-white/10 text-slate-600 dark:text-zinc-400 hover:border-slate-300 dark:hover:border-white/20'
+                          }`}
+                        >
+                          <span className="w-4 h-4 rounded-full border flex items-center justify-center shrink-0">
+                            {pasteMergeMode === 'merge' && <span className="w-2 h-2 rounded-full bg-purple-600" />}
+                          </span>
+                          <div>
+                            <div className="font-bold">Fusionar (Recomendado)</div>
+                            <div className="text-[10px] opacity-80">Suma a los {rawComments.length} actuales sin duplicar</div>
+                          </div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPasteMergeMode('replace')}
+                          className={`p-2.5 rounded-xl border text-left font-mono text-xs transition-all cursor-pointer flex items-center gap-2 ${
+                            pasteMergeMode === 'replace'
+                              ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300 font-bold ring-1 ring-purple-500'
+                              : 'border-slate-200 dark:border-white/10 text-slate-600 dark:text-zinc-400 hover:border-slate-300 dark:hover:border-white/20'
+                          }`}
+                        >
+                          <span className="w-4 h-4 rounded-full border flex items-center justify-center shrink-0">
+                            {pasteMergeMode === 'replace' && <span className="w-2 h-2 rounded-full bg-purple-600" />}
+                          </span>
+                          <div>
+                            <div className="font-bold">Reemplazar Todo</div>
+                            <div className="text-[10px] opacity-80">Usa solo los comentarios pegados</div>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/5">
+                  <button
+                    type="button"
+                    onClick={() => setIsPasteAllModalOpen(false)}
+                    className="px-4 py-2 rounded-xl text-xs font-mono text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!pasteModalText.trim()}
+                    onClick={handleProcessPasteModal}
+                    className="btn-pro-primary px-5 py-2.5 rounded-xl text-xs font-mono font-bold cursor-pointer disabled:opacity-50 flex items-center gap-2 shadow-md"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    <span>
+                      {pasteMergeMode === 'merge' ? 'Fusionar e Incorporar' : 'Reemplazar Participantes'}
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           )}

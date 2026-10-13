@@ -638,9 +638,10 @@ async function fetchTikTokLive(postUrl: string): Promise<{ comments: Participant
     let cursor = 0;
     const participants: Participant[] = [];
     let hasMore = true;
+    let realTotalComments = 0;
 
-    // Paginar hasta 300 comentarios en vivo vía JSON API de TikTok
-    for (let page = 0; page < 6 && hasMore && participants.length < 300; page++) {
+    // Paginar hasta 500 comentarios en vivo vía JSON API de TikTok
+    for (let page = 0; page < 10 && hasMore && participants.length < 500; page++) {
       const commentApiUrl = `https://www.tiktok.com/api/comment/list/?aid=1988&aweme_id=${encodeURIComponent(awemeId)}&count=50&cursor=${cursor}`;
       const reqHeaders: Record<string, string> = {
         'User-Agent':
@@ -659,6 +660,10 @@ async function fetchTikTokLive(postUrl: string): Promise<{ comments: Participant
 
       if (!res.ok) break;
       const data = (await res.json()) as any;
+      if (typeof data.total === 'number' && data.total > 0 && !realTotalComments) {
+        realTotalComments = data.total;
+      }
+
       const comments = Array.isArray(data.comments) ? data.comments : [];
       for (const c of comments) {
         participants.push({
@@ -682,9 +687,9 @@ async function fetchTikTokLive(postUrl: string): Promise<{ comments: Participant
       return {
         comments: participants,
         meta: {
-          title: `TikTok Video (${awemeId})`,
-          author: creator ? `@${creator}` : 'TikTok Creator',
-          totalComments: participants.length,
+          title: `Video en TikTok (${creator ? `@${creator}` : awemeId})`,
+          author: creator ? `@${creator}` : 'Creador de TikTok',
+          totalComments: realTotalComments > 0 ? realTotalComments : participants.length,
           postId: awemeId,
           requiresAuth: false,
         }
@@ -698,6 +703,7 @@ async function fetchTikTokLive(postUrl: string): Promise<{ comments: Participant
 
 function extractCommentsFromFacebookHtml(html: string): Participant[] {
   const participants: Participant[] = [];
+  const seen = new Set<string>();
   const scriptRegex = /<script\b[^>]*type=["']application\/json["'][^>]*>([\s\S]*?)<\/script>/gi;
   let match;
   while ((match = scriptRegex.exec(html)) !== null) {
@@ -708,20 +714,39 @@ function extractCommentsFromFacebookHtml(html: string): Participant[] {
         const traverse = (obj: any) => {
           if (!obj || typeof obj !== 'object') return;
           if (
-            (obj.__typename === 'Comment' && (obj.body?.text || obj.message?.text)) ||
-            (obj.comment_text && (obj.author?.name || obj.from?.name))
+            obj.__typename === 'Comment' ||
+            (obj.author && (obj.body?.text || obj.message?.text || obj.comment_text))
           ) {
-            const author = obj.author?.name || obj.from?.name || obj.preferred_name || 'usuario_facebook';
-            const text = obj.body?.text || obj.message?.text || obj.comment_text || '';
-            if (text && author) {
-              participants.push({
-                id: `fb-${obj.id || Date.now()}-${participants.length}`,
-                username: author.replace(/^@/, ''),
-                commentText: text,
-                isEligible: true,
-                timestamp: obj.created_time ? new Date(obj.created_time * 1000).toISOString() : new Date().toISOString(),
-                network: 'facebook',
-              });
+            const author =
+              obj.author?.name ||
+              obj.author?.preferred_name ||
+              obj.comet_comment_author_name_and_badges_renderer?.comment?.user?.name ||
+              obj.comet_comment_author_name_and_badges_renderer?.comment?.author?.name ||
+              obj.from?.name ||
+              obj.preferred_name ||
+              obj.author?.short_name ||
+              '';
+            let text =
+              obj.body?.text ||
+              obj.message?.text ||
+              obj.comment_text ||
+              '';
+            if (!text && (obj.attachments?.length || obj.attachment || obj.attached_story || obj.comet_comment_author_name_and_badges_renderer?.comment?.parent_post_story?.attachments)) {
+              text = '📷 [Foto / Sticker / Archivo]';
+            }
+            if (author) {
+              const key = `${author.toLowerCase().trim()}:${(text || '').trim()}`;
+              if (!seen.has(key)) {
+                seen.add(key);
+                participants.push({
+                  id: `fb-${obj.legacy_fbid || obj.id || Date.now()}-${participants.length}`,
+                  username: author.replace(/^@/, '').trim(),
+                  commentText: text ? text.trim() : 'Comentario con interacción',
+                  isEligible: true,
+                  timestamp: obj.created_time ? new Date(obj.created_time * 1000).toISOString() : new Date().toISOString(),
+                  network: 'facebook',
+                });
+              }
             }
           }
           if (Array.isArray(obj)) {
@@ -752,7 +777,7 @@ async function fetchFacebookLive(postUrl: string, accountToken?: string): Promis
   let postTitle = '';
   let totalComments = 0;
 
-  // 1. Resolver redirecciones de URLs compartidas (ej. web.facebook.com/share/r/1DsZQxh914/)
+  // 1. Resolver redirecciones de URLs compartidas (ej. web.facebook.com/share/p/1JMfSfa5wc/)
   try {
     const headers: Record<string, string> = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -807,19 +832,49 @@ async function fetchFacebookLive(postUrl: string, accountToken?: string): Promis
         if (pipeMatch) {
           pageName = decodeHtmlEntities(pipeMatch[1].trim());
         } else {
-          const nameMatch = html.match(/"name":"([^"]+ - [^"]+)"/);
-          if (nameMatch) pageName = decodeHtmlEntities(nameMatch[1]);
+          const actorsMatch =
+            html.match(/"actors":\[\{[^}]*"name":"([^"]+)"/) ||
+            html.match(/<meta property="og:title" content="([^"]+)"/);
+          if (actorsMatch) {
+            pageName = decodeHtmlEntities(actorsMatch[1]);
+          } else {
+            const nameMatch = html.match(/"name":"([^"]+ - [^"]+)"/);
+            if (nameMatch) pageName = decodeHtmlEntities(nameMatch[1]);
+          }
         }
       }
 
-      const countMatch = html.match(/"total_comment_count":(\d+)/);
+      // Detectar conteo total de comentarios (formato Relay de Facebook: total_count o comments_count)
+      const countMatch =
+        html.match(/"comments":\{[^}]*"total_count":(\d+)/) ||
+        html.match(/"total_count":(\d+)/) ||
+        html.match(/"total_comment_count":(\d+)/) ||
+        html.match(/(\d+)\s*comentarios/i) ||
+        html.match(/(\d+)\s*comments/i);
       if (countMatch) totalComments = parseInt(countMatch[1], 10);
 
-      const pageIdMatch = html.match(/"page_id":"(\d+)"/);
+      const pageIdMatch =
+        html.match(/"page_id":"(\d+)"/) ||
+        html.match(/"owning_profile":\{[^}]*"id":"(\d+)"/);
       if (pageIdMatch) pageId = pageIdMatch[1];
 
-      const videoIdMatch = html.match(/"video_id":"(\d+)"/);
-      if (videoIdMatch) reelOrPostId = videoIdMatch[1];
+      const postIdMatch =
+        html.match(/"post_id":"(\d+)"/) ||
+        html.match(/"video_id":"(\d+)"/);
+      if (postIdMatch) reelOrPostId = postIdMatch[1];
+
+      if (!reelOrPostId) {
+        const fbIdMatch = html.match(/"id":"(ZmVlZGJhY2s[^"]+)"/);
+        if (fbIdMatch) {
+          try {
+            const dec = Buffer.from(fbIdMatch[1], 'base64').toString();
+            const m = dec.match(/feedback:(\d+)/);
+            if (m) reelOrPostId = m[1];
+          } catch {
+            // noop
+          }
+        }
+      }
 
       // Verificar si el HTML SSR trajo los nodos de comentarios (ej. si hay sesión/cookies activas)
       const htmlComments = extractCommentsFromFacebookHtml(html);
@@ -828,7 +883,7 @@ async function fetchFacebookLive(postUrl: string, accountToken?: string): Promis
           comments: htmlComments,
           meta: {
             title: postTitle,
-            author: pageName,
+            author: pageName || 'Página de Facebook',
             totalComments: totalComments || htmlComments.length,
             postId: reelOrPostId || undefined,
             requiresAuth: false,
@@ -972,8 +1027,17 @@ class MockAdapter implements SocialProviderAdapter {
       return { comments: liveComments, latencyMs, provider: this.platform, mode: 'live', meta };
     }
 
+    const handleMatch =
+      postUrl.match(/(?:x\.com|twitter\.com)\/([a-zA-Z0-9_]+)/i) ||
+      postUrl.match(/(?:threads\.net|tiktok\.com)\/@([a-zA-Z0-9_.]+)/i) ||
+      postUrl.match(/instagram\.com\/([a-zA-Z0-9_.]+)/i);
+    const nonUserTerms = ['p', 'reel', 'tv', 'share', 'status', 'explore', 'watch'];
+    const detectedAuthor = handleMatch && !nonUserTerms.includes(handleMatch[1].toLowerCase())
+      ? `@${handleMatch[1]}`
+      : `@creador_${this.platform}`;
+
     const fallbackCount = meta?.totalComments && meta.totalComments > 0 ? meta.totalComments : 15;
-    const fallbackList = generateContextualParticipants(this.platform, postUrl, fallbackCount);
+    const fallbackList = generateContextualParticipants(this.platform, postUrl, fallbackCount, detectedAuthor);
     logEvent('social.fetch', { provider: this.platform, latencyMs, mode: 'mock-verified', postUrl, count: fallbackList.length });
     return {
       comments: fallbackList,
@@ -982,7 +1046,7 @@ class MockAdapter implements SocialProviderAdapter {
       mode: 'mock-verified',
       meta: meta || {
         title: `Publicación en ${this.platform.toUpperCase()}`,
-        author: `@creador_${this.platform}`,
+        author: detectedAuthor,
         totalComments: fallbackCount,
         requiresAuth: false,
       }

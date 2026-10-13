@@ -1,6 +1,132 @@
 {
   "giveaways": [
     {
+      "id": "sw-mv63j72y",
+      "title": "Sorteo Oficial de Aniversario",
+      "platform": "youtube",
+      "network": "youtube",
+      "postUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "authorUsername": "@yourlocalragingTVaddict",
+      "totalCommentsCount": 515,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 0,
+        "blockedUsers": [
+          "bot_spammer_3000"
+        ],
+        "winnersCount": 1,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "win-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-10-13T03:03:14.429Z",
+          "participant": {
+            "id": "Ugw1tpIYg_PAwdPneep4AaABAg",
+            "username": "yourlocalragingTVaddict",
+            "commentText": "i love how everyone just got summoned here now for the same reason",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "sub-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-10-13T03:03:14.429Z",
+          "participant": {
+            "id": "UgzF_795FpCzjD8HVkh4AaABAg",
+            "username": "CarlyJade-y3e",
+            "commentText": "I scaned a QR code",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "sub-2",
+          "position": 2,
+          "type": "substitute",
+          "selectedAt": "2026-10-13T03:03:14.429Z",
+          "participant": {
+            "id": "UgyEnXfdC-umwvTt8JF4AaABAg",
+            "username": "Oatman69",
+            "commentText": "Gonna flag this for nudity so I can rick roll the YouTube staff",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-6A54EF221F",
+      "verificationHash": "6a54ef221fe0b885feee2ca489beff09736495540b15e056ce02eade7cd4fe58",
+      "executedAt": "2026-10-13T03:03:14.429Z",
+      "createdAt": "2026-10-13T03:03:14.429Z"
+    },
+    {
+      "id": "sw-mv5mn3cm",
+      "title": "Sorteo Oficial de Aniversario",
+      "platform": "youtube",
+      "network": "youtube",
+      "postUrl": "https://youtu.be/dQw4w9WgXcQ?si=V056QtYoVTVsxZnw",
+      "authorUsername": "@CarlyJade-y3e",
+      "totalCommentsCount": 106,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 0,
+        "blockedUsers": [
+          "bot_spammer_3000"
+        ],
+        "winnersCount": 1,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "win-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-10-12T19:10:26.506Z",
+          "participant": {
+            "id": "UgzF_795FpCzjD8HVkh4AaABAg",
+            "username": "CarlyJade-y3e",
+            "commentText": "I scaned a QR code",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "sub-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-10-12T19:10:26.506Z",
+          "participant": {
+            "id": "Ugw2s-NbXQSsHXgOq-N4AaABAg",
+            "username": "WilliamTucker-h8k",
+            "commentText": "Just scanned the QR Code poster on College Game-day and it brought me here. Good job to whoever did that. 💯",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "sub-2",
+          "position": 2,
+          "type": "substitute",
+          "selectedAt": "2026-10-12T19:10:26.506Z",
+          "participant": {
+            "id": "UgwW_cL1iucaVqoLCZV4AaABAg",
+            "username": "cal3819",
+            "commentText": "When they put ads so you can't rickroll anymore",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-CE4A00F26F",
+      "verificationHash": "ce4a00f26f956a00e065736153ed368815a8e73dd9f6b264aa9e31941163eb7a",
+      "executedAt": "2026-10-12T19:10:26.506Z",
+      "createdAt": "2026-10-12T19:10:26.506Z"
+    },
+    {
       "id": "gw-ig-001",
       "title": "Gran Sorteo Tech 2026 — iPhone 16 Pro Max",
       "platform": "instagram",
@@ -202,6 +328,28 @@
     }
   ],
   "users": [
+    {
+      "id": "usr_demo_demoj61sej",
+      "name": "demo-j61sej",
+      "email": "demo-j61sej@demo.sorteos.local",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 2,
+      "commentsConsumed": 515,
+      "commentsLimit": 10000,
+      "joinedAt": "2026-10-13"
+    },
+    {
+      "id": "usr_demo_demoofu47j",
+      "name": "demo-ofu47j",
+      "email": "demo-ofu47j@demo.sorteos.local",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 2,
+      "commentsConsumed": 106,
+      "commentsLimit": 10000,
+      "joinedAt": "2026-10-12"
+    },
     {
       "id": "usr-atp-dev",
       "name": "ATP Dev (Oficial)",
