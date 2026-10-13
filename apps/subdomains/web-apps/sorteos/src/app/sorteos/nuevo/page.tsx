@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
@@ -27,7 +27,9 @@ import {
   Code2,
   Trash2,
   Plus,
-  Clipboard
+  Clipboard,
+  Zap,
+  Rocket
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon, TikTokIcon, XIcon, ThreadsIcon } from '@/components/SocialIcons';
 import { SocialNetwork, GiveawayRules, Participant, Giveaway } from '@/lib/types';
@@ -147,6 +149,7 @@ interface AdditionalSource {
     postId?: string;
     requiresAuth?: boolean;
     notice?: string;
+    continuationToken?: string;
   } | null>(null);
 
   const handleAddSource = () => {
@@ -525,9 +528,13 @@ interface AdditionalSource {
   };
 
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const [isAutoLoading, setIsAutoLoading] = useState<boolean>(false);
+  const [autoLoadTarget, setAutoLoadTarget] = useState<number>(5000);
+  const cancelAutoLoadRef = useRef<boolean>(false);
 
+  // Carga manual de un lote adicional de 500 comentarios
   const handleLoadMoreComments = async () => {
-    if (!postUrl.trim() || isLoadingMore) return;
+    if (!postUrl.trim() || isLoadingMore || isAutoLoading) return;
     setIsLoadingMore(true);
     try {
       const res = await api<{
@@ -539,8 +546,17 @@ interface AdditionalSource {
         body: {
           platform: network,
           postUrl: postUrl.trim(),
+          continuationToken: postMeta?.continuationToken,
+          limit: 500,
         },
       });
+      if (res.meta) {
+        setPostMeta((prev) => ({
+          ...prev,
+          ...res.meta,
+          totalComments: prev?.totalComments || res.meta?.totalComments,
+        }));
+      }
       if (res.comments && res.comments.length > 0) {
         setRawComments((prev) => {
           const existingIds = new Set(prev.map((p) => p.id));
@@ -555,6 +571,72 @@ interface AdditionalSource {
     } finally {
       setIsLoadingMore(false);
     }
+  };
+
+  // Carga progresiva automática hasta la meta deseada (ej. 2.500 o 5.000 comentarios)
+  const handleAutoLoadTarget = async (targetCount: number) => {
+    if (!postUrl.trim() || isAutoLoading || isLoadingMore) return;
+    setIsAutoLoading(true);
+    setAutoLoadTarget(targetCount);
+    cancelAutoLoadRef.current = false;
+
+    let currentToken = postMeta?.continuationToken;
+    let currentTotal = rawComments.length;
+
+    try {
+      while (currentTotal < targetCount && currentToken && !cancelAutoLoadRef.current) {
+        const res = await api<{
+          success: boolean;
+          comments: Participant[];
+          meta?: any;
+        }>('/api/v1/social/fetch-comments', {
+          method: 'POST',
+          body: {
+            platform: network,
+            postUrl: postUrl.trim(),
+            continuationToken: currentToken,
+            limit: 500,
+          },
+        });
+
+        if (!res.success || !res.comments || res.comments.length === 0) {
+          break;
+        }
+
+        currentToken = res.meta?.continuationToken || undefined;
+
+        if (res.meta) {
+          setPostMeta((prev) => ({
+            ...prev,
+            ...res.meta,
+            totalComments: prev?.totalComments || res.meta?.totalComments,
+          }));
+        }
+
+        const newBatch = res.comments;
+        setRawComments((prev) => {
+          const existingIds = new Set(prev.map((p) => p.id));
+          const newOnes = newBatch
+            .filter((c) => !existingIds.has(c.id))
+            .map((c) => ({ ...c, network }));
+          currentTotal = prev.length + newOnes.length;
+          return [...prev, ...newOnes];
+        });
+
+        if (!currentToken || cancelAutoLoadRef.current) break;
+        // Breve pausa para asegurar estabilidad de conexión
+        await new Promise((resolve) => setTimeout(resolve, 350));
+      }
+    } catch {
+      // noop
+    } finally {
+      setIsAutoLoading(false);
+    }
+  };
+
+  const handleCancelAutoLoad = () => {
+    cancelAutoLoadRef.current = true;
+    setIsAutoLoading(false);
   };
 
   // Parser Universal inteligente de comentarios (Soporta JSON de Facebook/TikTok/YouTube/Instagram, CSV, TSV y Texto Plano)
@@ -1703,6 +1785,101 @@ interface AdditionalSource {
               </button>
             </div>
           )}
+          {/* Panel de Carga Progresiva / Ampliación de Participantes (Hasta 5.000 reales) */}
+          {(network === 'youtube' || postMeta?.continuationToken) && (postMeta?.totalComments ? postMeta.totalComments > rawComments.length : true) && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 border border-purple-500/20 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                    <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white font-display">
+                      Ampliación de Participantes en Vivo
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20">
+                      Hasta 5.000 reales
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-zinc-400 mt-1">
+                    Actualmente tienes{' '}
+                    <strong className="text-purple-600 dark:text-purple-300 font-mono font-bold">
+                      {rawComments.length.toLocaleString('es-ES')}
+                    </strong>{' '}
+                    participantes en la bolsa. Puedes ampliar progresivamente para incorporar a todos los concursantes.
+                  </p>
+                </div>
+
+                {isAutoLoading ? (
+                  <button
+                    type="button"
+                    onClick={handleCancelAutoLoad}
+                    className="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-mono text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    <span>Detener Carga</span>
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      disabled={isLoadingMore}
+                      onClick={handleLoadMoreComments}
+                      className="px-3 py-1.5 rounded-xl bg-white dark:bg-white/10 hover:bg-purple-50 dark:hover:bg-purple-500/20 text-slate-800 dark:text-white border border-slate-300 dark:border-white/10 font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isLoadingMore ? 'animate-spin' : ''}`} />
+                      <span>+500 más</span>
+                    </button>
+                    {rawComments.length < 2500 && (
+                      <button
+                        type="button"
+                        disabled={isLoadingMore}
+                        onClick={() => handleAutoLoadTarget(2500)}
+                        className="px-3 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-500/20 hover:bg-purple-200 dark:hover:bg-purple-500/30 text-purple-800 dark:text-purple-200 border border-purple-300 dark:border-purple-500/30 font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs disabled:opacity-50"
+                      >
+                        <Zap className="w-3.5 h-3.5 text-amber-500" />
+                        <span>Hasta 2.500</span>
+                      </button>
+                    )}
+                    {rawComments.length < 5000 && (
+                      <button
+                        type="button"
+                        disabled={isLoadingMore}
+                        onClick={() => handleAutoLoadTarget(5000)}
+                        className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm disabled:opacity-50"
+                      >
+                        <Rocket className="w-3.5 h-3.5" />
+                        <span>🚀 Cargar hasta 5.000</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Barra de Progreso en Vivo */}
+              {isAutoLoading && (
+                <div className="space-y-1.5 pt-1 animate-in fade-in">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-purple-700 dark:text-purple-300">
+                    <span className="flex items-center gap-1.5">
+                      <RefreshCw className="w-3 h-3 animate-spin text-purple-500" />
+                      Descargando comentarios en vivo desde YouTube...
+                    </span>
+                    <span className="font-bold">
+                      {rawComments.length.toLocaleString('es-ES')} / {autoLoadTarget.toLocaleString('es-ES')} (
+                      {Math.min(100, Math.round((rawComments.length / autoLoadTarget) * 100))}%)
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 transition-all duration-300"
+                      style={{
+                        width: `${Math.min(100, Math.max(5, Math.round((rawComments.length / autoLoadTarget) * 100)))}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-mono font-bold text-slate-800 dark:text-zinc-200">
@@ -1728,18 +1905,6 @@ interface AdditionalSource {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              {network === 'youtube' && postMeta?.totalComments && postMeta.totalComments > rawComments.length && (
-                <button
-                  type="button"
-                  disabled={isLoadingMore}
-                  onClick={handleLoadMoreComments}
-                  className="px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/20 font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs disabled:opacity-50"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${isLoadingMore ? 'animate-spin' : ''}`} />
-                  <span>{isLoadingMore ? 'Cargando...' : '+ Cargar más (+100)'}</span>
-                </button>
-              )}
-
               <button
                 type="button"
                 onClick={() => setIsAddParticipantModalOpen(true)}
@@ -1763,9 +1928,9 @@ interface AdditionalSource {
             </div>
           </div>
 
-          {/* Comments List Preview */}
+          {/* Comments List Preview (Optimizado para ultra rendimiento con miles de comentarios) */}
           <div className="space-y-2.5 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
-            {rawComments.map((c) => (
+            {rawComments.slice(0, 100).map((c) => (
               <div
                 key={c.id}
                 className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 flex items-start justify-between gap-3 text-xs group hover:border-slate-300 dark:hover:border-white/10 transition-colors"
@@ -1797,6 +1962,12 @@ interface AdditionalSource {
               </div>
             ))}
           </div>
+
+          {rawComments.length > 100 && (
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 text-center text-xs font-mono text-slate-500 dark:text-zinc-400">
+              Mostrando los primeros 100 comentarios de <strong className="text-purple-600 dark:text-purple-300 font-bold">{rawComments.length.toLocaleString('es-ES')}</strong> participantes cargados. ¡Todos los {rawComments.length.toLocaleString('es-ES')} participan en el sorteo!
+            </div>
+          )}
 
           {/* Modal para añadir un participante individual */}
           {isAddParticipantModalOpen && (

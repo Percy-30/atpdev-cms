@@ -8,6 +8,11 @@
  *  - Cuando existan `META_ACCESS_TOKEN` / `YOUTUBE_API_KEY`, el adaptador real
  *    se activa automáticamente (provider real con fallback a mock + aviso).
  */
+import dns from 'node:dns';
+if (dns && typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
+
 import type { Participant } from '@/lib/types';
 import { logEvent } from './http';
 
@@ -18,6 +23,8 @@ export interface PostMetadata {
   postId?: string;
   requiresAuth?: boolean;
   notice?: string;
+  continuationToken?: string;
+  hasMore?: boolean;
 }
 
 export interface FetchResult {
@@ -30,7 +37,12 @@ export interface FetchResult {
 
 export interface SocialProviderAdapter {
   platform: 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads';
-  fetchComments(postUrl: string, accountToken?: string): Promise<FetchResult>;
+  fetchComments(
+    postUrl: string,
+    accountToken?: string,
+    continuationToken?: string,
+    limit?: number
+  ): Promise<FetchResult>;
 }
 
 export function generateContextualParticipants(
@@ -263,7 +275,7 @@ async function fetchYoutubeLive(videoId: string): Promise<Participant[] | null> 
   try {
     const out: Participant[] = [];
     let page = '';
-    for (let i = 0; i < 5 && out.length < 500; i++) {
+    for (let i = 0; i < 50 && out.length < 5000; i++) {
       const u = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${encodeURIComponent(videoId)}&maxResults=100&pageToken=${page}&key=${encodeURIComponent(key)}&textFormat=plainText`;
       const res = await fetch(u);
       if (!res.ok) return null;
@@ -436,8 +448,9 @@ async function fetchMetaLive(
 
 async function fetchYoutubeInnertubeLive(
   videoId: string,
-  maxPages: number = 5,
-  initialContinuationToken?: string
+  maxPages: number = 25,
+  initialContinuationToken?: string,
+  maxTargetCount: number = 5000
 ): Promise<{ comments: Participant[] | null; meta?: PostMetadata }> {
   try {
     let apiKey: string | null = null;
@@ -446,35 +459,35 @@ async function fetchYoutubeInnertubeLive(
     let postTitle = 'Video de YouTube';
     let authorName = 'Canal de YouTube';
 
-    // 1. Si no hay continuationToken inicial, cargar la página HTML para obtener API Key y primer token
-    if (!continuationToken) {
-      const videoPageUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
-      const pageRes = await fetch(videoPageUrl, {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-          'Accept-Language': 'es-419,es;q=0.9,en;q=0.8',
-        },
-        signal: AbortSignal.timeout(8000),
-      });
-      if (!pageRes.ok) return { comments: null };
-      const html = await pageRes.text();
+    // 1. Cargar la página HTML para obtener API Key, clientVersion y título/autor
+    const videoPageUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
+    const pageRes = await fetch(videoPageUrl, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept-Language': 'es-419,es;q=0.9,en;q=0.8',
+      },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!pageRes.ok) return { comments: null };
+    const html = await pageRes.text();
 
-      const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
-      const clientVersionMatch = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
-      const continuationMatch = html.match(/"continuationCommand":\{"token":"([^"]+)"/);
+    const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
+    const clientVersionMatch = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
+    const continuationMatch = html.match(/"continuationCommand":\{"token":"([^"]+)"/);
 
-      if (!apiKeyMatch || !continuationMatch) return { comments: null };
+    if (!apiKeyMatch) return { comments: null };
 
-      apiKey = apiKeyMatch[1];
-      if (clientVersionMatch) clientVersion = clientVersionMatch[1];
+    apiKey = apiKeyMatch[1];
+    if (clientVersionMatch) clientVersion = clientVersionMatch[1];
+    if (!continuationToken && continuationMatch) {
       continuationToken = continuationMatch[1];
-
-      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
-      if (titleMatch) postTitle = titleMatch[1].replace(/ - YouTube$/, '').trim();
-      const authorMatch = html.match(/"author":"([^"]+)"/);
-      if (authorMatch) authorName = authorMatch[1];
     }
+
+    const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+    if (titleMatch) postTitle = titleMatch[1].replace(/ - YouTube$/, '').trim();
+    const authorMatch = html.match(/"author":"([^"]+)"/);
+    if (authorMatch) authorName = authorMatch[1];
 
     if (!apiKey && !continuationToken) return { comments: null };
 
@@ -483,7 +496,7 @@ async function fetchYoutubeInnertubeLive(
     let pagesFetched = 0;
 
     // 2. Paginar múltiples tandas en vivo para recopilar comentarios reales
-    while (continuationToken && pagesFetched < maxPages && participants.length < 500) {
+    while (continuationToken && pagesFetched < maxPages && participants.length < maxTargetCount) {
       const nextUrl = `https://www.youtube.com/youtubei/v1/next?key=${apiKey}`;
       const nextRes = await fetch(nextUrl, {
         method: 'POST',
@@ -581,9 +594,11 @@ async function fetchYoutubeInnertubeLive(
         meta: {
           title: postTitle,
           author: authorName,
-          totalComments: realTotalComments > 0 ? realTotalComments : participants.length,
+          totalComments: realTotalComments > 0 ? realTotalComments : undefined,
           postId: videoId,
           requiresAuth: false,
+          continuationToken: continuationToken || undefined,
+          hasMore: Boolean(continuationToken),
         },
       };
     }
@@ -899,7 +914,12 @@ class MockAdapter implements SocialProviderAdapter {
   constructor(platform: 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads') {
     this.platform = platform;
   }
-  async fetchComments(postUrl: string, accountToken?: string): Promise<FetchResult> {
+  async fetchComments(
+    postUrl: string,
+    accountToken?: string,
+    continuationToken?: string,
+    limit?: number
+  ): Promise<FetchResult> {
     const t0 = Date.now();
     let isTrulyLive = false;
     let liveComments: Participant[] | null = null;
@@ -911,7 +931,8 @@ class MockAdapter implements SocialProviderAdapter {
         liveComments = await fetchYoutubeLive(vid);
         if (liveComments && liveComments.length > 0) isTrulyLive = true;
         if (!liveComments || liveComments.length === 0) {
-          const ytResult = await fetchYoutubeInnertubeLive(vid);
+          const maxPages = limit && limit > 0 ? Math.ceil(limit / 20) : 25; // 25 páginas * 20 = 500 comentarios por lote
+          const ytResult = await fetchYoutubeInnertubeLive(vid, maxPages, continuationToken, 5000);
           liveComments = ytResult.comments;
           meta = ytResult.meta;
           if (liveComments && liveComments.length > 0) isTrulyLive = true;

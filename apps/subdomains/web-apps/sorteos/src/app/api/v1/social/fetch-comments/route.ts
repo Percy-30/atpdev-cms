@@ -57,8 +57,11 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const continuationToken = cleanStr(body.continuationToken, 1000) || undefined;
+  const limit = typeof body.limit === 'number' ? body.limit : undefined;
+
   const adapter = getAdapter(platform);
-  const result = await adapter.fetchComments(postUrl, decryptedToken);
+  const result = await adapter.fetchComments(postUrl, decryptedToken, continuationToken, limit);
 
   logEvent('social.fetch_comments_api', {
     userId: auth.userId,
