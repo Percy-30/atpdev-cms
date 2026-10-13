@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const continuationToken = cleanStr(body.continuationToken, 1000) || undefined;
+  const continuationToken = cleanStr(body.continuationToken, 10000) || undefined;
   const limit = typeof body.limit === 'number' ? body.limit : undefined;
 
   const adapter = getAdapter(platform);
