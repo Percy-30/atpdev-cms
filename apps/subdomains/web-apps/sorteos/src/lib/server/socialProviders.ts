@@ -818,66 +818,99 @@ async function fetchFacebookLive(postUrl: string, accountToken?: string): Promis
           .replace(/&gt;/g, '>')
           .replace(/&apos;/g, "'");
 
-      const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
-      if (titleMatch) postTitle = decodeHtmlEntities(titleMatch[1].replace(/ \| Facebook$/i, '').trim());
+      const parseMetaFromHtml = (content: string) => {
+        const titleMatch = content.match(/<title>([^<]+)<\/title>/i);
+        if (titleMatch) {
+          const t = decodeHtmlEntities(titleMatch[1].replace(/ \| Facebook$/i, '').trim());
+          if (t && t !== 'Facebook') postTitle = t;
+        }
 
-      const descMatch = html.match(/<meta property="og:description" content="([^"]+)"/i);
-      if (descMatch) postTitle = decodeHtmlEntities(descMatch[1]);
+        const descMatch = content.match(/<meta property="og:description" content="([^"]+)"/i);
+        if (descMatch) postTitle = decodeHtmlEntities(descMatch[1]);
 
-      const ownerMatch = html.match(/"video_owner":\{[^}]*"name":"([^"]+)"/);
-      if (ownerMatch) {
-        pageName = decodeHtmlEntities(ownerMatch[1]);
-      } else {
-        const pipeMatch = html.match(/\|\s*([^"|]+)"\s*(?:type="application\/json\+oembed"|name="twitter:title"|\/>)/);
-        if (pipeMatch) {
-          pageName = decodeHtmlEntities(pipeMatch[1].trim());
+        const ownerMatch = content.match(/"video_owner":\{[^}]*"name":"([^"]+)"/);
+        if (ownerMatch) {
+          pageName = decodeHtmlEntities(ownerMatch[1]);
         } else {
-          const actorsMatch =
-            html.match(/"actors":\[\{[^}]*"name":"([^"]+)"/) ||
-            html.match(/<meta property="og:title" content="([^"]+)"/);
-          if (actorsMatch) {
-            pageName = decodeHtmlEntities(actorsMatch[1]);
+          const pipeMatch = content.match(/\|\s*([^"|]+)"\s*(?:type="application\/json\+oembed"|name="twitter:title"|\/>)/);
+          if (pipeMatch) {
+            pageName = decodeHtmlEntities(pipeMatch[1].trim());
           } else {
-            const nameMatch = html.match(/"name":"([^"]+ - [^"]+)"/);
-            if (nameMatch) pageName = decodeHtmlEntities(nameMatch[1]);
+            const actorsMatch =
+              content.match(/"actors":\[\{[^}]*"name":"([^"]+)"/) ||
+              content.match(/<meta property="og:title" content="([^"]+)"/);
+            if (actorsMatch) {
+              pageName = decodeHtmlEntities(actorsMatch[1]);
+            } else {
+              const nameMatch = content.match(/"name":"([^"]+ - [^"]+)"/);
+              if (nameMatch) pageName = decodeHtmlEntities(nameMatch[1]);
+            }
           }
         }
-      }
 
-      // Detectar conteo total de comentarios (formato Relay de Facebook: total_count o comments_count)
-      const countMatch =
-        html.match(/"comments":\{[^}]*"total_count":(\d+)/) ||
-        html.match(/"total_count":(\d+)/) ||
-        html.match(/"total_comment_count":(\d+)/) ||
-        html.match(/(\d+)\s*comentarios/i) ||
-        html.match(/(\d+)\s*comments/i);
-      if (countMatch) totalComments = parseInt(countMatch[1], 10);
+        // Detectar conteo total de comentarios (formato Relay de Facebook: total_count o comments_count)
+        const countMatch =
+          content.match(/"comments":\{[^}]*"total_count":(\d+)/) ||
+          content.match(/"total_count":(\d+)/) ||
+          content.match(/"total_comment_count":(\d+)/) ||
+          content.match(/(\d+)\s*comentarios/i) ||
+          content.match(/(\d+)\s*comments/i);
+        if (countMatch) totalComments = parseInt(countMatch[1], 10);
 
-      const pageIdMatch =
-        html.match(/"page_id":"(\d+)"/) ||
-        html.match(/"owning_profile":\{[^}]*"id":"(\d+)"/);
-      if (pageIdMatch) pageId = pageIdMatch[1];
+        const pageIdMatch =
+          content.match(/"page_id":"(\d+)"/) ||
+          content.match(/"owning_profile":\{[^}]*"id":"(\d+)"/);
+        if (pageIdMatch) pageId = pageIdMatch[1];
 
-      const postIdMatch =
-        html.match(/"post_id":"(\d+)"/) ||
-        html.match(/"video_id":"(\d+)"/);
-      if (postIdMatch) reelOrPostId = postIdMatch[1];
+        const postIdMatch =
+          content.match(/"post_id":"(\d+)"/) ||
+          content.match(/"video_id":"(\d+)"/);
+        if (postIdMatch) reelOrPostId = postIdMatch[1];
 
-      if (!reelOrPostId) {
-        const fbIdMatch = html.match(/"id":"(ZmVlZGJhY2s[^"]+)"/);
-        if (fbIdMatch) {
+        if (!reelOrPostId) {
+          const fbIdMatch = content.match(/"id":"(ZmVlZGJhY2s[^"]+)"/);
+          if (fbIdMatch) {
+            try {
+              const dec = Buffer.from(fbIdMatch[1], 'base64').toString();
+              const m = dec.match(/feedback:(\d+)/);
+              if (m) reelOrPostId = m[1];
+            } catch {
+              // noop
+            }
+          }
+        }
+      };
+
+      parseMetaFromHtml(html);
+
+      // 1. Verificar si el HTML SSR trajo los nodos de comentarios
+      let htmlComments = extractCommentsFromFacebookHtml(html);
+
+      // 2. Si el HTML inicial no trajo comentarios (común en Reels y videos compartidos /share/r/ o /share/v/),
+      // seguir el enlace canonical que Meta genera para el post de video completo
+      if (htmlComments.length === 0) {
+        const canonicalMatch = html.match(/<link rel="canonical" href="([^"]+)"/i);
+        const canonicalUrl = canonicalMatch ? canonicalMatch[1] : null;
+
+        if (canonicalUrl && canonicalUrl !== resolvedUrl && (canonicalUrl.includes('/videos/') || canonicalUrl.includes('/watch/'))) {
           try {
-            const dec = Buffer.from(fbIdMatch[1], 'base64').toString();
-            const m = dec.match(/feedback:(\d+)/);
-            if (m) reelOrPostId = m[1];
+            const canonicalRes = await fetch(canonicalUrl, {
+              method: 'GET',
+              redirect: 'follow',
+              headers,
+              signal: AbortSignal.timeout(8000),
+            });
+            if (canonicalRes.ok) {
+              const canonicalHtml = await canonicalRes.text();
+              parseMetaFromHtml(canonicalHtml);
+              htmlComments = extractCommentsFromFacebookHtml(canonicalHtml);
+            }
           } catch {
             // noop
           }
         }
       }
 
-      // Verificar si el HTML SSR trajo los nodos de comentarios (ej. si hay sesión/cookies activas)
-      const htmlComments = extractCommentsFromFacebookHtml(html);
       if (htmlComments.length > 0) {
         return {
           comments: htmlComments,
