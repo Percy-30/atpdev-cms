@@ -17,12 +17,19 @@ export function MobileNavMenu() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setIsOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     } else {
       document.body.style.overflow = '';
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [isOpen]);
 
   const drawerContent = isOpen && mounted ? createPortal(
@@ -35,6 +42,7 @@ export function MobileNavMenu() {
 
       {/* Slide-over Drawer Panel */}
       <div
+        id="mobile-nav-drawer"
         className="mobile-nav-drawer fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-[#070d14] border-l border-slate-200 dark:border-white/15 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out"
       >
         <div className="space-y-6">
@@ -225,7 +233,9 @@ export function MobileNavMenu() {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="mobile-hamburger-btn p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 transition-colors cursor-pointer flex items-center justify-center shrink-0 shadow-xs"
-        aria-label="Abrir menú"
+        aria-label={isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
+        aria-expanded={isOpen}
+        aria-controls="mobile-nav-drawer"
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
