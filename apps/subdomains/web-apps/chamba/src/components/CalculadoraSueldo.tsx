@@ -111,13 +111,14 @@ export function CalculadoraSueldo() {
         <div className="lg:col-span-6 space-y-6">
           {/* Sueldo Bruto Input */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center justify-between">
+            <label htmlFor="sueldo-bruto-input" className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center justify-between">
               <span>Sueldo Bruto Mensual (PEN)</span>
               <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">S/ {sueldoBruto.toLocaleString()}</span>
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold font-mono text-lg">S/</span>
               <input
+                id="sueldo-bruto-input"
                 type="number"
                 value={sueldoBruto}
                 onChange={(e) => setSueldoBruto(Math.max(0, Number(e.target.value)))}
@@ -131,6 +132,8 @@ export function CalculadoraSueldo() {
                   key={val}
                   type="button"
                   onClick={() => setSueldoBruto(val)}
+                  aria-pressed={sueldoBruto === val}
+                  aria-label={`Establecer sueldo bruto en S/ ${val.toLocaleString()}`}
                   className={`px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all ${
                     sueldoBruto === val
                       ? 'bg-emerald-600 text-white shadow-sm'
@@ -158,7 +161,8 @@ export function CalculadoraSueldo() {
                 <button
                   key={item.key}
                   type="button"
-                  onClick={() => setRegimen(item.key as any)}
+                  onClick={() => setRegimen(item.key as 'CAS' | '728' | '276' | 'Locacion')}
+                  aria-pressed={regimen === item.key}
                   className={`p-3 rounded-xl border text-left transition-all ${
                     regimen === item.key
                       ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500 text-emerald-950 dark:text-emerald-100 ring-1 ring-emerald-500 shadow-sm'
@@ -183,7 +187,8 @@ export function CalculadoraSueldo() {
                   <button
                     key={sys}
                     type="button"
-                    onClick={() => setPension(sys as any)}
+                    onClick={() => setPension(sys as 'AFP' | 'ONP' | 'Ninguno')}
+                    aria-pressed={pension === sys}
                     className={`py-2.5 rounded-lg font-mono text-xs font-semibold transition-all ${
                       pension === sys
                         ? 'bg-emerald-600 text-white shadow-sm'
@@ -204,6 +209,7 @@ export function CalculadoraSueldo() {
                         key={afp}
                         type="button"
                         onClick={() => setAfpType(afp)}
+                        aria-pressed={afpType === afp}
                         className={`py-1.5 rounded-lg border transition-all ${
                           afpType === afp
                             ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-900 dark:text-amber-200 shadow-sm'
