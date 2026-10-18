@@ -64,15 +64,24 @@ export function HeaderNav() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click or Escape key press
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setToolsOpen(false);
       }
     }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setToolsOpen(false);
+      }
+    }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   // Close dropdown on route change
@@ -139,6 +148,9 @@ export function HeaderNav() {
             <button
               type="button"
               onClick={() => setToolsOpen(!toolsOpen)}
+              aria-expanded={toolsOpen}
+              aria-haspopup="true"
+              aria-label="Menú de herramientas"
               className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer ${
                 toolsOpen || isToolActive
                   ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'

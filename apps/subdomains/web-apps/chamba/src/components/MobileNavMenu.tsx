@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2, BookOpen } from 'lucide-react';
+import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2, BookOpen } from 'lucide-react';
 import { ChambaThemeToggle } from './ChambaThemeToggle';
 
 export function MobileNavMenu() {
@@ -20,8 +20,15 @@ export function MobileNavMenu() {
     } else {
       document.body.style.overflow = '';
     }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -225,7 +232,8 @@ export function MobileNavMenu() {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="mobile-hamburger-btn p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 transition-colors cursor-pointer flex items-center justify-center shrink-0 shadow-xs"
-        aria-label="Abrir menú"
+        aria-expanded={isOpen}
+        aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
