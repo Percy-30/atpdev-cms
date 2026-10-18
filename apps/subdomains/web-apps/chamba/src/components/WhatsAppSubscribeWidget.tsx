@@ -68,6 +68,7 @@ export default function WhatsAppSubscribeWidget({
             <select
               value={selectedRegion}
               onChange={(e) => setSelectedRegion(e.target.value)}
+              aria-label="Seleccionar región para recibir alertas"
               className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:border-emerald-500"
             >
               <option value="Nacional">Todas las Regiones</option>
