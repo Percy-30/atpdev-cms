@@ -47,6 +47,14 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: '/privacy', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/privacy-policy', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/politica-privacidad', destination: '/politica-de-privacidad', permanent: true },
+      { source: '/terms', destination: '/terminos-y-condiciones', permanent: true },
+      { source: '/terms-of-service', destination: '/terminos-y-condiciones', permanent: true },
+      { source: '/about', destination: '/quienes-somos', permanent: true },
+      { source: '/about-us', destination: '/quienes-somos', permanent: true },
+      { source: '/contact', destination: '/contacto', permanent: true },
       { source: '/calculadora-sueldo-cas', destination: '/calculadora-sueldo', permanent: true },
       { source: '/comparador-cas', destination: '/comparador-regimenes', permanent: true },
       { source: '/entrevista-ia', destination: '/simulador-entrevista-ia', permanent: true },

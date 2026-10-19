@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const regionUrls = [
-    'lima', 'arequipa', 'cusco', 'la-libertad', 'piura', 'junin', 'puno',
+    'lima', 'callao', 'arequipa', 'cusco', 'la-libertad', 'piura', 'junin', 'puno',
     'lambayeque', 'san-martin', 'ancash', 'ica', 'cajamarca', 'loreto',
     'ayacucho', 'huanuco', 'tacna', 'ucayali', 'apurimac', 'amazonas',
     'huancavelica', 'moquegua', 'pasco', 'tumbes', 'madre-de-dios', 'remoto'

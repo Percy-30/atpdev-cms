@@ -14,8 +14,13 @@ export const dynamicParams = true;
 export const REGIONES_MAP: Record<string, { name: string; label: string; description: string }> = {
   "lima": {
     name: "Lima",
-    label: "Lima & Callao",
-    description: "Convocatorias de trabajo en ministerios, organismos públicos descentralizados, municipalidades y sedes centrales corporativas en Lima Metropolitana y Callao."
+    label: "Lima Metropolitana",
+    description: "Convocatorias de trabajo en ministerios, organismos públicos descentralizados, municipalidades y sedes centrales corporativas en Lima Metropolitana."
+  },
+  "callao": {
+    name: "Callao",
+    label: "Callao (Provincia Constitucional)",
+    description: "Convocatorias de empleo vigentes en el Callao: Gobierno Regional del Callao, municipalidades distritales, sector portuario, Diresa Callao, DREC y aduanas."
   },
   "arequipa": {
     name: "Arequipa",
