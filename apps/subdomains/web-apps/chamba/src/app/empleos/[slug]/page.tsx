@@ -576,6 +576,7 @@ export default async function JobDetailPage({
 
             {/* Documentos y Etapas Oficiales del Concurso (Localización con IA / Directorio Canónico) */}
             <AiBasesResolver
+              key={job.id || job.slug}
               jobTitle={job.title}
               entityName={job.entity_name}
               initialDocuments={job.official_documents}

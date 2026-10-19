@@ -36,6 +36,7 @@ export function AiBasesResolver({
   });
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const isMountedRef = useRef(false);
+  const prevJobRef = useRef(jobTitle);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -44,17 +45,20 @@ export function AiBasesResolver({
     };
   }, []);
 
-  // Sincronizar estado si cambian las propiedades por navegación entre convocatorias
+  // Sincronizar estado SOLO si cambia el puesto (evitar bucle infinito de dependencias no primitivas)
   useEffect(() => {
-    const nextSafeDocs = (initialDocuments || []).filter(d => d.url && !isCompetitorUrl(d.url));
-    setDocuments(nextSafeDocs);
-    setResolved(nextSafeDocs.length > 0);
-    setPortalInfo({
-      name: canonicalPortalName || entityName,
-      url: canonicalPortalUrl && !isCompetitorUrl(canonicalPortalUrl) ? canonicalPortalUrl : ''
-    });
-    setErrorMsg(null);
-  }, [jobTitle, entityName, initialDocuments, canonicalPortalUrl, canonicalPortalName]);
+    if (prevJobRef.current !== jobTitle) {
+      prevJobRef.current = jobTitle;
+      const nextSafeDocs = (initialDocuments || []).filter(d => d.url && !isCompetitorUrl(d.url));
+      setDocuments(nextSafeDocs);
+      setResolved(nextSafeDocs.length > 0);
+      setPortalInfo({
+        name: canonicalPortalName || entityName,
+        url: canonicalPortalUrl && !isCompetitorUrl(canonicalPortalUrl) ? canonicalPortalUrl : ''
+      });
+      setErrorMsg(null);
+    }
+  }, [jobTitle, entityName, canonicalPortalUrl, canonicalPortalName]);
 
   const handleResolveBases = async () => {
     try {
