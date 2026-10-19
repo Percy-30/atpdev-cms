@@ -92,8 +92,12 @@ export function HeaderNav() {
   }, []);
 
   // Close dropdown on route change
+  const prevPathname = useRef(pathname);
   useEffect(() => {
-    setToolsOpen(false);
+    if (prevPathname.current !== pathname) {
+      prevPathname.current = pathname;
+      setToolsOpen(false);
+    }
   }, [pathname]);
 
   const isToolActive = HERRAMIENTAS.some(h => pathname === h.href);

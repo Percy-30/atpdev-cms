@@ -1311,7 +1311,11 @@ export default function PublicarFormClient() {
                   src={formData.entity_logo}
                   alt={formData.entity_name || 'Logo de convocatoria'}
                   className="max-h-20 max-w-[85%] object-contain drop-shadow"
-                  onError={() => setLogoUploadError('No se pudo previsualizar la imagen. Verifica el formato o URL.')}
+                  onError={() => {
+                    setTimeout(() => {
+                      setLogoUploadError('No se pudo previsualizar la imagen. Verifica el formato o URL.');
+                    }, 50);
+                  }}
                 />
               </div>
 

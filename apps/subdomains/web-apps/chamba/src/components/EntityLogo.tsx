@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import orgLogos from './org-logos.json';
 
 interface EntityLogoProps {
@@ -224,6 +224,31 @@ function findLocalLogo(entityName: string): string | null {
 
 export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoProps) {
   const [imgErr, setImgErr] = useState(false);
+  const isMountedRef = useRef(false);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Reset error if entity or logoUrl props change
+  useEffect(() => {
+    setImgErr(false);
+  }, [entityName, logoUrl]);
+
+  const handleImgError = () => {
+    if (isMountedRef.current) {
+      setImgErr(true);
+    } else {
+      setTimeout(() => {
+        if (isMountedRef.current) {
+          setImgErr(true);
+        }
+      }, 50);
+    }
+  };
 
   // Priority 1: Locally downloaded curated logo from /public/logos/
   const localLogo = findLocalLogo(entityName);
@@ -267,7 +292,7 @@ export function EntityLogo({ entityName, logoUrl, size = 'banner' }: EntityLogoP
           src={imageSrc}
           alt={entityName}
           className={`${isBanner ? 'max-h-20 sm:max-h-24 max-w-[88%]' : 'w-full h-full'} object-contain drop-shadow`}
-          onError={() => setImgErr(true)}
+          onError={handleImgError}
         />
       </div>
     );

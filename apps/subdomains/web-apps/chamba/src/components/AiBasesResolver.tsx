@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FileText, Sparkles, ExternalLink, Loader2, CheckCircle2, ShieldCheck, ArrowRight, Download } from 'lucide-react';
 import { isCompetitorUrl } from '@atpdev/database';
 
@@ -35,6 +35,26 @@ export function AiBasesResolver({
     url: canonicalPortalUrl && !isCompetitorUrl(canonicalPortalUrl) ? canonicalPortalUrl : ''
   });
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const isMountedRef = useRef(false);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Sincronizar estado si cambian las propiedades por navegación entre convocatorias
+  useEffect(() => {
+    const nextSafeDocs = (initialDocuments || []).filter(d => d.url && !isCompetitorUrl(d.url));
+    setDocuments(nextSafeDocs);
+    setResolved(nextSafeDocs.length > 0);
+    setPortalInfo({
+      name: canonicalPortalName || entityName,
+      url: canonicalPortalUrl && !isCompetitorUrl(canonicalPortalUrl) ? canonicalPortalUrl : ''
+    });
+    setErrorMsg(null);
+  }, [jobTitle, entityName, initialDocuments, canonicalPortalUrl, canonicalPortalName]);
 
   const handleResolveBases = async () => {
     try {
@@ -55,6 +75,8 @@ export function AiBasesResolver({
       }
 
       const data = await res.json();
+      if (!isMountedRef.current) return;
+
       const verifiedDocs = (data.official_documents || []).filter((d: OfficialDoc) => d.url && !isCompetitorUrl(d.url));
       if (verifiedDocs.length > 0) {
         setDocuments(verifiedDocs);
@@ -68,10 +90,14 @@ export function AiBasesResolver({
       setResolved(true);
     } catch (err: any) {
       console.error('Error resolving bases:', err);
-      setErrorMsg('No se encontraron PDFs adicionales de forma automática. Accede directamente al portal oficial verificado.');
-      setResolved(true);
+      if (isMountedRef.current) {
+        setErrorMsg('No se encontraron PDFs adicionales de forma automática. Accede directamente al portal oficial verificado.');
+        setResolved(true);
+      }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 

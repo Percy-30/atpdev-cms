@@ -64,11 +64,17 @@ export function JobCountdownClock({
   const [timeLeft, setTimeLeft] = useState(calculateRemaining);
 
   useEffect(() => {
+    let isMounted = true;
     const timer = setInterval(() => {
-      setTimeLeft(calculateRemaining());
+      if (isMounted) {
+        setTimeLeft(calculateRemaining());
+      }
     }, 60000); // Actualiza cada minuto
 
-    return () => clearInterval(timer);
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+    };
   }, [endDate]);
 
   const { days, hours, minutes, isExpired } = timeLeft;

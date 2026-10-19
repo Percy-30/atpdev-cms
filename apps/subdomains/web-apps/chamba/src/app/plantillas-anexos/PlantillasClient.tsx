@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FileText, Copy, Check, Download, ShieldCheck } from 'lucide-react';
 import { AdBannerSlot } from '@/components/AdBannerSlot';
 
@@ -14,11 +14,19 @@ export interface PlantillaItem {
 
 export default function PlantillasClient({ plantillas }: { plantillas: PlantillaItem[] }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleCopy = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2500);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setCopiedId(null), 2500);
   };
 
   const handleDownload = (id: string, title: string, text: string) => {

@@ -37,8 +37,13 @@ export function JobFilterClient({
   const [sort, setSort] = useState(initialSort);
   const [hideExpired, setHideExpired] = useState(initialHideExpired);
 
-  // Synchronize state if props change from URL navigation
+  // Synchronize state if props change from URL navigation (skip initial mount)
+  const isInitialPropsSync = useRef(true);
   useEffect(() => {
+    if (isInitialPropsSync.current) {
+      isInitialPropsSync.current = false;
+      return;
+    }
     setQ(initialQ);
     setRegion(initialRegion);
     setRegimen(initialRegimen);
