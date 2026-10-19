@@ -2371,7 +2371,8 @@ import {
   getCachedCdJobsList,
   persistCdJobs,
   persistSingleEnrichedCdJob,
-  fetchAndParseIndividualCdJob
+  fetchAndParseIndividualCdJob,
+  extractServirEntityLogo
 } from './scraper';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 
@@ -2784,7 +2785,7 @@ const LOCAL_DYNAMIC_JOBS: Map<string, JobPosting> = (globalThis as any).__LOCAL_
 // In-Memory Global Cache para búsquedas ultra-rápidas e instantáneas (0ms)
 let GLOBAL_JOBS_CACHE: JobPosting[] | null = (globalThis as any).__GLOBAL_JOBS_CACHE__ || null;
 let GLOBAL_JOBS_TIMESTAMP: number = (globalThis as any).__GLOBAL_JOBS_TIMESTAMP__ || 0;
-const GLOBAL_CACHE_TTL = 1000 * 60 * 15; // 15 minutos de caché en memoria compartida
+const GLOBAL_CACHE_TTL = process.env.NODE_ENV === 'development' ? 5000 : 1000 * 60 * 15;
 
 export function invalidateJobsCache(): void {
   GLOBAL_JOBS_CACHE = null;
@@ -3020,10 +3021,14 @@ export async function getJobPostingBySlug(
   const maybeEnrichJob = async (job: JobPosting | null): Promise<JobPosting | null> => {
     if (!job) return null;
     const cdUrl = job.scrape_source_url || (job.fuente_url && job.fuente_url.includes('convocatoriasdetrabajo.com') ? job.fuente_url : undefined);
+    const candidateCdUrl = (job.slug && (job.slug.startsWith('oferta-de-empleo-') || job.id?.startsWith('job-cd-')))
+      ? `https://www.convocatoriasdetrabajo.com/${job.slug}.html`
+      : (cdUrl && cdUrl.includes('convocatoriasdetrabajo.com') ? cdUrl : undefined);
 
     const hasBasesDoc = Boolean(
       job.bases_pdf_url && 
       !isCompetitorUrl(job.bases_pdf_url) &&
+      !isGenericPublicationUrl(job.bases_pdf_url) &&
       (
         job.bases_pdf_url.toLowerCase().includes('.pdf') ||
         job.bases_pdf_url.toLowerCase().includes('drive.google.com') ||
@@ -3035,15 +3040,31 @@ export async function getJobPostingBySlug(
     const hasPlazaDocs = Boolean(
       job.plazas && 
       job.plazas.length > 0 &&
-      job.plazas.some(p => p.bases_url && !isCompetitorUrl(p.bases_url))
+      job.plazas.some(p => p.bases_url && !isCompetitorUrl(p.bases_url) && !isGenericPublicationUrl(p.bases_url))
     );
 
-    // Solo requerir enriquecimiento remoto si la oferta NO tiene bases oficiales ni plazas verificadas
-    const needsEnrichment = !hasBasesDoc && !hasPlazaDocs;
+    const hasGenericMetadata = job.entity_name === 'Sector Público' || job.region === 'Nacional';
+    const needsEnrichment = (!hasBasesDoc && !hasPlazaDocs) || (!job.plazas || job.plazas.length === 0) || hasGenericMetadata;
 
-    if (!options?.skipRemoteEnrichment && cdUrl && cdUrl.includes('convocatoriasdetrabajo.com/oferta-de-empleo-') && needsEnrichment) {
+    if (!options?.skipRemoteEnrichment && candidateCdUrl && needsEnrichment) {
       try {
-        const enriched = await extractPlazasAndBasesFromCdUrl(cdUrl);
+        const enriched = await extractPlazasAndBasesFromCdUrl(candidateCdUrl);
+        if (enriched.entity_name && (job.entity_name === 'Sector Público' || !job.entity_name)) {
+          job.entity_name = enriched.entity_name;
+          job.entity_logo = extractServirEntityLogo(enriched.entity_name);
+        }
+        if (enriched.region && (job.region === 'Nacional' || !job.region)) {
+          job.region = enriched.region;
+        }
+        if (enriched.salary_text && (job.salary_text === 'Según plaza convocada' || !job.salary_text)) {
+          job.salary_text = enriched.salary_text;
+        }
+        if (enriched.sector_type) {
+          job.sector_type = enriched.sector_type;
+        }
+        if (enriched.end_date && (!job.end_date || job.end_date === '2026-09-30')) {
+          job.end_date = enriched.end_date;
+        }
         if (enriched.plazas && enriched.plazas.length > 0) {
           job.plazas = enriched.plazas;
         }
@@ -3067,10 +3088,16 @@ export async function getJobPostingBySlug(
         }
         if (enriched.vacancies_count) {
           job.vacancies_count = enriched.vacancies_count;
+        } else if (job.plazas && job.plazas.length > 0) {
+          const sumVacancies = job.plazas.reduce((s, p) => s + (p.vacancies || 1), 0);
+          if (sumVacancies > (job.vacancies_count || 1)) {
+            job.vacancies_count = sumVacancies;
+          }
         }
         if (enriched.official_documents && enriched.official_documents.length > 0) {
           job.official_documents = enriched.official_documents;
         }
+        persistSingleEnrichedCdJob(job);
       } catch (err) {
         console.warn('Error enriqueciendo plazas y bases de CD:', err);
       }

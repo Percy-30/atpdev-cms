@@ -55,3 +55,5 @@ scratch-*.ts
 fix-bucket*.js
 list-files.js
 packages/database/test-buckets.ts
+.claude/
+.tmp-bisect/

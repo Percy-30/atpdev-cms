@@ -62,12 +62,15 @@ export default async function PrivacyPolicy({
     li2_1: await t("Responder a tus consultas de desarrollo de software, colaboraciones o propuestas."),
     li2_2: await t("Mejorar la experiencia de usuario en nuestro sitio web."),
     li2_3: await t("Cumplir con las políticas de Google AdSense en nuestros subdominios."),
-    h3: await t("3. Terceros y Google AdSense"),
-    p3: await t("En algunos de nuestros subdominios utilizamos Google AdSense para mostrar anuncios. Google utiliza cookies (como la cookie de DoubleClick) para publicar anuncios basados en tus visitas anteriores a este y otros sitios web. Puedes inhabilitar el uso de cookies para publicidad basada en intereses visitando la Configuración de anuncios de Google."),
-    h4: await t("4. Seguridad de tus datos"),
-    p4: await t("Implementamos medidas de seguridad para proteger tu información personal. Tus datos de contacto no serán vendidos, intercambiados ni transferidos a terceros sin tu consentimiento, excepto cuando sea necesario para cumplir con la ley."),
-    h5: await t("5. Contacto"),
-    p5: await t("Si tienes alguna pregunta sobre esta Política de Privacidad, puedes contactarnos en:"),
+    h3: await t("3. Uso de Cookies y Publicidad de Terceros (Google AdSense)"),
+    p3: await t("Este sitio web y sus plataformas asociadas utilizan cookies y tecnologías de seguimiento de terceros, incluido Google AdSense, para publicar anuncios basados en las visitas anteriores del usuario a este sitio web o a otros sitios web de Internet."),
+    li3_1: await t("Proveedores externos: Proveedores de terceros, incluido Google, utilizan cookies para publicar anuncios cuando visitas nuestro sitio web."),
+    li3_2: await t("Cookie de DoubleClick / DART: El uso de cookies de publicidad permite a Google y a sus socios publicar anuncios basados en tus visitas a este y otros sitios de Internet."),
+    li3_3: await t("Inhabilitación voluntaria: Puedes inhabilitar la publicidad personalizada en cualquier momento visitando la Configuración de Anuncios de Google (https://adssettings.google.com/) o mediante el portal de la Digital Advertising Alliance (https://www.aboutads.info/choices/)."),
+    h4: await t("4. Seguridad de tus datos y Normativa Aplicable"),
+    p4: await t("Operamos bajo los principios de licitud, consentimiento y finalidad conforme a la Ley N° 29733 (Ley de Protección de Datos Personales) y estándares internacionales como el RGPD. Tus datos personales jamás serán comercializados ni transferidos a terceros no autorizados."),
+    h5: await t("5. Contacto y Derechos ARCO"),
+    p5: await t("Para ejercer tus derechos de Acceso, Rectificación, Cancelación u Oposición (ARCO), o para consultas sobre esta Política de Privacidad, puedes escribirnos directamente a:"),
   };
 
   const linkPath = lang === "es" ? "/" : `/${lang}`;
@@ -119,7 +122,12 @@ export default async function PrivacyPolicy({
 
           <section>
             <h2 className="text-xl font-bold mb-4 border-b border-[var(--glass-border)] pb-2">{texts.h3}</h2>
-            <p>{texts.p3}</p>
+            <p className="mb-4">{texts.p3}</p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>{texts.li3_1}</li>
+              <li>{texts.li3_2}</li>
+              <li>{texts.li3_3}</li>
+            </ul>
           </section>
 
           <section>

@@ -89,10 +89,16 @@ export default async function EmpleosPage({
       return false;
     }
     if (q) {
-      const matchTitle = job.title.toLowerCase().includes(q.toLowerCase());
-      const matchEntity = job.entity_name.toLowerCase().includes(q.toLowerCase());
-      const matchDesc = job.description.toLowerCase().includes(q.toLowerCase());
-      if (!matchTitle && !matchEntity && !matchDesc) return false;
+      const qLow = q.toLowerCase();
+      const matchTitle = job.title.toLowerCase().includes(qLow);
+      const matchEntity = job.entity_name.toLowerCase().includes(qLow);
+      const matchDesc = job.description.toLowerCase().includes(qLow);
+      const matchPlazas = Boolean(job.plazas && job.plazas.some(p => 
+        p.title.toLowerCase().includes(qLow) || 
+        (p.education && p.education.toLowerCase().includes(qLow)) ||
+        (p.cas_code && p.cas_code.toLowerCase().includes(qLow))
+      ));
+      if (!matchTitle && !matchEntity && !matchDesc && !matchPlazas) return false;
     }
     if (region) {
       const rLow = region.toLowerCase();
