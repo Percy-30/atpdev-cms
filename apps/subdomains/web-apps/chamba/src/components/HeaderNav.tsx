@@ -111,33 +111,33 @@ export function HeaderNav() {
           </div>
         </Link>
 
-        {/* Desktop Navigation - Clear, Large, Bold & Professional like iLovePDF */}
-        <nav className="hidden lg:flex items-center gap-1.5 font-display text-sm font-bold">
+        {/* Desktop Navigation - Clear, Compact & Professional */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 font-display text-xs xl:text-sm font-bold">
           {/* Convocatorias */}
           <Link 
             href="/empleos" 
-            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
+            className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 xl:gap-2 border whitespace-nowrap shrink-0 ${
               pathname === '/empleos' || (pathname.startsWith('/empleos') && !pathname.includes('match-cv'))
                 ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
-            <Search size={16} className="text-emerald-600 dark:text-emerald-400" />
+            <Search size={15} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>Convocatorias</span>
           </Link>
 
           {/* Recomendador CV con IA */}
           <Link 
             href="/match-cv" 
-            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
+            className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 xl:gap-2 border whitespace-nowrap shrink-0 ${
               pathname.startsWith('/match-cv')
                 ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
-            <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400 animate-pulse" />
+            <Sparkles size={15} className="text-emerald-600 dark:text-emerald-400 animate-pulse shrink-0" />
             <span>Recomendador CV</span>
-            <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 rounded text-[10px] font-mono font-bold uppercase tracking-wider">
+            <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 rounded text-[10px] font-mono font-bold uppercase tracking-wider shrink-0">
               IA
             </span>
           </Link>
@@ -145,41 +145,41 @@ export function HeaderNav() {
           {/* Guías CAS */}
           <Link 
             href="/guias" 
-            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
+            className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 xl:gap-2 border whitespace-nowrap shrink-0 ${
               pathname.startsWith('/guias')
                 ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
-            <BookOpen size={16} className="text-emerald-600 dark:text-emerald-400" />
+            <BookOpen size={15} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>Guías CAS</span>
-            <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 rounded text-[10px] font-mono font-bold uppercase tracking-wider">
+            <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 rounded text-[10px] font-mono font-bold uppercase tracking-wider shrink-0">
               Nuevo
             </span>
           </Link>
 
           {/* Herramientas Dropdown */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative shrink-0" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => setToolsOpen(!toolsOpen)}
-              className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer ${
+              className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer whitespace-nowrap shrink-0 ${
                 toolsOpen || isToolActive
                   ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
                   : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
               }`}
             >
-              <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400" />
+              <Sparkles size={15} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Herramientas</span>
               <ChevronDown 
-                size={15} 
-                className={`text-slate-400 transition-transform duration-200 ${toolsOpen ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} 
+                size={14} 
+                className={`text-slate-400 transition-transform duration-200 shrink-0 ${toolsOpen ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} 
               />
             </button>
 
             {/* Dropdown Mega Menu */}
             {toolsOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150 z-50">
                 {HERRAMIENTAS.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.href;
@@ -219,41 +219,42 @@ export function HeaderNav() {
             )}
           </div>
 
-          {/* Quiénes Somos */}
+          {/* Quiénes Somos - visible on xl+ screens to prevent cramping on laptops */}
           <Link 
             href="/quienes-somos" 
-            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
+            className={`hidden xl:flex px-2.5 xl:px-3 py-2 rounded-xl transition-all items-center gap-1.5 border whitespace-nowrap shrink-0 ${
               pathname === '/quienes-somos'
                 ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border-slate-200 dark:border-slate-700 shadow-xs'
                 : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700'
             }`}
           >
-            <ShieldCheck size={16} className="text-slate-500 dark:text-slate-400" />
+            <ShieldCheck size={15} className="text-slate-500 dark:text-slate-400 shrink-0" />
             <span>Quiénes Somos</span>
           </Link>
         </nav>
 
         {/* Actions Hub */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <ChambaThemeToggle />
 
-          {/* Publicar Empleo */}
+          {/* Publicar Convocatoria - Shown on 2xl screens to avoid crowding on laptops */}
           <Link
             href="/publicar-empleo"
-            className="hidden xl:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer"
+            className="hidden 2xl:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer whitespace-nowrap shrink-0"
           >
-            <PlusCircle size={15} className="text-emerald-600 dark:text-emerald-400" />
-            <span>Publicar Convocatoria</span>
+            <PlusCircle size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>Publicar</span>
           </Link>
 
-          {/* Explorar Convocatorias - Visible from sm upwards to prevent overflowing header on mobile phones */}
+          {/* Explorar Convocatorias - Dynamic text with zero overflow */}
           <Link
             href="/empleos"
-            className="hidden sm:flex px-4 sm:px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors items-center gap-2 shadow-xs cursor-pointer shrink-0"
+            className="hidden sm:flex px-3.5 sm:px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors items-center gap-1.5 shadow-xs cursor-pointer shrink-0 whitespace-nowrap"
           >
-            <Compass size={17} className="text-white" />
-            <span>Explorar Convocatorias</span>
-            <ArrowRight size={14} className="text-white" />
+            <Compass size={15} className="text-white shrink-0" />
+            <span className="hidden xl:inline">Explorar Convocatorias</span>
+            <span className="inline xl:hidden">Explorar</span>
+            <ArrowRight size={13} className="text-white shrink-0" />
           </Link>
 
           {/* Mobile Drawer */}
