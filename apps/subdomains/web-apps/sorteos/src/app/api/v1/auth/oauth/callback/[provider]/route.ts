@@ -10,7 +10,8 @@ import { audit, fail, logEvent, ok } from '@/lib/server/http';
  */
 export async function GET(req: NextRequest, { params }: { params: Promise<{ provider: string }> }) {
   const { provider } = await params;
-  if (!['google', 'facebook'].includes(provider)) return fail('Proveedor no soportado.', 400);
+  const validProviders = ['google', 'facebook', 'x', 'twitter', 'tiktok', 'instagram', 'threads'];
+  if (!validProviders.includes(provider)) return fail('Proveedor no soportado.', 400);
   const code = new URL(req.url).searchParams.get('code');
   if (!code) return fail('Código OAuth ausente.', 400);
 
@@ -18,10 +19,27 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
   const redirectUri = `${appUrl}/api/v1/auth/oauth/callback/${provider}`;
   const { exchangeOAuthCode } = await import('@/lib/server/socialProviders');
   const live = await exchangeOAuthCode(provider === 'google' ? 'google' : 'meta', code, redirectUri);
+  const state = new URL(req.url).searchParams.get('state');
+
+  // Si no se obtuvo sesión oficial OAuth de Google/Meta y es código de desarrollo,
+  // redirigir al formulario de conexión real en popup para no fabricar usuarios ficticios
+  if (!live && code.startsWith('dev_')) {
+    return NextResponse.redirect(`${appUrl}/auth/login/${provider}?popup=true${state ? `&returnTo=${encodeURIComponent(state)}` : ''}`);
+  }
+
   const mode = live ? 'live' : 'mock-verified';
 
-  const providerName = provider === 'google' ? 'Google' : 'Facebook';
-  const fallbackEmail = `usuario.${provider}@sorteos.pro`;
+  const providerNames: Record<string, string> = {
+    google: 'Google',
+    facebook: 'Facebook',
+    x: 'X (Twitter)',
+    twitter: 'X (Twitter)',
+    tiktok: 'TikTok',
+    instagram: 'Instagram',
+    threads: 'Threads',
+  };
+  const providerName = providerNames[provider] || provider;
+  const fallbackEmail = `cuenta.${provider === 'twitter' ? 'x' : provider}@atpdev.net`;
   const email = (live?.email || fallbackEmail).toLowerCase();
   let id = db.usersByEmail.get(email);
   if (!id) {
@@ -54,7 +72,12 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
   }
 
   // Vincular la red social oficial correspondiente al usuario real
-  const socialPlatform = provider === 'google' ? 'youtube' : 'facebook';
+  let socialPlatform: 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'x' | 'threads' = 'facebook';
+  if (provider === 'google') socialPlatform = 'youtube';
+  else if (provider === 'x' || provider === 'twitter') socialPlatform = 'x';
+  else if (provider === 'tiktok') socialPlatform = 'tiktok';
+  else if (provider === 'instagram') socialPlatform = 'instagram';
+  else if (provider === 'threads') socialPlatform = 'threads';
   const existingAcc = db.socialAccounts.list().find((a) => a.userId === id && a.platform === socialPlatform);
   if (!existingAcc) {
     const accId = uid('acc');
@@ -74,12 +97,28 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ prov
       connectedAt: now,
       expiresAt: new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString(),
     });
+  } else if (live?.accessToken) {
+    const { encryptToken } = await import('@/lib/server/crypto');
+    existingAcc.encryptedToken = encryptToken(live.accessToken);
+    existingAcc.status = 'connected';
+    existingAcc.expiresAt = new Date(Date.now() + 60 * 24 * 3600 * 1000).toISOString();
+    db.socialAccounts.set(existingAcc);
   }
 
   audit(id, 'user.oauth_login', 'user', id, { provider, mode });
   logEvent('auth.oauth', { provider, userId: id, mode });
 
   const token = signJwt(user.id, user.email, user.role);
-  // Redirige al dashboard con sesión (el cliente la guarda en localStorage)
-  return NextResponse.redirect(`${appUrl}/dashboard?oauth=${provider}&token=${token}`);
+
+  // Si se envió un state (ej. /sorteos/nuevo?platform=facebook&postUrl=...), retornar a esa página
+  const targetBase = state && (state.startsWith('/') || state.startsWith('http'))
+    ? (state.startsWith('/') ? `${appUrl}${state}` : state)
+    : `${appUrl}/dashboard`;
+
+  const sep = targetBase.includes('?') ? '&' : '?';
+  const finalRedirect = `${targetBase}${sep}oauth=${provider}&token=${token}&accountConnected=true`;
+
+  const response = NextResponse.redirect(finalRedirect);
+  response.cookies.set('sorteos_jwt', token, { path: '/', httpOnly: false, maxAge: 30 * 24 * 3600 });
+  return response;
 }

@@ -81,7 +81,7 @@ export default function NumerosPage() {
     setShowConfetti(false);
 
     try {
-      let nums = generateNumbers(min, max, quantity, allowDuplicates);
+      const nums = generateNumbers(min, max, quantity, allowDuplicates);
       if (sortOrder === 'asc') nums.sort((a, b) => a - b);
       if (sortOrder === 'desc') nums.sort((a, b) => b - a);
 

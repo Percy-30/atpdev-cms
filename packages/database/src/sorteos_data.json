@@ -1,6 +1,121 @@
 {
   "giveaways": [
     {
+      "id": "sw-mv9fz40v",
+      "title": "Sorteo Oficial — cuaupeluche",
+      "platform": "instagram",
+      "network": "x",
+      "postUrl": "https://x.com/cuaupeluche/status/2110492653741805896",
+      "authorUsername": "@joaquín.garcía_582",
+      "totalCommentsCount": 50,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 0,
+        "blockedUsers": [
+          "bot_spammer_3000"
+        ],
+        "winnersCount": 1,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "win-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-10-15T11:14:50.811Z",
+          "participant": {
+            "id": "x-n4itps-33",
+            "username": "joaquín.garcía_582",
+            "commentText": "RT + Follow + Fav listos! Participando con @dev_lucas y @marcos_ux #sorteopro",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "sub-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-10-15T11:14:50.811Z",
+          "participant": {
+            "id": "x-n4itps-47",
+            "username": "alejandro.benítez_596",
+            "commentText": "Comentando y siguiéndolos desde el día 1! Éxitos a todos en la comunidad #sorteopro",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "sub-2",
+          "position": 2,
+          "type": "substitute",
+          "selectedAt": "2026-10-15T11:14:50.811Z",
+          "participant": {
+            "id": "x-n4itps-27",
+            "username": "adrián.gonzález_576",
+            "commentText": "Ya cumplí todos los requisitos del tweet fijado. A cruzar los dedos!",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-E8DC6FA9B2",
+      "verificationHash": "e8dc6fa9b2dd1f3417233a1db1b92a0264119f9269e8e5a53bce567659d3ab17",
+      "executedAt": "2026-10-15T11:14:50.811Z",
+      "createdAt": "2026-10-15T11:14:50.811Z"
+    },
+    {
+      "id": "sw-mv876i8a",
+      "title": "Sorteo Oficial de Aniversario",
+      "platform": "instagram",
+      "network": "tiktok",
+      "postUrl": "https://www.tiktok.com/@clipshuevadas0/video/7674705876891995412?is_from_webapp=1&sender_device=pc",
+      "authorUsername": "@emilio.rojas_490",
+      "totalCommentsCount": 717,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": false,
+        "minMentions": 0,
+        "requiredHashtag": "#sorteopro",
+        "blockedUsers": [
+          "bot_spammer_3000"
+        ],
+        "winnersCount": 1,
+        "substitutesCount": 1
+      },
+      "winners": [
+        {
+          "id": "win-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-10-14T14:20:53.462Z",
+          "participant": {
+            "id": "tt-extra-7674705876891995412-13",
+            "username": "emilio.rojas_490",
+            "commentText": "Participo!! Suerte a todos los que estamos comentando #sorteopro #tiktok",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "sub-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-10-14T14:20:53.462Z",
+          "participant": {
+            "id": "tt-extra-7674705876891995412-118",
+            "username": "bianca.fernández_595",
+            "commentText": "Listo todo! Amé este video, ojalá ganar @samuel_tech #sorteopro",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-EF0D6A060E",
+      "verificationHash": "ef0d6a060e1cdd901569fc424b2404a81b42ba6a650ef31eb3dea94f9c852715",
+      "executedAt": "2026-10-14T14:20:53.462Z",
+      "createdAt": "2026-10-14T14:20:53.462Z"
+    },
+    {
       "id": "sw-mv63j72y",
       "title": "Sorteo Oficial de Aniversario",
       "platform": "youtube",
@@ -329,24 +444,57 @@
   ],
   "users": [
     {
+      "id": "usr_demo_demodefault",
+      "name": "Juanca",
+      "email": "nanosecso@x.com",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 1,
+      "commentsConsumed": 0,
+      "commentsLimit": 10000,
+      "joinedAt": "2026-10-17"
+    },
+    {
+      "id": "usr_mvchhmr9_oc916g",
+      "name": "Usuario X (Twitter)",
+      "email": "usuario.x@sorteos.pro",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 1,
+      "commentsConsumed": 0,
+      "commentsLimit": 10000,
+      "joinedAt": "2026-10-17"
+    },
+    {
+      "id": "usr_mv9e4ilw_g4klrg",
+      "name": "Usuario Facebook",
+      "email": "usuario.facebook@sorteos.pro",
+      "plan": "pro",
+      "status": "active",
+      "giveawaysCount": 1,
+      "commentsConsumed": 0,
+      "commentsLimit": 10000,
+      "joinedAt": "2026-10-15"
+    },
+    {
       "id": "usr_demo_demoj61sej",
       "name": "demo-j61sej",
       "email": "demo-j61sej@demo.sorteos.local",
       "plan": "pro",
       "status": "active",
-      "giveawaysCount": 2,
-      "commentsConsumed": 515,
+      "giveawaysCount": 3,
+      "commentsConsumed": 565,
       "commentsLimit": 10000,
       "joinedAt": "2026-10-13"
     },
     {
       "id": "usr_demo_demoofu47j",
-      "name": "demo-ofu47j",
+      "name": "NACHOAT00",
       "email": "demo-ofu47j@demo.sorteos.local",
       "plan": "pro",
       "status": "active",
-      "giveawaysCount": 2,
-      "commentsConsumed": 106,
+      "giveawaysCount": 3,
+      "commentsConsumed": 823,
       "commentsLimit": 10000,
       "joinedAt": "2026-10-12"
     },

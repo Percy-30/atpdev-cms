@@ -39,7 +39,7 @@ export interface AppSorteosConfigCardProps {
   onBack: () => void;
 }
 
-const COLOR_PALETTES = [
+export const COLOR_PALETTES = [
   { id: 'magenta', hex: '#d91a7a', label: 'Magenta AppSorteos', bgClass: 'from-[#d91a7a] to-[#a8145f]' },
   { id: 'crimson', hex: '#dc2626', label: 'Rojo Carmesí', bgClass: 'from-red-600 to-rose-700' },
   { id: 'purple', hex: '#7c3aed', label: 'Púrpura Neón', bgClass: 'from-purple-600 to-indigo-700' },
@@ -110,6 +110,13 @@ export const AppSorteosConfigCard: React.FC<AppSorteosConfigCardProps> = ({
   useEffect(() => {
     setTempTitle(giveawayTitle);
   }, [giveawayTitle]);
+
+  // Sync selectedColor with rules.themeColor
+  useEffect(() => {
+    if (rules.themeColor) {
+      setSelectedColor(rules.themeColor);
+    }
+  }, [rules.themeColor]);
 
   // Animated countdown preview cycle
   useEffect(() => {
@@ -248,7 +255,7 @@ export const AppSorteosConfigCard: React.FC<AppSorteosConfigCardProps> = ({
           ) : (
             <div className="flex items-center gap-2">
               <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
-                {giveawayTitle || `Sorteo de @${authorName}`}
+                {giveawayTitle || `Sorteo de @${(authorName || 'Creador Oficial').replace(/^@+/, '')}`}
               </h2>
               <button
                 type="button"
@@ -510,31 +517,179 @@ export const AppSorteosConfigCard: React.FC<AppSorteosConfigCardProps> = ({
             )}
           </div>
 
-          {/* Central Animated Countdown Graphic */}
-          <div className="my-auto text-center space-y-4">
-            <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
-              {/* Pulsing Sunburst / Rays */}
-              <div className="absolute inset-0 rounded-full border-4 border-dashed border-red-200 animate-spin-slow opacity-60" />
-              
-              {/* Outer Glow Ring */}
-              <div 
-                className="w-28 h-28 rounded-full border-4 flex items-center justify-center shadow-lg transition-colors"
-                style={{ borderColor: selectedColor }}
-              >
-                {/* Inner Number */}
-                <span 
-                  className="text-5xl font-black font-display tracking-tight transition-transform scale-110"
-                  style={{ color: selectedColor }}
+          {/* Central Animated Graphic Preview (Adapts to selected animation mode) */}
+          {animationType === 'countdown' && (
+            <div className="my-auto text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
+              <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
+                {/* Pulsing Sunburst / Rays */}
+                <div 
+                  className="absolute inset-0 rounded-full border-4 border-dashed animate-spin-slow opacity-60"
+                  style={{ borderColor: selectedColor }}
+                />
+                
+                {/* Outer Glow Ring */}
+                <div 
+                  className="w-28 h-28 rounded-full border-4 flex items-center justify-center shadow-lg transition-colors"
+                  style={{ borderColor: selectedColor, backgroundColor: `${selectedColor}10` }}
                 >
-                  {previewNumber}
-                </span>
+                  {/* Inner Number */}
+                  <span 
+                    className="text-5xl font-black font-display tracking-tight transition-transform scale-110"
+                    style={{ color: selectedColor }}
+                  >
+                    {previewNumber}
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                Cuenta Regresiva 3D
               </div>
             </div>
+          )}
 
-            <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-              {animationType === 'countdown' ? 'Cuenta Regresiva' : animationType.toUpperCase()}
+          {animationType === 'wheel' && (
+            <div className="my-auto text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
+              <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
+                {/* Top Ticker Needle */}
+                <div className="absolute -top-2 z-20 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[14px] border-t-amber-500 drop-shadow-md" />
+                
+                {/* Spinning Wheel */}
+                <div 
+                  className="w-32 h-32 rounded-full border-4 border-white shadow-xl relative overflow-hidden animate-[spin_4s_linear_infinite]"
+                  style={{
+                    boxShadow: `0 0 20px ${selectedColor}40`,
+                    background: `conic-gradient(
+                      ${selectedColor} 0deg 45deg,
+                      #f59e0b 45deg 90deg,
+                      #8b5cf6 90deg 135deg,
+                      #06b6d4 135deg 180deg,
+                      ${selectedColor} 180deg 225deg,
+                      #ec4899 225deg 270deg,
+                      #10b981 270deg 315deg,
+                      #3b82f6 315deg 360deg
+                    )`
+                  }}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-full h-[1px] bg-white/50" />
+                    <div className="w-full h-[1px] bg-white/50 rotate-45" />
+                    <div className="w-full h-[1px] bg-white/50 rotate-90" />
+                    <div className="w-full h-[1px] bg-white/50 rotate-[135deg]" />
+                  </div>
+                </div>
+
+                {/* Center Hub */}
+                <div 
+                  className="absolute z-10 w-10 h-10 rounded-full bg-white shadow-md border-2 flex items-center justify-center"
+                  style={{ borderColor: selectedColor }}
+                >
+                  <Sparkles className="w-4 h-4 text-amber-500 animate-spin-slow" />
+                </div>
+              </div>
+
+              <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                Ruleta de la Suerte
+              </div>
             </div>
-          </div>
+          )}
+
+          {animationType === 'card' && (
+            <div className="my-auto text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
+              <div className="relative w-36 h-36 mx-auto flex items-center justify-center perspective-500">
+                {/* Left Card */}
+                <div 
+                  className="absolute w-18 h-26 rounded-xl shadow-md border border-white/80 transform -rotate-12 -translate-x-6 transition-all duration-300 flex flex-col items-center justify-center text-white"
+                  style={{
+                    background: `linear-gradient(135deg, #1e1b4b 0%, ${selectedColor} 100%)`,
+                  }}
+                >
+                  <span className="text-lg font-black font-display opacity-40">?</span>
+                </div>
+
+                {/* Right Card */}
+                <div 
+                  className="absolute w-18 h-26 rounded-xl shadow-md border border-white/80 transform rotate-12 translate-x-6 transition-all duration-300 flex flex-col items-center justify-center text-white"
+                  style={{
+                    background: `linear-gradient(135deg, ${selectedColor} 0%, #1e1b4b 100%)`,
+                  }}
+                >
+                  <span className="text-lg font-black font-display opacity-40">?</span>
+                </div>
+
+                {/* Center Card */}
+                <div 
+                  className="relative z-10 w-20 h-28 rounded-xl shadow-xl border-2 border-amber-300 flex flex-col items-center justify-between p-2 text-white animate-pulse"
+                  style={{
+                    background: `linear-gradient(135deg, ${selectedColor} 0%, #312e81 100%)`,
+                    boxShadow: `0 8px 20px -4px ${selectedColor}60`
+                  }}
+                >
+                  <div className="flex justify-between w-full text-[8px] font-mono text-amber-300">
+                    <span>★</span>
+                    <span>★</span>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/40">
+                    <Trophy className="w-4 h-4 text-amber-300" />
+                  </div>
+                  <span className="text-[9px] font-bold font-mono tracking-wider text-amber-200 uppercase">
+                    WINNER
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                Cartas Misteriosas 3D
+              </div>
+            </div>
+          )}
+
+          {animationType === 'lottery' && (
+            <div className="my-auto text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
+              <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
+                {/* Glass Sphere Container */}
+                <div 
+                  className="w-30 h-30 rounded-full border-4 border-slate-300/80 relative overflow-hidden shadow-xl flex items-center justify-center"
+                  style={{
+                    background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.85), rgba(230,230,245,0.4) 40%, ${selectedColor}25 100%)`,
+                    boxShadow: `inset 0 0 15px rgba(255,255,255,0.8), 0 0 20px ${selectedColor}30`
+                  }}
+                >
+                  {/* Highlight */}
+                  <div className="absolute top-1.5 left-3 w-8 h-4 bg-white/70 rounded-full transform -rotate-30 blur-[1px]" />
+
+                  {/* Bouncing Balls */}
+                  <div className="relative w-22 h-22">
+                    <div className="absolute top-1 left-2 w-6 h-6 rounded-full bg-gradient-to-tr from-amber-600 to-amber-300 text-slate-900 font-bold text-[9px] flex items-center justify-center shadow-md animate-bounce">
+                      7
+                    </div>
+                    <div className="absolute bottom-1.5 left-3 w-7 h-7 rounded-full bg-gradient-to-tr from-pink-600 to-rose-300 text-white font-bold text-[9px] flex items-center justify-center shadow-md animate-pulse">
+                      21
+                    </div>
+                    <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-300 text-white font-bold text-[9px] flex items-center justify-center shadow-md animate-bounce" style={{ animationDelay: '0.2s' }}>
+                      58
+                    </div>
+                    <div className="absolute bottom-2 right-2 w-6 h-6 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-300 text-white font-bold text-[9px] flex items-center justify-center shadow-md animate-pulse" style={{ animationDelay: '0.3s' }}>
+                      42
+                    </div>
+                    <div 
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full shadow-lg text-white font-bold text-xs flex items-center justify-center border border-white"
+                      style={{ backgroundColor: selectedColor }}
+                    >
+                      ★
+                    </div>
+                  </div>
+                </div>
+
+                {/* Base Stand */}
+                <div className="absolute -bottom-1 w-14 h-2.5 bg-slate-400 rounded-b-md shadow-sm" />
+              </div>
+
+              <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                Bolillero de Lotería
+              </div>
+            </div>
+          )}
 
           {/* Bottom Phone Bar */}
           <div className="text-center pb-2">

@@ -35,7 +35,7 @@ export function getDemoId(): string {
   return d;
 }
 
-export async function api<T>(path: string, opts: { method?: string; body?: unknown; auth?: boolean } = {}): Promise<T> {
+export async function api<T>(path: string, opts: { method?: string; body?: unknown; auth?: boolean; signal?: AbortSignal } = {}): Promise<T> {
   const token = getToken();
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (token && opts.auth !== false) {
@@ -47,6 +47,7 @@ export async function api<T>(path: string, opts: { method?: string; body?: unkno
     method: opts.method || 'GET',
     headers,
     body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+    signal: opts.signal,
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error((data as { error?: string }).error || `Error ${res.status}`);

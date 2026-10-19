@@ -6,20 +6,23 @@ const tsPlugin = require('@typescript-eslint/eslint-plugin');
 
 module.exports = [
   {
-    files: ['**/*.ts', '**/*.tsx'],
     ignores: [
-      'node_modules',
-      '.next',
-      'out',
-      'build',
-      'public/build',
-      'src/lib/__tests__/coverage',
-      'scripts/db-up.ts',
-      'scripts/db-migrate.ts',
-      'scripts/db-seed.ts',
-      'dist',
-      '*.tsbuildinfo',
+      '**/node_modules/**',
+      '**/.next/**',
+      '**/out/**',
+      '**/build/**',
+      '**/public/build/**',
+      '**/src/lib/__tests__/coverage/**',
+      '**/scripts/**',
+      '**/dist/**',
+      '**/*.tsbuildinfo',
+      '**/*.js',
+      '**/*.mjs',
+      '**/*.cjs',
     ],
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {

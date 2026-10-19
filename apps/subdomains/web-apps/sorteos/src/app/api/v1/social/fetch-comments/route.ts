@@ -9,6 +9,10 @@ import { cleanStr } from '@/lib/server/validators';
  * Extrae comentarios reales del post o video especificado.
  * Detecta automáticamente si el usuario tiene vinculada la cuenta de la red seleccionada.
  */
+export async function GET() {
+  return ok({ ready: true });
+}
+
 export async function POST(req: NextRequest) {
   const auth = getAuth(req) || getAuthOrDemo(req);
   const body = await req.json().catch(() => ({} as Record<string, unknown>));
@@ -59,9 +63,10 @@ export async function POST(req: NextRequest) {
 
   const continuationToken = cleanStr(body.continuationToken, 10000) || undefined;
   const limit = typeof body.limit === 'number' ? body.limit : undefined;
+  const fetchAll = Boolean(body.fetchAll);
 
   const adapter = getAdapter(platform);
-  const result = await adapter.fetchComments(postUrl, decryptedToken, continuationToken, limit);
+  const result = await adapter.fetchComments(postUrl, decryptedToken, continuationToken, limit, fetchAll);
 
   logEvent('social.fetch_comments_api', {
     userId: auth.userId,
