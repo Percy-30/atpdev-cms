@@ -2368,8 +2368,11 @@ import {
   extractPlazasAndBasesFromCdUrl,
   scrapeUnajmaOfficialJobs,
   UNAJMA_OFFICIAL_JOBS,
+  scrapeUnaatOfficialJobs,
+  UNAAT_OFFICIAL_JOBS,
   registerJobsUpdatedCallback,
   getCachedCdJobsList,
+  reloadCdJobsCacheFromDisk,
   persistCdJobs,
   persistSingleEnrichedCdJob,
   fetchAndParseIndividualCdJob,
@@ -2519,6 +2522,8 @@ export function isDeadOrBrokenUrl(url?: string): boolean {
   if (!url) return false;
   const low = url.toLowerCase().trim();
   return (
+    low.includes('portal.uni.edu.pe') ||
+    low.includes('uni.edu.pe/convocatorias') ||
     low.includes('postulacion.minsa.gob.pe') ||
     low.includes('sicoin.mpfn.gob.pe') ||
     low.includes('ww1.essalud.gob.pe') ||
@@ -2545,6 +2550,14 @@ export function isDeadOrBrokenUrl(url?: string): boolean {
 export function fixDeadDomainUrl(url?: string, entityName?: string, sectorType?: string): string {
   if (!url) return getOfficialEntityPortalUrl(entityName, sectorType);
   const low = url.toLowerCase().trim();
+  if (low.includes('uni.edu.pe')) {
+    const entNorm = (entityName || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const isRealUni = entNorm.includes('INGENIERIA') || entNorm === 'UNI' || (/\bUNI\b/.test(entNorm) && !entNorm.includes('UNIVERSIDAD') && !entNorm.includes('MUNICIPALIDAD'));
+    if (isRealUni) {
+      return 'https://www.gob.pe/institucion/uni/informes-publicaciones';
+    }
+    return getOfficialEntityPortalUrl(entityName, sectorType);
+  }
   if (low.includes('postulacion.minsa.gob.pe')) {
     return 'https://www.gob.pe/minsa';
   }
@@ -2639,6 +2652,19 @@ export function sanitizeOfficialUrl(
     const low = u.toLowerCase().trim();
     if (!low.startsWith('http://') && !low.startsWith('https://')) return null;
     if (isCompetitorUrl(low)) return null;
+    if (low.includes('uni.edu.pe')) {
+      const entNorm = (entityName || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const isRealUni = entNorm.includes('INGENIERIA') || entNorm === 'UNI' || (/\bUNI\b/.test(entNorm) && !entNorm.includes('UNIVERSIDAD') && !entNorm.includes('MUNICIPALIDAD'));
+      if (!isRealUni) {
+        return null;
+      }
+      return 'https://www.gob.pe/institucion/uni/informes-publicaciones';
+    }
+    if ((entityName || '').toUpperCase().includes('UNAAT') || (entityName || '').toUpperCase().includes('ALTOANDINA')) {
+      if (low.includes('uni.edu.pe') || (!low.includes('unaat') && !low.includes('cdn.www.gob.pe') && !low.includes('gob.pe'))) {
+        return null;
+      }
+    }
     if (isDeadOrBrokenUrl(low)) {
       return fixDeadDomainUrl(u, entityName, sectorType);
     }
@@ -2805,8 +2831,13 @@ export async function getJobPostings(): Promise<JobPosting[]> {
   // 1b. Cargar modificaciones y convocatorias añadidas localmente en memoria
   LOCAL_DYNAMIC_JOBS.forEach(j => jobsMap.set(j.slug, j));
 
-  // 2. Cargar convocatorias oficiales universitarias (UNAJMA)
+  // 2. Cargar convocatorias oficiales universitarias (UNAJMA y UNAAT)
   UNAJMA_OFFICIAL_JOBS.forEach(j => {
+    if (!jobsMap.has(j.slug)) {
+      jobsMap.set(j.slug, j);
+    }
+  });
+  UNAAT_OFFICIAL_JOBS.forEach(j => {
     if (!jobsMap.has(j.slug)) {
       jobsMap.set(j.slug, j);
     }
@@ -2868,8 +2899,11 @@ export async function getJobPostings(): Promise<JobPosting[]> {
     console.warn('SERVIR feed fallback:', err);
   }
 
-  // 7. Cargar convocatorias oficiales universitarias (UNAJMA portal oficial directo)
+  // 7. Cargar convocatorias oficiales universitarias (UNAJMA y UNAAT portal oficial directo)
   UNAJMA_OFFICIAL_JOBS.forEach(j => {
+    jobsMap.set(j.slug, j);
+  });
+  UNAAT_OFFICIAL_JOBS.forEach(j => {
     jobsMap.set(j.slug, j);
   });
 
@@ -3152,6 +3186,19 @@ export async function getJobPostingBySlug(
     j && (j.slug === normSlug || normSlug.includes(j.slug) || j.slug.includes(normSlug))
   );
   if (unajmaMatch) return maybeEnrichJob(unajmaMatch);
+
+  // 1b. Búsqueda prioritaria en catálogo oficial UNAAT directo
+  const unaatMatch = UNAAT_OFFICIAL_JOBS.find(j => 
+    j && (
+      j.slug === normSlug || 
+      normSlug.includes(j.slug) || 
+      j.slug.includes(normSlug) || 
+      (normSlug.includes('unaat') && normSlug.includes('90257')) || 
+      (normSlug.includes('altoandina') && normSlug.includes('90257')) ||
+      (normSlug.includes('cas-009') && (normSlug.includes('unaat') || normSlug.includes('altoandina')))
+    )
+  );
+  if (unaatMatch) return maybeEnrichJob(unaatMatch);
 
   // Alias para la convocatoria 276-04 de UNAJMA
   if (normSlug.includes('universidad-jose-maria-arguedas') || normSlug.includes('88971') || normSlug.includes('unajma')) {

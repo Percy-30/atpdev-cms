@@ -748,8 +748,18 @@ export function persistSingleEnrichedCdJob(job: JobPosting): void {
   } catch {}
 }
 
+export function reloadCdJobsCacheFromDisk(): JobPosting[] {
+  const disk = loadPersistedCdJobs();
+  if (disk.length > 0) {
+    cachedCdJobs.data = disk;
+    cachedCdJobs.timestamp = Date.now();
+    (globalThis as any).__CACHED_CD_JOBS__ = cachedCdJobs;
+  }
+  return cachedCdJobs.data;
+}
+
 export function getCachedCdJobsList(): JobPosting[] {
-  if (cachedCdJobs.data.length === 0) {
+  if (cachedCdJobs.data.length === 0 || (process.env.NODE_ENV !== 'production' && Date.now() - cachedCdJobs.timestamp > 15000)) {
     const disk = loadPersistedCdJobs();
     if (disk.length > 0) {
       cachedCdJobs.data = disk;
@@ -2102,4 +2112,85 @@ let cachedUnajmaJobs: { data: JobPosting[]; timestamp: number } = {
 
 export async function scrapeUnajmaOfficialJobs(): Promise<JobPosting[]> {
   return cachedUnajmaJobs.data;
+}
+
+export const UNAAT_OFFICIAL_JOBS: JobPosting[] = [
+  {
+    id: "job-unaat-cas-009-2026",
+    title: "UNIVERSIDAD ALTOANDINA DE TARMA(UNAAT): Solicita Profesional II - Convocatoria octubre 2026",
+    slug: "oferta-de-empleo-universidad-altoandina-tarma-unaat-solicita-profesional-convocatoria-octubre-2026-90257",
+    entity_name: "UNIVERSIDAD ALTOANDINA DE TARMA(UNAAT)",
+    entity_ruc: "20568285514",
+    entity_verified: true,
+    entity_logo: "/logos/gob-pe.png",
+    sector_type: "CAS 1057",
+    region: "Junín",
+    category: "Administración y Contabilidad",
+    education_level: "Titulado",
+    salary_min: 3864,
+    salary_max: 3864,
+    salary_text: "S/. 3,864.19 Soles",
+    vacancies_count: 1,
+    description: "Convocatoria oficial para la contratación administrativa de servicios en la UNIVERSIDAD NACIONAL AUTÓNOMA ALTOANDINA DE TARMA (UNAAT): Proceso CAS N° 009-2026-UNAAT para 01 Profesional II para Defensoría Universitaria en Tarma, Junín. Bases y anexos oficiales disponibles en PDF y formatos editables.",
+    requirements: [
+      "Título Profesional Universitario en Derecho, colegiado y habilitado.",
+      "Experiencia laboral general mínima de tres (03) años en el sector público o privado.",
+      "Experiencia laboral específica mínima de dos (02) años en funciones afines al puesto.",
+      "Conocimientos en Derecho Administrativo, Procedimiento Administrativo General y Gestión Universitaria."
+    ],
+    benefits: [
+      "Contratación bajo el régimen especial laboral CAS (Decreto Legislativo N° 1057).",
+      "Remuneración mensual de S/. 3,864.19 Soles con aportaciones de ley (ESSALUD y régimen previsional)."
+    ],
+    apply_url: "https://www.gob.pe/institucion/unaat/informes-publicaciones/8703506-proceso-cas-n-009-2026-unaat",
+    bases_pdf_url: "https://cdn.www.gob.pe/uploads/document/file/10768541/8703506-1-bases-del-proceso-cas-n-009-2026-unaat.pdf",
+    anexos_url: "https://cdn.www.gob.pe/uploads/document/file/10768542/8703506-2-anexos-de-cas-n-009-2026-unaat.docx",
+    cronograma_url: "https://www.gob.pe/institucion/unaat/informes-publicaciones/8703506-proceso-cas-n-009-2026-unaat",
+    resultados_url: "https://www.gob.pe/institucion/unaat/informes-publicaciones/8703506-proceso-cas-n-009-2026-unaat",
+    official_portal_name: "UNAAT - Portal Oficial Gob.pe",
+    official_documents: [
+      {
+        title: "1. Bases del Proceso CAS N° 009-2026-UNAAT (PDF Oficial)",
+        url: "https://cdn.www.gob.pe/uploads/document/file/10768541/8703506-1-bases-del-proceso-cas-n-009-2026-unaat.pdf",
+        category: "Bases Oficiales"
+      },
+      {
+        title: "2. Anexos de Postulación CAS N° 009-2026-UNAAT (DOCX)",
+        url: "https://cdn.www.gob.pe/uploads/document/file/10768542/8703506-2-anexos-de-cas-n-009-2026-unaat.docx",
+        category: "Anexos"
+      },
+      {
+        title: "3. Ficha Curricular Oficial CAS N° 009-2026-UNAAT (Excel)",
+        url: "https://cdn.www.gob.pe/uploads/document/file/10768543/8703506-3-ficha-curricular-cas-n-009-2026-unaat.xls",
+        category: "Ficha Curricular"
+      }
+    ],
+    plazas: [
+      {
+        cas_code: "CAS N° 009-2026-UNAAT",
+        title: "01 Profesional II para Defensoría Universitaria",
+        vacancies: 1,
+        education: "Título Profesional Universitario en Derecho, colegiado y habilitado",
+        experience: "Mínimo 3 años de experiencia general (público o privado) y 2 años de experiencia específica en funciones afines",
+        salary: "S/. 3,864.19 Soles",
+        bases_url: "https://cdn.www.gob.pe/uploads/document/file/10768541/8703506-1-bases-del-proceso-cas-n-009-2026-unaat.pdf"
+      }
+    ],
+    start_date: "2026-10-19",
+    end_date: "2026-10-23",
+    featured: true,
+    views_count: 1940,
+    clicks_count: 520,
+    status: "Vigente",
+    created_at: "2026-10-19T18:06:05.746Z"
+  }
+];
+
+let cachedUnaatJobs: { data: JobPosting[]; timestamp: number } = {
+  data: UNAAT_OFFICIAL_JOBS,
+  timestamp: Date.now()
+};
+
+export async function scrapeUnaatOfficialJobs(): Promise<JobPosting[]> {
+  return cachedUnaatJobs.data;
 }

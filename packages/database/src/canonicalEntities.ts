@@ -502,10 +502,26 @@ export const CANONICAL_ENTITIES: CanonicalEntityInfo[] = [
   {
     name: 'UNIVERSIDAD NACIONAL DE INGENIERÍA',
     shortName: 'UNI',
-    convocatoriasUrl: 'https://www.uni.edu.pe/convocatorias',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/uni/informes-publicaciones',
     portalName: 'UNI - Convocatorias CAS y Docentes',
     officialRuc: '20169004359',
-    searchPattern: 'uni OR "universidad nacional de ingenieria"'
+    searchPattern: 'uni'
+  },
+  {
+    name: 'UNIVERSIDAD NACIONAL AUTÓNOMA ALTOANDINA DE TARMA',
+    shortName: 'UNAAT',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/unaat/informes-publicaciones',
+    portalName: 'UNAAT - Convocatorias y Procesos de Selección',
+    officialRuc: '20568285514',
+    searchPattern: 'unaat OR "altoandina de tarma"'
+  },
+  {
+    name: 'UNIVERSIDAD NACIONAL DEL CENTRO DEL PERÚ',
+    shortName: 'UNCP',
+    convocatoriasUrl: 'https://uncp.edu.pe/convocatorias/',
+    portalName: 'UNCP - Portal de Convocatorias',
+    officialRuc: '20148092100',
+    searchPattern: 'uncp OR "centro del peru"'
   },
   {
     name: 'UNIVERSIDAD NACIONAL AGRARIA LA MOLINA',
@@ -589,6 +605,89 @@ export const CANONICAL_ENTITIES: CanonicalEntityInfo[] = [
   }
 ];
 
+function cleanEntityMatchText(s: string): string {
+  return (s || '')
+    .toUpperCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+function matchesCanonicalEntity(normRaw: string, entity: CanonicalEntityInfo): boolean {
+  const norm = cleanEntityMatchText(normRaw);
+  const entName = cleanEntityMatchText(entity.name);
+  const entShort = cleanEntityMatchText(entity.shortName);
+
+  // 1. Coincidencia completa del nombre institucional
+  if (norm.includes(entName)) {
+    return true;
+  }
+
+  // 1b. Coincidencias específicas por entidad
+  if (entShort === 'UNAAT') {
+    if (norm.includes('ALTOANDINA') || norm.includes('UNAAT') || (norm.includes('TARMA') && norm.includes('UNIVERSIDAD'))) {
+      return true;
+    }
+  }
+
+  if (entShort === 'UNCP') {
+    if (norm.includes('CENTRO DEL PERU') || norm.includes('CENTRO DEL PERÚ') || /\bUNCP\b/.test(norm)) {
+      return true;
+    }
+  }
+
+  if (entShort === 'UNAS') {
+    if (norm.includes('AGRARIA DE LA SELVA') || (norm.includes('AGRARIA') && norm.includes('SELVA')) || /\bUNAS\b/.test(norm)) {
+      return true;
+    }
+  }
+
+  if (entShort === 'UNALM') {
+    if (norm.includes('AGRARIA LA MOLINA') || (norm.includes('AGRARIA') && norm.includes('MOLINA')) || /\bUNALM\b/.test(norm)) {
+      return true;
+    }
+  }
+
+  if (entShort === 'UNT') {
+    if ((norm.includes('UNIVERSIDAD') && norm.includes('TRUJILLO')) || /\bUNT\b/.test(norm)) {
+      if (!norm.includes('JUNTOS')) return true;
+    }
+  }
+
+  if (entShort === 'UNI') {
+    const disqualifiers = [
+      'ALTOANDINA', 'TARMA', 'TRUJILLO', 'SAN MARCOS', 'SAN AGUSTIN', 'SAN ANTONIO',
+      'SAN CRISTOBAL', 'HUAMANGA', 'ALTIPLANO', 'PIURA', 'CUSCO', 'AMAZONIA',
+      'MUNICIPALIDAD', 'GOBIERNO', 'GORE', 'UGEL', 'DRE', 'SELVA', 'CAJAMARCA'
+    ];
+    if (disqualifiers.some(d => norm.includes(d))) {
+      return false;
+    }
+    return norm.includes('INGENIERIA') || norm.includes('INGENIERÍA') || /\bUNI\b/.test(norm);
+  }
+
+  // 2. Coincidencia estricta por sigla / acrónimo (debe ser palabra completa o estar entre paréntesis/guiones)
+  // NUNCA como subcadena dentro de otra palabra (ej: 'UNI' NO debe coincidir en 'UNIVERSIDAD' o 'MUNICIPALIDAD')
+  const escapedShort = entShort.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const wordBoundaryRegex = new RegExp(`(?:^|[^A-Z0-9])${escapedShort}(?:$|[^A-Z0-9])`, 'i');
+
+  if (wordBoundaryRegex.test(norm)) {
+    // Filtros de seguridad para siglas cortas con riesgo de colisión
+    if (entShort === 'INS') {
+      if (norm.includes('INSN') || norm.includes('MINSA')) return false;
+      return norm.includes('SALUD') && /\bINS\b/.test(norm);
+    }
+
+    if (entShort === 'ATU') {
+      return norm.includes('TRANSPORTE') || /\bATU\b/.test(norm);
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
 /**
  * Resuelve la URL canónica institucional de convocatorias para cualquier entidad dada.
  * Si la entidad no coincide de forma exacta, usa el buscador oficial de SERVIR Talento Perú
@@ -610,15 +709,11 @@ export function resolveEntityCanonicalPortal(entityName?: string): {
     };
   }
 
-  const norm = entityName.toUpperCase().trim();
+  const norm = cleanEntityMatchText(entityName);
 
-  // 1. Buscar coincidencia en el directorio canónico
+  // 1. Buscar coincidencia en el directorio canónico de forma rigurosa y segura
   for (const entity of CANONICAL_ENTITIES) {
-    if (
-      norm.includes(entity.shortName.toUpperCase()) ||
-      norm.includes(entity.name.toUpperCase()) ||
-      (entity.searchPattern && new RegExp(entity.searchPattern.replace(/"/g, ''), 'i').test(norm))
-    ) {
+    if (matchesCanonicalEntity(entityName, entity)) {
       return {
         url: entity.convocatoriasUrl,
         portalName: entity.portalName,
@@ -643,10 +738,10 @@ export function resolveEntityCanonicalPortal(entityName?: string): {
     }
   }
 
-  if (norm.includes('MUNICIPALIDAD PROVINCIAL') || norm.includes('MUNICIPALIDAD DISTRITAL')) {
-    const muniMatch = norm.match(/MUNICIPALIDAD\s+(?:PROVINCIAL|DISTRITAL)\s+(?:DE\s+)?([A-ZÁÉÍÓÚÑ]+)/i);
+  if (norm.includes('MUNICIPALIDAD PROVINCIAL') || norm.includes('MUNICIPALIDAD DISTRITAL') || norm.includes('MUNICIPALIDAD')) {
+    const muniMatch = norm.match(/MUNICIPALIDAD\s+(?:PROVINCIAL|DISTRITAL)?\s*(?:DE\s+)?([A-ZÁÉÍÓÚÑ]+)/i);
     const muniName = muniMatch ? muniMatch[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-    if (muniName) {
+    if (muniName && muniName.length > 2) {
       return {
         url: `https://www.gob.pe/muni${muniName}`,
         portalName: `Municipalidad de ${muniName.toUpperCase()} - Portal Oficial`,
