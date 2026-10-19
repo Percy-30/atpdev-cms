@@ -12,7 +12,7 @@ import Script from "next/script";
 import { 
   Briefcase, ShieldCheck, Search, PlusCircle, Globe, Award, 
   Calculator, FileText, HelpCircle, Bot, FileSpreadsheet, Scale,
-  Mail, ExternalLink, Lock, Building2, Compass, BookOpen
+  Mail, ExternalLink, Lock, Building2, Compass, BookOpen, Sparkles
 } from "lucide-react";
 import { HeaderNav } from "@/components/HeaderNav";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
@@ -314,6 +314,12 @@ export default function RootLayout({
                     <Link href="/guias" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
                       <BookOpen size={12} className="text-emerald-600 dark:text-emerald-400" />
                       <span>Guías Laborales y Manuales CAS</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/match-cv" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
+                      <Sparkles size={12} className="text-emerald-600 dark:text-emerald-400" />
+                      <span>Recomendador de CV con IA</span>
                     </Link>
                   </li>
                   <li>

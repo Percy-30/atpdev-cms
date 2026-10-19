@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, MapPin, Building2, Briefcase, Award, TrendingUp, ShieldCheck } from "lucide-react";
+import Link from "next/link";
+import { Search, MapPin, Building2, Briefcase, Award, TrendingUp, ShieldCheck, Sparkles, ArrowRight } from "lucide-react";
 import type { SubdomainBranding } from "@atpdev/database";
 
 interface JobSearchHeroProps {
@@ -162,6 +163,20 @@ export function JobSearchHero({ totalJobs, totalVacancies, branding, accentColor
               {item.tag}
             </button>
           ))}
+        </div>
+
+        {/* Call to action: Recomendador de Convocatorias con IA */}
+        <div className="pt-1">
+          <Link
+            href="/match-cv"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-semibold transition-all hover:scale-[1.02] shadow-xs group"
+          >
+            <Sparkles size={16} className="text-emerald-500 animate-pulse shrink-0" />
+            <span>¿Tienes tu CV listo? Descubre a qué convocatorias puedes postular con IA</span>
+            <span className="font-bold underline flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform text-emerald-800 dark:text-emerald-200">
+              Subir mi CV <ArrowRight size={13} />
+            </span>
+          </Link>
         </div>
 
         {/* Real Live Statistics */}

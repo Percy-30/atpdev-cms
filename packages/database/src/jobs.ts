@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { SERVIR_JOBS_DATA } from './servirJobsData';
+import { resolveEntityCanonicalPortal } from './canonicalEntities';
 
 export type OdpeVacancy = {
   odpe: string;
@@ -2419,6 +2420,12 @@ export function isGenericPublicationUrl(url?: string): boolean {
   if (!url) return false;
   const low = url.toLowerCase().trim();
   return (
+    low === 'https://www.gob.pe/servir' ||
+    low === 'https://www.gob.pe/servir/' ||
+    low === 'http://www.gob.pe/servir' ||
+    low === 'http://www.gob.pe/servir/' ||
+    low === 'https://gob.pe/servir' ||
+    low === 'https://gob.pe/servir/' ||
     low.includes('informes-publicaciones?tipo_publicacion=') ||
     low.includes('colecciones/171-convocatorias-de-trabajo-cas') ||
     low.includes('app.servir.gob.pe/difusionofertasexterno/faces/consultas/ofertas_laborales.xhtml')
@@ -2426,7 +2433,7 @@ export function isGenericPublicationUrl(url?: string): boolean {
 }
 
 export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: string): string {
-  if (!entityName) return 'https://www.gob.pe/servir';
+  if (!entityName) return 'https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml';
   const norm = entityName.toUpperCase();
 
   // Sector Privado / Empresas Reconocidas
@@ -2450,94 +2457,19 @@ export function getOfficialEntityPortalUrl(entityName?: string, sectorType?: str
   if (norm.includes('CLARO') || norm.includes('AMERICA MOVIL') || norm.includes('AMÉRICA MÓVIL')) return 'https://claro.pe/personas/trabaja-con-nosotros/';
   if (norm.includes('TELEFONICA') || norm.includes('TELEFÓNICA') || norm.includes('MOVISTAR')) return 'https://telefonica.com.pe/trabaja-con-nosotros/';
 
-  // Sector Público / Estado Peruano
-  if (norm.includes('ONPE')) return 'https://reclutamiento.onpe.gob.pe/convocatorias';
-  if (norm.includes('RENIEC')) return 'https://apps.reniec.gob.pe/convocaWeb/';
-  if (norm.includes('JNE')) return 'https://seleccionpersonal.jne.gob.pe/';
-  if (norm.includes('SUNAT')) return 'https://unete.sunat.gob.pe/';
-  if (norm.includes('ESSALUD') || norm.includes('ES SALUD')) return 'https://convocatorias.essalud.gob.pe/';
-  if (norm.includes('BCRP') || norm.includes('BANCO CENTRAL DE RESERVA')) return 'https://bcrp.hiringroom.com/jobs';
-  if (norm.includes('BANCO DE LA NACION') || norm.includes('BANCO DE LA NACIÓN')) return 'https://www.bn.com.pe/oportunidad-laboral/';
-  if (norm.includes('PODER JUDICIAL') || norm.includes('CORTE SUPERIOR')) return 'https://aplicativo.pj.gob.pe/psep/';
-  if (norm.includes('MINISTERIO PUBLICO') || norm.includes('MINISTERIO PÚBLICO') || norm.includes('FISCALIA') || norm.includes('FISCALÍA') || norm.includes('MPFN')) return 'https://portal.mpfn.gob.pe/convocatorias';
-  if (norm.includes('CONTRALORIA') || norm.includes('CONTRALORÍA')) return 'https://www.gob.pe/contraloria';
-  if (norm.includes('INEI')) return 'https://uneteservicios.inei.gob.pe/';
-  if (norm.includes('DEFENSORIA') || norm.includes('DEFENSORÍA')) return 'https://www.defensoria.gob.pe/convocatorias-cas/';
-  if (norm.includes('SUNAFIL')) return 'https://www.gob.pe/sunafil';
-  if (norm.includes('INDECOPI')) return 'https://www.gob.pe/indecopi';
-  if (norm.includes('OSINERGMIN')) return 'https://www.osinergmin.gob.pe/seccion/institucional/oportunidades-laborales';
-  if (norm.includes('SUNASS')) return 'https://www.sunass.gob.pe/trabaja-con-nosotros/';
-  if (norm.includes('OSIPTEL')) return 'https://www.gob.pe/osiptel';
-  if (norm.includes('OSITRAN') || norm.includes('OSITRÁN')) return 'https://www.gob.pe/ositran';
-  if (norm.includes('SUTRAN') || norm.includes('SUTRÁN')) return 'https://www.gob.pe/sutran';
-  if (norm.includes('AUTORIDAD DE TRANSPORTE URBANO') || norm.includes('ATU')) return 'https://portal.atu.gob.pe/convocatorias/';
-  if (norm.includes('CONADIS') || norm.includes('PERS.CON DISC') || norm.includes('DISCAPACIDAD')) return 'https://www.gob.pe/institucion/conadis/campa%C3%B1as/3295-convocatorias-cas';
-  if (norm.includes('BOSQUES') || norm.includes('CONSERVACION DE BOSQUES') || norm.includes('CONSERVACIÓN DE BOSQUES')) return 'https://www.gob.pe/bosques';
-  if (norm.includes('ACADEMIA DE LA MAGISTRATURA') || norm.includes('AMAG')) return 'https://www.amag.edu.pe/convocatorias';
-  if (norm.includes('INSTITUTO CATASTRAL') || norm.includes('CATASTRAL DE LIMA') || norm.includes('ICL')) return 'https://www.icl.gob.pe/';
-  if (norm.includes('OFTALMOLOG') || norm.includes('INSTITUTO REGIONAL DE OFTALMOLOGIA')) return 'https://www.gob.pe/minsa';
-  if (norm.includes('OLMOS') || norm.includes('AUTONOMA DE OLMOS') || norm.includes('AUTÓNOMA DE OLMOS')) return 'https://www.gob.pe/servir';
-  if (norm.includes('MINSA') || norm.includes('SALUD') || norm.includes('HOSPITAL') || norm.includes('DIRIS') || norm.includes('DIRESA') || norm.includes('GERESA')) return 'https://www.gob.pe/minsa';
-  if (norm.includes('MINEDU') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN') || norm.includes('UGEL') || norm.includes('UNIDAD DE GESTION EDUCATIVA') || norm.includes('DRE')) return 'https://postulacioncas.minedu.gob.pe/PostulacionCas/';
-  if (norm.includes('CORPAC')) return 'https://extranet.corpac.gob.pe/PASH/BIENVENIDA';
-  if (norm.includes('DRTC HUANUCO') || norm.includes('DRTC HUÁNUCO') || (norm.includes('DRTC') && norm.includes('HUANUCO')) || (norm.includes('TRANSPORTES') && norm.includes('HUANUCO')) || (norm.includes('TRANSPORTES') && norm.includes('HUÁNUCO'))) return 'https://www.drtchco.gob.pe/convocatorias/';
-  if (norm.includes('MTC') || norm.includes('TRANSPORTES')) return 'https://www.gob.pe/mtc';
-  if (norm.includes('MIDIS') || norm.includes('JUNTOS') || norm.includes('QALI WARMA') || norm.includes('PENSION 65') || norm.includes('CUNA MAS') || norm.includes('FONCODES')) return 'https://www.gob.pe/juntos';
-  // Caja de Pensiones Militar Policial
-  if (norm.includes('CAJA DE PENSIONES') || norm.includes('CPMP') || (norm.includes('PENSIONES') && norm.includes('MILITAR')) || norm.includes('PENSIONES MILITAR POLICIAL')) {
-    return 'https://www.cpmp.com.pe/';
-  }
-
-  if (norm.includes('MININTER') || /\bPOLIC[IÍ]A\b/i.test(norm) || norm.includes('POLICIA NACIONAL') || norm.includes('POLICÍA NACIONAL') || norm.includes('PNP') || norm.includes('MIGRACIONES') || norm.includes('SUCAMEC')) return 'https://www.gob.pe/mininter';
-  if (norm.includes('MINDEF') || norm.includes('DEFENSA') || norm.includes('EJERCITO') || norm.includes('EJÉRCITO') || norm.includes('MARINA') || norm.includes('FAP')) return 'https://www.gob.pe/mindef';
-  if (norm.includes('MEF') || norm.includes('ECONOMIA') || norm.includes('ECONOMÍA')) return 'https://www.gob.pe/institucion/mef/colecciones/182-convocatorias-de-trabajo-cas-y-fag';
-  if (norm.includes('ANIN')) return 'https://www.gob.pe/anin';
-  if (norm.includes('MINEM') || norm.includes('ENERGIA') || norm.includes('ENERGÍA')) return 'https://www.gob.pe/minem';
-  if (norm.includes('PRODUCE') || norm.includes('PRODUCCION') || norm.includes('PRODUCCIÓN') || norm.includes('SANIPES') || norm.includes('ITP')) return 'https://www.gob.pe/produce';
-  if (norm.includes('MIDAGRI') || norm.includes('MINAGRI') || norm.includes('AGRICULTURA') || norm.includes('SERFOR') || norm.includes('SENASA') || norm.includes('ANA')) return 'https://www.gob.pe/midagri';
-  if (norm.includes('MINAM') || norm.includes('AMBIENTE') || norm.includes('OEFA') || norm.includes('SERNANP') || norm.includes('SENAMHI')) return 'https://www.gob.pe/minam';
-  if (norm.includes('MINCETUR') || norm.includes('PROMPERU') || norm.includes('PROMPERÚ')) return 'https://www.gob.pe/mincetur';
-  if (norm.includes('CULTURA')) return 'https://www.gob.pe/cultura';
-  if (norm.includes('MTPE') || norm.includes('TRABAJO')) return 'https://www.gob.pe/mtpe';
-  if (norm.includes('MINJUSDH') || norm.includes('JUSTICIA') || norm.includes('INPE') || norm.includes('SUNARP')) return 'https://www.inpe.gob.pe/';
-  if (norm.includes('UNAJMA') || norm.includes('JOSE MARIA ARGUEDAS') || norm.includes('JOSÉ MARÍA ARGUEDAS')) return 'https://www.unajma.edu.pe/convocatorias';
-  if (norm.includes('CUSCO') || norm.includes('MUNICIPALIDAD DEL CUSCO') || norm.includes('MUNICIPALIDAD PROVINCIAL DEL CUSCO')) return 'https://web.cusco.gob.pe/category/convocatorias/';
-  if (norm.includes('OSINFOR')) return 'https://www.gob.pe/osinfor';
-  if (norm.includes('OEFA')) return 'https://www.gob.pe/oefa';
-  if (norm.includes('SERFOR')) return 'https://www.gob.pe/serfor';
-  if (norm.includes('SERNANP')) return 'https://www.gob.pe/sernanp';
-  if (norm.includes('SENASA')) return 'https://www.gob.pe/senasa';
-  if (norm.includes('SENAMHI')) return 'https://www.gob.pe/senamhi';
-  if (norm.includes('SUNARP')) return 'https://www.gob.pe/sunarp';
-  if (norm.includes('INPE')) return 'https://www.inpe.gob.pe/';
-  if (norm.includes('PRONABEC')) return 'https://www.gob.pe/pronabec';
-  if (norm.includes('DEVIDA')) return 'https://www.gob.pe/devida';
-  if (norm.includes('PROINVERSION') || norm.includes('PROINVERSIÓN')) return 'https://www.investinperu.pe/';
-  if (norm.includes('AGROIDEAS')) return 'https://www.gob.pe/agroideas';
-  if (norm.includes('SIERRA Y SELVA EXPORTADORA')) return 'https://www.gob.pe/sierraexportadora';
-  if (norm.includes('QUILLABAMBA') || norm.includes('LA CONVENCION') || norm.includes('LA CONVENCIÓN')) return 'https://munilaconvencion.gob.pe/';
-  if (norm.includes('AREQUIPA') || norm.includes('REGION AREQUIPA') || norm.includes('GOBIERNO REGIONAL DE AREQUIPA')) return 'https://www.gob.pe/regionarequipa';
-  if (norm.includes('SAN MARCOS') || norm.includes('UNMSM')) return 'https://unmsm.edu.pe/';
-  if ((norm.includes('UNIVERSIDAD NACIONAL DE INGENIERIA') || norm.includes('UNIVERSIDAD NACIONAL DE INGENIERÍA') || /\bUNI\b/.test(norm)) && !norm.includes('MUNICIPALIDAD') && !norm.includes('UNIDAD')) return 'https://www.uni.edu.pe/';
-  if (norm.includes('INIA') || norm.includes('INNOVACION AGRARIA') || norm.includes('INNOVACIÓN AGRARIA')) return 'https://www.gob.pe/inia';
-  if ((norm.includes('UNIVERSIDAD NACIONAL AGRARIA') || norm.includes('UNALM')) && !norm.includes('INIA')) return 'https://www.lamolina.edu.pe/';
-  if (norm.includes('MIRAFLORES')) return 'https://www.miraflores.gob.pe/convocatorias/';
-  if (norm.includes('SAN ISIDRO')) return 'https://msi.gob.pe/portal/convocatorias-de-trabajo/';
-  if (norm.includes('BREÑA') || norm.includes('BRENA')) return 'https://www.gob.pe/munibrena';
-  if (norm.includes('ASCOPE')) return 'https://www.gob.pe/institucion/muniascope/campa%C3%B1as/';
-  if (norm.includes('ISLAY') || norm.includes('MOLLENDO')) return 'https://www.gob.pe/munimollendo';
-  if (norm.includes('QUILCA')) return 'https://www.gob.pe/muniquilca';
-  if (norm.includes('PAIS') || norm.includes('PROGRAMA PAIS') || norm.includes('PROGRAMA NACIONAL PAIS')) return 'https://www.gob.pe/pais';
-  if (norm.includes('RENIEC')) return 'https://www.gob.pe/reniec';
-  if (norm.includes('MUNICIPALIDAD') || norm.includes('GOBIERNO REGIONAL')) return 'https://www.gob.pe/servir';
-
-  // Sector Privado genérico
   if (sectorType === 'Privado') {
     return 'https://empleos.atpdev.dev/empleos';
   }
 
-  // Portal oficial del Estado peruano (SERVIR - Talento Perú Oficial)
-  return 'https://www.gob.pe/servir';
+  // Sector Público: Resolver a través del Directorio Canónico Oficial
+  const resolved = resolveEntityCanonicalPortal(entityName);
+  if (resolved?.url) {
+    return resolved.url;
+  }
+
+  // Fallback seguro a búsqueda activa en SERVIR (nunca portada genérica)
+  const encodedEntity = encodeURIComponent(entityName.slice(0, 40));
+  return `https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=${encodedEntity}`;
 }
 
 export function isDeadOrBrokenUrl(url?: string): boolean {

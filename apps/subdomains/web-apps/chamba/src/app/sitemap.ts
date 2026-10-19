@@ -29,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const toolUrls = [
     '/empleos',
+    '/match-cv',
     '/guias',
     '/calculadora-sueldo',
     '/comparador-regimenes',

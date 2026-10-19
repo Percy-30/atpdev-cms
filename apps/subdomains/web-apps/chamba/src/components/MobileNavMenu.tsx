@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2, BookOpen } from 'lucide-react';
+import { Menu, X, Search, Award, Calculator, FileText, HelpCircle, ShieldCheck, PlusCircle, Briefcase, Bot, FileSpreadsheet, Scale, Lock, FileCheck2, Mail, Building2, BookOpen, Sparkles } from 'lucide-react';
 import { ChambaThemeToggle } from './ChambaThemeToggle';
 
 export function MobileNavMenu() {
@@ -68,6 +68,15 @@ export function MobileNavMenu() {
             >
               <Search size={18} className="text-emerald-600 dark:text-emerald-400" />
               <span>Buscar Convocatorias</span>
+            </Link>
+
+            <Link
+              href="/match-cv"
+              onClick={() => setIsOpen(false)}
+              className="drawer-nav-item-highlight flex items-center gap-3 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 hover:border-emerald-300 dark:hover:border-emerald-500/40 text-emerald-800 dark:text-emerald-300 hover:text-emerald-900 dark:hover:text-emerald-200 transition-colors"
+            >
+              <Sparkles size={18} className="text-emerald-600 dark:text-emerald-400 animate-pulse" />
+              <span className="font-bold">Recomendador CV (IA)</span>
             </Link>
 
             <Link

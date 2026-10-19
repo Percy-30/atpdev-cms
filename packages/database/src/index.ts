@@ -61,6 +61,7 @@ export * from './analytics';
 export * from './jobs';
 export * from './scraper';
 export * from './organizations';
+export * from './canonicalEntities';
 export type SiteConfig = {
   id: number;
   // Hero

@@ -12,6 +12,7 @@ import { JobCard } from "@/components/JobCard";
 import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { PlazasList } from "@/components/PlazasList";
 import { JobCountdownClock } from "@/components/JobCountdownClock";
+import { AiBasesResolver } from "@/components/AiBasesResolver";
 import { SITE_URL } from "@/lib/siteConfig";
 
 export const dynamicParams = true;
@@ -573,72 +574,14 @@ export default async function JobDetailPage({
           {/* Main Details Body */}
           <div className="lg:col-span-2 space-y-8">
 
-            {/* Documentos y Etapas Oficiales del Concurso (UNAJMA / Portal Oficial) */}
-            {job.official_documents && job.official_documents.length > 0 && (
-              <div className="p-6 sm:p-8 rounded-2xl space-y-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <FileText className="text-emerald-600 dark:text-emerald-400" size={22} />
-                      <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white">
-                        Documentos y Etapas Oficiales del Concurso
-                      </h2>
-                    </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                      Resoluciones oficiales, formatos de postulación, fe de erratas y actas de resultados emitidas por <b className="text-slate-900 dark:text-white">{job.entity_name}</b>.
-                    </p>
-                  </div>
-                  <span className="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-xs font-semibold whitespace-nowrap self-start sm:self-auto">
-                    {job.official_documents.length} Archivos Oficiales
-                  </span>
-                </div>
-
-                <div className="divide-y divide-slate-200 dark:divide-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 overflow-hidden">
-                  {job.official_documents.map((doc, dIdx) => {
-                    const lowDocUrl = doc.url.toLowerCase();
-                    const isPdf = lowDocUrl.includes('.pdf') || lowDocUrl.includes('drive.google.com') || lowDocUrl.includes('docs.google.com');
-                    const isDoc = lowDocUrl.includes('.doc');
-                    return (
-                      <div
-                        key={dIdx}
-                        className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white/[0.02] transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider ${
-                            isPdf ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' :
-                            isDoc ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
-                            'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                          }`}>
-                            {isPdf ? 'PDF' : isDoc ? 'DOCX' : (doc.category || 'DOC')}
-                          </span>
-                          <div>
-                            <span className="text-white text-xs sm:text-sm font-semibold block">
-                              {doc.title}
-                            </span>
-                            {doc.category && (
-                              <span className="text-[11px] text-slate-400 font-mono">
-                                Etapa: {doc.category}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <a
-                          href={doc.url}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          className="self-start sm:self-auto px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold font-display transition-all flex items-center gap-2 shadow-sm whitespace-nowrap cursor-pointer"
-                        >
-                          <FileText size={14} />
-                          <span>Descargar Archivo</span>
-                          <ExternalLink size={12} />
-                        </a>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+            {/* Documentos y Etapas Oficiales del Concurso (Localización con IA / Directorio Canónico) */}
+            <AiBasesResolver
+              jobTitle={job.title}
+              entityName={job.entity_name}
+              initialDocuments={job.official_documents}
+              canonicalPortalUrl={cleanApplyUrl}
+              canonicalPortalName={job.official_portal_name || job.entity_name}
+            />
             
             {/* Plazas y Bases Oficiales Individuales (PortalTrabajos / Gob.pe) */}
             <PlazasList

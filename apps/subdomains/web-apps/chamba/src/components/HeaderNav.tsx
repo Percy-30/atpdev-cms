@@ -13,6 +13,14 @@ import { MobileNavMenu } from './MobileNavMenu';
 
 const HERRAMIENTAS = [
   {
+    title: 'Recomendador CV (IA)',
+    desc: 'Sube tu CV y descubre las convocatorias compatibles con tu perfil profesional.',
+    href: '/match-cv',
+    icon: Sparkles,
+    color: 'from-emerald-600 to-teal-700',
+    badge: 'Nuevo IA',
+  },
+  {
     title: 'Generador de CV CAS',
     desc: 'Formatos oficiales SERVIR y Privado en PDF y Word (.DOC) editable.',
     href: '/crear-cv-cas',
@@ -109,13 +117,29 @@ export function HeaderNav() {
           <Link 
             href="/empleos" 
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
-              pathname.startsWith('/empleos')
+              pathname === '/empleos' || (pathname.startsWith('/empleos') && !pathname.includes('match-cv'))
                 ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
             }`}
           >
             <Search size={16} className="text-emerald-600 dark:text-emerald-400" />
             <span>Convocatorias</span>
+          </Link>
+
+          {/* Recomendador CV con IA */}
+          <Link 
+            href="/match-cv" 
+            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 border ${
+              pathname.startsWith('/match-cv')
+                ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 shadow-sm'
+                : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
+            }`}
+          >
+            <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400 animate-pulse" />
+            <span>Recomendador CV</span>
+            <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 rounded text-[10px] font-mono font-bold uppercase tracking-wider">
+              IA
+            </span>
           </Link>
 
           {/* Guías CAS */}

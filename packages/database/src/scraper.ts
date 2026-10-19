@@ -17,6 +17,7 @@ import {
 } from './jobs';
 import { PORTAL_JOBS_DATA } from './portalJobsData';
 import { SERVIR_JOBS_DATA } from './servirJobsData';
+import { resolveEntityCanonicalPortal } from './canonicalEntities';
 
 export type ScrapedJobResult = {
   source: string;
@@ -1623,10 +1624,10 @@ function parseServirJobsFromHtml(text: string, todayIso: string, pageIndex = 1):
         'Contrato formal según régimen del Estado con cobertura de salud ESSALUD.',
         'Aportes al sistema previsional (ONP / AFP) y beneficios de ley.'
       ],
-      apply_url: 'https://www.gob.pe/servir',
+      apply_url: resolveEntityCanonicalPortal(entity_name).url,
       bases_pdf_url: undefined,
-      fuente_url: 'https://www.gob.pe/servir',
-      official_portal_name: 'SERVIR - Talento Perú Oficial',
+      fuente_url: resolveEntityCanonicalPortal(entity_name).url,
+      official_portal_name: resolveEntityCanonicalPortal(entity_name).portalName,
       start_date,
       end_date,
       featured: i < 6,
