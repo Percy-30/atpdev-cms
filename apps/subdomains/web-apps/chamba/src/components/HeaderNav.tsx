@@ -65,6 +65,14 @@ const HERRAMIENTAS = [
     icon: FileText,
     color: 'from-teal-600 to-cyan-700',
   },
+  {
+    title: 'Quiénes Somos',
+    desc: 'Conoce nuestro equipo, verificación de convocatorias y compromiso ético.',
+    href: '/quienes-somos',
+    icon: ShieldCheck,
+    color: 'from-slate-600 to-slate-800',
+    badge: 'Oficial',
+  },
 ];
 
 export function HeaderNav() {
@@ -92,7 +100,7 @@ export function HeaderNav() {
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#070a12]/90 backdrop-blur-2xl border-b border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div className="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 shrink-0">
           <div className="w-10 h-10 rounded-xl bg-emerald-600 dark:bg-emerald-600 text-white flex items-center justify-center shadow-xs">
@@ -116,7 +124,7 @@ export function HeaderNav() {
           {/* Convocatorias */}
           <Link 
             href="/empleos" 
-            className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 xl:gap-2 border whitespace-nowrap shrink-0 ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 border whitespace-nowrap shrink-0 ${
               pathname === '/empleos' || (pathname.startsWith('/empleos') && !pathname.includes('match-cv'))
                 ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
@@ -129,7 +137,7 @@ export function HeaderNav() {
           {/* Recomendador CV con IA */}
           <Link 
             href="/match-cv" 
-            className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 xl:gap-2 border whitespace-nowrap shrink-0 ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 border whitespace-nowrap shrink-0 ${
               pathname.startsWith('/match-cv')
                 ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
@@ -145,7 +153,7 @@ export function HeaderNav() {
           {/* Guías CAS */}
           <Link 
             href="/guias" 
-            className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 xl:gap-2 border whitespace-nowrap shrink-0 ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 border whitespace-nowrap shrink-0 ${
               pathname.startsWith('/guias')
                 ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30 shadow-sm'
                 : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
@@ -163,7 +171,7 @@ export function HeaderNav() {
             <button
               type="button"
               onClick={() => setToolsOpen(!toolsOpen)}
-              className={`px-2.5 xl:px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer whitespace-nowrap shrink-0 ${
+              className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer whitespace-nowrap shrink-0 ${
                 toolsOpen || isToolActive
                   ? 'bg-slate-100 dark:bg-white/10 text-emerald-700 dark:text-white border-slate-200 dark:border-white/20 shadow-sm'
                   : 'border-transparent text-slate-600 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 hover:border-slate-200 dark:hover:border-white/10'
@@ -218,43 +226,28 @@ export function HeaderNav() {
               </div>
             )}
           </div>
-
-          {/* Quiénes Somos - visible on xl+ screens to prevent cramping on laptops */}
-          <Link 
-            href="/quienes-somos" 
-            className={`hidden xl:flex px-2.5 xl:px-3 py-2 rounded-xl transition-all items-center gap-1.5 border whitespace-nowrap shrink-0 ${
-              pathname === '/quienes-somos'
-                ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border-slate-200 dark:border-slate-700 shadow-xs'
-                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700'
-            }`}
-          >
-            <ShieldCheck size={15} className="text-slate-500 dark:text-slate-400 shrink-0" />
-            <span>Quiénes Somos</span>
-          </Link>
         </nav>
 
         {/* Actions Hub */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <ChambaThemeToggle />
 
-          {/* Publicar Convocatoria - Shown on 2xl screens to avoid crowding on laptops */}
+          {/* Publicar Convocatoria */}
           <Link
             href="/publicar-empleo"
-            className="hidden 2xl:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer whitespace-nowrap shrink-0"
+            className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors shadow-xs cursor-pointer whitespace-nowrap shrink-0"
           >
             <PlusCircle size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>Publicar</span>
           </Link>
 
-          {/* Explorar Convocatorias - Dynamic text with zero overflow */}
+          {/* Explorar Convocatorias */}
           <Link
             href="/empleos"
-            className="hidden sm:flex px-3.5 sm:px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors items-center gap-1.5 shadow-xs cursor-pointer shrink-0 whitespace-nowrap"
+            className="hidden sm:flex px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-colors items-center gap-1.5 shadow-xs cursor-pointer shrink-0 whitespace-nowrap"
           >
             <Compass size={15} className="text-white shrink-0" />
-            <span className="hidden xl:inline">Explorar Convocatorias</span>
-            <span className="inline xl:hidden">Explorar</span>
-            <ArrowRight size={13} className="text-white shrink-0" />
+            <span>Explorar Convocatorias</span>
           </Link>
 
           {/* Mobile Drawer */}
