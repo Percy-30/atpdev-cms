@@ -63,6 +63,14 @@ export const CANONICAL_ENTITIES: CanonicalEntityInfo[] = [
     officialRuc: '20131378972',
     searchPattern: 'contraloria'
   },
+  {
+    name: 'INSTITUTO NACIONAL DE ESTADÍSTICA E INFORMÁTICA',
+    shortName: 'INEI',
+    convocatoriasUrl: 'https://uneteservicios.inei.gob.pe/',
+    portalName: 'INEI - Sistema Únete Servicios y Convocatorias',
+    officialRuc: '20131369982',
+    searchPattern: 'inei OR "instituto nacional de estadistica e informatica"'
+  },
 
   // Sistema Electoral
   {

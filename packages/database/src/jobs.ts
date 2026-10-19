@@ -2388,13 +2388,28 @@ export const AGGREGATOR_AND_COMPETITOR_DOMAINS = [
   'convocatoriasdetrabajo',
   'portaltrabajos',
   'portaltrabajo',
+  'convocatorias.pe',
+  'convocatoria.pe',
+  'convocatorias202',
+  'convocatoriasperu',
+  'deperu',
+  'empleosperu',
+  'chamba.pe',
+  'chambasperu',
+  'chambita',
+  'bolsadetrabajo',
+  'bolsatrabajo',
+  'agendapublica',
+  'postula.pe',
+  'concursocashoy',
+  'cas-peru',
+  'basesconvocatorias',
+  'convocatoriascas',
   'blogspot',
   'trabajaen',
   'buscojobs',
   'trovit',
   'mitula',
-  'chambita',
-  'chambasperu',
   'laborum'
 ];
 
@@ -2408,12 +2423,40 @@ export function isCompetitorUrl(url?: string): boolean {
      low.includes('computrabajo.com.pe/ofertas-de-trabajo/') || 
      low.includes('hiringroom.com/jobs/')) &&
     !low.includes('convocatoriasdetrabajo') &&
-    !low.includes('portaltrabajos')
+    !low.includes('portaltrabajos') &&
+    !low.includes('convocatorias.pe')
   ) {
     return false;
   }
 
-  return AGGREGATOR_AND_COMPETITOR_DOMAINS.some(domain => low.includes(domain));
+  // Comprobar lista de dominios agregadores conocidos
+  if (AGGREGATOR_AND_COMPETITOR_DOMAINS.some(domain => low.includes(domain))) {
+    return true;
+  }
+
+  // Heurística de seguridad: si contiene 'convocatoria', 'empleo' o 'chamba' pero NO pertenece al Estado (.gob.pe, .edu.pe, .mil.pe) ni a Google Drive
+  const isGovOrDoc = (
+    low.includes('.gob.pe') ||
+    low.includes('.edu.pe') ||
+    low.includes('.mil.pe') ||
+    low.includes('drive.google.com') ||
+    low.includes('docs.google.com') ||
+    low.includes('atpdev.dev')
+  );
+
+  if (!isGovOrDoc) {
+    if (
+      low.includes('convocatorias.') ||
+      low.includes('convocatoria.') ||
+      low.includes('deperu.com') ||
+      low.includes('portaltrabajo') ||
+      low.includes('chambasperu')
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export function isGenericPublicationUrl(url?: string): boolean {

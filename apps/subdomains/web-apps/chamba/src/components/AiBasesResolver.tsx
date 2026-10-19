@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { FileText, Sparkles, ExternalLink, Loader2, CheckCircle2, ShieldCheck, ArrowRight, Download } from 'lucide-react';
+import { isCompetitorUrl } from '@atpdev/database';
 
 interface OfficialDoc {
   title: string;
@@ -24,12 +25,14 @@ export function AiBasesResolver({
   canonicalPortalUrl,
   canonicalPortalName
 }: AiBasesResolverProps) {
-  const [documents, setDocuments] = useState<OfficialDoc[]>(initialDocuments);
+  // Filtrar de inmediato cualquier URL de agregadores o competidores no oficiales
+  const safeInitialDocs = (initialDocuments || []).filter(d => d.url && !isCompetitorUrl(d.url));
+  const [documents, setDocuments] = useState<OfficialDoc[]>(safeInitialDocs);
   const [loading, setLoading] = useState(false);
-  const [resolved, setResolved] = useState(initialDocuments.length > 0);
+  const [resolved, setResolved] = useState(safeInitialDocs.length > 0);
   const [portalInfo, setPortalInfo] = useState({
     name: canonicalPortalName || entityName,
-    url: canonicalPortalUrl || ''
+    url: canonicalPortalUrl && !isCompetitorUrl(canonicalPortalUrl) ? canonicalPortalUrl : ''
   });
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -52,10 +55,11 @@ export function AiBasesResolver({
       }
 
       const data = await res.json();
-      if (data.official_documents && data.official_documents.length > 0) {
-        setDocuments(data.official_documents);
+      const verifiedDocs = (data.official_documents || []).filter((d: OfficialDoc) => d.url && !isCompetitorUrl(d.url));
+      if (verifiedDocs.length > 0) {
+        setDocuments(verifiedDocs);
       }
-      if (data.portalUrl) {
+      if (data.portalUrl && !isCompetitorUrl(data.portalUrl)) {
         setPortalInfo({
           name: data.portalName || entityName,
           url: data.portalUrl
@@ -72,7 +76,9 @@ export function AiBasesResolver({
   };
 
   // Si ya tenemos documentos (iniciales o resueltos por la IA)
-  if (resolved && documents.length > 0) {
+  const validDocuments = documents.filter(d => d.url && !isCompetitorUrl(d.url));
+
+  if (resolved && validDocuments.length > 0) {
     return (
       <div className="p-6 sm:p-8 rounded-2xl space-y-6 border border-emerald-500/30 dark:border-emerald-500/20 bg-emerald-950/10 dark:bg-emerald-950/20 shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
@@ -89,16 +95,17 @@ export function AiBasesResolver({
           </div>
           <div className="flex items-center gap-2">
             <span className="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-semibold whitespace-nowrap">
-              {documents.length} Archivo(s) Verificado(s)
+              {validDocuments.length} Archivo(s) Verificado(s)
             </span>
           </div>
         </div>
 
         <div className="divide-y divide-slate-200 dark:divide-slate-800 rounded-xl bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
-          {documents.map((doc, dIdx) => {
+          {validDocuments.map((doc, dIdx) => {
             const lowDocUrl = doc.url.toLowerCase();
             const isPdf = lowDocUrl.includes('.pdf') || lowDocUrl.includes('drive.google.com') || lowDocUrl.includes('docs.google.com');
-            const isDoc = lowDocUrl.includes('.doc');
+            const isDoc = lowDocUrl.includes('.doc') || lowDocUrl.includes('.docx');
+            const isFile = isPdf || isDoc || lowDocUrl.includes('.xlsx') || lowDocUrl.includes('.zip');
 
             return (
               <div
@@ -111,7 +118,7 @@ export function AiBasesResolver({
                     isDoc ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/30' :
                     'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
                   }`}>
-                    {isPdf ? 'PDF' : isDoc ? 'DOCX' : (doc.category || 'DOC')}
+                    {isPdf ? 'PDF' : isDoc ? 'DOCX' : (doc.category || 'OFICIAL')}
                   </span>
                   <div>
                     <span className="text-slate-900 dark:text-white text-xs sm:text-sm font-semibold block leading-tight">
@@ -129,11 +136,15 @@ export function AiBasesResolver({
                   href={doc.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="self-start sm:self-auto px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold font-display transition-all flex items-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
+                  className={`self-start sm:self-auto px-4 py-2 rounded-xl text-white text-xs font-bold font-display transition-all flex items-center gap-2 shadow-xs whitespace-nowrap cursor-pointer ${
+                    isFile 
+                      ? 'bg-emerald-600 hover:bg-emerald-700' 
+                      : 'bg-teal-700 hover:bg-teal-800'
+                  }`}
                 >
-                  <Download size={14} />
-                  <span>Descargar Archivo</span>
-                  <ExternalLink size={12} />
+                  {isFile ? <Download size={14} /> : <ExternalLink size={14} />}
+                  <span>{isFile ? 'Descargar Archivo Oficial' : 'Ver Convocatoria Oficial'}</span>
+                  {isFile && <ExternalLink size={12} />}
                 </a>
               </div>
             );

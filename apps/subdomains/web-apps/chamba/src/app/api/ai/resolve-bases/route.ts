@@ -61,8 +61,9 @@ export async function POST(req: Request) {
 
     if (apiKey) {
       try {
-        // Query de alta precisión dirigida a servidores del Estado (.gob.pe y .edu.pe)
-        const primaryQuery = `site:gob.pe OR site:edu.pe "${entity_name || ''}" "${cleanJobRole}" bases filetype:pdf`;
+        // Query de alta precisión dirigida exclusivamente a servidores del Estado (.gob.pe, .edu.pe, .mil.pe)
+        // Excluyendo explícitamente blogs y agregadores de terceros
+        const primaryQuery = `(site:gob.pe OR site:edu.pe OR site:mil.pe) "${entity_name || ''}" "${cleanJobRole}" bases filetype:pdf -site:convocatorias.pe -site:convocatoriasdetrabajo.com -site:deperu.com -site:computrabajo.com.pe -site:bumeran.com.pe -site:portaltrabajos.com`;
 
         const firecrawlRes = await fetch('https://api.firecrawl.dev/v1/search', {
           method: 'POST',
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
           },
           body: JSON.stringify({
             query: primaryQuery,
-            limit: 5
+            limit: 6
           })
         });
 
@@ -81,15 +82,17 @@ export async function POST(req: Request) {
           const items: any[] = firecrawlData?.data || [];
 
           for (const item of items) {
-            const itemUrl = item.url || '';
+            const itemUrl = (item.url || '').trim();
             const itemTitle = cleanTitle(item.title || 'Documento Oficial');
 
             if (!itemUrl || isCompetitorUrl(itemUrl)) continue;
 
-            const isPdf = itemUrl.toLowerCase().includes('.pdf') || itemUrl.includes('drive.google.com') || itemUrl.includes('docs.google.com');
-            const isGov = itemUrl.includes('.gob.pe') || itemUrl.includes('.edu.pe') || itemUrl.includes('.pe');
+            const lowUrl = itemUrl.toLowerCase();
+            const isPdf = lowUrl.includes('.pdf') || lowUrl.includes('drive.google.com') || lowUrl.includes('docs.google.com');
+            const isGov = lowUrl.includes('.gob.pe') || lowUrl.includes('.edu.pe') || lowUrl.includes('.mil.pe');
 
-            if (isGov || isPdf) {
+            // Solo admitir si es un servidor del Estado o un documento PDF / Google Drive oficial
+            if ((isGov || isPdf) && !isCompetitorUrl(itemUrl)) {
               const category = categorizeDocument(itemTitle, itemUrl);
               officialDocuments.push({
                 title: itemTitle,
