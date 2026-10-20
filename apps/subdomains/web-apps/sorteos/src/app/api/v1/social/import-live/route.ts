@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
 
     for (let i = 0; i < rawComments.length; i++) {
       const c = rawComments[i];
-      let username = String(c?.username || c?.user || '').trim().replace(/^@/, '');
+      const username = String(c?.username || c?.user || '').trim().replace(/^@/, '');
       if (!username || username.length < 1 || username.length > 25) continue;
       if (seen.has(username.toLowerCase())) continue;
       seen.add(username.toLowerCase());
