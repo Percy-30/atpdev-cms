@@ -148,9 +148,23 @@ export async function executeVerifiableDraw(
   const timestamp = new Date().toISOString();
   const shuffled = shuffleArray(eligibleParticipants);
 
-  const selectedWinners = shuffled.slice(0, Math.min(winnersCount, shuffled.length));
-  const remaining = shuffled.slice(selectedWinners.length);
-  const selectedSubstitutes = remaining.slice(0, Math.min(substitutesCount, remaining.length));
+  const seenUsernames = new Set<string>();
+  const selectedWinners: Participant[] = [];
+  const selectedSubstitutes: Participant[] = [];
+
+  for (const p of shuffled) {
+    const uname = String(p.username || '').toLowerCase().trim();
+    if (seenUsernames.has(uname)) continue;
+    if (selectedWinners.length < Math.min(winnersCount, shuffled.length)) {
+      selectedWinners.push(p);
+      seenUsernames.add(uname);
+    } else if (selectedSubstitutes.length < substitutesCount) {
+      selectedSubstitutes.push(p);
+      seenUsernames.add(uname);
+    } else {
+      break;
+    }
+  }
 
   const winners: Winner[] = selectedWinners.map((p, index) => ({
     id: `win-${index + 1}`,

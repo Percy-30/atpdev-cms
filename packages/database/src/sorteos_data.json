@@ -1,6 +1,132 @@
 {
   "giveaways": [
     {
+      "id": "sw-mvgswl6r",
+      "title": "Sorteo Oficial de X (Twitter)",
+      "platform": "instagram",
+      "network": "x",
+      "postUrl": "https://x.com/strbzyx/status/2110218793611846082",
+      "authorUsername": "@lover_of_Dazai",
+      "totalCommentsCount": 3,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 0,
+        "blockedUsers": [
+          "bot_spammer_3000"
+        ],
+        "winnersCount": 1,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "win-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-10-20T14:51:11.063Z",
+          "participant": {
+            "id": "x-live-lover_of_Dazai-1",
+            "username": "lover_of_Dazai",
+            "commentText": "14 oct cosas que nunca me pasaran por que no limpio mi cuarto",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "sub-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-10-20T14:51:11.063Z",
+          "participant": {
+            "id": "x-live-haruKaibustu-2",
+            "username": "haruKaibustu",
+            "commentText": "13 oct Cuando limpio mi cuarto y me doy cuenta que le único que sobra soy yo",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "sub-2",
+          "position": 2,
+          "type": "substitute",
+          "selectedAt": "2026-10-20T14:51:11.063Z",
+          "participant": {
+            "id": "x-live-foq1tap-0",
+            "username": "foq1tap",
+            "commentText": "14 oct mentira, yo no limpio mi cuarto",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-085BF64E8B",
+      "verificationHash": "085bf64e8b88a983a43466dda29e4df84301d9dd60de673cd62a167b82d78d55",
+      "executedAt": "2026-10-20T14:51:11.063Z",
+      "createdAt": "2026-10-20T14:51:11.063Z"
+    },
+    {
+      "id": "sw-mvgocqh6",
+      "title": "Sorteo Oficial de YouTube",
+      "platform": "youtube",
+      "network": "youtube",
+      "postUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "authorUsername": "@NeverGonnaGiveyuCheese",
+      "totalCommentsCount": 487,
+      "status": "completed",
+      "rules": {
+        "excludeDuplicates": true,
+        "minMentions": 0,
+        "blockedUsers": [
+          "bot_spammer_3000"
+        ],
+        "winnersCount": 1,
+        "substitutesCount": 2
+      },
+      "winners": [
+        {
+          "id": "win-1",
+          "position": 1,
+          "type": "winner",
+          "selectedAt": "2026-10-20T12:43:46.397Z",
+          "participant": {
+            "id": "UgyohCtnbVPfVVWHQvp4AaABAg",
+            "username": "NeverGonnaGiveyuCheese",
+            "commentText": "How tf did this get in my recommended \nDid I just got rickrolled by Youtube",
+            "isEligible": true
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "id": "sub-1",
+          "position": 1,
+          "type": "substitute",
+          "selectedAt": "2026-10-20T12:43:46.397Z",
+          "participant": {
+            "id": "UgxeAA3cgevbw9wQcj14AaABAg",
+            "username": "marhabaalvi-p8y",
+            "commentText": "No-one should give up on this song. This song has rickrolled us many times but will always stay in our heart no matter what.",
+            "isEligible": true
+          }
+        },
+        {
+          "id": "sub-2",
+          "position": 2,
+          "type": "substitute",
+          "selectedAt": "2026-10-20T12:43:46.397Z",
+          "participant": {
+            "id": "Ugy2XZSLtlNwix8Wlt54AaABAg",
+            "username": "mattarocket4261",
+            "commentText": "I just got rick rolled by scanning someone’s hairline",
+            "isEligible": true
+          }
+        }
+      ],
+      "certificateId": "cert-079BA68FC7",
+      "verificationHash": "079ba68fc7780a78d0fc2c44c992d224cb38703141ccfb734ed9a261f2e07f22",
+      "executedAt": "2026-10-20T12:43:46.397Z",
+      "createdAt": "2026-10-20T12:43:46.397Z"
+    },
+    {
       "id": "sw-mv9fz40v",
       "title": "Sorteo Oficial — cuaupeluche",
       "platform": "instagram",
@@ -482,8 +608,8 @@
       "email": "demo-j61sej@demo.sorteos.local",
       "plan": "pro",
       "status": "active",
-      "giveawaysCount": 3,
-      "commentsConsumed": 565,
+      "giveawaysCount": 5,
+      "commentsConsumed": 1055,
       "commentsLimit": 10000,
       "joinedAt": "2026-10-13"
     },

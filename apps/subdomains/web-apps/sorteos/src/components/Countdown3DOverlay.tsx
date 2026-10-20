@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { playCountdownTick, playDrumRoll } from '@/lib/soundEffects';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -27,6 +27,11 @@ export const Countdown3DOverlay: React.FC<Countdown3DOverlayProps> = ({
   const [isFlipping, setIsFlipping] = useState<boolean>(false);
   const [wheelRotation, setWheelRotation] = useState<number>(0);
 
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  });
+
   useEffect(() => {
     if (!active) {
       setCurrentCount(seconds);
@@ -43,24 +48,31 @@ export const Countdown3DOverlay: React.FC<Countdown3DOverlayProps> = ({
     setWheelRotation(1440 + Math.floor(Math.random() * 360));
 
     let count = seconds;
+    let flipTimeout: NodeJS.Timeout | null = null;
+    let finishTimeout: NodeJS.Timeout | null = null;
+
     const interval = setInterval(() => {
       count--;
       if (count > 0) {
         setCurrentCount(count);
         setIsFlipping(false);
-        setTimeout(() => setIsFlipping(true), 20);
+        flipTimeout = setTimeout(() => setIsFlipping(true), 20);
         playCountdownTick(count === 1);
       } else {
         clearInterval(interval);
         setCurrentCount(0);
-        setTimeout(() => {
-          onComplete();
+        finishTimeout = setTimeout(() => {
+          onCompleteRef.current();
         }, 500);
       }
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [active, seconds, onComplete]);
+    return () => {
+      clearInterval(interval);
+      if (flipTimeout) clearTimeout(flipTimeout);
+      if (finishTimeout) clearTimeout(finishTimeout);
+    };
+  }, [active, seconds]);
 
   if (!active) return null;
 

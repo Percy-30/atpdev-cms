@@ -65,11 +65,29 @@ export function executeDrawServer(
   if (winnersCount < 1) throw new Error('winnersCount debe ser ≥ 1.');
   const timestamp = new Date().toISOString();
   const shuffled = shuffleServer(eligible);
-  const winners: Winner[] = shuffled.slice(0, Math.min(winnersCount, shuffled.length)).map((p, i) => ({
+  const seenUsernames = new Set<string>();
+  const selectedWinners: Participant[] = [];
+  const selectedSubstitutes: Participant[] = [];
+
+  for (const p of shuffled) {
+    const uname = String(p.username || '').toLowerCase().trim();
+    if (seenUsernames.has(uname)) continue;
+    if (selectedWinners.length < Math.min(winnersCount, shuffled.length)) {
+      selectedWinners.push(p);
+      seenUsernames.add(uname);
+    } else if (selectedSubstitutes.length < substitutesCount) {
+      selectedSubstitutes.push(p);
+      seenUsernames.add(uname);
+    } else {
+      break;
+    }
+  }
+
+  const winners: Winner[] = selectedWinners.map((p, i) => ({
     id: `win-${i + 1}-${Date.now().toString(36)}`,
     participant: p, type: 'winner', position: i + 1, selectedAt: timestamp,
   }));
-  const substitutes: Winner[] = shuffled.slice(winners.length, winners.length + substitutesCount).map((p, i) => ({
+  const substitutes: Winner[] = selectedSubstitutes.map((p, i) => ({
     id: `sub-${i + 1}-${Date.now().toString(36)}`,
     participant: p, type: 'substitute', position: i + 1, selectedAt: timestamp,
   }));
