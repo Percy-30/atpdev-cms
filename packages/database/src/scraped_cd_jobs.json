@@ -17709,10 +17709,10 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCI%C3%93N%20DE%20EDUCACI%C3%93N(DRE)%20SAN%20MART%C3%8DN",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCI%C3%93N%20DE%20EDUCACI%C3%93N(DRE)%20SAN%20MART%C3%8DN",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCI%C3%93N%20DE%20EDUCACI%C3%93N(DRE)%20SAN%20MART%C3%8DN",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCI%C3%93N%20DE%20EDUCACI%C3%93N(DRE)%20SAN%20MART%C3%8DN",
+    "apply_url": "https://www.gob.pe/institucion/dresan/informes-publicaciones",
+    "bases_pdf_url": "https://www.gob.pe/institucion/dresan/informes-publicaciones",
+    "fuente_url": "https://www.gob.pe/institucion/dresan/informes-publicaciones",
+    "scrape_source_url": "https://www.gob.pe/institucion/dresan/informes-publicaciones",
     "official_portal_name": "DIRECCIÓN DE EDUCACIÓN(DRE) SAN MARTÍN - Portal Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-21",
@@ -95398,7 +95398,7 @@
     "title": "HOSPITAL REZOLA CAÑETE: Solicita Medico Radiólogo - Convocatoria octubre 2026",
     "slug": "oferta-de-empleo-hospital-rezola-canete-solicita-medico-radiologo-convocatoria-octubre-2026-90260",
     "entity_name": "HOSPITAL REZOLA CAÑETE",
-    "entity_ruc": "20100000000",
+    "entity_ruc": "20201977734",
     "entity_verified": true,
     "entity_logo": "/logos/minsa.svg",
     "sector_type": "D.L. 276",
@@ -95417,25 +95417,37 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "official_portal_name": "HOSPITAL REZOLA CAÑETE - Portal Convocatorias",
+    "apply_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "bases_pdf_url": "https://hospitalrezola.gob.pe/gestiondearchivos/files/208/110/CAS_N___06.pdf",
+    "fuente_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "scrape_source_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "official_portal_name": "Hospital Rezola de Cañete - Portal Oficial de Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-24",
     "featured": false,
     "views_count": 2560,
     "clicks_count": 830,
     "status": "Vigente",
-    "created_at": "2026-10-20T02:46:59.302Z"
+    "created_at": "2026-10-20T02:46:59.302Z",
+    "official_documents": [
+      {
+        "title": "Bases Oficiales: Convocatoria CAS Médicos Especialistas - Hospital Rezola",
+        "url": "https://hospitalrezola.gob.pe/gestiondearchivos/files/208/110/CAS_N___06.pdf",
+        "category": "Bases Oficiales (PDF)"
+      },
+      {
+        "title": "Portal Oficial de Convocatorias CAS - Hospital Rezola",
+        "url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+        "category": "Portal Oficial"
+      }
+    ]
   },
   {
     "id": "job-cd-39",
     "title": "HOSPITAL REZOLA CAÑETE: Solicita Medico especialista - Convocatoria octubre 2026",
     "slug": "oferta-de-empleo-hospital-rezola-canete-solicita-medico-especialista-convocatoria-octubre-2026-90259",
     "entity_name": "HOSPITAL REZOLA CAÑETE",
-    "entity_ruc": "20100000000",
+    "entity_ruc": "20201977734",
     "entity_verified": true,
     "entity_logo": "/logos/minsa.svg",
     "sector_type": "CAS 1057",
@@ -95454,18 +95466,45 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "official_portal_name": "HOSPITAL REZOLA CAÑETE - Portal Convocatorias",
+    "apply_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "bases_pdf_url": "https://hospitalrezola.gob.pe/gestiondearchivos/files/208/110/CAS_N___06.pdf",
+    "fuente_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "scrape_source_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "official_portal_name": "Hospital Rezola de Cañete - Portal Oficial de Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-24",
     "featured": false,
     "views_count": 2580,
     "clicks_count": 840,
     "status": "Vigente",
-    "created_at": "2026-10-20T02:46:59.304Z"
+    "created_at": "2026-10-20T02:46:59.304Z",
+    "official_documents": [
+      {
+        "title": "Bases Oficiales: Convocatoria CAS Médicos Especialistas - Hospital Rezola",
+        "url": "https://hospitalrezola.gob.pe/gestiondearchivos/files/208/110/CAS_N___06.pdf",
+        "category": "Bases Oficiales (PDF)"
+      },
+      {
+        "title": "Bases y Perfiles de Puesto: CAS N° 04 - Hospital Rezola Cañete",
+        "url": "https://www.hospitalrezola.gob.pe/pdf/concurso/CONCURSO_CAS/BASES_CAS4.pdf",
+        "category": "Bases Oficiales (PDF)"
+      },
+      {
+        "title": "Portal Oficial de Convocatorias CAS - Hospital Rezola",
+        "url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+        "category": "Portal Oficial"
+      }
+    ],
+    "plazas": [
+      {
+        "cas_code": "CAS Nº 06-2026",
+        "title": "Médico Especialista",
+        "education": "Título Profesional de Médico Cirujano con Especialidad o RNE acreditado.",
+        "experience": "Experiencia laboral en el sector público o privado acreditada.",
+        "salary": "S/. 7,004",
+        "bases_url": "https://hospitalrezola.gob.pe/gestiondearchivos/files/208/110/CAS_N___06.pdf"
+      }
+    ]
   },
   {
     "id": "job-cd-312",
@@ -95592,10 +95631,10 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
+    "apply_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "bases_pdf_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "fuente_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "scrape_source_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
     "official_portal_name": "HOSPITAL REZOLA CAÑETE - Portal Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-24",
@@ -95629,10 +95668,10 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=HOSPITAL%20REZOLA%20CA%C3%91ETE",
+    "apply_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "bases_pdf_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "fuente_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
+    "scrape_source_url": "https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php",
     "official_portal_name": "HOSPITAL REZOLA CAÑETE - Portal Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-24",
@@ -96934,7 +96973,7 @@
     "title": "DIRECCION DE EDUCACION(DRE) CALLAO busca Tecnico administrativo - Convocatoria octubre 2026",
     "slug": "oferta-de-empleo-direccion-educacion-dre-callao-busca-tecnico-administrativo-convocatoria-octubre-2026-90295",
     "entity_name": "DIRECCION DE EDUCACION(DRE) CALLAO",
-    "entity_ruc": "20100000000",
+    "entity_ruc": "20131370905",
     "entity_verified": true,
     "entity_logo": "/logos/minedu.svg",
     "sector_type": "CAS 1057",
@@ -96953,18 +96992,45 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCION%20DE%20EDUCACION(DRE)%20CALLAO",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCION%20DE%20EDUCACION(DRE)%20CALLAO",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCION%20DE%20EDUCACION(DRE)%20CALLAO",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=DIRECCION%20DE%20EDUCACION(DRE)%20CALLAO",
-    "official_portal_name": "DIRECCION DE EDUCACION(DRE) CALLAO - Portal Convocatorias",
+    "apply_url": "https://www.gob.pe/institucion/regioncallao-dre/informes-publicaciones",
+    "bases_pdf_url": "https://www.drec.gob.pe/wp-content/uploads/2024/02/CONVOCATORIA-N-006-2024.pdf",
+    "fuente_url": "https://www.gob.pe/institucion/regioncallao-dre/informes-publicaciones",
+    "scrape_source_url": "https://www.gob.pe/institucion/regioncallao-dre/informes-publicaciones",
+    "official_portal_name": "DRE Callao - Portal Oficial de Convocatorias Gob.pe",
     "start_date": "2026-10-20",
     "end_date": "2026-10-30",
     "featured": true,
     "views_count": 1860,
     "clicks_count": 480,
     "status": "Vigente",
-    "created_at": "2026-10-20T02:46:59.275Z"
+    "created_at": "2026-10-20T02:46:59.275Z",
+    "official_documents": [
+      {
+        "title": "Bases Oficiales: Convocatoria CAS Técnico Administrativo - DRE Callao",
+        "url": "https://www.drec.gob.pe/wp-content/uploads/2024/02/CONVOCATORIA-N-006-2024.pdf",
+        "category": "Bases Oficiales (PDF)"
+      },
+      {
+        "title": "Bases Convocatoria CAS N° 052 - Técnico Administrativo DRE Callao",
+        "url": "https://www.drec.gob.pe/wp-content/uploads/2022/11/CONVOCATORIA-CAS-N-052-2022-DREC.pdf",
+        "category": "Bases Oficiales (PDF)"
+      },
+      {
+        "title": "Portal Oficial de Convocatorias e Informes - DRE Callao",
+        "url": "https://www.gob.pe/institucion/regioncallao-dre/informes-publicaciones",
+        "category": "Portal Oficial"
+      }
+    ],
+    "plazas": [
+      {
+        "cas_code": "CAS Nº 006-2026-DREC",
+        "title": "Técnico Administrativo",
+        "education": "Título Técnico o estudios universitarios en Administración, Contabilidad o afines.",
+        "experience": "Experiencia laboral en el sector público o privado en funciones administrativas.",
+        "salary": "S/. 2,064",
+        "bases_url": "https://www.drec.gob.pe/wp-content/uploads/2024/02/CONVOCATORIA-N-006-2024.pdf"
+      }
+    ]
   },
   {
     "id": "job-cd-4",
@@ -97101,10 +97167,10 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=ELECTRIFICACION%20RURAL(DGER)",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=ELECTRIFICACION%20RURAL(DGER)",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=ELECTRIFICACION%20RURAL(DGER)",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=ELECTRIFICACION%20RURAL(DGER)",
+    "apply_url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_18-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_GP_Y_PAa_-JAL_1780927676647_966283066.pdf",
+    "bases_pdf_url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_18-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_GP_Y_PAa_-JAL_1780927676647_966283066.pdf",
+    "fuente_url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_18-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_GP_Y_PAa_-JAL_1780927676647_966283066.pdf",
+    "scrape_source_url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_18-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_GP_Y_PAa_-JAL_1780927676647_966283066.pdf",
     "official_portal_name": "ELECTRIFICACION RURAL(DGER) - Portal Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-23",
@@ -97112,7 +97178,100 @@
     "views_count": 1940,
     "clicks_count": 520,
     "status": "Vigente",
-    "created_at": "2026-10-20T02:46:59.281Z"
+    "created_at": "2026-10-20T02:46:59.281Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 016",
+        "title": "ESPECIALISTA EN TESORERIA",
+        "education": "Título/Licenciatura universitario: Contabilidad",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "S/. 7000",
+        "vacancies": 1,
+        "bases_url": "https://dger.minem.gob.pe/vista/transparencia.php?menu=convocatorias"
+      },
+      {
+        "cas_code": "CAS N° 017",
+        "title": "ESPECIALISTA EN CONTABILIDAD",
+        "education": "Título/Licenciatura universitario: Contabilidad",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "S/. 7000",
+        "vacancies": 1,
+        "bases_url": "https://dger.minem.gob.pe/vista/transparencia.php?menu=convocatorias"
+      },
+      {
+        "cas_code": "CAS N° 018",
+        "title": "ESPECIALISTA LEGAL EN GESTION PÚBLICA Y PROCEDIMIENTOS ADMINISTRATIVOS",
+        "education": "Título/Licenciatura universitario: Abogado",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "S/. 7000",
+        "vacancies": 1,
+        "bases_url": "https://dger.minem.gob.pe/vista/transparencia.php?menu=convocatorias"
+      },
+      {
+        "cas_code": "CAS N° 019",
+        "title": "ESPECIALISTA LEGAL EN DERECHO ADMINISTRATIVO",
+        "education": "Título/Licenciatura universitario: Abogado",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "S/. 7000",
+        "vacancies": 1,
+        "bases_url": "https://dger.minem.gob.pe/vista/transparencia.php?menu=convocatorias"
+      }
+    ],
+    "anexos_url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/ANEXOS_1_AL_7_1773157185801_556224014.docx",
+    "cronograma_url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_18-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_GP_Y_PAa_-JAL_1780927676647_966283066.pdf",
+    "resultados_url": "https://dger.minem.gob.pe/vista/transparencia.php?menu=convocatorias",
+    "official_documents": [
+      {
+        "title": "Sigue AQUÍ los comunicados de las convocatorias de ELECTRIFICACION RURAL(DGER) - ESPECIALISTA LEGAL EN GESTION PÚBLICA Y PROCEDIMIENTOS ADMINISTRATIVOS",
+        "url": "https://dger.minem.gob.pe/vista/transparencia.php?menu=convocatorias",
+        "category": "Bases"
+      },
+      {
+        "title": "Bases(Convocatoria completa y cronograma) - ESPECIALISTA LEGAL EN GESTION PÚBLICA Y PROCEDIMIENTOS ADMINISTRATIVOS",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_18-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_GP_Y_PAa_-JAL_1780927676647_966283066.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Comunicado - ESPECIALISTA LEGAL EN GESTION PÚBLICA Y PROCEDIMIENTOS ADMINISTRATIVOS",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/REANUDACIA_N_DE_CONVOC_18-2026-CAS-MINEM-DGER_ESPECIALISTA_EN_GP_Y_PA_1791331562325_338497627.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Descarga aquí Anexos - ESPECIALISTA LEGAL EN GESTION PÚBLICA Y PROCEDIMIENTOS ADMINISTRATIVOS",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/ANEXOS_1_AL_7_1773157185801_556224014.docx",
+        "category": "Anexos"
+      },
+      {
+        "title": "Bases(Convocatoria completa y cronograma) - ESPECIALISTA LEGAL EN DERECHO ADMINISTRATIVO",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_19-2026-MINEM-DGER_a_ESPECIALISTA_LEGAL_EN_DERECHO_ADMINISTRATIVOa_-JAL_1780927935569_60034824.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Comunicado - ESPECIALISTA LEGAL EN DERECHO ADMINISTRATIVO",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/REANUDACIA_N_DE_CONVOC_19-2026-CAS-MINEM-DGER_ESPECIALISTA_EN_DA_1791331526880_79832812.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Bases(Convocatoria completa y cronograma) - ESPECIALISTA EN CONTABILIDAD",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_17-2026-MINEM-DGER_a_ESPECIALISTA_EN_CONTABILIDADa_-CONT_1779977083664_130281636.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Comunicado - ESPECIALISTA EN CONTABILIDAD",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/REANUDACION_DE_CONVOC_17-2026-CAS-MINEM-DGER_ESPECIALISTA_EN_CONTABILIDAD_1791331587697_635287062.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Bases(Convocatoria completa y cronograma) - ESPECIALISTA EN TESORERIA",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/BASES_CONVOCATORIA_CAS_N_A_16-2026-MINEM-DGER_a_ESPECIALISTA_EN_TESORERIAa_-TES_1779977255214_608714186.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Comunicado - ESPECIALISTA EN TESORERIA",
+        "url": "https://dger.minem.gob.pe/IntraDGERback/uploads/convocatorias/2026/REANUDACIA_N_DE_CONVOC_16-2026-CAS-MINEM-DGER_ESPECIALISTA_EN_TESORERIA_1791331612691_520033274.pdf",
+        "category": "Bases"
+      }
+    ]
   },
   {
     "id": "job-cd-8",
@@ -97138,10 +97297,10 @@
       "Contratación según régimen laboral con todos los beneficios de ley.",
       "Aportes al seguro de salud ESSALUD y régimen previsional."
     ],
-    "apply_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=RED%20DE%20SALUD%20OTUZCO",
-    "bases_pdf_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=RED%20DE%20SALUD%20OTUZCO",
-    "fuente_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=RED%20DE%20SALUD%20OTUZCO",
-    "scrape_source_url": "https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=RED%20DE%20SALUD%20OTUZCO",
+    "apply_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf",
+    "bases_pdf_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf",
+    "fuente_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf",
+    "scrape_source_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf",
     "official_portal_name": "RED DE SALUD OTUZCO - Portal Convocatorias",
     "start_date": "2026-10-20",
     "end_date": "2026-10-30",
@@ -97149,7 +97308,255 @@
     "views_count": 1960,
     "clicks_count": 530,
     "status": "Vigente",
-    "created_at": "2026-10-20T02:46:59.282Z"
+    "created_at": "2026-10-20T02:46:59.282Z",
+    "plazas": [
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Anestesiólogo",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Anestesiología",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Patólogo Clínico",
+        "education": "Título/Licenciatura de Médico Patólogo Clínico",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Pediatra",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Pediatría",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Radiólogo",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Radiología",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Familiar",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Medicina Familiar y Comunitaria",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Cardiólogo",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Cardiología",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Cirujano General",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Cirugía General",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Físico y Rehabilitación",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Medicina Física y de Rehabilitación",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Gineco-Obstetra",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialista en Ginecología y Obstetricia",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Internista",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialidad: Medicina Interna",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Neonatólogo",
+        "education": "Título/Licenciatura de Médico Cirujano. Especialidad: Neonatología",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Médico Auditor",
+        "education": "Título/Licenciatura de Médico Cirujano. Diplomado en Auditoría Médica",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "MÉDICO CARDIÓLOGO",
+        "education": "Título/Licenciatura de Médico Cirujano",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Obstetra",
+        "education": "Título/Licenciatura de Obstetra",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Enfermero(a) - SAMU",
+        "education": "Licenciado(a) en Enfermería",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Enfermero(a)",
+        "education": "Licenciado(a) en Enfermería",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Biólogo(a)",
+        "education": "Título/Licenciatura: Biólogo(a)",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Tecnólogo Médico en Laboratorio Clínico y Anatomía Patológica",
+        "education": "Título/Licenciatura: Tecnólogo Médico en Patología Clínica",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Tecnólogo Médico en Radiología",
+        "education": "Título/Licenciatura: Tecnólogo Médico en Radiología",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Tecnólogo Médico en Terapia Física y Rehabilitación",
+        "education": "Título/Licenciatura: Tecnólogo Médico en Terapia Física y Rehabilitación",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Técnico en Laboratorio",
+        "education": "Técnico en Laboratorio",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Técnico en Enfermería",
+        "education": "Técnico en Enfermería",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Técnico en Farmacia",
+        "education": "Técnico en Farmacia",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      },
+      {
+        "cas_code": "CAS N° 005",
+        "title": "Piloto de Ambulancia",
+        "education": "Secundaria completa",
+        "experience": "Acreditar experiencia laboral requerida según bases oficiales.",
+        "salary": "Entre S/. 2000 y S/. 7300 Soles",
+        "vacancies": 1,
+        "bases_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf"
+      }
+    ],
+    "anexos_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Anexos.pdf",
+    "cronograma_url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf",
+    "resultados_url": "https://www.reddesaludotuzco.gob.pe/cas-2026/",
+    "official_documents": [
+      {
+        "title": "Sigue AQUÍ los comunicados de las convocatorias de RED DE SALUD OTUZCO - Médico Pediatra",
+        "url": "https://www.reddesaludotuzco.gob.pe/cas-2026/",
+        "category": "Bases"
+      },
+      {
+        "title": "Bases (Convocatoria completa y cronograma) - Médico Pediatra",
+        "url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Bases_.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Anexos - Médico Pediatra",
+        "url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Anexos.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Rótulo - Médico Pediatra",
+        "url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Rotulo.pdf",
+        "category": "Bases"
+      },
+      {
+        "title": "Solicitud de Participación - Médico Pediatra",
+        "url": "https://www.reddesaludotuzco.gob.pe/wp-content/uploads/2026/10/CAS.005.2026.Solicitud.pdf",
+        "category": "Bases"
+      }
+    ]
   },
   {
     "id": "job-cd-9",

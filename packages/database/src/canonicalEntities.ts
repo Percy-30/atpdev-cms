@@ -692,6 +692,24 @@ export const CANONICAL_ENTITIES: CanonicalEntityInfo[] = [
     portalName: 'Municipalidad de Santiago de Surco - Convocatorias Gob.pe',
     officialRuc: '20131374471',
     searchPattern: '"santiago de surco" OR munisurco'
+  },
+
+  // Direcciones Regionales de Educación (DRE) y Hospitales Regionales
+  {
+    name: 'DIRECCION REGIONAL DE EDUCACION DEL CALLAO',
+    shortName: 'DRE CALLAO',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/regioncallao-dre/informes-publicaciones',
+    portalName: 'DRE Callao - Portal Oficial de Convocatorias Gob.pe',
+    officialRuc: '20131370905',
+    searchPattern: '"DRE Callao" OR "DREC" OR "regioncallao-dre"'
+  },
+  {
+    name: 'HOSPITAL REZOLA DE CAÑETE',
+    shortName: 'HOSPITAL REZOLA',
+    convocatoriasUrl: 'https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php',
+    portalName: 'Hospital Rezola de Cañete - Portal Oficial de Convocatorias',
+    officialRuc: '20201977734',
+    searchPattern: '"hospital rezola" OR "rezola cañete"'
   }
 ];
 
@@ -817,6 +835,18 @@ function matchesCanonicalEntity(normRaw: string, entity: CanonicalEntityInfo): b
     }
   }
 
+  if (entShort === 'DRE CALLAO') {
+    if (norm.includes('CALLAO') && (norm.includes('DRE') || norm.includes('EDUCACION') || norm.includes('EDUCACIÓN'))) {
+      return true;
+    }
+  }
+
+  if (entShort === 'HOSPITAL REZOLA') {
+    if (norm.includes('REZOLA')) {
+      return true;
+    }
+  }
+
   // 2. Coincidencia estricta por sigla / acrónimo (debe ser palabra completa o estar entre paréntesis/guiones)
   // NUNCA como subcadena dentro de otra palabra (ej: 'UNI' NO debe coincidir en 'UNIVERSIDAD' o 'MUNICIPALIDAD')
   const escapedShort = entShort.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -927,8 +957,16 @@ export function resolveEntityCanonicalPortal(entityName?: string): {
     }
   }
 
-  if (norm.includes('DRE') || norm.includes('DIRECCION REGIONAL DE EDUCACION') || norm.includes('DIRECCIÓN REGIONAL DE EDUCACIÓN')) {
-    const dreMatch = norm.match(/(?:DRE|DIRECCI[OÓ]N REGIONAL DE EDUCACI[OÓ]N)\s+(?:DE\s+)?([A-ZÁÉÍÓÚÑ]+)/i);
+  if (norm.includes('DRE') || norm.includes('DIRECCION REGIONAL DE EDUCACION') || norm.includes('DIRECCIÓN REGIONAL DE EDUCACIÓN') || norm.includes('DIRECCION DE EDUCACION')) {
+    if (norm.includes('CALLAO')) {
+      return {
+        url: 'https://www.gob.pe/institucion/regioncallao-dre/informes-publicaciones',
+        portalName: 'DRE Callao - Portal Oficial de Convocatorias Gob.pe',
+        isSpecific: true,
+        shortName: 'DRE CALLAO'
+      };
+    }
+    const dreMatch = norm.match(/(?:DRE|DIRECCI[OÓ]N\s+(?:REGIONAL\s+)?DE\s+EDUCACI[OÓ]N(?:\s*\(DRE\))?)\s*(?:DEL?|DE\s+LA)?\s*([A-ZÁÉÍÓÚÑ]+)/i);
     const dreName = dreMatch ? dreMatch[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
     if (dreName && dreName.length >= 3) {
       return {
@@ -936,6 +974,17 @@ export function resolveEntityCanonicalPortal(entityName?: string): {
         portalName: `DRE ${dreName.toUpperCase()} - Portal Oficial de Convocatorias Gob.pe`,
         isSpecific: true,
         shortName: `DRE ${dreName.toUpperCase()}`
+      };
+    }
+  }
+
+  if (norm.includes('HOSPITAL')) {
+    if (norm.includes('REZOLA')) {
+      return {
+        url: 'https://hospitalrezola.gob.pe/gestiondearchivos/src/pages/convocatoria/convocatoria.php',
+        portalName: 'Hospital Rezola de Cañete - Portal Oficial de Convocatorias',
+        isSpecific: true,
+        shortName: 'HOSPITAL REZOLA'
       };
     }
   }
