@@ -18,6 +18,43 @@ interface AiBasesResolverProps {
   canonicalPortalName?: string;
 }
 
+function isLegitimateOfficialDoc(d: OfficialDoc, entityName?: string): boolean {
+  if (!d || !d.url) return false;
+  if (isCompetitorUrl(d.url)) return false;
+  const lowUrl = d.url.toLowerCase();
+  const lowTitle = (d.title || '').toLowerCase();
+
+  // Excepción legítima: Poder Judicial sistema oficial PSEP
+  if (lowUrl.includes('aplicativo.pj.gob.pe/repositoriopsep')) return true;
+
+  // Descartar tesis y repositorios académicos
+  const badUrlTokens = [
+    'repositorio.', 'tesis.', 'cybertesis', 'bitstream', 'bitstreams',
+    '/handle/', 'dspace', 'scielo', 'dialnet', 'redalyc', 'alicia.concytec',
+    'pei-', 'poi-', 'rof-', 'mof-', 'tupa-', 'silabo', 'pedagogico'
+  ];
+  if (badUrlTokens.some(t => lowUrl.includes(t))) return false;
+
+  const badTitleWords = [
+    'tesis', 'grado académico', 'grado academico', 'para optar el grado',
+    'maestro en', 'maestría en', 'maestria en', 'doctor en', 'doctorado',
+    'licenciatura en', 'proyecto educativo', 'plan estratégico', 'plan estrategico',
+    'plan operativo', 'manual de organización', 'tupa', 'silabo', 'balotario'
+  ];
+  if (badTitleWords.some(w => lowTitle.includes(w))) return false;
+
+  // Entidades de gobierno general no publican bases en dominios .edu.pe
+  const isUniv = Boolean(
+    entityName && (
+      entityName.toUpperCase().includes('UNIVERSIDAD') ||
+      /\b(UNI|UNMSM|UNAJMA|UNAAT|UNCP|UNAS|UNALM|UNT|UNSA|UNSAAC|UNSCH|UNP|UNAP|UNC|UNAC|UNSM)\b/.test(entityName.toUpperCase())
+    )
+  );
+  if (!isUniv && lowUrl.includes('.edu.pe')) return false;
+
+  return true;
+}
+
 export function AiBasesResolver({
   jobTitle,
   entityName,
@@ -25,8 +62,8 @@ export function AiBasesResolver({
   canonicalPortalUrl,
   canonicalPortalName
 }: AiBasesResolverProps) {
-  // Filtrar de inmediato cualquier URL de agregadores o competidores no oficiales
-  const safeInitialDocs = (initialDocuments || []).filter(d => d.url && !isCompetitorUrl(d.url));
+  // Filtrar de inmediato cualquier URL de agregadores o documentos espurios
+  const safeInitialDocs = (initialDocuments || []).filter(d => isLegitimateOfficialDoc(d, entityName));
   const [documents, setDocuments] = useState<OfficialDoc[]>(safeInitialDocs);
   const [loading, setLoading] = useState(false);
   const [resolved, setResolved] = useState(safeInitialDocs.length > 0);
@@ -49,7 +86,7 @@ export function AiBasesResolver({
   useEffect(() => {
     if (prevJobRef.current !== jobTitle) {
       prevJobRef.current = jobTitle;
-      const nextSafeDocs = (initialDocuments || []).filter(d => d.url && !isCompetitorUrl(d.url));
+      const nextSafeDocs = (initialDocuments || []).filter(d => isLegitimateOfficialDoc(d, entityName));
       setDocuments(nextSafeDocs);
       setResolved(nextSafeDocs.length > 0);
       setPortalInfo({
@@ -81,7 +118,7 @@ export function AiBasesResolver({
       const data = await res.json();
       if (!isMountedRef.current) return;
 
-      const verifiedDocs = (data.official_documents || []).filter((d: OfficialDoc) => d.url && !isCompetitorUrl(d.url));
+      const verifiedDocs = (data.official_documents || []).filter((d: OfficialDoc) => isLegitimateOfficialDoc(d, entityName));
       if (verifiedDocs.length > 0) {
         setDocuments(verifiedDocs);
       }
@@ -106,7 +143,7 @@ export function AiBasesResolver({
   };
 
   // Si ya tenemos documentos (iniciales o resueltos por la IA)
-  const validDocuments = documents.filter(d => d.url && !isCompetitorUrl(d.url));
+  const validDocuments = documents.filter(d => isLegitimateOfficialDoc(d, entityName));
 
   if (resolved && validDocuments.length > 0) {
     return (

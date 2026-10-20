@@ -751,6 +751,32 @@ export function resolveEntityCanonicalPortal(entityName?: string): {
     }
   }
 
+  if (norm.includes('UGEL')) {
+    const ugelMatch = norm.match(/UGEL\s+(?:N[°º]?\s*)?([A-Z0-9ÁÉÍÓÚÑ]+)/i);
+    const ugelName = ugelMatch ? ugelMatch[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+    if (ugelName && ugelName.length >= 2) {
+      return {
+        url: `https://www.gob.pe/institucion/ugel${ugelName}/informes-publicaciones`,
+        portalName: `UGEL ${ugelName.toUpperCase()} - Portal Oficial de Convocatorias Gob.pe`,
+        isSpecific: true,
+        shortName: `UGEL ${ugelName.toUpperCase()}`
+      };
+    }
+  }
+
+  if (norm.includes('DRE') || norm.includes('DIRECCION REGIONAL DE EDUCACION') || norm.includes('DIRECCIÓN REGIONAL DE EDUCACIÓN')) {
+    const dreMatch = norm.match(/(?:DRE|DIRECCI[OÓ]N REGIONAL DE EDUCACI[OÓ]N)\s+(?:DE\s+)?([A-ZÁÉÍÓÚÑ]+)/i);
+    const dreName = dreMatch ? dreMatch[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+    if (dreName && dreName.length >= 3) {
+      return {
+        url: `https://www.gob.pe/institucion/dre${dreName}/informes-publicaciones`,
+        portalName: `DRE ${dreName.toUpperCase()} - Portal Oficial de Convocatorias Gob.pe`,
+        isSpecific: true,
+        shortName: `DRE ${dreName.toUpperCase()}`
+      };
+    }
+  }
+
   // 3. Fallback inteligente: enlace directo a la consulta filtrada en SERVIR Talento Perú Oficial
   // (Nunca la portada estática www.gob.pe/servir)
   const encodedEntity = encodeURIComponent(entityName.slice(0, 40));
