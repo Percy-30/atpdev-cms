@@ -602,6 +602,96 @@ export const CANONICAL_ENTITIES: CanonicalEntityInfo[] = [
     portalName: 'UNAS - Portal de Convocatorias Oficiales',
     officialRuc: '20148093173',
     searchPattern: 'unas OR "agraria de la selva"'
+  },
+
+  // Gobiernos Locales y Municipalidades Principales
+  {
+    name: 'MUNICIPALIDAD DISTRITAL DE COMAS',
+    shortName: 'MUNICIPALIDAD DE COMAS',
+    convocatoriasUrl: 'https://www.municomas.gob.pe/gestion-municipal/convocatorias-cas',
+    portalName: 'Municipalidad Distrital de Comas - Portal Oficial de Convocatorias CAS',
+    officialRuc: '20131370735',
+    searchPattern: '"municipalidad de comas" OR "municomas"'
+  },
+  {
+    name: 'MUNICIPALIDAD METROPOLITANA DE LIMA',
+    shortName: 'MUNICIPALIDAD DE LIMA',
+    convocatoriasUrl: 'https://www.munlima.gob.pe/',
+    portalName: 'Municipalidad Metropolitana de Lima - Portal Oficial',
+    officialRuc: '20131380951',
+    searchPattern: '"municipalidad de lima" OR "munlima"'
+  },
+  {
+    name: 'MUNICIPALIDAD DE SAN JUAN DE LURIGANCHO',
+    shortName: 'MUNICIPALIDAD DE SAN JUAN DE LURIGANCHO',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/munisanjuandelurigancho/informes-publicaciones',
+    portalName: 'Municipalidad de San Juan de Lurigancho - Convocatorias Gob.pe',
+    officialRuc: '20131378891',
+    searchPattern: '"san juan de lurigancho" OR munisjl'
+  },
+  {
+    name: 'MUNICIPALIDAD DISTRITAL DE VILLA EL SALVADOR',
+    shortName: 'MUNICIPALIDAD DE VILLA EL SALVADOR',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/munivillaelsalvador/informes-publicaciones',
+    portalName: 'Municipalidad de Villa El Salvador - Convocatorias Gob.pe',
+    officialRuc: '20131375361',
+    searchPattern: '"villa el salvador" OR munives'
+  },
+  {
+    name: 'MUNICIPALIDAD DE PUEBLO LIBRE',
+    shortName: 'MUNICIPALIDAD DE PUEBLO LIBRE',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/munipueblolibre/informes-publicaciones',
+    portalName: 'Municipalidad de Pueblo Libre - Convocatorias Gob.pe',
+    officialRuc: '20131368919',
+    searchPattern: '"pueblo libre" OR muniplibre'
+  },
+  {
+    name: 'MUNICIPALIDAD DE MAGDALENA DEL MAR',
+    shortName: 'MUNICIPALIDAD DE MAGDALENA DEL MAR',
+    convocatoriasUrl: 'https://www.gob.pe/munimagdalena-lima',
+    portalName: 'Municipalidad de Magdalena del Mar - Portal Gob.pe',
+    officialRuc: '20131374551',
+    searchPattern: '"magdalena del mar" OR munimagdalena'
+  },
+  {
+    name: 'MUNICIPALIDAD DE ATE',
+    shortName: 'MUNICIPALIDAD DE ATE',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/muniate/informes-publicaciones',
+    portalName: 'Municipalidad de Ate - Convocatorias Gob.pe',
+    officialRuc: '20131377577',
+    searchPattern: '"municipalidad de ate" OR muniate'
+  },
+  {
+    name: 'MUNICIPALIDAD DE MIRAFLORES',
+    shortName: 'MUNICIPALIDAD DE MIRAFLORES',
+    convocatoriasUrl: 'https://www.miraflores.gob.pe/pagina-inicio-2/transparencia/convocatorias-cas/',
+    portalName: 'Municipalidad de Miraflores - Portal de Convocatorias CAS',
+    officialRuc: '20131376171',
+    searchPattern: '"municipalidad de miraflores"'
+  },
+  {
+    name: 'MUNICIPALIDAD DE SAN ISIDRO',
+    shortName: 'MUNICIPALIDAD DE SAN ISIDRO',
+    convocatoriasUrl: 'https://www.gob.pe/munisanisidro-lima',
+    portalName: 'Municipalidad de San Isidro - Portal Gob.pe',
+    officialRuc: '20131375108',
+    searchPattern: '"san isidro"'
+  },
+  {
+    name: 'MUNICIPALIDAD DE SAN BORJA',
+    shortName: 'MUNICIPALIDAD DE SAN BORJA',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/munisanborja/informes-publicaciones',
+    portalName: 'Municipalidad de San Borja - Convocatorias Gob.pe',
+    officialRuc: '20131372699',
+    searchPattern: '"san borja"'
+  },
+  {
+    name: 'MUNICIPALIDAD DE SANTIAGO DE SURCO',
+    shortName: 'MUNICIPALIDAD DE SURCO',
+    convocatoriasUrl: 'https://www.gob.pe/institucion/munisurco/informes-publicaciones',
+    portalName: 'Municipalidad de Santiago de Surco - Convocatorias Gob.pe',
+    officialRuc: '20131374471',
+    searchPattern: '"santiago de surco" OR munisurco'
   }
 ];
 
@@ -664,6 +754,67 @@ function matchesCanonicalEntity(normRaw: string, entity: CanonicalEntityInfo): b
       return false;
     }
     return norm.includes('INGENIERIA') || norm.includes('INGENIERÍA') || /\bUNI\b/.test(norm);
+  }
+
+  // Coincidencias específicas para Gobiernos Locales / Municipalidades
+  if (entShort.includes('COMAS')) {
+    if (norm.includes('COMAS') && (norm.includes('MUNICIPALIDAD') || norm.includes('MUNI') || norm.includes('DISTRITAL'))) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('SAN JUAN DE LURIGANCHO')) {
+    if (norm.includes('SAN JUAN DE LURIGANCHO') || (norm.includes('MUNICIPALIDAD') && norm.includes('SJL'))) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('VILLA EL SALVADOR')) {
+    if (norm.includes('VILLA EL SALVADOR') || (norm.includes('MUNICIPALIDAD') && norm.includes('VES'))) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('PUEBLO LIBRE')) {
+    if (norm.includes('PUEBLO LIBRE')) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('MAGDALENA DEL MAR')) {
+    if (norm.includes('MAGDALENA')) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('ATE')) {
+    if (norm.includes('MUNICIPALIDAD') && (norm.includes('ATE') || norm.includes('VITARTE'))) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('MIRAFLORES')) {
+    if (norm.includes('MUNICIPALIDAD') && norm.includes('MIRAFLORES')) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('SAN ISIDRO')) {
+    if (norm.includes('MUNICIPALIDAD') && norm.includes('SAN ISIDRO')) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('SAN BORJA')) {
+    if (norm.includes('MUNICIPALIDAD') && norm.includes('SAN BORJA')) {
+      return true;
+    }
+  }
+
+  if (entShort.includes('SURCO')) {
+    if (norm.includes('MUNICIPALIDAD') && (norm.includes('SURCO') || norm.includes('SANTIAGO DE SURCO'))) {
+      return true;
+    }
   }
 
   // 2. Coincidencia estricta por sigla / acrónimo (debe ser palabra completa o estar entre paréntesis/guiones)
@@ -742,10 +893,22 @@ export function resolveEntityCanonicalPortal(entityName?: string): {
     const muniMatch = norm.match(/MUNICIPALIDAD\s+(?:PROVINCIAL|DISTRITAL)?\s*(?:DE\s+)?([A-ZÁÉÍÓÚÑ]+)/i);
     const muniName = muniMatch ? muniMatch[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
     if (muniName && muniName.length > 2) {
+      const knownValidMuniGob = ['paucarpata', 'pisac', 'maras', 'bellavista', 'socos', 'paucar', 'luricocha', 'llochegua', 'sanisidro-lima', 'magdalena-lima'];
+      if (knownValidMuniGob.includes(muniName)) {
+        return {
+          url: `https://www.gob.pe/muni${muniName}`,
+          portalName: `Municipalidad de ${muniName.toUpperCase()} - Portal Oficial`,
+          isSpecific: true,
+          shortName: `Muni ${muniName.toUpperCase()}`
+        };
+      }
+      // Para otras municipalidades no confirmadas en gob.pe/muni..., usar la consulta oficial en SERVIR
+      // para erradicar por completo caídas en pantallas de error 404 en Gob.pe
+      const encodedMuni = encodeURIComponent(entityName.slice(0, 40));
       return {
-        url: `https://www.gob.pe/muni${muniName}`,
-        portalName: `Municipalidad de ${muniName.toUpperCase()} - Portal Oficial`,
-        isSpecific: true,
+        url: `https://app.servir.gob.pe/DifusionOfertasExterno/faces/consultas/ofertas_laborales.xhtml?entidad=${encodedMuni}`,
+        portalName: `Municipalidad de ${muniName.toUpperCase()} - Convocatorias en SERVIR Talento Perú`,
+        isSpecific: false,
         shortName: `Muni ${muniName.toUpperCase()}`
       };
     }

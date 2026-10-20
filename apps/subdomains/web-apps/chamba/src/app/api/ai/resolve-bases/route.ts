@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { resolveEntityCanonicalPortal, isCompetitorUrl } from '@atpdev/database';
+import { resolveEntityCanonicalPortal, isCompetitorUrl, sanitizeOfficialUrl } from '@atpdev/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -93,6 +93,7 @@ export async function POST(req: Request) {
     }
 
     const canonicalPortal = resolveEntityCanonicalPortal(entity_name || '');
+    const safePortalUrl = sanitizeOfficialUrl(canonicalPortal.url, undefined, entity_name);
     const apiKey = process.env.FIRECRAWL_API_KEY;
 
     const officialDocuments: OfficialDoc[] = [];
@@ -185,7 +186,7 @@ export async function POST(req: Request) {
     if (officialDocuments.length === 0 && canonicalPortal.isSpecific) {
       officialDocuments.push({
         title: `Portal Oficial de Convocatorias - ${canonicalPortal.portalName}`,
-        url: canonicalPortal.url,
+        url: safePortalUrl,
         category: 'Portal Oficial'
       });
     }
@@ -194,9 +195,9 @@ export async function POST(req: Request) {
       success: true,
       found: officialDocuments.length > 0,
       official_documents: officialDocuments,
-      directBasesUrl: directBasesUrl || canonicalPortal.url,
+      directBasesUrl: directBasesUrl || safePortalUrl,
       portalName: canonicalPortal.portalName,
-      portalUrl: canonicalPortal.url,
+      portalUrl: safePortalUrl,
       isSpecific: canonicalPortal.isSpecific,
       message: officialDocuments.length > 0
         ? `Se localizaron ${officialDocuments.length} documentos oficiales con Inteligencia Artificial.`

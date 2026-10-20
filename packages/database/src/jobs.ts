@@ -2543,15 +2543,45 @@ export function isDeadOrBrokenUrl(url?: string): boolean {
     low.includes('38.187.4.52') ||
     low.includes('facebook.com') ||
     low.includes('forms.gle') ||
-    low.includes('docs.google.com/forms')
+    low.includes('docs.google.com/forms') ||
+    low.includes('gob.pe/municomas') ||
+    low.includes('gob.pe/munisan') ||
+    low.includes('gob.pe/munivilla') ||
+    (low.includes('gob.pe/munimagdalena') && !low.includes('-lima')) ||
+    low.includes('gob.pe/munipueblo') ||
+    low.includes('gob.pe/muniazngaro') ||
+    low.includes('gob.pe/muniandrs')
   );
 }
 
 export function fixDeadDomainUrl(url?: string, entityName?: string, sectorType?: string): string {
   if (!url) return getOfficialEntityPortalUrl(entityName, sectorType);
   const low = url.toLowerCase().trim();
+  const entUpper = (entityName || '').toUpperCase();
+
+  if (low.includes('gob.pe/municomas') || entUpper.includes('COMAS')) {
+    return 'https://www.municomas.gob.pe/gestion-municipal/convocatorias-cas';
+  }
+  if (low.includes('gob.pe/munisan') || entUpper.includes('SAN JUAN DE LURIGANCHO')) {
+    return 'https://www.gob.pe/institucion/munisanjuandelurigancho/informes-publicaciones';
+  }
+  if (low.includes('gob.pe/munivilla') || entUpper.includes('VILLA EL SALVADOR')) {
+    return 'https://www.gob.pe/institucion/munivillaelsalvador/informes-publicaciones';
+  }
+  if (low.includes('gob.pe/munimagdalena') || entUpper.includes('MAGDALENA DEL MAR')) {
+    return 'https://www.gob.pe/munimagdalena-lima';
+  }
+  if (low.includes('gob.pe/munipueblo') || entUpper.includes('PUEBLO LIBRE')) {
+    return 'https://www.gob.pe/institucion/munipueblolibre/informes-publicaciones';
+  }
+  if (low.includes('gob.pe/muniandrs')) {
+    return 'https://www.gob.pe/institucion/muniaacaceres/informes-publicaciones';
+  }
+  if (low.includes('gob.pe/muniazngaro')) {
+    return 'https://www.gob.pe/institucion/muniazangaro/informes-publicaciones';
+  }
   if (low.includes('uni.edu.pe')) {
-    const entNorm = (entityName || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const entNorm = entUpper.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const isRealUni = entNorm.includes('INGENIERIA') || entNorm === 'UNI' || (/\bUNI\b/.test(entNorm) && !entNorm.includes('UNIVERSIDAD') && !entNorm.includes('MUNICIPALIDAD'));
     if (isRealUni) {
       return 'https://www.gob.pe/institucion/uni/informes-publicaciones';
