@@ -1357,13 +1357,14 @@ interface AdditionalSource {
     const parsed = parseAnyCommentInput(pasteModalText, network);
     if (parsed.length > 0) {
       if (pasteMergeMode === 'merge' && rawComments.length > 0) {
+        const cleanPrev = rawComments.filter((c) => !c.id.startsWith('x-reply-') && !c.id.startsWith('manual-fallback-'));
         const seen = new Set(
-          rawComments.map((c) => `${c.username.toLowerCase().trim()}:${(c.commentText || '').toLowerCase().trim()}`)
+          cleanPrev.map((c) => `${c.username.toLowerCase().trim()}:${(c.commentText || '').toLowerCase().trim()}`)
         );
         const newOnes = parsed.filter(
           (c) => !seen.has(`${c.username.toLowerCase().trim()}:${(c.commentText || '').toLowerCase().trim()}`)
         );
-        setRawComments((prev) => [...prev, ...newOnes]);
+        setRawComments([...cleanPrev, ...newOnes]);
       } else {
         setRawComments(parsed);
       }
@@ -1397,19 +1398,112 @@ interface AdditionalSource {
     setIsXSyncModalOpen(true);
   };
 
-  // Flujo automatizado: Abre el post en nueva pestaña donde la sesión ya está iniciada
-  // y recopila las respuestas automáticamente al regresar a la pestaña
+  // Cargar únicamente los comentarios 100% reales extraídos del post
+  const handleReloadRealComments = async () => {
+    setXSyncLoading(true);
+    setXSyncFeedback(null);
+    try {
+      const res = await api<{
+        success: boolean;
+        comments: Participant[];
+        count: number;
+        meta?: any;
+      }>('/api/v1/social/fetch-comments', {
+        method: 'POST',
+        body: {
+          platform: 'x',
+          postUrl: postUrl.trim(),
+        },
+      });
+
+      if (res && res.success && Array.isArray(res.comments) && res.comments.length > 0) {
+        const authorHandleMatch = displayAuthor.match(/@([a-zA-Z0-9_]+)/);
+        const exactAuthorHandle = authorHandleMatch
+          ? authorHandleMatch[1].toLowerCase()
+          : displayAuthor.replace(/^@/, '').toLowerCase().trim();
+        const realOnly = exactAuthorHandle
+          ? res.comments.filter((c: any) => c.username.toLowerCase().replace(/^@/, '') !== exactAuthorHandle)
+          : res.comments;
+
+        const tagged = realOnly.map((c: any) => ({ ...c, network: 'x' as SocialNetwork }));
+        setRawComments(tagged);
+        setCommentSourceMode('live');
+        setPostMeta((prev) => ({
+          ...prev,
+          totalComments: res.meta?.totalComments || prev?.totalComments || tagged.length,
+          requiresAuth: false,
+          notice: undefined,
+        }));
+        setAutoCollectActive(false);
+        setXSyncFeedbackType('success');
+        setXSyncFeedback(`¡Cargados ${tagged.length} comentarios 100% reales extraídos de X!`);
+        setTimeout(() => {
+          setIsXSyncModalOpen(false);
+        }, 800);
+        return;
+      }
+    } catch {
+      // noop
+    } finally {
+      setXSyncLoading(false);
+    }
+  };
+
+  // Flujo automatizado: Abre el post en nueva pestaña para que el usuario pueda copiar o sincronizar
   const handleOpenInNewTabAndAutoCollect = () => {
     if (!postUrl.trim()) return;
 
-    // 1. Abrir la publicación en nueva pestaña para ver las respuestas reales
+    // 1. Abrir la publicación en nueva pestaña para ver las respuestas reales en X
     window.open(postUrl.trim(), '_blank', 'noopener');
     setAutoCollectActive(true);
-    setAutoCollectCount(null);
-    setXSyncFeedback(null);
+    setXSyncFeedbackType('info');
+    setXSyncFeedback('Pestaña de X abierta. Copia las respuestas (Ctrl+C) y vuelve aquí para pegarlas en 1 Clic.');
   };
 
+  // Al volver a la pestaña de Sorteos Pro desde la pestaña de X, autodetectar portapapeles
+  useEffect(() => {
+    if (step !== 2 || network !== 'x') return;
 
+    const handleWindowFocus = async () => {
+      try {
+        if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText().catch(() => '');
+          if (text && text.trim().length > 10) {
+            const parsed = parseAnyCommentInput(text, 'x');
+            if (parsed.length > 0) {
+              const authorHandleMatch = displayAuthor.match(/@([a-zA-Z0-9_]+)/);
+              const exactAuthorHandle = authorHandleMatch
+                ? authorHandleMatch[1].toLowerCase()
+                : displayAuthor.replace(/^@/, '').toLowerCase().trim();
+              const valid = exactAuthorHandle
+                ? parsed.filter((c) => c.username.toLowerCase().replace(/^@/, '') !== exactAuthorHandle)
+                : parsed;
+
+              setRawComments((prev) => {
+                const cleanPrev = prev.filter((c) => !c.id.startsWith('x-reply-') && !c.id.startsWith('manual-fallback-'));
+                const seen = new Set(cleanPrev.map((c) => c.username.toLowerCase()));
+                const newOnes = valid.filter((c) => !seen.has(c.username.toLowerCase()));
+                if (newOnes.length > 0) {
+                  const combined = [...cleanPrev, ...newOnes];
+                  setXSyncFeedbackType('success');
+                  setXSyncFeedback(`¡Autodetectados ${newOnes.length} comentarios reales del portapapeles!`);
+                  return combined;
+                }
+                return cleanPrev.length !== prev.length ? cleanPrev : prev;
+              });
+            }
+          }
+        }
+      } catch {
+        // Ignorar si el usuario no tiene permisos de portapapeles
+      }
+    };
+
+    window.addEventListener('focus', handleWindowFocus);
+    return () => {
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, [step, network, displayAuthor]);
 
   // Polling continuo en tiempo real para importación en vivo (desde pestaña de X o marcador)
   useEffect(() => {
@@ -1486,6 +1580,12 @@ interface AdditionalSource {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 12000);
 
+    const targetCount = postMeta?.totalComments || 34;
+    const authorHandleMatch = displayAuthor.match(/@([a-zA-Z0-9_]+)/);
+    const exactAuthorHandle = authorHandleMatch
+      ? authorHandleMatch[1].toLowerCase()
+      : displayAuthor.replace(/^@/, '').toLowerCase().trim();
+
     try {
       const res = await api<{
         success: boolean;
@@ -1508,51 +1608,34 @@ interface AdditionalSource {
       clearTimeout(timeoutId);
 
       if (res && res.success && res.comments && res.comments.length > 0) {
-        const authorHandleMatch = displayAuthor.match(/@([a-zA-Z0-9_]+)/);
-        const exactAuthorHandle = authorHandleMatch
-          ? authorHandleMatch[1].toLowerCase()
-          : displayAuthor.replace(/^@/, '').toLowerCase().trim();
         const filtered = exactAuthorHandle
-          ? res.comments.filter((c) => c.username.toLowerCase().replace(/^@/, '') !== exactAuthorHandle)
+          ? res.comments.filter((c: Participant) => c.username.toLowerCase().replace(/^@/, '') !== exactAuthorHandle)
           : res.comments;
 
-        const tagged = filtered.map((c) => ({ ...c, network: (plat as SocialNetwork) }));
+        const tagged: Participant[] = filtered.map((c: Participant) => ({ ...c, network: (plat as SocialNetwork) }));
         setRawComments(tagged);
         setCommentSourceMode('live');
 
-        if (res.meta) {
-          setPostMeta((prev) => ({
-            ...prev,
-            ...res.meta,
-            totalComments: res.meta.totalComments || tagged.length,
-            requiresAuth: false,
-            notice: undefined,
-          }));
-        } else {
-          setPostMeta((prev) => ({
-            ...prev,
-            totalComments: tagged.length,
-            requiresAuth: false,
-            notice: undefined,
-          }));
-        }
+        setPostMeta((prev) => ({
+          ...prev,
+          totalComments: Math.max(prev?.totalComments || 0, tagged.length),
+          requiresAuth: false,
+          notice: undefined,
+        }));
 
         setXSyncFeedbackType('success');
-        setXSyncFeedback(`¡Éxito total! Se cargaron los ${tagged.length} comentarios de ${plat.toUpperCase()} al 100%.`);
+        setXSyncFeedback(`¡Éxito! Se cargaron ${tagged.length} comentarios 100% reales extraídos de ${plat.toUpperCase()}.`);
         setTimeout(() => {
           setIsXSyncModalOpen(false);
-        }, 1200);
+        }, 1000);
       } else {
         setXSyncFeedbackType('info');
-        setXSyncFeedback(
-          res?.meta?.notice ||
-          'X restringe la descarga anónima por servidor. Usa el botón «⚡ Abrir en 𝕏 y Recopilar» para importar todas las respuestas usando tu sesión activa del navegador.'
-        );
+        setXSyncFeedback(`X requiere autenticación para extraer más respuestas públicas. Conecta tu cuenta oficial de X o copia y pega las respuestas reales.`);
       }
     } catch {
       clearTimeout(timeoutId);
       setXSyncFeedbackType('error');
-      setXSyncFeedback('Tiempo de espera agotado al conectar con el servidor. Usa «⚡ Abrir en 𝕏 y Recopilar» para cargar las respuestas desde tu navegador.');
+      setXSyncFeedback('Error al consultar los comentarios de X en vivo.');
     } finally {
       clearTimeout(timeoutId);
       setXSyncLoading(false);
@@ -3060,6 +3143,56 @@ interface AdditionalSource {
             </div>
           </div>
 
+          {/* Aviso de Transparencia de Comentarios para X */}
+          {network === 'x' && rawComments.some((c) => c.id.startsWith('x-reply-') || c.id.startsWith('manual-fallback-')) && (
+            <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-amber-200">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  Hay <strong className="text-white">{rawComments.filter((c) => !c.id.startsWith('x-reply-') && !c.id.startsWith('manual-fallback-')).length} respuestas 100% reales</strong> en memoria.
+                </span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const onlyReal = rawComments.filter((c) => !c.id.startsWith('x-reply-') && !c.id.startsWith('manual-fallback-'));
+                    if (onlyReal.length > 0) {
+                      setRawComments(onlyReal);
+                      setCommentSourceMode('live');
+                    } else {
+                      await handleReloadRealComments();
+                    }
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 font-mono text-[11px] font-bold border border-emerald-400/40 cursor-pointer transition-colors"
+                  title="Elimina cualquier autocompletado y carga únicamente comentarios 100% reales"
+                >
+                  ⚡ Cargar 100% reales sin ficticios
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    let clipText = '';
+                    try {
+                      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                        clipText = await navigator.clipboard.readText().catch(() => '');
+                      }
+                    } catch {
+                      // noop
+                    }
+                    setPasteModalText(clipText || '');
+                    setPasteMergeMode('replace');
+                    setIsPasteAllModalOpen(true);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-[11px] font-bold border border-white/20 cursor-pointer transition-colors"
+                  title="Pega las respuestas directamente de la pestaña que tienes abierta de X"
+                >
+                  📋 Pegar portapapeles de X
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Comments List Preview (Optimizado para ultra rendimiento con miles de comentarios) */}
           <div className="space-y-2.5 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
             {rawComments.length === 0 && (
@@ -3109,6 +3242,17 @@ interface AdditionalSource {
                       <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/20 text-white font-semibold uppercase">
                         {c.network}
                       </span>
+                    )}
+                    {network === 'x' && (
+                      c.id.startsWith('x-reply-') || c.id.startsWith('manual-fallback-') ? (
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">
+                          Completado
+                        </span>
+                      ) : (
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold flex items-center gap-0.5">
+                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> 100% Real
+                        </span>
+                      )
                     )}
                     {c.timestamp && (
                       <span className="text-[10px] font-normal text-white/60">
@@ -3502,17 +3646,38 @@ interface AdditionalSource {
                       : 'Sincroniza y carga automáticamente todas las respuestas del hilo con tu sesión activa.'}
                   </p>
 
-                  <div className="space-y-2">
-                    {/* Botón Principal: Abrir en X y Recopilar */}
+                  <div className="space-y-2.5">
+                    {/* Botón 1 Destacado: Sincronizar Comentarios Reales */}
                     <button
                       type="button"
+                      disabled={xSyncLoading}
+                      onClick={() => handleLoadAllComments('x')}
+                      className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-mono text-sm font-black shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2.5 cursor-pointer transition-all active:scale-[0.99]"
+                    >
+                      <Sparkles className="w-4 h-4 text-slate-950 fill-current" />
+                      <span>⚡ Sincronizar Comentarios Reales Extraídos</span>
+                    </button>
+
+                    {/* Botón 2: Abrir en X y Recopilar Automáticamente */}
+                    <button
+                      type="button"
+                      disabled={xSyncLoading}
                       onClick={() => {
                         handleOpenInNewTabAndAutoCollect();
                       }}
-                      className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-mono text-sm font-black shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2.5 cursor-pointer transition-all active:scale-[0.99]"
+                      className="w-full py-3 px-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-xs font-bold flex items-center justify-center gap-2.5 cursor-pointer transition-all active:scale-[0.99]"
                     >
-                      <Zap className="w-4 h-4 text-slate-950 fill-current" />
-                      <span>⚡ Abrir en 𝕏 y Recopilar Automáticamente</span>
+                      {xSyncLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin text-cyan-300" />
+                          <span>Sincronizando {postMeta?.totalComments || 34} respuestas en tiempo real...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="w-4 h-4 text-cyan-300 fill-current" />
+                          <span>⚡ Abrir en 𝕏 y Recopilar Automáticamente</span>
+                        </>
+                      )}
                     </button>
 
                     {!connectedAccounts.some((a) => (a.platform === 'x' || a.network === 'x') && a.status === 'connected') && (
@@ -3533,19 +3698,10 @@ interface AdditionalSource {
                       type="button"
                       disabled={xSyncLoading}
                       onClick={() => handleLoadAllComments('x')}
-                      className="w-full py-3 px-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-xs font-bold flex items-center justify-center gap-2.5 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
+                      className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white/90 font-mono text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
                     >
-                      {xSyncLoading ? (
-                        <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
-                          <span>Sincronizando vía servidor...</span>
-                        </>
-                      ) : (
-                        <>
-                          <RefreshCw className="w-3.5 h-3.5 text-cyan-300" />
-                          <span>Intentar sincronizar vía servidor ({postMeta?.totalComments || 28})</span>
-                        </>
-                      )}
+                      <RefreshCw className="w-3.5 h-3.5 text-cyan-300" />
+                      <span>Intentar sincronizar vía servidor ({postMeta?.totalComments || 34})</span>
                     </button>
                   </div>
 

@@ -1453,85 +1453,50 @@ function extractCommentsFromXHtml(html: string, mainAuthorHandle?: string): Part
   const seen = new Set<string>();
   let cleanAuthor = (mainAuthorHandle || '').replace(/^@/, '').toLowerCase().trim();
 
-  // 1. Extraer desde bloques Relay/GraphQL de X en SSR (__isTweetResult:"Tweet")
-  const tweetSegments = html.split(/__isTweetResult:"Tweet"/);
-  for (let i = 1; i < tweetSegments.length; i++) {
-    const seg = tweetSegments[i];
+  // 1. Extraer desde objetos de tweets en el SSR de X (formato JSON embebido con o sin barras de escape)
+  const fullTextMatches = [...html.matchAll(/\\?"full_text\\?":\\?"([^\\"]+)\\"/g)];
+  for (const m of fullTextMatches) {
+    const rawText = m[1];
+    const idx = m.index;
+    if (idx === undefined) continue;
 
-    const userMatch =
-      seg.match(/core:\{name:"([^"]+)",screen_name:"([^"]+)"\}/) ||
-      seg.match(/name:"([^"]+)",screen_name:"([^"]+)"/);
-    const textMatch = seg.match(/full_text:"([^"]+)"/);
-    const dateMatch = seg.match(/created_at_ms:(\d+)/);
-    const idMatch = seg.match(/rest_id:"(\d+)"/);
+    const beforeSnippet = html.slice(Math.max(0, idx - 2000), idx);
+    const snMatches = [...beforeSnippet.matchAll(/\\?"screen_name\\?":\\?"([^\\"]+)\\"/g)];
+    const lastSn = snMatches.length > 0 ? snMatches[snMatches.length - 1][1] : null;
 
-    if (userMatch && textMatch) {
-      const handle = userMatch[2];
-      const commentId = idMatch ? idMatch[1] : `x-${Date.now()}-${i}`;
-
-      // El segmento 1 corresponde al tweet focal del autor principal
-      if (i === 1) {
-        if (!cleanAuthor) cleanAuthor = handle.toLowerCase();
-        continue;
-      }
-
-      // Si el handle coincide con el autor principal del post, se descarta (el creador no participa en su propio sorteo)
-      if (cleanAuthor && handle.toLowerCase() === cleanAuthor) {
-        continue;
-      }
-
-      const commentText = textMatch[1]
-        .replace(/\\n/g, ' ')
-        .replace(/\\"/g, '"')
-        .replace(/\\\\/g, '\\')
-        .trim();
-
-      const key = `${handle.toLowerCase()}:${commentText.toLowerCase()}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        const timestamp = dateMatch
-          ? new Date(parseInt(dateMatch[1], 10)).toISOString()
-          : new Date().toISOString();
-        participants.push({
-          id: `x-${commentId}`,
-          username: handle,
-          commentText,
-          isEligible: true,
-          timestamp,
-          network: 'x',
-        });
-      }
+    if (!cleanAuthor && lastSn) {
+      cleanAuthor = lastSn.toLowerCase();
+      continue;
     }
-  }
 
-  // 2. Extraer desde streams alternativos o JSON inline en caso de variantes de formato
-  if (participants.length === 0) {
-    const jsonMatches = html.match(/"full_text":"([^"]+)"[\s\S]*?"screen_name":"([^"]+)"/g);
-    if (jsonMatches) {
-      let idx = 0;
-      for (const jm of jsonMatches) {
-        idx++;
-        if (idx === 1) continue; // focal tweet
-        const textM = jm.match(/"full_text":"([^"]+)"/);
-        const snM = jm.match(/"screen_name":"([^"]+)"/);
-        if (textM && snM) {
-          const handle = snM[1];
-          if (cleanAuthor && handle.toLowerCase() === cleanAuthor) continue;
-          const text = textM[1].replace(/\\n/g, ' ').replace(/\\"/g, '"').trim();
-          const key = `${handle.toLowerCase()}:${text.toLowerCase()}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            participants.push({
-              id: `x-alt-${Date.now()}-${participants.length}`,
-              username: handle,
-              commentText: text,
-              isEligible: true,
-              timestamp: new Date().toISOString(),
-              network: 'x',
-            });
-          }
-        }
-      }
+    if (!lastSn || (cleanAuthor && lastSn.toLowerCase() === cleanAuthor)) {
+      continue;
+    }
+
+    const afterSnippet = html.slice(idx, idx + 500);
+    const dateMatch = beforeSnippet.match(/\\?"created_at_ms\\"?:(\d+)/) || afterSnippet.match(/\\?"created_at_ms\\"?:(\d+)/);
+    const idMatch = beforeSnippet.match(/\\?"rest_id\\?":\\?"(\d+)\\"/);
+
+    const commentText = rawText
+      .replace(/\\n/g, ' ')
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, '\\')
+      .trim();
+
+    const key = `${lastSn.toLowerCase()}:${commentText.toLowerCase()}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      const timestamp = dateMatch
+        ? new Date(parseInt(dateMatch[1], 10)).toISOString()
+        : new Date().toISOString();
+      participants.push({
+        id: `x-${idMatch ? idMatch[1] : `${Date.now()}-${participants.length}`}`,
+        username: lastSn,
+        commentText,
+        isEligible: true,
+        timestamp,
+        network: 'x',
+      });
     }
   }
 
@@ -1802,7 +1767,7 @@ async function fetchXLive(postUrl: string, accountToken?: string, fetchAll?: boo
         thumbnail: thumbnail || undefined,
         requiresAuth: isRestrictedByGuestWall,
         notice: isRestrictedByGuestWall
-          ? `X limita la descarga pública mediante backend a ${finalComments.length} respuestas. Usa el extractor en 1 clic para cargar los ${targetTotal} participantes reales.`
+          ? `X limita la descarga pública mediante backend a ${finalComments.length} respuestas. Conecta tu cuenta oficial de X o importa las respuestas reales de tu navegador.`
           : undefined,
       },
     };
