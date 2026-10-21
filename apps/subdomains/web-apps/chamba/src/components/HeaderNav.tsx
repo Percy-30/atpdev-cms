@@ -80,16 +80,27 @@ export function HeaderNav() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click or Escape key press
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setToolsOpen(false);
       }
     }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setToolsOpen(false);
+      }
+    }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    if (toolsOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [toolsOpen]);
 
   // Close dropdown on route change
   const prevPathname = useRef(pathname);
@@ -174,6 +185,10 @@ export function HeaderNav() {
           <div className="relative shrink-0" ref={dropdownRef}>
             <button
               type="button"
+              id="herramientas-menu-button"
+              aria-expanded={toolsOpen}
+              aria-haspopup="true"
+              aria-controls="herramientas-menu-dropdown"
               onClick={() => setToolsOpen(!toolsOpen)}
               className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer whitespace-nowrap shrink-0 ${
                 toolsOpen || isToolActive
@@ -191,7 +206,12 @@ export function HeaderNav() {
 
             {/* Dropdown Mega Menu */}
             {toolsOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150 z-50">
+              <div
+                id="herramientas-menu-dropdown"
+                role="menu"
+                aria-labelledby="herramientas-menu-button"
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-150 z-50"
+              >
                 {HERRAMIENTAS.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.href;
