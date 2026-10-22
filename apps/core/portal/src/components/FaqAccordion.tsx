@@ -87,7 +87,10 @@ export function FaqAccordion({ items, lang = "es", hideHeader = false }: FaqAcco
             >
               <button
                 onClick={() => toggle(idx)}
-                className="w-full p-4 px-5 flex items-center justify-between gap-4 text-left transition-colors"
+                className="w-full p-4 px-5 flex items-center justify-between gap-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl"
+                aria-expanded={isOpen}
+                aria-controls={`faq-answer-${idx}`}
+                id={`faq-button-${idx}`}
               >
                 <div className="flex items-center gap-3">
                   {item.icon}
@@ -98,11 +101,17 @@ export function FaqAccordion({ items, lang = "es", hideHeader = false }: FaqAcco
                   className={`text-[var(--text-color)] opacity-60 transition-transform duration-300 flex-shrink-0 ${
                     isOpen ? "rotate-180 text-emerald-400 opacity-100" : ""
                   }`}
+                  aria-hidden="true"
                 />
               </button>
 
               {isOpen && (
-                <div className="px-5 pb-5 text-sm text-[var(--text-color)] opacity-90 leading-relaxed border-t border-[var(--glass-border)] pt-3 animate-in fade-in duration-200">
+                <div
+                  id={`faq-answer-${idx}`}
+                  role="region"
+                  aria-labelledby={`faq-button-${idx}`}
+                  className="px-5 pb-5 text-sm text-[var(--text-color)] opacity-90 leading-relaxed border-t border-[var(--glass-border)] pt-3 animate-in fade-in duration-200"
+                >
                   {item.answer}
                 </div>
               )}
