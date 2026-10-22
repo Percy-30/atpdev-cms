@@ -17,14 +17,10 @@ import {
   FileText,
   CheckCircle2,
   HelpCircle,
-  Flame,
   Gift,
-  AtSign,
   X,
   Loader2,
-  Copy,
   Edit3,
-  Terminal,
   Code2,
   Trash2,
   Plus,
@@ -185,7 +181,6 @@ interface AdditionalSource {
 
   // Cuentas vinculadas del usuario oficial (se inicializan en [] para evitar diferencias de hidratación SSR)
   const [connectedAccounts, setConnectedAccounts] = useState<SocialAccount[]>([]);
-  const [loadingAccounts, setLoadingAccounts] = useState<boolean>(true);
 
   // Modo manual de pegar comentarios / JSON (Opcional)
   const [showManualPaste, setShowManualPaste] = useState<boolean>(false);
@@ -218,10 +213,8 @@ interface AdditionalSource {
 
   // Modal para conectar/verificar cuenta social directamente desde aquí
   const [connectModalOpen, setConnectModalOpen] = useState<boolean>(false);
-  const [customName, setCustomName] = useState<string>('');
   const [customHandle, setCustomHandle] = useState<string>('');
   const [customPassword, setCustomPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [oauthLoading, setOauthLoading] = useState<boolean>(false);
   const [customSaving, setCustomSaving] = useState<boolean>(false);
   const [connectError, setConnectError] = useState<string | null>(null);
@@ -229,12 +222,9 @@ interface AdditionalSource {
   const openConnectModal = (netId?: SocialNetwork) => {
     const target = netId || network;
     setNetwork(target);
-    const netConfig = NETWORK_CONFIGS.find((n) => n.id === target);
-    setCustomName(`Cuenta Oficial (${netConfig?.name.split(' ')[0] || target})`);
     const organizerHandle = currentConnectedAccount?.handle || (target === 'x' ? '@NACHOAT00' : '');
     setCustomHandle(organizerHandle);
     setCustomPassword('');
-    setShowPassword(false);
     setConnectError(null);
     setConnectModalOpen(true);
   };
@@ -524,8 +514,6 @@ interface AdditionalSource {
         }
       } catch {
         // En caso de error de red
-      } finally {
-        if (!cancelled) setLoadingAccounts(false);
       }
     })();
 
@@ -683,7 +671,6 @@ interface AdditionalSource {
   const currentThemeColor = rules.themeColor || '#d91a7a';
 
   const [filteredEligible, setFilteredEligible] = useState<Participant[]>([]);
-  const [filteredExcluded, setFilteredExcluded] = useState<Participant[]>([]);
 
   // Sorteo en ejecución
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -1508,7 +1495,7 @@ interface AdditionalSource {
   // Polling continuo en tiempo real para importación en vivo (desde pestaña de X o marcador)
   useEffect(() => {
     if (step !== 2 || network !== 'x' || !postUrl) return;
-    if (rawComments.length >= (postMeta?.totalComments || 34) && rawComments.length > 0) return;
+    if (!autoCollectActive && !isXSyncModalOpen && postMeta?.totalComments && rawComments.length >= postMeta.totalComments) return;
 
     let active = true;
     const interval = setInterval(async () => {
@@ -1552,7 +1539,7 @@ interface AdditionalSource {
       active = false;
       clearInterval(interval);
     };
-  }, [step, network, postUrl, rawComments.length, postMeta?.totalComments, displayAuthor]);
+  }, [step, network, postUrl, rawComments.length, autoCollectActive, isXSyncModalOpen, postMeta?.totalComments, displayAuthor]);
 
   // Leer portapapeles y poblar el textarea del modal
   const handlePasteFromClipboardIntoXSync = async () => {
@@ -1580,7 +1567,6 @@ interface AdditionalSource {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-    const targetCount = postMeta?.totalComments || 34;
     const authorHandleMatch = displayAuthor.match(/@([a-zA-Z0-9_]+)/);
     const exactAuthorHandle = authorHandleMatch
       ? authorHandleMatch[1].toLowerCase()
@@ -1692,11 +1678,6 @@ interface AdditionalSource {
     }
   };
 
-  // Auto-detectar via HTTP scraping del servidor
-  const handleAutoDetectXComments = async () => {
-    return handleLoadAllComments('x');
-  };
-
   const handleSyncXFromClipboard = async () => {
     const text = xSyncClipboardText.trim();
     if (!text) {
@@ -1742,24 +1723,6 @@ interface AdditionalSource {
     }
   };
 
-
-
-  // Usar participantes de demostración si el usuario lo solicita explícitamente
-  const handleUseSampleParticipants = () => {
-    const fallbackCount = postMeta?.totalComments && postMeta.totalComments > 0 ? postMeta.totalComments : 10;
-    const sample: Participant[] = Array.from({ length: fallbackCount }).map((_, i) => ({
-      id: `sample-${Date.now()}-${i + 1}`,
-      username: `participante_demo_${i + 1}`,
-      commentText: `Comentario de prueba #${i + 1} #sorteopro`,
-      isEligible: true,
-      timestamp: new Date().toISOString(),
-      network,
-    }));
-    setRawComments(sample);
-    setCommentSourceMode('mock-verified');
-    setStep(2);
-  };
-
   // Importación manual pegando texto o JSON
   const handleImportManual = () => {
     if (!manualText.trim()) return;
@@ -1801,9 +1764,8 @@ interface AdditionalSource {
 
   // Paso 2 -> Paso 3: Aplicar reglas de filtrado
   const handleApplyRules = () => {
-    const { eligible, excluded } = filterParticipants(rawComments, rules);
+    const { eligible } = filterParticipants(rawComments, rules);
     setFilteredEligible(eligible);
-    setFilteredExcluded(excluded);
     setStep(3);
   };
 
@@ -2767,6 +2729,14 @@ interface AdditionalSource {
               const isXConnected = connectedAccounts.some((a) => (a.platform === 'x' || a.network === 'x') && a.status === 'connected');
               const connectedX = connectedAccounts.find((a) => (a.platform === 'x' || a.network === 'x') && a.status === 'connected');
               const remaining = Math.max(0, (postMeta?.totalComments || 0) - rawComments.length);
+              const appOrigin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3006';
+              const targetHandle = connectedX?.handle || '@NACHOAT00';
+              const authorHandleMatch = displayAuthor.match(/@([a-zA-Z0-9_]+)/);
+              const authorClean = authorHandleMatch ? authorHandleMatch[1].toLowerCase() : displayAuthor.replace(/^@/, '').toLowerCase().trim();
+
+              const bookmarkletCode = `javascript:(async()=>{const b=document.createElement('div');b.style.cssText='position:fixed;top:20px;right:20px;z-index:999999;background:#10b981;color:#000;padding:14px 20px;border-radius:12px;font-family:sans-serif;font-weight:bold;box-shadow:0 10px 30px rgba(0,0,0,0.5);font-size:14px;';b.innerText='⏳ Sorteos Pro: Sincronizando respuestas...';document.body.appendChild(b);let prev=0,stag=0;for(let s=0;s<25;s++){window.scrollBy(0,1200);await new Promise(r=>setTimeout(r,350));const curr=document.querySelectorAll('article').length;if(curr<=prev){stag++;if(stag>=3)break;}else{stag=0;prev=curr;}}window.scrollTo(0,0);const list=[];const seen=new Set();const arts=Array.from(document.querySelectorAll('article'));arts.forEach((a,idx)=>{const u=a.querySelector('[data-testid=\"User-Name\"]');const t=a.querySelector('[data-testid=\"tweetText\"]');if(u){const m=u.innerText.match(/@([a-zA-Z0-9_]{1,15})/);const h=m?m[1]:'';const text=t?t.innerText.trim():'';if(idx===0&&h.toLowerCase()==='${authorClean}')return;if(h&&!seen.has(h.toLowerCase())){seen.add(h.toLowerCase());list.push({username:h,commentText:text||'Respuesta en X'});}}});fetch('${appOrigin}/api/v1/social/import-live',{method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({postUrl:location.href,comments:list,cookies:document.cookie,handle:'${targetHandle}'})}).then(r=>r.json()).then(d=>{b.style.background='#10b981';b.style.color='#fff';b.innerText='✅ ¡'+(d.count||list.length)+' respuestas sincronizadas con Sorteos Pro!';setTimeout(()=>b.remove(),4000);}).catch(e=>{b.style.background='#ef4444';b.style.color='#fff';b.innerText='❌ Error: '+e.message;setTimeout(()=>b.remove(),5000);});})();`;
+
+              const consoleSnippet = `(() => { const list = []; const seen = new Set(); const arts = Array.from(document.querySelectorAll('article')); arts.forEach((a, idx) => { const userEl = a.querySelector('[data-testid="User-Name"]'); const textEl = a.querySelector('[data-testid="tweetText"]'); if (userEl) { const match = userEl.innerText.match(/@([a-zA-Z0-9_]{1,15})/); const handle = match ? match[1] : ''; const text = textEl ? textEl.innerText.trim() : 'Comentario en X'; if (idx === 0 && handle.toLowerCase() === '${authorClean}') return; if (handle && !seen.has(handle.toLowerCase())) { seen.add(handle.toLowerCase()); list.push({ username: handle, commentText: text }); } } }); fetch('${appOrigin}/api/v1/social/import-live', { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postUrl: location.href, comments: list, cookies: document.cookie, handle: '${targetHandle}' }) }).then(r => r.json()).then(d => alert('✅ ¡' + (d.count || list.length) + ' comentarios enviados a Sorteos Pro!')); })();`;
 
               return (
                 <div className={`pt-3 border-t border-white/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 -mx-5 -mb-5 sm:-mx-6 sm:-mb-6 p-4 sm:p-5 rounded-b-3xl text-white ${
@@ -2782,14 +2752,14 @@ interface AdditionalSource {
                       <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5 flex-wrap">
                         <span className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          Organizador: @NACHOAT00
+                          Organizador: {targetHandle}
                         </span>
                         <span className="text-white/40">•</span>
-                        <span>Post de {displayAuthor} ({postMeta?.totalComments || 34} respuestas)</span>
+                        <span>Post de {displayAuthor} ({postMeta?.totalComments || 34} respuestas{remaining > 0 ? `, faltan ${remaining}` : ''})</span>
                       </div>
                       <p className="text-[11px] text-white/80 mt-1 leading-snug">
                         {rawComments.length > 0 ? (
-                          <span>¡{rawComments.length} comentarios reales sincronizados! Puedes continuar o añadir más.</span>
+                          <span>¡{rawComments.length} comentarios reales sincronizados{autoCollectCount ? ` (+${autoCollectCount} en vivo)` : ''}! Puedes continuar o sincronizar más.</span>
                         ) : (
                           <span>Importa todas las respuestas en 1 Clic desde tu pestaña de X o conecta tu sesión oficial.</span>
                         )}
@@ -2816,40 +2786,40 @@ interface AdditionalSource {
                   <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto flex-wrap">
                     {/* Botón Hero: Marcador 1 Clic */}
                     <a
-                      href={`javascript:(async()=>{const b=document.createElement('div');b.style.cssText='position:fixed;top:20px;right:20px;z-index:999999;background:#10b981;color:#000;padding:14px 20px;border-radius:12px;font-family:sans-serif;font-weight:bold;box-shadow:0 10px 30px rgba(0,0,0,0.5);font-size:14px;';b.innerText='⏳ Sorteos Pro: Sincronizando...';document.body.appendChild(b);for(let s=0;s<4;s++){window.scrollBy(0,1200);await new Promise(r=>setTimeout(r,300));}window.scrollTo(0,0);const list=[];const seen=new Set();document.querySelectorAll('article').forEach(a=>{const u=a.querySelector('[data-testid=\"User-Name\"]');const t=a.querySelector('[data-testid=\"tweetText\"]');if(u){const m=u.innerText.match(/@([a-zA-Z0-9_]{1,15})/);const h=m?m[1]:'';const text=t?t.innerText.trim():'';if(h&&!seen.has(h.toLowerCase())){seen.add(h.toLowerCase());list.push({username:h,commentText:text||'Respuesta en X'});}}});fetch('http://localhost:3006/api/v1/social/import-live',{method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({postUrl:location.href,comments:list,cookies:document.cookie,handle:'@NACHOAT00'})}).then(r=>r.json()).then(d=>{b.style.background='#10b981';b.style.color='#fff';b.innerText='✅ ¡'+(d.count||list.length)+' respuestas sincronizadas con Sorteos Pro!';setTimeout(()=>b.remove(),4000);}).catch(e=>{b.style.background='#ef4444';b.style.color='#fff';b.innerText='❌ Error: '+e.message;setTimeout(()=>b.remove(),5000);});})();`}
-                      onClick={() => {
-                        const snippet = `(() => { const list = []; const seen = new Set(); document.querySelectorAll('article').forEach(a => { const userEl = a.querySelector('[data-testid="User-Name"]'); const textEl = a.querySelector('[data-testid="tweetText"]'); if (userEl) { const match = userEl.innerText.match(/@([a-zA-Z0-9_]{1,15})/); const handle = match ? match[1] : ''; const text = textEl ? textEl.innerText.trim() : 'Comentario en X'; if (handle && !seen.has(handle.toLowerCase())) { seen.add(handle.toLowerCase()); list.push({ username: handle, commentText: text }); } } }); fetch('http://localhost:3006/api/v1/social/import-live', { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postUrl: location.href, comments: list, cookies: document.cookie, handle: '@NACHOAT00' }) }).then(r => r.json()).then(d => alert('✅ ¡' + (d.count || list.length) + ' comentarios enviados a Sorteos Pro!')); })();`;
-                        navigator.clipboard.writeText(snippet);
+                      href={bookmarkletCode}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigator.clipboard.writeText(consoleSnippet);
                         setXSyncFeedbackType('success');
-                        setXSyncFeedback('¡Marcador copiado! Arrástralo a tu barra de favoritos de Edge o ejecútalo en la consola de X.');
+                        setXSyncFeedback('¡Marcador copiado! Arrástralo a tus favoritos o pégalo en la consola F12 de X.');
                       }}
                       className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-mono text-xs font-black transition-all cursor-grab active:cursor-grabbing shadow-lg flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 shadow-amber-500/25 active:scale-[0.98]"
-                      title="Arrastra este botón a tus marcadores de Edge y pulsa en la pestaña de Juanca"
+                      title="Arrastra este botón a tus marcadores de Edge/Chrome y pulsa en la pestaña de X"
                     >
                       <Sparkles className="w-4 h-4 fill-current text-slate-950" />
                       <span>🎯 Marcador 1-Clic</span>
                     </a>
 
-                    {/* Botón 2: Conectar Sesión Oficial */}
+                    {/* Botón 2: Asistente Sincronización */}
+                    <button
+                      type="button"
+                      onClick={handleOpenXAndSync}
+                      className="w-full sm:w-auto px-3.5 py-2.5 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md bg-white/10 hover:bg-white/20 text-white border border-white/20 active:scale-[0.98]"
+                      title="Abre la publicación en X y despliega el asistente de sincronización"
+                    >
+                      <Zap className="w-4 h-4 text-cyan-300 fill-current" />
+                      <span>⚡ Asistente 𝕏</span>
+                    </button>
+
+                    {/* Botón 3: Conectar Sesión Oficial */}
                     <button
                       type="button"
                       onClick={() => openConnectModal('x')}
                       className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md bg-white/10 hover:bg-white/20 text-white border border-white/20 active:scale-[0.98]"
-                      title="Conectar sesión oficial de @NACHOAT00"
+                      title={`Conectar sesión oficial de ${targetHandle}`}
                     >
                       <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span>Conectar Sesión (@NACHOAT00)</span>
-                    </button>
-
-                    {/* Botón 3: Abrir en X */}
-                    <button
-                      type="button"
-                      onClick={handleOpenInNewTabAndAutoCollect}
-                      className="w-full sm:w-auto px-3.5 py-2.5 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md bg-white/10 hover:bg-white/20 text-white border border-white/20 active:scale-[0.98]"
-                      title="Abre la publicación en una pestaña nueva"
-                    >
-                      <Zap className="w-4 h-4 text-cyan-300 fill-current" />
-                      <span>Abrir en 𝕏</span>
+                      <span>{connectedX ? `Conectado (${connectedX.handle})` : `Conectar Sesión (${targetHandle})`}</span>
                     </button>
 
                     {/* Botón 4: Pegar Portapapeles (Opcional) */}
@@ -3881,9 +3851,8 @@ interface AdditionalSource {
           rules={rules}
           onChangeRules={(newRules) => {
             setRules(newRules);
-            const { eligible, excluded } = filterParticipants(rawComments, newRules);
+            const { eligible } = filterParticipants(rawComments, newRules);
             setFilteredEligible(eligible);
-            setFilteredExcluded(excluded);
           }}
           eligibleCount={filteredEligible.length}
           totalCommentsCount={rawComments.length}
