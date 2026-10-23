@@ -169,6 +169,20 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
     }
   }, [isOpen, format, drawCard]);
 
+  // Handle Escape key to close modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleDownload = () => {
@@ -207,13 +221,22 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="glass-card rounded-3xl max-w-2xl w-full border border-white/20 p-6 sm:p-8 space-y-6 max-h-[95vh] overflow-y-auto relative">
-        
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="winner-export-title"
+        className="glass-card rounded-3xl max-w-2xl w-full border border-white/20 p-6 sm:p-8 space-y-6 max-h-[95vh] overflow-y-auto relative"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+          className="absolute top-5 right-5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
           aria-label="Cerrar modal"
         >
           <X className="w-5 h-5" />
@@ -225,7 +248,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
             <Camera className="w-3.5 h-3.5" />
             <span>Compartir en Redes Sociales</span>
           </div>
-          <h2 className="text-2xl font-bold font-display text-white">
+          <h2 id="winner-export-title" className="text-2xl font-bold font-display text-white">
             Tarjeta Oficial del Ganador
           </h2>
           <p className="text-sm text-zinc-400">
@@ -237,6 +260,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
         <div className="flex gap-2">
           <button
             type="button"
+            aria-pressed={format === 'story'}
             onClick={() => setFormat('story')}
             className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
               format === 'story'
@@ -248,6 +272,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
           </button>
           <button
             type="button"
+            aria-pressed={format === 'post'}
             onClick={() => setFormat('post')}
             className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
               format === 'post'
@@ -274,6 +299,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
           <button
             type="button"
             disabled={isGenerating}
+            aria-busy={isGenerating}
             onClick={handleDownload}
             className="btn-pro-primary flex-1 py-3.5 rounded-xl text-base flex items-center justify-center gap-2"
           >
@@ -284,6 +310,7 @@ export const WinnerExportModal: React.FC<WinnerExportModalProps> = ({
           <button
             type="button"
             disabled={isGenerating}
+            aria-busy={isGenerating}
             onClick={handleCopy}
             className="btn-pro-secondary py-3.5 px-6 rounded-xl text-base flex items-center justify-center gap-2"
           >
