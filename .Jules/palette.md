@@ -1,0 +1,3 @@
+## 2026-10-24 - WAI-ARIA Accordion Accessibility Pattern
+**Learning:** Collapsible sections and custom FAQ accordions in the design system lacked explicit WAI-ARIA expansion states (`aria-expanded`, `aria-controls`, `role="region"`, `aria-labelledby`) and keyboard `focus-visible` rings, rendering them ambiguous for screen reader and keyboard navigation users.
+**Action:** When building or auditing accordion/collapsible components, always assign unique dynamic IDs (`header-idx`, `panel-idx`), associate them with `aria-controls` / `aria-labelledby`, toggle `aria-expanded`, and include `focus-visible:ring-2` for accessibility compliance.
