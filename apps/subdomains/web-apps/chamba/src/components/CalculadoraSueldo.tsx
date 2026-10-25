@@ -111,13 +111,14 @@ export function CalculadoraSueldo() {
         <div className="lg:col-span-6 space-y-6">
           {/* Sueldo Bruto Input */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center justify-between">
+            <label htmlFor="sueldo-bruto-input" className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center justify-between">
               <span>Sueldo Bruto Mensual (PEN)</span>
               <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">S/ {sueldoBruto.toLocaleString()}</span>
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold font-mono text-lg">S/</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold font-mono text-lg" aria-hidden="true">S/</span>
               <input
+                id="sueldo-bruto-input"
                 type="number"
                 value={sueldoBruto}
                 onChange={(e) => setSueldoBruto(Math.max(0, Number(e.target.value)))}
@@ -125,12 +126,13 @@ export function CalculadoraSueldo() {
                 placeholder="4500"
               />
             </div>
-            <div className="flex flex-wrap gap-2 pt-1">
+            <div className="flex flex-wrap gap-2 pt-1" role="group" aria-label="Montos prestablecidos de sueldo">
               {[2000, 3500, 5000, 7500, 10000].map((val) => (
                 <button
                   key={val}
                   type="button"
                   onClick={() => setSueldoBruto(val)}
+                  aria-label={`Establecer sueldo bruto en S/ ${val.toLocaleString()} PEN`}
                   className={`px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all ${
                     sueldoBruto === val
                       ? 'bg-emerald-600 text-white shadow-sm'
@@ -145,10 +147,10 @@ export function CalculadoraSueldo() {
 
           {/* Selector de Régimen Laboral */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide">
+            <span id="label-regimen-laboral" className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide block">
               Régimen Laboral
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            </span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" role="group" aria-labelledby="label-regimen-laboral">
               {[
                 { key: 'CAS', label: 'CAS 1057', badge: 'Sector Público' },
                 { key: '728', label: 'D.L. 728', badge: 'Planilla Priv./Púb.' },
@@ -159,6 +161,7 @@ export function CalculadoraSueldo() {
                   key={item.key}
                   type="button"
                   onClick={() => setRegimen(item.key as any)}
+                  aria-pressed={regimen === item.key}
                   className={`p-3 rounded-xl border text-left transition-all ${
                     regimen === item.key
                       ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500 text-emerald-950 dark:text-emerald-100 ring-1 ring-emerald-500 shadow-sm'
@@ -175,15 +178,16 @@ export function CalculadoraSueldo() {
           {/* Sistema de Pensiones (AFP / ONP) */}
           {regimen !== 'Locacion' && (
             <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide block">
+              <span id="label-sistema-pensiones" className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide block">
                 Sistema de Pensiones
-              </label>
-              <div className="grid grid-cols-3 gap-2">
+              </span>
+              <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="label-sistema-pensiones">
                 {['AFP', 'ONP', 'Ninguno'].map((sys) => (
                   <button
                     key={sys}
                     type="button"
                     onClick={() => setPension(sys as any)}
+                    aria-pressed={pension === sys}
                     className={`py-2.5 rounded-lg font-mono text-xs font-semibold transition-all ${
                       pension === sys
                         ? 'bg-emerald-600 text-white shadow-sm'
@@ -197,13 +201,14 @@ export function CalculadoraSueldo() {
 
               {pension === 'AFP' && (
                 <div className="pt-2">
-                  <span className="text-[11px] text-slate-600 dark:text-slate-400 block mb-1.5 font-medium">Administradora AFP:</span>
-                  <div className="grid grid-cols-4 gap-2 text-xs font-mono font-bold">
+                  <span id="label-administradora-afp" className="text-[11px] text-slate-600 dark:text-slate-400 block mb-1.5 font-medium">Administradora AFP:</span>
+                  <div className="grid grid-cols-4 gap-2 text-xs font-mono font-bold" role="group" aria-labelledby="label-administradora-afp">
                     {(['Integra', 'Prima', 'Profuturo', 'Habitat'] as const).map((afp) => (
                       <button
                         key={afp}
                         type="button"
                         onClick={() => setAfpType(afp)}
+                        aria-pressed={afpType === afp}
                         className={`py-1.5 rounded-lg border transition-all ${
                           afpType === afp
                             ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-500 text-amber-900 dark:text-amber-200 shadow-sm'
