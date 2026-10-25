@@ -20,8 +20,17 @@ export function MobileNavMenu() {
     } else {
       document.body.style.overflow = '';
     }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
     return () => {
       document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -35,6 +44,10 @@ export function MobileNavMenu() {
 
       {/* Slide-over Drawer Panel */}
       <div
+        id="mobile-navigation-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menú de navegación principal"
         className="mobile-nav-drawer fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-[#070d14] border-l border-slate-200 dark:border-white/15 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out"
       >
         <div className="space-y-6">
@@ -232,9 +245,11 @@ export function MobileNavMenu() {
       {/* Toggle Hamburger Button */}
       <button
         type="button"
+        aria-expanded={isOpen}
+        aria-controls="mobile-navigation-drawer"
         onClick={() => setIsOpen(!isOpen)}
         className="mobile-hamburger-btn p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 transition-colors cursor-pointer flex items-center justify-center shrink-0 shadow-xs"
-        aria-label="Abrir menú"
+        aria-label={isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
