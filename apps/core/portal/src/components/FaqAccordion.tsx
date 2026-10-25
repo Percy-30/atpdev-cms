@@ -76,6 +76,8 @@ export function FaqAccordion({ items, lang = "es", hideHeader = false }: FaqAcco
       <div className="space-y-3">
         {faqList.map((item, idx) => {
           const isOpen = openIndex === idx;
+          const contentId = `faq-answer-${idx}`;
+          const headerId = `faq-header-${idx}`;
           return (
             <div
               key={idx}
@@ -86,8 +88,11 @@ export function FaqAccordion({ items, lang = "es", hideHeader = false }: FaqAcco
               }`}
             >
               <button
+                id={headerId}
+                aria-expanded={isOpen}
+                aria-controls={contentId}
                 onClick={() => toggle(idx)}
-                className="w-full p-4 px-5 flex items-center justify-between gap-4 text-left transition-colors"
+                className="w-full p-4 px-5 flex items-center justify-between gap-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
               >
                 <div className="flex items-center gap-3">
                   {item.icon}
@@ -98,11 +103,17 @@ export function FaqAccordion({ items, lang = "es", hideHeader = false }: FaqAcco
                   className={`text-[var(--text-color)] opacity-60 transition-transform duration-300 flex-shrink-0 ${
                     isOpen ? "rotate-180 text-emerald-400 opacity-100" : ""
                   }`}
+                  aria-hidden="true"
                 />
               </button>
 
               {isOpen && (
-                <div className="px-5 pb-5 text-sm text-[var(--text-color)] opacity-90 leading-relaxed border-t border-[var(--glass-border)] pt-3 animate-in fade-in duration-200">
+                <div
+                  id={contentId}
+                  role="region"
+                  aria-labelledby={headerId}
+                  className="px-5 pb-5 text-sm text-[var(--text-color)] opacity-90 leading-relaxed border-t border-[var(--glass-border)] pt-3 animate-in fade-in duration-200"
+                >
                   {item.answer}
                 </div>
               )}
